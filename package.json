@@ -1,0 +1,8 @@
+{
+	"name": "mautic-docs-prs-tracker",
+	"private": true,
+	"scripts": {
+		"start": "node tracker.js",
+		"tracker": "node tracker.js"
+	}
+}

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Tracker</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f0f0; color: #333; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        nav { display: flex; gap: 8px; margin-bottom: 20px; }
+        nav a { padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500; color: #24292e; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        nav a.active { background: #a21caf; color: white; }
+        header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { font-size: 20px; margin-bottom: 10px; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+        .stat-box { padding: 15px; border-radius: 6px; text-align: center; color: white; font-weight: 500; background: #a21caf; }
+        .stat-number { font-size: 32px; font-weight: bold; }
+        .stat-label { font-size: 12px; opacity: 0.9; }
+        .repo-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+        .repo-filter { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500; background: white; border: 2px solid transparent; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #333; }
+        .repo-filter .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .repo-filter.active { border-color: currentColor; }
+        .issue-row { background: white; padding: 15px; margin-bottom: 10px; border-radius: 6px; border-left: 4px solid #a21caf; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .issue-row.hidden { display: none; }
+        .issue-title { font-weight: 600; margin-bottom: 8px; }
+        .issue-title a { color: #0066cc; text-decoration: none; }
+        .issue-meta { font-size: 13px; color: #666; margin-bottom: 8px; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; background: #e1e4e8; }
+        .repo-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: white; margin-right: 8px; }
+        .empty { text-align: center; padding: 30px; color: #999; }
+        footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="tracker-report.html">📊 PR Tracker</a>
+            <a href="issue-tracker-report.html" class="active">🆕 Issue Tracker</a>
+        </nav>
+        <header>
+            <h1>🆕 Issue Tracker</h1>
+            <p style="color: #999; font-size: 12px;">Updated: 7/8/2026, 12:20:51 PM</p>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number">68</div>
+                    <div class="stat-label">Needs Attention</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">77</div>
+                    <div class="stat-label">Others Opened</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">226</div>
+                    <div class="stat-label">Total Issues</div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2 style="font-size: 16px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #ddd;">Issues You Haven't Interacted With</h2>
+            <div class="repo-filters">
+                <button type="button" class="repo-filter active" data-repo="all"><span class="dot" style="background:#a21caf;"></span>All (68)</button>
+                <button type="button" class="repo-filter" data-repo="mautic/developer-documentation-new" style="color: #0969da;"><span class="dot" style="background:#0969da;"></span>Developer Docs (0)</button><button type="button" class="repo-filter" data-repo="mautic/user-documentation" style="color: #1a7f37;"><span class="dot" style="background:#1a7f37;"></span>User Docs (8)</button><button type="button" class="repo-filter" data-repo="mautic/mautic-community-handbook" style="color: #9a6700;"><span class="dot" style="background:#9a6700;"></span>Community Handbook (8)</button><button type="button" class="repo-filter" data-repo="mautic/low-no-code" style="color: #8250df;"><span class="dot" style="background:#8250df;"></span>Low-Code/No-Code (52)</button>
+            </div>
+            <div id="issue-list">
+            <div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/390" target="_blank">#390</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/configuration/maxmind_license.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/386" target="_blank">#386</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/plugins/zoho_crm.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/383" target="_blank">#383</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/plugins/social_login.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/382" target="_blank">#382</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/plugins/plugin_resources.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">good first issue</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/381" target="_blank">#381</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/plugins/mailchimp.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/379" target="_blank">#379</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/campaigns/campaign_builder.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/377" target="_blank">#377</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/campaigns/managing_campaigns.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/user-documentation" style="border-left-color: #1a7f37;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #1a7f37;">User Docs</span>
+            <a href="https://github.com/mautic/user-documentation/issues/371" target="_blank">#371</a>
+            <span style="font-weight: normal; color: #666;"> Update images in docs/authentication/authentication.rst in branch 5.2</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 2
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">good first issue</span></div>
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/420" target="_blank">#420</a>
+            <span style="font-weight: normal; color: #666;"> [DOCS]: Incorrect label used for Product Team page</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">bug</span> <span class="badge">documentation</span> <span class="badge">help wanted</span> <span class="badge">good first issue</span></div>
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/372" target="_blank">#372</a>
+            <span style="font-weight: normal; color: #666;"> Update CoC breaches to include latest table entry</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/347" target="_blank">#347</a>
+            <span style="font-weight: normal; color: #666;"> Update issues on Community Portal section</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">help wanted</span></div>
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/198" target="_blank">#198</a>
+            <span style="font-weight: normal; color: #666;"> Add a sub-section under Google  Summer Of Code</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>vibhuti019</strong> | Comments: 2
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/184" target="_blank">#184</a>
+            <span style="font-weight: normal; color: #666;"> Update reference to index_dev.php on developer mode section</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 3
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/57" target="_blank">#57</a>
+            <span style="font-weight: normal; color: #666;"> Add a section under structure to explain teams, working groups, initatives and tiger teams</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 2
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span></div>
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/34" target="_blank">#34</a>
+            <span style="font-weight: normal; color: #666;"> Update docs on migrations</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 5
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">help wanted</span> <span class="badge">good first issue</span></div>
+    </div><div class="issue-row" data-repo="mautic/mautic-community-handbook" style="border-left-color: #9a6700;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #9a6700;">Community Handbook</span>
+            <a href="https://github.com/mautic/mautic-community-handbook/issues/19" target="_blank">#19</a>
+            <span style="font-weight: normal; color: #666;"> Add a note about Psysh being available</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>dennisameling</strong> | Comments: 2
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">help wanted</span> <span class="badge">good first issue</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/230" target="_blank">#230</a>
+            <span style="font-weight: normal; color: #666;"> Usability &amp; Admin Enhancements</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/229" target="_blank">#229</a>
+            <span style="font-weight: normal; color: #666;"> German Language Landing Page</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/228" target="_blank">#228</a>
+            <span style="font-weight: normal; color: #666;"> How to onboard people into Mautic</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/227" target="_blank">#227</a>
+            <span style="font-weight: normal; color: #666;"> Make testing easier</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/226" target="_blank">#226</a>
+            <span style="font-weight: normal; color: #666;"> Fundraising &amp; Financial Project Stabilization Brainstorming</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/225" target="_blank">#225</a>
+            <span style="font-weight: normal; color: #666;"> Debug Mautic Trials Onboarding Campaign</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/224" target="_blank">#224</a>
+            <span style="font-weight: normal; color: #666;"> Plugins: Payments &amp; Connector Plugins (MTA &amp; other connectors)</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/223" target="_blank">#223</a>
+            <span style="font-weight: normal; color: #666;"> Feature Wishes &amp; Flagship Feature for Mautic 8</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 3
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/220" target="_blank">#220</a>
+            <span style="font-weight: normal; color: #666;"> Create a plan for celebrating Maintainer Month (May)</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">content-writing-editing</span> <span class="badge">no-code</span> <span class="badge">marketing</span> <span class="badge">mautic-blog</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/213" target="_blank">#213</a>
+            <span style="font-weight: normal; color: #666;"> [SUBJECT]: Update Sponsor Tiers PDF on Canva</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">enhancement</span> <span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/172" target="_blank">#172</a>
+            <span style="font-weight: normal; color: #666;"> Translate the FormBundle flashes and validators into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/171" target="_blank">#171</a>
+            <span style="font-weight: normal; color: #666;"> Translate the FormBundle messages into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/170" target="_blank">#170</a>
+            <span style="font-weight: normal; color: #666;"> Translate the EmailBundle flashes and validators into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/169" target="_blank">#169</a>
+            <span style="font-weight: normal; color: #666;"> Translate the EmailBundle messages into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/168" target="_blank">#168</a>
+            <span style="font-weight: normal; color: #666;"> Translate the DynamicContent flashes, messages and validators into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/167" target="_blank">#167</a>
+            <span style="font-weight: normal; color: #666;"> Translate the DashboardBundle messages, flashes and validators into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 7
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/166" target="_blank">#166</a>
+            <span style="font-weight: normal; color: #666;"> Translate the CoreBundle messages into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/165" target="_blank">#165</a>
+            <span style="font-weight: normal; color: #666;"> Translate the CoreBundle flashes, javascript and validators into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/160" target="_blank">#160</a>
+            <span style="font-weight: normal; color: #666;"> Translate the CampaignBundle messages, flashes and validators into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/155" target="_blank">#155</a>
+            <span style="font-weight: normal; color: #666;"> Translate Mautic into Hindi</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 4
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">translations</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/147" target="_blank">#147</a>
+            <span style="font-weight: normal; color: #666;"> Media/press outreach kit (country-level) for Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">content-writing-editing</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/146" target="_blank">#146</a>
+            <span style="font-weight: normal; color: #666;"> University outreach pack for Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">content-writing-editing</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/145" target="_blank">#145</a>
+            <span style="font-weight: normal; color: #666;"> Workshop-in-a-box: “Getting started with Mautic” (90 minutes) for Mautic Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 1
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/144" target="_blank">#144</a>
+            <span style="font-weight: normal; color: #666;"> MautiCamp starter kit for Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 4
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/143" target="_blank">#143</a>
+            <span style="font-weight: normal; color: #666;"> Meetup runbook (checklist + templates) for Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 3
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/142" target="_blank">#142</a>
+            <span style="font-weight: normal; color: #666;"> Social media post kit (Profile cover image + 10 captions + 5 images) for Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 10
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/141" target="_blank">#141</a>
+            <span style="font-weight: normal; color: #666;"> Country/Region slide deck template for Ambassadors (Canva)</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/140" target="_blank">#140</a>
+            <span style="font-weight: normal; color: #666;"> Create a reusable “Welcome Pack” email series for new ambassadors (3 messages)</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 3
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">content-writing-editing</span> <span class="badge">no-code</span> <span class="badge">marketing</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/134" target="_blank">#134</a>
+            <span style="font-weight: normal; color: #666;"> Design a forum badge for Mautic Ambassadors</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/132" target="_blank">#132</a>
+            <span style="font-weight: normal; color: #666;"> Design a template for Mautic Meetup Groups</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 3
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/131" target="_blank">#131</a>
+            <span style="font-weight: normal; color: #666;"> Create design templates in Canva to support Mautic Ambassador Program</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 7
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/130" target="_blank">#130</a>
+            <span style="font-weight: normal; color: #666;"> Creating a feature demo video which explains Campaigns</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>Barsha-Devi</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/129" target="_blank">#129</a>
+            <span style="font-weight: normal; color: #666;"> Create a feature demo video on Email Marketing</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>Barsha-Devi</strong> | Comments: 0
+        </div>
+        
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/128" target="_blank">#128</a>
+            <span style="font-weight: normal; color: #666;"> Feature Demo Videos (Max 1-Minute Each)</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>Barsha-Devi</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">marketing</span> <span class="badge">community</span> <span class="badge">social-media</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/127" target="_blank">#127</a>
+            <span style="font-weight: normal; color: #666;"> Share Your Favorite Mautic Feature (with Screenshot!)</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>Barsha-Devi</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">marketing</span> <span class="badge">community</span> <span class="badge">social-media</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/126" target="_blank">#126</a>
+            <span style="font-weight: normal; color: #666;"> [Marketing] Create Blogpost reporting on Community Sprint 2025 in Prague</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>sdoering</strong> | Comments: 2
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">marketing</span> <span class="badge">social-media</span> <span class="badge">mautic-blog</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/119" target="_blank">#119</a>
+            <span style="font-weight: normal; color: #666;"> Finish working on the Mautic Pitch Deck and release it</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">help wanted</span> <span class="badge">content-writing-editing</span> <span class="badge">no-code</span> <span class="badge">design</span> <span class="badge">marketing</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/116" target="_blank">#116</a>
+            <span style="font-weight: normal; color: #666;"> Update the Mautic readme with clear, up to date and concise instructions for installing Mautic</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 6
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">documentation</span> <span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">content-writing-editing</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/114" target="_blank">#114</a>
+            <span style="font-weight: normal; color: #666;"> [Design] Update / improve the Corporate Tiers PDF download</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">enhancement</span> <span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">no-code</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/69" target="_blank">#69</a>
+            <span style="font-weight: normal; color: #666;"> [Marketing] Write a feature for the Partner Spotlight for the newsletter</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 5
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">content-writing-editing</span> <span class="badge">design</span> <span class="badge">marketing</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/33" target="_blank">#33</a>
+            <span style="font-weight: normal; color: #666;"> [Design] Define brand imagery and illustration style </span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">hacktoberfest</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/32" target="_blank">#32</a>
+            <span style="font-weight: normal; color: #666;"> [Design] Design brand pattern</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 6
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">hacktoberfest</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/15" target="_blank">#15</a>
+            <span style="font-weight: normal; color: #666;"> [Community] Create a Strategy to Strengthen the connection from Mautic Facebook Group to forum.mautic.org</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>ekkeguembel</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">hacktoberfest</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/14" target="_blank">#14</a>
+            <span style="font-weight: normal; color: #666;"> [Community] Actively push for more inclusion and diversity</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>ekkeguembel</strong> | Comments: 3
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">hacktoberfest</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/12" target="_blank">#12</a>
+            <span style="font-weight: normal; color: #666;"> [Community] Write a wishlist “What should we provide to help people in representing Mautic at 3rd-party events?”</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>ekkeguembel</strong> | Comments: 4
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">hacktoberfest</span> <span class="badge">community</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/5" target="_blank">#5</a>
+            <span style="font-weight: normal; color: #666;"> [Design] Create an illustration / visual to explain how an idea becomes a feature in Mautic</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 6
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">no-code</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/3" target="_blank">#3</a>
+            <span style="font-weight: normal; color: #666;"> [Content] Review and update content on Governance page on mautic.org</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>RCheesley</strong> | Comments: 8
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">hacktoberfest</span> <span class="badge">content-writing-editing</span> <span class="badge">no-code</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/101" target="_blank">#101</a>
+            <span style="font-weight: normal; color: #666;"> [UX] Inconsistent methods of receiving exported files</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">bug</span> <span class="badge">enhancement</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/98" target="_blank">#98</a>
+            <span style="font-weight: normal; color: #666;"> Completely new dashboard experience</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/96" target="_blank">#96</a>
+            <span style="font-weight: normal; color: #666;"> Review error messages</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">enhancement</span> <span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/97" target="_blank">#97</a>
+            <span style="font-weight: normal; color: #666;"> Organize settings tabs and order them</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 0
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">enhancement</span> <span class="badge">help wanted</span> <span class="badge">design</span></div>
+    </div><div class="issue-row" data-repo="mautic/low-no-code" style="border-left-color: #8250df;">
+        <div class="issue-title">
+            <span class="repo-badge" style="background: #8250df;">Low-Code/No-Code</span>
+            <a href="https://github.com/mautic/low-no-code/issues/100" target="_blank">#100</a>
+            <span style="font-weight: normal; color: #666;"> New marketplace experience</span>
+        </div>
+        <div class="issue-meta">
+            Author: <strong>andersonjeccel</strong> | Comments: 4
+        </div>
+        <div style="margin-top: 6px;"><span class="badge">enhancement</span> <span class="badge">good first issue</span> <span class="badge">help wanted</span> <span class="badge">no-code</span> <span class="badge">design</span></div>
+    </div>
+            </div>
+        </section>
+    </div>
+    <footer>Generated by Issue Tracker</footer>
+    <script>
+        document.querySelectorAll(".repo-filter").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".repo-filter").forEach((b) => b.classList.remove("active"))
+                btn.classList.add("active")
+                const repo = btn.dataset.repo
+                document.querySelectorAll(".issue-row").forEach((row) => {
+                    row.classList.toggle("hidden", repo !== "all" && row.dataset.repo !== repo)
+                })
+            })
+        })
+    </script>
+</body>
+</html>
