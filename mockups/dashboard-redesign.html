@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs PR Tracker — redesign mockup</title>
+<style>
+  /* ---------- tokens (light) ---------- */
+  :root{
+    --page:#f9f9f7;
+    --surface:#fcfcfb;
+    --ink:#0b0b0b;
+    --ink-2:#52514e;
+    --ink-3:#898781;
+    --line:#e1e0d9;
+    --ring:rgba(11,11,11,.10);
+    --critical:#d03b3b;
+    --serious:#ec835a;
+    --warning:#fab219;
+    --good:#0ca30c;
+    --good-ink:#006300;
+    --accent:#2a78d6;
+    --shadow:0 1px 2px rgba(11,11,11,.05);
+    /* task-family colours (chips) */
+    --setup:#0e7490;      /* setup & triage */
+    --manual:#c2255c;     /* manual attention */
+    --dismiss:#8a5252;    /* close / dismiss — muted, terminal */
+    /* GitHub PR-state pill colours */
+    --gh-open:#1a7f37;
+    --gh-merged:#8250df;
+    --gh-closed:#cf222e;
+    --gh-draft:#59636e;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --page:#0d0d0d;
+      --surface:#1a1a19;
+      --ink:#ffffff;
+      --ink-2:#c3c2b7;
+      --ink-3:#898781;
+      --line:#2c2c2a;
+      --ring:rgba(255,255,255,.10);
+      --good-ink:#0ca30c;
+      --accent:#3987e5;
+      --shadow:none;
+      --setup:#26b6d4;
+      --manual:#e57e9f;
+      --dismiss:#c49090;
+      --gh-open:#3fb950;
+      --gh-merged:#a371f7;
+      --gh-closed:#f85149;
+      --gh-draft:#b1bac4;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+    --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+    --good-ink:#0ca30c; --accent:#3987e5; --shadow:none;
+    --setup:#26b6d4; --manual:#e57e9f; --dismiss:#c49090;
+    --gh-open:#3fb950; --gh-merged:#a371f7; --gh-closed:#f85149; --gh-draft:#b1bac4;
+  }
+  :root[data-theme="light"]{
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+    --ink-3:#898781; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --good-ink:#006300; --accent:#2a78d6; --shadow:0 1px 2px rgba(11,11,11,.05);
+    --setup:#0e7490; --manual:#c2255c; --dismiss:#8a5252;
+    --gh-open:#1a7f37; --gh-merged:#8250df; --gh-closed:#cf222e; --gh-draft:#59636e;
+  }
+
+  /* ---------- base ---------- */
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page); color:var(--ink);
+    font-size:14px; line-height:1.45;
+    padding:24px 16px 48px;
+  }
+  .wrap{max-width:1000px;margin:0 auto}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  b{font-weight:600}
+
+  /* ---------- header ---------- */
+  .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .theme-btn{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
+  }
+
+  /* ---------- stat strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+  .tile{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:14px 16px;box-shadow:var(--shadow);
+  }
+  .tile .num{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.1}
+  .tile .lbl{font-size:13px;font-weight:600;margin-top:2px}
+  .tile .sub{font-size:12px;color:var(--ink-3);margin-top:2px}
+  .tile.focus{border-top:3px solid var(--accent)}
+  .tile.focus .num{color:var(--accent)}
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:1px}
+  .dot.critical{background:var(--critical)}
+  .dot.serious{background:var(--serious)}
+  .dot.dismiss{background:var(--dismiss)}
+
+  /* ---------- legend ---------- */
+  .legend{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    box-shadow:var(--shadow);margin-bottom:28px;
+  }
+  .legend summary{
+    list-style:none;cursor:pointer;padding:10px 16px;
+    font-size:12.5px;font-weight:600;color:var(--ink-3);
+    display:flex;align-items:center;gap:8px;
+  }
+  .legend summary::-webkit-details-marker{display:none}
+  .legend summary .tw{transition:transform .15s;color:var(--ink-3);font-size:10px}
+  .legend[open] summary .tw{transform:rotate(90deg)}
+  .legend[open] summary{border-bottom:1px solid var(--line);color:var(--ink-2)}
+  .legend-body{
+    display:grid;grid-template-columns:1fr 1.1fr;gap:4px 32px;
+    padding:12px 16px 16px;font-size:12.5px;color:var(--ink-2);
+  }
+  .legend h4{
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--ink-3);margin:12px 0 5px;
+  }
+  .legend .lg-col > h4:first-child{margin-top:0}
+  .legend ul{list-style:none}
+  .legend li{padding:1.5px 0}
+  .legend code{
+    font-family:ui-monospace,monospace;font-size:11px;
+    background:color-mix(in srgb, var(--ink) 6%, transparent);
+    border-radius:4px;padding:1px 5px;
+  }
+  .tl-intro{padding-bottom:4px}
+  .timeline{display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-size:12px;padding:2px 0}
+  .tl-dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .tl-dot.n1{background:color-mix(in srgb, var(--critical) 30%, var(--surface));border:1px solid color-mix(in srgb, var(--critical) 55%, transparent)}
+  .tl-dot.n2{background:color-mix(in srgb, var(--critical) 62%, var(--surface))}
+  .tl-dot.n3{background:var(--critical)}
+  .tl-line{flex:none;width:22px;height:2px;background:var(--line);border-radius:1px}
+  .key-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:3.5px 0}
+  .key-row .kd{color:var(--ink-3);font-size:12px}
+  .anatomy li{padding:3.5px 0}
+  .edge-sample{
+    display:inline-block;width:4px;height:14px;border-radius:2px;
+    background:var(--accent);vertical-align:-2px;margin-right:2px;
+  }
+
+  /* ---------- sections ---------- */
+  section{margin-bottom:28px}
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+  .sec-head h2{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+  .sec-head .count{
+    font-size:12px;font-weight:600;color:var(--ink-2);
+    background:color-mix(in srgb, var(--ink) 7%, transparent);
+    border-radius:999px;padding:1px 8px;
+  }
+  .sec-head .hint{font-size:12px;color:var(--ink-3)}
+  .card{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+
+  /* ---------- rows ---------- */
+  .row{
+    display:grid;grid-template-columns:4px 1fr auto;gap:0 14px;
+    padding:12px 16px 12px 12px;border-bottom:1px solid var(--line);
+    align-items:center;
+  }
+  .row:last-child{border-bottom:none}
+  .row .edge{width:4px;border-radius:2px;background:var(--line);align-self:stretch}
+  .row[data-sev="critical"] .edge{background:var(--critical)}
+  .row[data-sev="serious"]  .edge{background:var(--serious)}
+  .row[data-sev="act"]      .edge{background:var(--accent)}
+  .row[data-sev="triage"]   .edge{background:var(--ink-3)}
+  .row[data-sev="dismiss"]  .edge{background:var(--dismiss)}
+
+  .row .title{font-size:14px}
+  .row .title .name{font-weight:600}
+  .row .title .desc{color:var(--ink-2)}
+  .row .meta{font-size:12px;color:var(--ink-3);margin-top:2px}
+  .row .meta b{color:var(--ink-2);font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+
+  /* action chips — the verb of each row; one colour per task family */
+  .chip{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12px;font-weight:600;border-radius:6px;padding:2.5px 9px;
+    border:1px solid transparent;white-space:nowrap;
+  }
+  /* nudge-the-author ladder — one hue, graded by intensity */
+  .chip.nudge1{
+    background:color-mix(in srgb, var(--critical) 8%, var(--surface));
+    color:color-mix(in srgb, var(--critical) 55%, var(--ink));
+    border-color:color-mix(in srgb, var(--critical) 22%, transparent);
+  }
+  .chip.nudge2{
+    background:color-mix(in srgb, var(--critical) 17%, var(--surface));
+    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    border-color:color-mix(in srgb, var(--critical) 42%, transparent);
+  }
+  .chip.nudge3{
+    background:var(--critical);
+    color:#fff;
+    border-color:color-mix(in srgb, var(--critical) 70%, var(--ink));
+  }
+  /* setup & triage */
+  .chip.setup{
+    background:color-mix(in srgb, var(--setup) 11%, var(--surface));
+    color:color-mix(in srgb, var(--setup) 75%, var(--ink));
+    border-color:color-mix(in srgb, var(--setup) 32%, transparent);
+  }
+  /* your review */
+  .chip.act{
+    background:color-mix(in srgb, var(--accent) 11%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 78%, var(--ink));
+    border-color:color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  /* finish & merge — "ready" green */
+  .chip.finish{
+    background:color-mix(in srgb, var(--good) 12%, var(--surface));
+    color:color-mix(in srgb, var(--good) 62%, var(--ink));
+    border-color:color-mix(in srgb, var(--good) 34%, transparent);
+  }
+  /* backport before merge — warning amber */
+  .chip.backport{
+    background:color-mix(in srgb, var(--warning) 17%, var(--surface));
+    color:color-mix(in srgb, var(--warning) 42%, var(--ink));
+    border-color:color-mix(in srgb, var(--warning) 45%, transparent);
+  }
+  /* manual attention */
+  .chip.manual{
+    background:color-mix(in srgb, var(--manual) 10%, var(--surface));
+    color:color-mix(in srgb, var(--manual) 72%, var(--ink));
+    border-color:color-mix(in srgb, var(--manual) 32%, transparent);
+  }
+  /* close / dismiss — muted, terminal */
+  .chip.dismiss{
+    background:color-mix(in srgb, var(--dismiss) 13%, var(--surface));
+    color:color-mix(in srgb, var(--dismiss) 80%, var(--ink));
+    border-color:color-mix(in srgb, var(--dismiss) 40%, transparent);
+  }
+
+  /* small state pills (PR facts, not actions) — GitHub colours */
+  .pill{
+    display:inline-block;font-size:11px;font-weight:600;border-radius:999px;
+    padding:1px 7px;vertical-align:1px;
+    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-2);
+  }
+  .pill.open{
+    background:color-mix(in srgb, var(--gh-open) 13%, var(--surface));
+    color:color-mix(in srgb, var(--gh-open) 85%, var(--ink));
+  }
+  .pill.merged{
+    background:color-mix(in srgb, var(--gh-merged) 13%, var(--surface));
+    color:color-mix(in srgb, var(--gh-merged) 85%, var(--ink));
+  }
+  .pill.closed{
+    background:color-mix(in srgb, var(--gh-closed) 12%, var(--surface));
+    color:color-mix(in srgb, var(--gh-closed) 82%, var(--ink));
+  }
+  .pill.draft{
+    background:color-mix(in srgb, var(--gh-draft) 14%, var(--surface));
+    color:var(--gh-draft);
+  }
+
+  /* right-hand clock */
+  .when{text-align:right;min-width:96px}
+  .when .days{font-size:15px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .when .days.critical{color:var(--critical)}
+  .when .days.serious{color:color-mix(in srgb, var(--serious) 70%, var(--ink))}
+  .when .days.good{color:var(--good-ink)}
+  .when .days.warn{color:color-mix(in srgb, var(--warning) 45%, var(--ink))}
+  .when .sub{font-size:11px;color:var(--ink-3);margin-top:1px}
+  .when .sub.warn{color:color-mix(in srgb, var(--warning) 40%, var(--ink-2));font-weight:600}
+  .meter{
+    width:84px;height:4px;border-radius:2px;background:var(--line);
+    margin:5px 0 0 auto;overflow:hidden;
+  }
+  .meter i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+  .meter.late i{background:var(--serious)}
+
+  /* monitoring — compact, collapsed */
+  details.mon summary{
+    list-style:none;cursor:pointer;padding:12px 16px;
+    font-size:13px;font-weight:600;color:var(--ink-2);
+    display:flex;align-items:center;gap:8px;
+  }
+  details.mon summary::-webkit-details-marker{display:none}
+  details.mon summary .tw{transition:transform .15s;color:var(--ink-3);font-size:11px}
+  details.mon[open] summary .tw{transform:rotate(90deg)}
+  .mon-row{
+    display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;
+    padding:9px 16px;border-top:1px solid var(--line);font-size:13px;
+  }
+  .mon-row .code{color:var(--ink-3);font-size:12px}
+  .mon-row .why{color:var(--ink-3);font-size:12px;margin-left:auto}
+
+  /* empty state */
+  .empty{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:40px 24px;text-align:center;box-shadow:var(--shadow);
+  }
+  .empty .mark{
+    width:40px;height:40px;border-radius:50%;margin:0 auto 12px;
+    display:flex;align-items:center;justify-content:center;
+    background:color-mix(in srgb, var(--good) 14%, var(--surface));
+    color:var(--good-ink);font-size:19px;font-weight:700;
+  }
+  .empty h3{font-size:15px;font-weight:650;margin-bottom:4px}
+  .empty p{color:var(--ink-3);font-size:13px}
+  .empty .tail{margin-top:10px;font-size:12px;color:var(--ink-3)}
+
+  .divider{
+    margin:40px 0 16px;font-size:11px;font-weight:700;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--ink-3);text-align:center;
+    display:flex;align-items:center;gap:12px;
+  }
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  footer{margin-top:36px;text-align:center;font-size:12px;color:var(--ink-3)}
+  footer code{font-family:ui-monospace,monospace;font-size:11px}
+
+  /* ---------- narrow viewport ---------- */
+  @media (max-width:640px){
+    body{padding:16px 10px 40px}
+    .stats{grid-template-columns:1fr;gap:8px}
+    .tile{display:flex;align-items:baseline;gap:10px;padding:10px 14px}
+    .tile .num{font-size:22px}
+    .tile .sub{margin-left:auto;text-align:right}
+    .legend-body{grid-template-columns:1fr}
+    .row{grid-template-columns:4px 1fr;row-gap:6px}
+    .when{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap}
+    .when .sub{margin-top:0}
+    .meter{margin:0}
+    .mon-row .why{margin-left:0;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>Docs PR Tracker</h1>
+    <span class="updated">Updated Tue Jul 8, 12:19 PM</span>
+    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+  </div>
+
+  <!-- ============ stat strip ============ -->
+  <div class="stats">
+    <div class="tile focus">
+      <div class="num">11</div>
+      <div><div class="lbl">Need you today</div>
+      <div class="sub"><span class="dot dismiss"></span>1 to close · <span class="dot critical"></span>1 overdue · <span class="dot serious"></span>1 follow-up</div></div>
+    </div>
+    <div class="tile">
+      <div class="num">3</div>
+      <div><div class="lbl">Waiting on others</div>
+      <div class="sub">next follow-up due tomorrow</div></div>
+    </div>
+    <div class="tile">
+      <div class="num">3</div>
+      <div><div class="lbl">Monitoring</div>
+      <div class="sub">already handled — nothing to do</div></div>
+    </div>
+  </div>
+
+  <!-- ============ legend ============ -->
+  <details class="legend">
+    <summary><span class="tw">▶</span> New here? How to read this board</summary>
+    <div class="legend-body">
+      <div class="lg-col">
+        <h4>The three bands — whose turn is it?</h4>
+        <ul>
+          <li><b>Need you today</b> — actions only you can take.</li>
+          <li><b>Waiting on others</b> — you’ve done your part; a clock is running.</li>
+          <li><b>Monitoring</b> — the author replied and you’ve already looked; a normal back-and-forth is running, nothing to do.</li>
+        </ul>
+        <h4>The day clock</h4>
+        <p class="tl-intro">The counter on the right of each row counts days since your reminder, with two deadlines — and it stops the moment the author replies (the row then moves to “Need you today” so you can check their response):</p>
+        <div class="timeline">
+          <span class="tl-dot n1"></span> reminder sent
+          <span class="tl-line"></span>
+          <span class="tl-dot n2"></span> day 7 · follow up
+          <span class="tl-line"></span>
+          <span class="tl-dot n3"></span> day 14 · escalate
+        </div>
+        <h4>Reading a row</h4>
+        <ul class="anatomy">
+          <li><span class="edge-sample"></span> <b>Coloured left edge</b> — how urgent the row is: red overdue → orange due soon → blue actionable → grey triage.</li>
+          <li><span class="pill open">Open</span> <b>Pills</b> — the rounded tags next to a PR number. Facts about that PR: Draft / Open / Merged / Closed.</li>
+          <li><span class="chip act">Review this docs PR</span> <b>Chips</b> — the rectangular buttons at the bottom of a row. Actions for you to take; the colour tells you the kind of task (see colour key).</li>
+        </ul>
+        <h4>The two labels</h4>
+        <p><code>pending-pr-merge</code> — removed once the code PR merges · <code>needs-backport</code> — added when a PR targets an older branch than the latest.</p>
+      </div>
+      <div class="lg-col">
+        <h4>Colour key — same kind of task, same colour</h4>
+        <div class="key-row"><span class="chip setup">Setup &amp; triage</span><span class="kd">the get-ready steps for every new PR — Add milestone (every new open PR) · Add pending-pr-merge label + milestone (drafts) · Add needs-backport label (targets an older branch)</span></div>
+        <div class="key-row"><span class="chip nudge1">Remind</span><span class="chip nudge2">Follow up</span><span class="chip nudge3">Escalate</span><span class="kd">the nudge ladder — one hue, hotter = more urgent</span></div>
+        <div class="key-row"><span class="chip act">Review / respond</span><span class="kd">Review this docs PR · Check the author’s response</span></div>
+        <div class="key-row"><span class="chip finish">Finish &amp; merge</span><span class="kd">Final review, then merge · Remove pending-pr-merge label</span></div>
+        <div class="key-row"><span class="chip backport">Backport first</span><span class="kd">must be backported before it can merge</span></div>
+        <div class="key-row"><span class="chip manual">Manual attention</span><span class="kd">No code PR linked — needs a manual look</span></div>
+        <div class="key-row"><span class="chip dismiss">Close / dismiss</span><span class="kd">Close this docs PR — the code PR was abandoned</span></div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============ TODAY ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Need you today</h2><span class="count">11</span>
+      <span class="hint">actions only you can take — most urgent first</span>
+    </div>
+    <div class="card">
+
+      <article class="row" data-sev="dismiss">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #815</a> <span class="desc">Company page custom fields</span></div>
+          <div class="meta">Code PR <a href="#">#16118</a> <span class="pill closed">Closed</span> · author <b>fedys</b> · code PR closed without merging</div>
+          <div class="chips">
+            <span class="chip dismiss">Close this docs PR</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">—</div>
+          <div class="sub">code PR abandoned</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="critical">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #832</a> <span class="desc">Webhook payload reference</span></div>
+          <div class="meta">Code PR <a href="#">#16479</a> <span class="pill merged">Merged</span> · author <b>hluchas</b> · reminded, no reply since</div>
+          <div class="chips">
+            <span class="chip nudge3">▲ Escalate to core team</span>
+            <span class="chip finish">Remove pending-pr-merge label</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days critical">Day 16</div>
+          <div class="sub">since reminder</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="serious">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">developer-documentation #547</a> <span class="desc">Theme builder API</span></div>
+          <div class="meta">Code PR <a href="#">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · reminded, no reply since</div>
+          <div class="chips">
+            <span class="chip nudge2">Send a follow-up</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days serious">Day 9</div>
+          <div class="sub">since reminder · escalate at 14</div>
+          <div class="meter late"><i style="width:64%"></i></div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="act">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #779</a> <span class="desc">Report scheduling options</span></div>
+          <div class="meta">Code PR <a href="#">#15845</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · replied to your reminder 2 days ago</div>
+          <div class="chips">
+            <span class="chip act">Check the author’s response</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">Replied</div>
+          <div class="sub">2 days ago · clock stopped</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="act">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #752</a> <span class="desc">Segment filters rewrite</span></div>
+          <div class="meta">Code PR <a href="#">#15664</a> <span class="pill open">Open</span> · author <b>adiux</b> · approved by <b>adiux</b> 2 days ago</div>
+          <div class="chips">
+            <span class="chip finish">Final review, then merge</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days good">Ready</div>
+          <div class="sub">approved by author</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="act">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #768</a> <span class="desc">Campaign action hooks</span></div>
+          <div class="meta">Code PR <a href="#">#16265</a> <span class="pill merged">Merged</span> · author <b>mzagmajster</b> · approved by <b>RCheesley</b> · targets <b>5.2</b> (latest is 6.0)</div>
+          <div class="chips">
+            <span class="chip backport">Final review · backport, then merge</span>
+            <span class="chip finish">Remove pending-pr-merge label</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days warn">Ready</div>
+          <div class="sub warn">⚠ backport before merging</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="act">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">developer-documentation #554</a> <span class="desc">Custom field types</span></div>
+          <div class="meta">Code PR <a href="#">#15569</a> <span class="pill open">Open</span> · author <b>aarohiprasad</b> · you reviewed 2 days ago</div>
+          <div class="chips">
+            <span class="chip nudge1">Remind the code author</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">—</div>
+          <div class="sub">no reminder sent yet</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="act">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #812</a> <span class="desc">Point actions cleanup</span></div>
+          <div class="meta">Code PR <a href="#">#16413</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · milestone <b>6.1</b> · targets <b>5.2</b>, no backport label</div>
+          <div class="chips">
+            <span class="chip act">Review this docs PR</span>
+            <span class="chip setup">Add needs-backport label</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">—</div>
+          <div class="sub">opened 4 days ago</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="triage">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">developer-documentation #560</a> <span class="desc">Plugin config schema</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="#">#16502</a> <span class="pill open">Open</span> · author <b>kuzmany</b> · opened yesterday</div>
+          <div class="chips">
+            <span class="chip setup">Add pending-pr-merge label + milestone</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">New</div>
+          <div class="sub">needs triage</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="triage">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #845</a> <span class="desc">Tag manager overview</span></div>
+          <div class="meta">Code PR <a href="#">#16610</a> <span class="pill open">Open</span> · author <b>patrykgruszka</b> · targets <b>5.2</b> (latest 6.0) · no milestone, no backport label</div>
+          <div class="chips">
+            <span class="chip setup">Add milestone</span>
+            <span class="chip setup">Add needs-backport label</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">New</div>
+          <div class="sub">needs triage</div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="triage">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">developer-documentation #250</a> <span class="desc">CLI commands overview</span></div>
+          <div class="meta">No linked code PR · you reviewed 12 days ago</div>
+          <div class="chips">
+            <span class="chip manual">No code PR linked — needs a manual look</span>
+          </div>
+        </div>
+        <div class="when">
+          <div class="days">—</div>
+          <div class="sub">nobody to remind</div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ WAITING ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Waiting on others</h2><span class="count">3</span>
+      <span class="hint">the ball is in someone else’s court — the tracker watches the clock</span>
+    </div>
+    <div class="card">
+
+      <article class="row" data-sev="none">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #801</a> <span class="desc">Email builder tokens</span></div>
+          <div class="meta">Code PR <a href="#">#16049</a> <span class="pill open">Open</span> · author <b>lenonleite</b> · reminder sent, waiting for a reply</div>
+        </div>
+        <div class="when">
+          <div class="days">Day 3</div>
+          <div class="sub">follow up at 7</div>
+          <div class="meter"><i style="width:43%"></i></div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="none">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">user-documentation #798</a> <span class="desc">Landing page GrapesJS</span></div>
+          <div class="meta">Code PR <a href="#">#15964</a> <span class="pill open">Open</span> · author <b>introfini</b> · reminder sent, waiting for a reply</div>
+        </div>
+        <div class="when">
+          <div class="days">Day 6</div>
+          <div class="sub">follow up tomorrow</div>
+          <div class="meter"><i style="width:86%"></i></div>
+        </div>
+      </article>
+
+      <article class="row" data-sev="none">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="#" class="name">developer-documentation #552</a> <span class="desc">Form hooks reference</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="#">#16025</a> <span class="pill open">Open</span> · author <b>JonasLudwig1998</b> · you reviewed; reminder goes out once the code PR merges</div>
+        </div>
+        <div class="when">
+          <div class="days">—</div>
+          <div class="sub">waiting for the code PR to merge</div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ MONITORING ============ -->
+  <section>
+    <div class="sec-head">
+      <h2>Monitoring</h2><span class="count">3</span>
+      <span class="hint">healthy — collapsed by default</span>
+    </div>
+    <div class="card">
+      <details class="mon">
+        <summary><span class="tw">▶</span> 3 PRs in a normal back-and-forth — already handled, nothing to do</summary>
+        <div class="mon-row"><a href="#">user-documentation #782</a> <span class="code">Code PR <a href="#">#16304</a> <span class="pill merged">Merged</span></span> <span class="why">author reviewing the docs after your reply</span></div>
+        <div class="mon-row"><a href="#">user-documentation #714</a> <span class="code">Code PR <a href="#">#15310</a> <span class="pill open">Open</span></span> <span class="why">you replied — discussion in progress</span></div>
+        <div class="mon-row"><a href="#">developer-documentation #294</a> <span class="code">Code PR <a href="#">#15897</a> <span class="pill merged">Merged</span></span> <span class="why">you replied — author promised changes</span></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ empty-state preview ============ -->
+  <div class="divider">Empty-state preview — shown when “Need you today” is empty</div>
+  <div class="empty">
+    <div class="mark">✓</div>
+    <h3>Nothing needs you today</h3>
+    <p id="empty-msg">Every PR is either waiting on someone else or quietly behaving.</p>
+    <p class="tail">3 waiting on others · 3 monitoring</p>
+  </div>
+
+  <footer>Generated by <code>node tracker.js</code> · Tue Jul 8, 12:19 PM</footer>
+</div>
+
+<script>
+  // theme toggle: cycles system → light → dark
+  function toggleTheme(){
+    const r = document.documentElement;
+    const cur = r.getAttribute('data-theme');
+    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  }
+  // rotating empty-state line — deterministic per day, so it doesn't
+  // change on every regeneration within the same day
+  const emptyLines = [
+    "Every PR is either waiting on someone else or quietly behaving.",
+    "Inbox zero, docs edition.",
+    "All quiet. The docs can wait — go write some.",
+    "No follow-ups, no escalations, no stale labels. Enjoy it.",
+    "The review queue is empty. This is not a drill.",
+  ];
+  const day = Math.floor(Date.now() / 86400000);
+  document.getElementById('empty-msg').textContent = emptyLines[day % emptyLines.length];
+</script>
+</body>
+</html>
