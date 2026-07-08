@@ -41,9 +41,13 @@ const BOTS = [
 
 const PENDING_LABEL = process.env.PENDING_LABEL || "pending-pr-merge"
 const BACKPORT_LABEL = process.env.BACKPORT_LABEL || "needs-backport"
+const NEEDS_REBASE_LABEL = process.env.NEEDS_REBASE_LABEL || "needs-rebase"
 const RELEASE_BRANCH_PATTERN = /^\d+\.\d+$/
 const FOLLOWUP_DAYS = 7
 const ESCALATE_DAYS = 14
+
+const CACHE_PATH = "data/pr-cache.json"
+const NO_CACHE = process.argv.includes("--fresh") || process.env.TRACKER_NO_CACHE === "1"
 
 // Optional comma-separated list of additional maintainer logins who all
 // count as "the operator" (team mode). The authenticated user always counts.
@@ -109,6 +113,10 @@ function isHuman(login) {
 // Both fetchers return the *raw* list (bots included). Callers filter with
 // isHuman() for the participant logic; the community-thread detector needs the
 // unfiltered list so it can spot the promptless bot pinging a human reviewer.
+//
+// They return `null` (not []) on failure so the caller can tell "genuinely
+// no reviews/comments" apart from "the fetch broke" — a transient error must
+// never be mistaken for an empty result and cached as one.
 async function fetchPRReviews(repo, number) {
 	try {
 		return await makeRequest(
@@ -116,7 +124,7 @@ async function fetchPRReviews(repo, number) {
 		)
 	} catch (e) {
 		console.error(`Error fetching reviews for ${repo}#${number}:`, e.message)
-		return []
+		return null
 	}
 }
 
@@ -127,7 +135,7 @@ async function fetchIssueComments(repo, number) {
 		)
 	} catch (e) {
 		console.error(`Error fetching comments for ${repo}#${number}:`, e.message)
-		return []
+		return null
 	}
 }
 
@@ -141,11 +149,54 @@ async function fetchCodePR(repo, number) {
 			mergedAt: pr.merged_at ? new Date(pr.merged_at) : null,
 			state: pr.state,
 			author: pr.user.login,
+			updatedAt: pr.updated_at,
 		}
 	} catch (e) {
 		console.error(`Error fetching code PR ${repo}#${number}:`, e.message)
-		return { merged: false, mergedAt: null, state: "open", author: null }
+		return { merged: false, mergedAt: null, state: "open", author: null, updatedAt: null }
 	}
+}
+
+// ---------------------------------------------------------------------------
+// Cache — committed to the repo (not gitignored) so a scheduled CI run
+// starts warm. Keyed by docs-PR identity; each entry's own docs/code
+// `updated_at` is the invalidation signature — if neither has moved since
+// last run, the (expensive) reviews/comments calls are skipped and the
+// cached raw data is reused. Categorization always recomputes fresh from
+// whatever data is in hand, cached or not, so a cache bug can produce stale
+// *input* but never a stale *category*.
+function loadCache() {
+	if (NO_CACHE) return {}
+	try {
+		return JSON.parse(fs.readFileSync(CACHE_PATH, "utf8"))
+	} catch {
+		return {}
+	}
+}
+
+function saveCache(cache) {
+	fs.mkdirSync("data", { recursive: true })
+	fs.writeFileSync(CACHE_PATH, JSON.stringify(cache, null, 2) + "\n")
+}
+
+function cacheKey(repo, number) {
+	return `${repo}#${number}`
+}
+
+// Keep only the fields the derivations actually read. Comments need the
+// author, timestamp, and body (for @-mention scanning); reviews need the
+// author, state, and timestamp (review bodies are never scanned).
+function slimComment(c) {
+	return { user: { login: c.user.login }, created_at: c.created_at, body: c.body }
+}
+
+function slimReview(r) {
+	return { user: { login: r.user.login }, state: r.state, submitted_at: r.submitted_at }
+}
+
+function cacheHit(entry, docsUpdatedAt, codeUpdatedAt) {
+	if (!entry) return false
+	return entry.docsUpdatedAt === docsUpdatedAt && entry.codeUpdatedAt === codeUpdatedAt
 }
 
 // Latest version-pattern branch per repo, fetched once and cached.
@@ -490,6 +541,11 @@ async function main() {
 	}
 	console.log(`Found ${allPRs.length} open docs PRs\n`)
 
+	const cache = loadCache()
+	let cacheHits = 0
+	let cacheMisses = 0
+	let fetchFailures = 0
+
 	const prData = []
 	for (let i = 0; i < allPRs.length; i++) {
 		const pr = allPRs[i]
@@ -498,6 +554,7 @@ async function main() {
 		const isDraft = pr.draft
 		const hasLabel = pr.labels.some((l) => l.name === PENDING_LABEL)
 		const hasBackportLabel = pr.labels.some((l) => l.name === BACKPORT_LABEL)
+		const hasNeedsRebaseLabel = pr.labels.some((l) => l.name === NEEDS_REBASE_LABEL)
 		const hasMilestone = pr.milestone != null
 		const milestoneTitle = pr.milestone ? pr.milestone.title : null
 		const baseBranch = pr.base.ref
@@ -512,6 +569,7 @@ async function main() {
 		let codeMerged = false
 		let codeMergedDate = null
 		let codeClosed = false
+		let codeUpdatedAt = null
 
 		if (appPRData) {
 			appPRRepo = appPRData.repo
@@ -522,24 +580,72 @@ async function main() {
 			codeMergedDate = codePR.mergedAt
 			codeClosed = codePR.state === "closed" && !codePR.merged
 			appPRAuthor = codePR.author
+			codeUpdatedAt = codePR.updatedAt
 		}
 
 		// Raw lists keep the bots (needed by the community detector); the human
 		// lists drive all the participant logic (reviews, pings, responses).
-		const rawDocsReviews = await fetchPRReviews(pr.sourceRepo, pr.number)
-		const rawDocsComments = await fetchIssueComments(pr.sourceRepo, pr.number)
+		// If neither PR has changed since the last run (same updated_at on
+		// both), reuse the cached raw data instead of refetching it.
+		const key = cacheKey(pr.sourceRepo, pr.number)
+		const cached = cache[key]
+		let rawDocsReviews
+		let rawDocsComments
+		let rawCodeComments
+		let rawCodeReviews
+
+		if (cacheHit(cached, pr.updated_at, codeUpdatedAt)) {
+			;({ rawDocsReviews, rawDocsComments, rawCodeComments, rawCodeReviews } = cached)
+			cacheHits++
+		} else {
+			const dReviews = await fetchPRReviews(pr.sourceRepo, pr.number)
+			const dComments = await fetchIssueComments(pr.sourceRepo, pr.number)
+			const cComments = appPRNumber
+				? await fetchIssueComments(appPRRepo, appPRNumber)
+				: []
+			const cReviews = appPRNumber ? await fetchPRReviews(appPRRepo, appPRNumber) : []
+
+			// If any of the four fetches failed (null), don't trust this run's
+			// data for the PR: fall back to the previous cache entry if we have
+			// one (stale but correct), and DON'T overwrite it — so a transient
+			// error never poisons the cache with an empty result. Next run
+			// retries because the (unchanged) entry still fails the hit check
+			// only if updated_at moved; if it didn't, the good cached data is
+			// simply reused.
+			if (dReviews === null || dComments === null || cComments === null || cReviews === null) {
+				console.error(`  ⚠ fetch failed for ${key} — keeping previous cache entry`)
+				if (cached) {
+					;({ rawDocsReviews, rawDocsComments, rawCodeComments, rawCodeReviews } = cached)
+				} else {
+					rawDocsReviews = []
+					rawDocsComments = []
+					rawCodeComments = []
+					rawCodeReviews = []
+				}
+				fetchFailures++
+			} else {
+				// Slim to just the fields the derivations read, so the committed
+				// cache stays small and its diffs stay readable.
+				rawDocsReviews = dReviews.map(slimReview)
+				rawDocsComments = dComments.map(slimComment)
+				rawCodeComments = cComments.map(slimComment)
+				rawCodeReviews = cReviews.map(slimReview)
+				cache[key] = {
+					docsUpdatedAt: pr.updated_at,
+					codeUpdatedAt,
+					rawDocsReviews,
+					rawDocsComments,
+					rawCodeComments,
+					rawCodeReviews,
+				}
+				cacheMisses++
+			}
+		}
+
 		const docsReviews = rawDocsReviews.filter((r) => isHuman(r.user.login))
 		const docsComments = rawDocsComments.filter((c) => isHuman(c.user.login))
-		let codeComments = []
-		let codeReviews = []
-		if (appPRNumber) {
-			codeComments = (await fetchIssueComments(appPRRepo, appPRNumber)).filter((c) =>
-				isHuman(c.user.login),
-			)
-			codeReviews = (await fetchPRReviews(appPRRepo, appPRNumber)).filter((r) =>
-				isHuman(r.user.login),
-			)
-		}
+		const codeComments = rawCodeComments.filter((c) => isHuman(c.user.login))
+		const codeReviews = rawCodeReviews.filter((r) => isHuman(r.user.login))
 
 		const operatorReviewDate = computeOperatorReviewDate(
 			docsReviews,
@@ -606,10 +712,14 @@ async function main() {
 		let removeLabelFlag = codeMerged && hasLabel
 		let finalReviewActionable = approvedByNonOperator && (codeMerged || !appPRNumber)
 		let backportLabelFlag = olderBranch && !hasBackportLabel
+		// Just a label check — no clock, no "since when". You put the label on
+		// (or a bot did); this just makes sure it doesn't go unnoticed.
+		let needsRebaseFlag = hasNeedsRebaseLabel
 		if (codeClosed) {
 			removeLabelFlag = false
 			finalReviewActionable = false
 			backportLabelFlag = false
+			needsRebaseFlag = false
 		}
 		const backportModifierActive = finalReviewActionable && olderBranch
 
@@ -703,12 +813,24 @@ async function main() {
 			removeLabelFlag,
 			finalReviewActionable,
 			backportLabelFlag,
+			needsRebaseFlag,
 			backportModifierActive,
 			category,
 		})
 	}
 
-	console.log(`\n✅ Done!\n`)
+	// Drop entries for docs PRs no longer open (merged/closed) so the cache
+	// file doesn't grow forever.
+	const liveKeys = new Set(allPRs.map((pr) => cacheKey(pr.sourceRepo, pr.number)))
+	for (const key of Object.keys(cache)) {
+		if (!liveKeys.has(key)) delete cache[key]
+	}
+	saveCache(cache)
+
+	const failNote = fetchFailures > 0 ? `, ${fetchFailures} fetch failed (kept prior)` : ""
+	console.log(
+		`\n✅ Done! 📦 cache: ${cacheHits} reused, ${cacheMisses} fetched${failNote}\n`,
+	)
 
 	generateHTML(prData, { operatorUsername: authenticatedUser })
 	console.log("📄 Report saved to: tracker-report.html")
@@ -745,6 +867,7 @@ function isNeedTodayRow(pr) {
 		pr.finalReviewActionable ||
 		pr.removeLabelFlag ||
 		pr.backportLabelFlag ||
+		pr.needsRebaseFlag ||
 		communityForcesToday(pr)
 	)
 }
@@ -792,7 +915,10 @@ function categorySeverity(pr) {
 		case "blocked-no-code-pr":
 			return "triage"
 		default:
-			return pr.finalReviewActionable || pr.removeLabelFlag || pr.backportLabelFlag
+			return pr.finalReviewActionable ||
+				pr.removeLabelFlag ||
+				pr.backportLabelFlag ||
+				pr.needsRebaseFlag
 				? "act"
 				: "none"
 	}
@@ -1044,6 +1170,9 @@ function chipsFor(pr) {
 	}
 	if (pr.backportLabelFlag) {
 		chips.push({ cls: "setup", text: `Add ${BACKPORT_LABEL} label` })
+	}
+	if (pr.needsRebaseFlag) {
+		chips.push({ cls: "manual", text: "Needs rebase" })
 	}
 
 	return chips
@@ -1685,7 +1814,7 @@ ${filterBar}
           <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR · Check the author's response.</td></tr>
           <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label.</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
-          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply.</td></tr>
+          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase.</td></tr>
           <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
           <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was abandoned.</td></tr>
         </table>
@@ -1708,7 +1837,7 @@ ${filterBar}
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
           <tr><td>Approvals</td><td>"approved by …" is shown as a fact everywhere. The "Final review, then merge" action only appears once the code PR has merged.</td></tr>
           <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
-          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest.</td></tr>
+          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock.</td></tr>
         </table>
       </section>
 

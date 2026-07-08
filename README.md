@@ -75,14 +75,17 @@ question: **whose turn is it?**
    for a week, it resurfaces in "Need you today" asking you to remind them
    again.
 
-On top of that lifecycle state, three independent flags can light up on
-**any** row, regardless of its band, because they're triggered by separate
+On top of that lifecycle state, independent flags can light up on **any**
+row, regardless of its band, because they're triggered by separate
 conditions:
 - **Remove `pending-pr-merge` label** — the linked code PR merged.
 - **Final review, then merge** — someone other than you approved the docs PR
   (adds a "backport first" step if the PR targets an older release branch).
 - **Add `needs-backport` label** — the PR targets a branch older than the
   repo's latest release branch.
+- **Needs rebase** — the docs PR carries a `needs-rebase` label. This is a
+  plain label check, nothing more — no clock, no "since when". It's there so
+  a rebase-blocked PR never quietly falls out of view.
 
 A docs PR whose linked code PR closed without merging always shows
 **Close this docs PR** — that one action outranks everything else, since the
@@ -149,6 +152,37 @@ The report has two tab strips at the top: filter by **repo** and by
 priority focuses "Need you today" and hides the calmer Waiting / Monitoring
 bands. Counts update as you filter; it's all client-side in the one HTML
 file.
+
+## Caching
+
+Every run writes `data/pr-cache.json` — **committed, not gitignored**, so a
+scheduled CI run starts warm instead of re-fetching everything from
+scratch. It's keyed by docs PR; each entry stores the raw reviews/comments
+for both the docs PR and its linked code PR, alongside the `updated_at` of
+each at fetch time. On the next run, if neither PR's `updated_at` has moved,
+the cached data is reused and the 4 heaviest calls per PR (docs
+reviews/comments, code reviews/comments) are skipped entirely — only the
+cheap list + code-PR-lookup calls still run, since those are what tell us
+whether anything changed. The console prints a summary each run, e.g.
+`📦 cache: 48 reused, 6 fetched`.
+
+This is purely a performance cache: it stores raw API responses, never
+computed categories, so every category is still recomputed fresh from
+whatever data (cached or not) is in hand on every run — a caching bug can
+make a row's *input* stale, never silently corrupt its *category*.
+
+Entries for docs PRs that are no longer open (merged/closed) are pruned
+automatically. To force a full refetch — e.g. if you don't trust the cache,
+or changed something upstream — run:
+```bash
+node tracker.js --fresh
+```
+or set `TRACKER_NO_CACHE=1`.
+
+This also sets the project up for GitHub Actions automation (scheduled
+`node tracker.js` runs that commit `tracker-report.html` and the cache back
+to the repo) — not wired up yet, but the cache being committed rather than
+gitignored is what makes that viable later.
 
 ## Tips
 

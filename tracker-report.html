@@ -341,7 +341,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated">Updated Wed, Jul 8, 11:44 PM</span>
+    <span class="updated">Updated Thu, Jul 9, 12:53 AM</span>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
 
@@ -397,7 +397,7 @@
           <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR · Check the author's response.</td></tr>
           <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove pending-pr-merge label.</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
-          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply.</td></tr>
+          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase.</td></tr>
           <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
           <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was abandoned.</td></tr>
         </table>
@@ -420,7 +420,7 @@
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
           <tr><td>Approvals</td><td>"approved by …" is shown as a fact everywhere. The "Final review, then merge" action only appears once the code PR has merged.</td></tr>
           <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
-          <tr><td>Labels</td><td><code>pending-pr-merge</code> — removed once the code PR merges. <code>needs-backport</code> — added when a PR targets an older branch than the latest.</td></tr>
+          <tr><td>Labels</td><td><code>pending-pr-merge</code> — removed once the code PR merges. <code>needs-backport</code> — added when a PR targets an older branch than the latest. <code>needs-rebase</code> — surfaced as-is, no clock.</td></tr>
         </table>
       </section>
 
@@ -547,7 +547,7 @@
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/294" target="_blank" class="name">developer-documentation #294</a> <span class="desc">docs: Document mautic:email:sendwinner command for A/B test automation</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15897" target="_blank">#15897</a> <span class="pill merged">Merged</span> · author <b>kuzmany</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip nudge2">Send a follow-up</span><span class="chip manual">👀 promptless-for-oss is waiting on prithvi2206</span></div>
+          <div class="chips"><span class="chip nudge2">Send a follow-up</span><span class="chip manual">👀 promptless-for-oss is waiting on prithvi2206</span><span class="chip manual">Needs rebase</span></div>
         </div>
         <div class="when"><div class="days serious">Day 9</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:64%"></i></div></div>
       </article>
@@ -565,7 +565,7 @@
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank" class="name">user-documentation #714</a> <span class="desc">Docs for https://github.com/mautic/mautic/pull/16123</span></div>
           <div class="meta">No linked code PR · you reviewed 43 days ago · approved by <b>escopecz</b> · targets <b>7.0</b> (latest is <b>7.2</b>)</div>
-          <div class="chips"><span class="chip manual">No code PR linked — needs a manual look</span><span class="chip manual">👀 you're waiting on rohitpavaskar</span><span class="chip backport">Final review · backport, then merge</span><span class="chip setup">Add needs-backport label</span></div>
+          <div class="chips"><span class="chip manual">No code PR linked — needs a manual look</span><span class="chip manual">👀 you're waiting on rohitpavaskar</span><span class="chip backport">Final review · backport, then merge</span><span class="chip setup">Add needs-backport label</span><span class="chip manual">Needs rebase</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">nobody to remind</div></div>
       </article>
@@ -745,7 +745,7 @@
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank" class="name">user-documentation #709</a> <span class="desc">Add documentation for mautic:campaigns:resume-stuck command</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15310" target="_blank">#15310</a> <span class="pill merged">Merged</span> · author <b>rohitpavaskar</b> · reminder sent, waiting for a reply</div>
-          <div class="chips"><span class="chip setup">Add needs-backport label</span></div>
+          <div class="chips"><span class="chip setup">Add needs-backport label</span><span class="chip manual">Needs rebase</span></div>
         </div>
         <div class="when"><div class="days">Day 5</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:71%"></i></div></div>
       </article>
@@ -932,7 +932,7 @@
     </div>
   </section>
 
-  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Wed, Jul 8, 11:44 PM</footer>
+  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 12:53 AM</footer>
 </div>
 
 <script>
