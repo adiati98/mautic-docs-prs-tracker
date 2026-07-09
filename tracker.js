@@ -1734,6 +1734,9 @@ function generateHTML(prData, { operatorUsername }) {
 		const ra = sortRank(a)
 		const rb = sortRank(b)
 		if (ra !== rb) return ra - rb
+		// Stale tier: newest activity first, longest-quiet last — the
+		// opposite of every other tier, where the most-overdue row leads.
+		if (ra === 100) return (a.daysSinceActivity ?? 0) - (b.daysSinceActivity ?? 0)
 		const da = a.daysSincePing ?? -1
 		const db = b.daysSincePing ?? -1
 		return db - da
