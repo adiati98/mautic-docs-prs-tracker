@@ -2703,11 +2703,12 @@ function generateReminderHTML(groups, { now }) {
   <div class="intro">
     Docs PRs waiting on <b>your</b> review or response to a comment, grouped
     by name — either your linked code PR has merged, or it's a docs PR you
-    opened yourself that's waiting on your reply. Checking a box only saves
-    to <b>your own browser</b>, purely to help you track your own progress —
-    it doesn't change anything on our end, so this list keeps reflecting the
-    real current state either way, and updates automatically as things get
-    resolved.
+    opened yourself that's waiting on your reply. Click your name below to
+    jump straight to your list. Checking a box saves to <b>your own
+    browser</b> only, as a personal checklist of what you've reviewed — it
+    updates automatically as PRs get resolved. To review a PR, open its
+    <b>Files changed</b> tab and click <b>Submit review</b> to approve it or
+    request changes.
   </div>
   <main id="main-content">
 ${tocHtml}
