@@ -194,6 +194,9 @@
   /* Stale overrides whatever severity color would otherwise show - it's a
      different kind of signal ("gone quiet") than urgency. */
   .row[data-stale="1"]      .edge{background:var(--warning)}
+  /* Approved-and-ready-to-merge wins over both severity and staleness - it's
+     the one state that's actually good news. */
+  .row[data-approved="1"]   .edge{background:var(--good)}
 
   .row .title{font-size:14px}
   .row .title .name{font-weight:600}
@@ -397,7 +400,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated">Updated Thu, Jul 9, 9:30 PM</span>
+    <span class="updated">Updated Thu, Jul 9, 10:55 PM</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
@@ -405,14 +408,14 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">36</div>
+      <div class="num">37</div>
       <div><div class="lbl">Need you today</div>
-      <div class="sub"><span class="dot critical"></span>9 overdue · <span class="dot serious"></span>12 follow-up</div></div>
+      <div class="sub"><span class="dot critical"></span>8 overdue · <span class="dot serious"></span>12 follow-up</div></div>
     </button>
     <button class="tile" data-goto="waiting" type="button">
       <div class="num">22</div>
       <div><div class="lbl">Waiting on others or for code PR to merge</div>
-      <div class="sub">next follow-up due in 7 days</div></div>
+      <div class="sub">next follow-up due in 6 days</div></div>
     </button>
     <button class="tile" data-goto="monitoring" type="button">
       <div class="num">0</div>
@@ -422,8 +425,8 @@
   </div>
 
   <div class="filters">
-    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">58</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">16</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">42</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">36</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">9</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">12</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">5</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">10</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">59</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">17</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">42</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">37</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">8</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">12</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">6</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">11</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
   </div>
   <details class="legend">
     <summary><span class="tw">▶</span> New here? How to read this board</summary>
@@ -441,7 +444,7 @@
       <section>
         <h2 class="legend-h">Reading a row</h2>
         <table>
-          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage.</td></tr>
+          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage → green approved/ready to merge.</td></tr>
           <tr><td><span class="pill open">Open</span></td><td>A <b>pill</b> — a fact about the PR: Draft / Open / Merged / Closed.</td></tr>
           <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>chip</b> — an action for you. Colour = task family (below).</td></tr>
         </table>
@@ -452,8 +455,8 @@
         <table>
           <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add pending-pr-merge label (drafts) · Add needs-backport label (older branch)</td></tr>
           <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The nudge ladder — one hue, hotter = more urgent.</td></tr>
-          <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR · Check the author's response.</td></tr>
-          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove pending-pr-merge label.</td></tr>
+          <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR (standalone, awaiting your review) · Check the author's response · Note since approval.</td></tr>
+          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove pending-pr-merge label · Approved by X (and Approved — ready to merge, once it's an operator's own approval on a standalone PR).</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
           <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase.</td></tr>
           <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
@@ -477,7 +480,7 @@
         <h2 class="legend-h">Good to know</h2>
         <table>
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"approved by …" is shown as a fact everywhere. The "Final review, then merge" action only appears once the code PR has merged.</td></tr>
+          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
           <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
           <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
           <tr><td>Labels</td><td><code>pending-pr-merge</code> — removed once the code PR merges. <code>needs-backport</code> — added when a PR targets an older branch than the latest. <code>needs-rebase</code> — surfaced as-is, no clock.</td></tr>
@@ -489,12 +492,21 @@
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">36</span>
+      <h2>Need you today</h2><span class="count">37</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
-      <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/562" target="_blank" class="name">developer-documentation #562</a> <span class="desc">docs: Add default Dashboard screenshot to the DDEV install page</span></div>
+          <div class="meta">No linked code PR</div>
+          <div class="chips"><span class="chip setup">Add milestone</span></div>
+        </div>
+        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/561" target="_blank" class="name">developer-documentation #561</a> <span class="desc">docs: Document ConnectionException for API library transport errors</span> <span class="pill draft">Draft</span></div>
@@ -503,7 +515,7 @@
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/836" target="_blank" class="name">user-documentation #836</a> <span class="desc">docs: Clarify that a Segment Email&#039;s publish up date is optional for scheduled broadcasts</span> <span class="pill draft">Draft</span></div>
@@ -512,7 +524,7 @@
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/779" target="_blank" class="name">user-documentation #779</a> <span class="desc">Document Tag removal confirmation and expandable Tags tile on Contact detail page</span></div>
@@ -521,7 +533,7 @@
         </div>
         <div class="when"><div class="days critical">Day 14</div><div class="sub">since reminder</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank" class="name">user-documentation #770</a> <span class="desc">docs: Document Quick filters dropdown for Reports</span></div>
@@ -530,7 +542,7 @@
         </div>
         <div class="when"><div class="days critical">Day 14</div><div class="sub">since reminder</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/361" target="_blank" class="name">user-documentation #361</a> <span class="desc">Campaign import export user docs</span></div>
@@ -539,7 +551,7 @@
         </div>
         <div class="when"><div class="days critical">Day 27</div><div class="sub">since your review</div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank" class="name">developer-documentation #550</a> <span class="desc">docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</span></div>
@@ -548,7 +560,7 @@
         </div>
         <div class="when"><div class="days serious">Day 13</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:93%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank" class="name">developer-documentation #505</a> <span class="desc">Document CSS and frontend asset build workflow</span></div>
@@ -557,7 +569,7 @@
         </div>
         <div class="when"><div class="days serious">Day 13</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:93%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/796" target="_blank" class="name">user-documentation #796</a> <span class="desc">docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic</span></div>
@@ -566,16 +578,16 @@
         </div>
         <div class="when"><div class="days serious">Day 13</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:93%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank" class="name">user-documentation #782</a> <span class="desc">Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16304" target="_blank">#16304</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip nudge2">Send a follow-up</span></div>
+          <div class="chips"><span class="chip nudge2">Send a follow-up</span><span class="chip finish">Approved by adiati98</span><span class="chip act">Note since approval — take a look</span></div>
         </div>
         <div class="when"><div class="days serious">Day 13</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:93%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank" class="name">user-documentation #750</a> <span class="desc">Document Find and Replace bulk action for Contacts and Companies</span></div>
@@ -584,7 +596,7 @@
         </div>
         <div class="when"><div class="days serious">Day 13</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:93%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/551" target="_blank" class="name">developer-documentation #551</a> <span class="desc">docs: Document entity token formatting with getFormattedTokens() method</span></div>
@@ -593,7 +605,7 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/807" target="_blank" class="name">user-documentation #807</a> <span class="desc">docs: Document Asset Manager image formats and SVG support in GrapesJS Builder</span></div>
@@ -602,7 +614,7 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/805" target="_blank" class="name">user-documentation #805</a> <span class="desc">docs: Document token category prefixes in Email builder</span></div>
@@ -611,7 +623,7 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/803" target="_blank" class="name">user-documentation #803</a> <span class="desc">docs: Document Widget error handling on the Dashboard</span></div>
@@ -620,7 +632,7 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/802" target="_blank" class="name">user-documentation #802</a> <span class="desc">docs: Document webhook process command exit code behavior</span></div>
@@ -629,7 +641,7 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/811" target="_blank" class="name">user-documentation #811</a> <span class="desc">docs: Document A/B testing for Segment Emails</span></div>
@@ -638,7 +650,7 @@
         </div>
         <div class="when"><div class="days serious">Day 10</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:71%"></i></div></div>
       </article>
-      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank" class="name">user-documentation #712</a> <span class="desc">EVERYTHING about UTM tags in Mautic</span></div>
@@ -647,52 +659,52 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since your review · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/800" target="_blank" class="name">user-documentation #800</a> <span class="desc">docs: Document Contact change log CSV export feature</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15994" target="_blank">#15994</a> <span class="pill merged">Merged</span> · author <b>BeniShoga1</b> · approved by <b>escopecz</b> · targets <b>7.1</b> (latest is <b>7.2</b>)</div>
-          <div class="chips"><span class="chip backport">Final review · backport, then merge</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15994" target="_blank">#15994</a> <span class="pill merged">Merged</span> · author <b>BeniShoga1</b> · targets <b>7.1</b> (latest is <b>7.2</b>)</div>
+          <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip backport">Final review · backport, then merge</span></div>
         </div>
         <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/766" target="_blank" class="name">user-documentation #766</a> <span class="desc">Document Prevent action after date Campaign condition</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15832" target="_blank">#15832</a> <span class="pill merged">Merged</span> · author <b>aarohiprasad</b> · approved by <b>escopecz</b></div>
-          <div class="chips"><span class="chip finish">Final review, then merge</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15832" target="_blank">#15832</a> <span class="pill merged">Merged</span> · author <b>aarohiprasad</b></div>
+          <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip finish">Final review, then merge</span></div>
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/835" target="_blank" class="name">user-documentation #835</a> <span class="desc">docs: Document the Projects feature (7.2)</span></div>
-          <div class="meta">No linked code PR · approved by <b>escopecz</b></div>
-          <div class="chips"><span class="chip finish">Final review, then merge</span></div>
+          <div class="meta">No linked code PR</div>
+          <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip finish">Final review, then merge</span></div>
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank" class="name">user-documentation #714</a> <span class="desc">Docs for https://github.com/mautic/mautic/pull/16123</span></div>
-          <div class="meta">No linked code PR · docs author <b>rohitpavaskar</b> · you reviewed 6 days ago · approved by <b>escopecz</b> · targets <b>7.0</b>, milestone <b>Mautic 7.2</b> — wrong branch, not a backport</div>
-          <div class="chips"><span class="chip manual">Needs rebase</span><span class="chip manual">Remind docs PR author — no code PR linked</span><span class="chip manual">👀 adiati98 is waiting on rohitpavaskar</span><span class="chip finish">Final review, then merge</span></div>
+          <div class="meta">No linked code PR · docs author <b>rohitpavaskar</b> · you reviewed 6 days ago · targets <b>7.0</b>, milestone <b>Mautic 7.2</b> — wrong branch, not a backport</div>
+          <div class="chips"><span class="chip manual">Needs rebase</span><span class="chip manual">Remind docs PR author — no code PR linked</span><span class="chip manual">👀 adiati98 is waiting on rohitpavaskar</span><span class="chip finish">Approved by escopecz</span><span class="chip act">Note since approval — take a look</span><span class="chip finish">Final review, then merge</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">remind the docs author</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/752" target="_blank" class="name">user-documentation #752</a> <span class="desc">Document Campaign condition event details in Contact history</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15664" target="_blank">#15664</a> <span class="pill open">Open</span> · author <b>adiux</b> · milestone <b>Mautic 7.2</b> · approved by <b>adiux</b></div>
-          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15664" target="_blank">#15664</a> <span class="pill open">Open</span> · author <b>adiux</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span><span class="chip finish">Approved by adiux</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 30 days ago</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/788" target="_blank" class="name">user-documentation #788</a> <span class="desc">Document the form: contact search filter</span></div>
@@ -701,7 +713,7 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 15 days ago</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/787" target="_blank" class="name">user-documentation #787</a> <span class="desc">Clarify global default Preference Center resolves live at unsubscribe time</span></div>
@@ -710,7 +722,7 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 15 days ago</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/784" target="_blank" class="name">user-documentation #784</a> <span class="desc">Document Support Mautic navigation menu item and support_mautic_enabled option</span></div>
@@ -719,7 +731,7 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 16 days ago</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/812" target="_blank" class="name">user-documentation #812</a> <span class="desc">docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference</span> <span class="pill draft">Draft</span></div>
@@ -728,25 +740,25 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 9 days ago</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/834" target="_blank" class="name">user-documentation #834</a> <span class="desc">docs: Document the Projects feature (7.1)</span></div>
           <div class="meta">No linked code PR · milestone <b>Mautic 7.1</b> · targets <b>7.1</b>, no backport label</div>
-          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip setup">Add needs-backport label</span></div>
+          <div class="chips"><span class="chip act">Review this docs PR</span><span class="chip setup">Add needs-backport label</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened today</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/833" target="_blank" class="name">user-documentation #833</a> <span class="desc">docs: Document the Projects feature (7.0)</span></div>
           <div class="meta">No linked code PR · milestone <b>Mautic 7.0</b> · targets <b>7.0</b>, no backport label</div>
-          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip setup">Add needs-backport label</span></div>
+          <div class="chips"><span class="chip act">Review this docs PR</span><span class="chip setup">Add needs-backport label</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened today</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/832" target="_blank" class="name">user-documentation #832</a> <span class="desc">docs: Document the list-view filter scope dropdown</span> <span class="pill draft">Draft</span></div>
@@ -755,7 +767,7 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 2 days ago</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank" class="name">user-documentation #709</a> <span class="desc">Add documentation for mautic:campaigns:resume-stuck command</span></div>
@@ -764,7 +776,7 @@
         </div>
         <div class="when"><div class="days">Day 6</div><div class="sub">follow up tomorrow</div><div class="meter"><i style="width:86%"></i></div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="1">
+      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="1" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/250" target="_blank" class="name">developer-documentation #250</a> <span class="desc">Navigating UI resources</span></div>
@@ -773,7 +785,7 @@
         </div>
         <div class="when"><div class="days critical">Day 79</div><div class="sub">since your review</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/542" target="_blank" class="name">user-documentation #542</a> <span class="desc">Update Stages.png image</span></div>
@@ -782,16 +794,16 @@
         </div>
         <div class="when"><div class="days critical">Day 175</div><div class="sub">since your review</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="1" data-approved="1">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/138" target="_blank" class="name">user-documentation #138</a> <span class="desc">Add an overview of local.php for mautic 4 documentation</span></div>
-          <div class="meta">No linked code PR · docs author <b>beetofly</b> · no reply since your review 112 days ago</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 112d quiet</span><span class="chip manual">👀 RCheesley is waiting on sdoering</span></div>
+          <div class="meta">No linked code PR</div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 112d quiet</span><span class="chip manual">👀 RCheesley is waiting on sdoering</span><span class="chip finish">Approved by RCheesley — ready to merge</span></div>
         </div>
-        <div class="when"><div class="days critical">Day 112</div><div class="sub">since your review</div></div>
+        <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/341" target="_blank" class="name">user-documentation #341</a> <span class="desc">First attempt to add Doctor-RST</span></div>
@@ -800,7 +812,7 @@
         </div>
         <div class="when"><div class="days critical">Day 113</div><div class="sub">since your review</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/279" target="_blank" class="name">user-documentation #279</a> <span class="desc">add audit log in the list</span></div>
@@ -809,7 +821,7 @@
         </div>
         <div class="when"><div class="days critical">Day 209</div><div class="sub">since your review</div></div>
       </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1">
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/246" target="_blank" class="name">user-documentation #246</a> <span class="desc">Add back the 2-&gt;3 upgrade docs</span></div>
@@ -834,7 +846,7 @@
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16103" target="_blank">#16103</a> <span class="pill merged">Merged</span> · author <b>rohitpavaskar</b> · reminder sent, waiting for a reply</div>
           
         </div>
-        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
+        <div class="when"><div class="days">Day 1</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:14%"></i></div></div>
       </article>
       <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0">
         <div class="edge"></div>
@@ -921,8 +933,8 @@
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/547" target="_blank" class="name">developer-documentation #547</a> <span class="desc">Document uri and linkAttributes keys for menu items</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16337" target="_blank">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · code PR is still open · approved by <b>escopecz</b></div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16337" target="_blank">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · code PR is still open</div>
+          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span><span class="chip finish">Approved by escopecz</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
@@ -1029,7 +1041,7 @@
   </section>
 
   </main>
-  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 9:30 PM</footer>
+  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 10:55 PM</footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>

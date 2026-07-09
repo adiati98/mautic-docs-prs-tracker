@@ -796,15 +796,40 @@ async function main() {
 				r.state === "APPROVED" && !operatorLogins.has(r.user.login.toLowerCase()),
 		)
 		const approvedByNonOperator = nonOperatorApprovals.length > 0
-		// Unique approver logins in order — shown as a fact in any band.
-		const approverLogins = [...new Set(nonOperatorApprovals.map((r) => r.user.login))]
-		// Most recent APPROVED review on the docs PR, by anyone (operator
-		// included). Only read by the reminder report (buildReminderGroups) to
-		// compare against the last ping — whichever happened more recently
-		// decides if the approval or an outstanding comment "wins."
-		const lastApprovalDate = latestDate(
-			docsReviews.filter((r) => r.state === "APPROVED").map((r) => new Date(r.submitted_at)),
+		// Any unrevoked approval that isn't the PR author approving their own
+		// work — GitHub blocks self-approval for everyone except one admin
+		// exception, so in practice this exclusion only ever catches that one
+		// case. Broader than nonOperatorApprovals above: this is what lets an
+		// *operator's* approval count too, which matters for the standalone-PR
+		// "ready" logic below (nonOperatorApprovals stays as-is for the
+		// linked-PR flows that already relied on excluding operators).
+		const qualifyingApprovals = docsReviews.filter(
+			(r) => r.state === "APPROVED" && r.user.login !== pr.user.login,
 		)
+		const hasQualifyingApproval = qualifyingApprovals.length > 0
+		const operatorApproved = qualifyingApprovals.some((r) =>
+			operatorLogins.has(r.user.login.toLowerCase()),
+		)
+		// Unique approver logins in order — shown as a fact ("Approved by X")
+		// in any band, regardless of category.
+		const approverLogins = [...new Set(qualifyingApprovals.map((r) => r.user.login))]
+		// Most recent qualifying approval on the docs PR. Read by the reminder
+		// report (buildReminderGroups) to compare against the last ping —
+		// whichever happened more recently decides if the approval or an
+		// outstanding comment "wins" — and by noteSinceApprovalFlag below, to
+		// catch anything that landed after the fact.
+		const lastApprovalDate = latestDate(qualifyingApprovals.map((r) => new Date(r.submitted_at)))
+		// A comment or a non-approving review after the latest approval — the
+		// approval might not actually be the last word (a late second thought,
+		// a rebase/backport note left alongside it), so it's worth a glance
+		// rather than trusting the approval blindly.
+		const noteSinceApprovalFlag =
+			lastApprovalDate !== null &&
+			[...docsComments, ...docsReviews].some(
+				(e) =>
+					e.state !== "APPROVED" &&
+					new Date(e.submitted_at || e.created_at) > lastApprovalDate,
+			)
 
 		const {
 			lastPingDate,
@@ -839,12 +864,16 @@ async function main() {
 		// §5a — independent action flags.
 		//
 		// The final-review action ("do the review, then merge") is only
-		// offered once the code PR has merged (or when there's no linked code
-		// PR) — while the code PR is still open we don't merge the docs PR, so
-		// a non-operator approval is surfaced as a *fact* (approved by X) on a
-		// waiting row rather than as a merge action.
+		// offered once the code PR has merged — while it's still open we don't
+		// merge the docs PR, so an approval is surfaced as a *fact* (the
+		// "Approved by X" chip) on a waiting row rather than as a merge
+		// action. A standalone PR has no code PR to wait on, so any
+		// qualifying approval — including the operator's own — is enough;
+		// there's no one else left to review it.
 		let removeLabelFlag = codeMerged && hasLabel
-		let finalReviewActionable = approvedByNonOperator && (codeMerged || !appPRNumber)
+		let finalReviewActionable = appPRNumber
+			? approvedByNonOperator && codeMerged
+			: hasQualifyingApproval
 		// Just a label check — no clock, no "since when". You put the label on
 		// (or a bot did); this just makes sure it doesn't go unnoticed.
 		let needsRebaseFlag = hasNeedsRebaseLabel
@@ -865,6 +894,14 @@ async function main() {
 		}
 		const backportModifierActive =
 			finalReviewActionable && olderBranch && !rebaseWinsOverBackport
+		// The operator's own approval settled a standalone PR — nothing left
+		// to review, just merge. Distinct wording from the plain
+		// finalReviewActionable case (where a *non*-operator approved and the
+		// operator's own look is still the thing that's pending). Backport
+		// targeting is a structural concern independent of who approved, so
+		// it still wins over this and keeps its own chip.
+		const standaloneOperatorReady =
+			finalReviewActionable && !appPRNumber && operatorApproved && !backportModifierActive
 
 		// Plain inactivity signal — nothing has happened on either PR (docs
 		// or linked code) for 30+ days. Independent of category, so it can
@@ -893,11 +930,12 @@ async function main() {
 			// — no explicit @-tag is required to start counting, since
 			// there's no merge to defer to instead.
 			//
-			// A non-operator approval settles it the same way it does the
-			// code-author flow — unless it still needs a rebase, since a
-			// wrong branch target is worth flagging regardless of content
-			// approval.
-			if (approvedByNonOperator && !needsRebaseFlag) {
+			// A qualifying approval — operator or not, since for a standalone
+			// PR the operator's own approval is the final review, there's no
+			// one else left to wait on — settles it the same way it does the
+			// code-author flow, unless it still needs a rebase, since a wrong
+			// branch target is worth flagging regardless of content approval.
+			if (hasQualifyingApproval && !needsRebaseFlag) {
 				category = "monitoring"
 			} else if (
 				docsAuthorLastEventDate &&
@@ -1011,8 +1049,11 @@ async function main() {
 			operatorReviewDone,
 			devApproved,
 			approvedByNonOperator,
+			hasQualifyingApproval,
+			operatorApproved,
 			approverLogins,
 			lastApprovalDate,
+			noteSinceApprovalFlag,
 			docsAuthorPingDate,
 			docsAuthorPingActor,
 			pingEverSent,
@@ -1033,6 +1074,7 @@ async function main() {
 			backportLabelFlag,
 			needsRebaseFlag,
 			backportModifierActive,
+			standaloneOperatorReady,
 			rebaseWinsOverBackport,
 			daysSinceActivity,
 			staleFlag,
@@ -1264,13 +1306,8 @@ function metaLine(pr) {
 			break
 	}
 
-	// Approval is a fact worth showing in any band — you always want to know
-	// someone pre-approved, even while the code PR is still open.
-	if (pr.approvedByNonOperator && pr.approverLogins.length > 0) {
-		parts.push(
-			`approved by <b>${pr.approverLogins.map(escapeHtml).join(", ")}</b>`,
-		)
-	}
+	// Approval is now a chip (see approvalChips) — noticeable there in a way
+	// this prose line never was.
 	if (pr.backportModifierActive) {
 		parts.push(
 			`targets <b>${escapeHtml(pr.baseBranch)}</b> (latest is <b>${escapeHtml(pr.latestReleaseBranch || "—")}</b>)`,
@@ -1387,7 +1424,16 @@ function chipsFor(pr) {
 			chips.push({ cls: "act", text: "Check the author’s response" })
 			break
 		case "needs-operator-review":
-			chips.push({ cls: "muted", text: "Review this docs PR" })
+			// A standalone PR (no linked code PR) that's open and not a draft
+			// has nothing else gating it — your review is the entire
+			// blocker, so it reads as an actual action (blue), not the muted
+			// "optional/already-done" gray used when a linked code PR is
+			// still open and there's no rush yet.
+			chips.push(
+				!pr.appPRNumber && !pr.isDraft
+					? { cls: "act", text: "Review this docs PR" }
+					: { cls: "muted", text: "Review this docs PR" },
+			)
 			break
 		case "needs-label-and-milestone":
 			if (!pr.hasLabel) chips.push({ cls: "setup", text: `Add ${PENDING_LABEL} label` })
@@ -1397,11 +1443,11 @@ function chipsFor(pr) {
 			chips.push({ cls: "setup", text: "Add milestone" })
 			break
 		case "blocked-no-code-pr":
-			// A non-operator approval settles it too, same as the code-author
+			// A qualifying approval settles it too, same as the code-author
 			// clock above — unless it still needs a rebase, since the branch
 			// itself being wrong is a reason to keep nagging regardless of
 			// content approval.
-			if (!pr.staleFlag && (!pr.approvedByNonOperator || pr.needsRebaseFlag)) {
+			if (!pr.staleFlag && (!pr.hasQualifyingApproval || pr.needsRebaseFlag)) {
 				chips.push({ cls: "manual", text: "Remind docs PR author — no code PR linked" })
 			}
 			break
@@ -1420,7 +1466,9 @@ function chipsFor(pr) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
 
-	if (pr.finalReviewActionable) {
+	chips.push(...approvalChips(pr))
+
+	if (pr.finalReviewActionable && !pr.standaloneOperatorReady) {
 		chips.push(
 			pr.backportModifierActive
 				? { cls: "backport", text: "Final review · backport, then merge" }
@@ -1434,6 +1482,29 @@ function chipsFor(pr) {
 		chips.push({ cls: "setup", text: `Add ${BACKPORT_LABEL} label` })
 	}
 
+	return chips
+}
+
+// "Approved by X" is a fact worth showing on any row, in any band, the
+// moment a qualifying approval exists — regardless of category. When that
+// approval is the operator's own on a standalone PR, there's nothing left
+// to review, so the two facts (approved, ready) collapse into one chip
+// instead of "Approved by X" plus a separate "Final review, then merge".
+// A comment or review landing after the approval gets its own chip rather
+// than silently trusting the approval as the last word.
+function approvalChips(pr) {
+	const chips = []
+	if (pr.approverLogins.length > 0) {
+		const names = pr.approverLogins.map(escapeHtml).join(", ")
+		chips.push(
+			pr.standaloneOperatorReady
+				? { cls: "finish", text: `Approved by ${names} — ready to merge` }
+				: { cls: "finish", text: `Approved by ${names}` },
+		)
+	}
+	if (pr.noteSinceApprovalFlag) {
+		chips.push({ cls: "act", text: "Note since approval — take a look" })
+	}
 	return chips
 }
 
@@ -1500,6 +1571,7 @@ function waitingChipsFor(pr) {
 	if (pr.reviewPendingFlag) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
+	chips.push(...approvalChips(pr))
 	return chips
 }
 
@@ -1520,7 +1592,7 @@ function renderNeedTodayRow(pr) {
 		.join("")
 	const draftPill = pr.isDraft ? ' <span class="pill draft">Draft</span>' : ""
 	return `
-      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}">
+      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
@@ -1565,7 +1637,7 @@ function renderMonitoringRow(pr) {
 	// waiting on the author for something unrelated (community), still need
 	// a formal review, or just be stale, none of which the day-count above
 	// captures on its own.
-	const overlayChips = [staleChip(pr), remindedOpenChip(pr)]
+	const overlayChips = [staleChip(pr), remindedOpenChip(pr), ...approvalChips(pr)]
 		.filter(Boolean)
 		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
 		.join("")
@@ -2069,6 +2141,9 @@ function generateHTML(prData, { operatorUsername }) {
   /* Stale overrides whatever severity color would otherwise show - it's a
      different kind of signal ("gone quiet") than urgency. */
   .row[data-stale="1"]      .edge{background:var(--warning)}
+  /* Approved-and-ready-to-merge wins over both severity and staleness - it's
+     the one state that's actually good news. */
+  .row[data-approved="1"]   .edge{background:var(--good)}
 
   .row .title{font-size:14px}
   .row .title .name{font-weight:600}
@@ -2312,7 +2387,7 @@ ${filterBar}
       <section>
         <h2 class="legend-h">Reading a row</h2>
         <table>
-          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage.</td></tr>
+          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage → green approved/ready to merge.</td></tr>
           <tr><td><span class="pill open">Open</span></td><td>A <b>pill</b> — a fact about the PR: Draft / Open / Merged / Closed.</td></tr>
           <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>chip</b> — an action for you. Colour = task family (below).</td></tr>
         </table>
@@ -2323,8 +2398,8 @@ ${filterBar}
         <table>
           <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add ${PENDING_LABEL} label (drafts) · Add ${BACKPORT_LABEL} label (older branch)</td></tr>
           <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The nudge ladder — one hue, hotter = more urgent.</td></tr>
-          <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR · Check the author's response.</td></tr>
-          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label.</td></tr>
+          <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR (standalone, awaiting your review) · Check the author's response · Note since approval.</td></tr>
+          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label · Approved by X (and Approved — ready to merge, once it's an operator's own approval on a standalone PR).</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
           <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase.</td></tr>
           <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
@@ -2348,7 +2423,7 @@ ${filterBar}
         <h2 class="legend-h">Good to know</h2>
         <table>
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"approved by …" is shown as a fact everywhere. The "Final review, then merge" action only appears once the code PR has merged.</td></tr>
+          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
           <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
           <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
           <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock.</td></tr>
