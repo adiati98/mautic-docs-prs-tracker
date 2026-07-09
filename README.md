@@ -196,6 +196,11 @@ Need today, Waiting, and Monitoring alike instead of hiding any of them,
 since a stale PR could be sitting quietly in any of the three. Counts update
 as you filter; it's all client-side in the one HTML file.
 
+The three summary tiles at the top are also buttons — click one to jump
+straight to its section (Monitoring auto-expands, since it's collapsed by
+default). A "back to top" button appears in the bottom-right corner once
+you've scrolled past the tiles.
+
 ## Caching
 
 Every run writes `data/pr-cache.json` — **committed, not gitignored**, so a
