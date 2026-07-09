@@ -383,8 +383,14 @@ function computeConversationState({
 	const allComments = [...docsComments, ...codeComments]
 	const allReviews = [...docsReviews, ...codeReviews]
 
+	// Tagged with where each ping actually lives — the reminder report (not
+	// this clock) cares whether the *latest* one was a docs-PR comment from
+	// a human, vs. a code-PR ping or a Promptless relay, which read as "come
+	// review" rather than "someone's waiting on a reply to this."
+	const taggedDocsComments = docsComments.map((c) => ({ ...c, _pingSource: "docs" }))
+	const taggedCodeComments = codeComments.map((c) => ({ ...c, _pingSource: "code" }))
 	const pings = appPRAuthor
-		? allComments.filter(
+		? [...taggedDocsComments, ...taggedCodeComments].filter(
 				(c) => c.user.login !== appPRAuthor && mentions(c.body, appPRAuthor),
 			)
 		: []
@@ -395,6 +401,7 @@ function computeConversationState({
 	)
 	const lastPingDate = lastPing ? new Date(lastPing.created_at) : null
 	const lastPingActor = lastPing ? lastPing.user.login : null
+	const lastPingSource = lastPing ? lastPing._pingSource : null
 	const lastPingByOperator = lastPing
 		? operatorLogins.has(lastPingActor.toLowerCase())
 		: false
@@ -422,9 +429,31 @@ function computeConversationState({
 	return {
 		lastPingDate,
 		lastPingActor,
+		lastPingSource,
 		lastPingByOperator,
 		lastOperatorTouchDate,
 		lastAuthorEventDate,
+	}
+}
+
+// The ping logic above is entirely keyed on the *code* PR's author, so it's
+// always empty for a docs PR with no linked code PR at all — there's no
+// appPRAuthor to tag. This is the equivalent for that case: has anyone
+// tagged the docs PR's own author, on the docs PR itself? Used only by the
+// reminder report's no-linked-code-PR branch (see buildReminderGroups).
+function computeDocsAuthorPing(pingEligibleDocsComments, docsAuthor) {
+	if (!docsAuthor) return { date: null, actor: null }
+	const pings = pingEligibleDocsComments.filter(
+		(c) => c.user.login !== docsAuthor && mentions(c.body, docsAuthor),
+	)
+	const lastPing = pings.reduce(
+		(best, c) =>
+			!best || new Date(c.created_at) > new Date(best.created_at) ? c : best,
+		null,
+	)
+	return {
+		date: lastPing ? new Date(lastPing.created_at) : null,
+		actor: lastPing ? lastPing.user.login : null,
 	}
 }
 
@@ -732,6 +761,13 @@ async function main() {
 			(c) => isHuman(c.user.login) || c.user.login === PROMPTLESS,
 		)
 
+		// Only meaningful (and only computed) for docs PRs with no linked code
+		// PR — see computeDocsAuthorPing above.
+		const { date: docsAuthorPingDate, actor: docsAuthorPingActor } = computeDocsAuthorPing(
+			pingEligibleDocsComments,
+			pr.user.login,
+		)
+
 		const operatorReviewDate = computeOperatorReviewDate(
 			docsReviews,
 			docsComments,
@@ -751,10 +787,18 @@ async function main() {
 		const approvedByNonOperator = nonOperatorApprovals.length > 0
 		// Unique approver logins in order — shown as a fact in any band.
 		const approverLogins = [...new Set(nonOperatorApprovals.map((r) => r.user.login))]
+		// Most recent APPROVED review on the docs PR, by anyone (operator
+		// included). Only read by the reminder report (buildReminderGroups) to
+		// compare against the last ping — whichever happened more recently
+		// decides if the approval or an outstanding comment "wins."
+		const lastApprovalDate = latestDate(
+			docsReviews.filter((r) => r.state === "APPROVED").map((r) => new Date(r.submitted_at)),
+		)
 
 		const {
 			lastPingDate,
 			lastPingActor,
+			lastPingSource,
 			lastPingByOperator,
 			lastOperatorTouchDate,
 			lastAuthorEventDate,
@@ -921,9 +965,13 @@ async function main() {
 			devApproved,
 			approvedByNonOperator,
 			approverLogins,
+			lastApprovalDate,
+			docsAuthorPingDate,
+			docsAuthorPingActor,
 			pingEverSent,
 			lastPingDate,
 			lastPingActor,
+			lastPingSource,
 			lastPingByOperator,
 			daysSincePing,
 			lastOperatorTouchDate,
@@ -959,6 +1007,9 @@ async function main() {
 
 	generateHTML(prData, { operatorUsername: authenticatedUser })
 	console.log("📄 Report saved to: tracker-report.html")
+
+	generateReminderHTML(buildReminderGroups(prData), { now: new Date() })
+	console.log("📄 Reminders saved to: tracker-reminders.html")
 	console.log("Open it in your browser to view the dashboard\n")
 }
 
@@ -1460,6 +1511,120 @@ const EMPTY_LINES = [
 	"The review queue is empty. This is not a drill.",
 ]
 
+// ---------------------------------------------------------------------------
+// Reminder report (tracker-reminders.html) — a separate, code-PR-author-
+// facing page grouping "things waiting on you" per author, meant to be
+// shared directly with them.
+// ---------------------------------------------------------------------------
+
+// Two shapes of "the ball is in a human's court," both covered by this
+// report:
+//  - A linked code PR that's merged, still in the post-merge remind/
+//    follow-up/escalate chain — remind its author. Once *they've* replied
+//    (needs-check-author-response, monitoring) it's someone else's turn.
+//  - No linked code PR at all (blocked-no-code-pr) — a standalone docs
+//    contribution where you've already reviewed/commented. Remind the docs
+//    PR's own author instead, but only if someone's actually tagged them —
+//    a PR they've simply gone quiet on (nobody currently asking them
+//    anything) isn't their turn, it's just unattended.
+const REMINDER_ELIGIBLE_CATEGORIES = new Set([
+	"needs-remind-code-author",
+	"waiting-code-author-response",
+	"needs-followup",
+	"needs-escalate-core-team",
+])
+
+// Whether there's a genuine, still-live reason to ping the code author: a
+// human (not Promptless) tagged them directly on the docs PR, and — this is
+// the part that matters — that tag is *more recent than the last approval*
+// (or there's no approval at all yet). An approval doesn't retroactively
+// erase an earlier tag that's still unanswered, but it does settle things
+// once nothing's tagged them since. Whichever happened last wins.
+function hasOutstandingDocsPing(pr) {
+	return (
+		pr.pingEverSent &&
+		pr.lastPingSource === "docs" &&
+		pr.lastPingActor !== PROMPTLESS &&
+		(!pr.lastApprovalDate || pr.lastPingDate > pr.lastApprovalDate)
+	)
+}
+
+// Default is "Need review". That flips to "Response to comment from X" only
+// when hasOutstandingDocsPing says there's a live, unanswered tag; anything
+// else (a code-PR-side tag, a Promptless relay, or a tag that's older than
+// the latest approval) reads as "come look," not "reply to this."
+function reminderMark(pr) {
+	if (hasOutstandingDocsPing(pr)) {
+		return { kind: "respond", who: pr.lastPingActor, sortDate: pr.lastPingDate }
+	}
+	return {
+		kind: "review",
+		sortDate: pr.pingEverSent ? pr.lastPingDate : pr.codeMergedDate || pr.operatorReviewDate,
+	}
+}
+
+// The no-linked-code-PR branch's equivalent of hasOutstandingDocsPing,
+// using docsAuthorPingDate/Actor instead. There's no "Need review" default
+// here, unlike the code-author branch — a merged code PR is its own
+// trigger to come review the docs, but a standalone docs PR has no such
+// automatic moment, so this branch only ever includes a PR when someone's
+// actually tagged its author and that tag is still live.
+function hasOutstandingDocsAuthorPing(pr) {
+	return (
+		pr.docsAuthorPingDate !== null &&
+		pr.docsAuthorPingActor !== PROMPTLESS &&
+		(!pr.lastApprovalDate || pr.docsAuthorPingDate > pr.lastApprovalDate)
+	)
+}
+
+// Grouped by whoever needs to act (never a bot — Promptless included),
+// sorted alphabetically so the page reads like a directory; each person's
+// own items are oldest-first, since that's the most overdue.
+function buildReminderGroups(prData) {
+	const groups = new Map()
+	for (const pr of prData) {
+		// A stale PR (30+ days of no activity anywhere) is a call for you or
+		// the team to make, not something to push onto an external
+		// contributor automatically.
+		if (pr.staleFlag) continue
+
+		let remindLogin
+		let mark
+		if (pr.appPRNumber && pr.appPRAuthor) {
+			if (!pr.codeMerged) continue
+			if (!REMINDER_ELIGIBLE_CATEGORIES.has(pr.category)) continue
+			// Approved, with nothing tagging the code author since — the docs
+			// PR is essentially ready, nothing left to ask them for. If a tag
+			// *did* land after the approval, hasOutstandingDocsPing keeps it
+			// in (via the "respond" mark) instead of excluding it here.
+			if (pr.lastApprovalDate && !hasOutstandingDocsPing(pr)) continue
+			remindLogin = pr.appPRAuthor
+			mark = reminderMark(pr)
+		} else {
+			if (pr.category !== "blocked-no-code-pr") continue
+			if (!hasOutstandingDocsAuthorPing(pr)) continue
+			remindLogin = pr.docsAuthor
+			mark = {
+				kind: "respond",
+				who: pr.docsAuthorPingActor,
+				sortDate: pr.docsAuthorPingDate,
+			}
+		}
+		if (!remindLogin || BOTS.includes(remindLogin)) continue
+
+		if (!groups.has(remindLogin)) groups.set(remindLogin, [])
+		groups.get(remindLogin).push({ pr, mark })
+	}
+	return [...groups.keys()].sort((a, b) => a.localeCompare(b)).map((author) => {
+		const items = groups.get(author).sort((a, b) => {
+			const da = a.mark.sortDate ? a.mark.sortDate.getTime() : 0
+			const db = b.mark.sortDate ? b.mark.sortDate.getTime() : 0
+			return da - db
+		})
+		return { author, items }
+	})
+}
+
 function generateHTML(prData, { operatorUsername }) {
 	const needToday = prData.filter(isNeedTodayRow)
 	const waiting = prData.filter(
@@ -1682,6 +1847,11 @@ function generateHTML(prData, { operatorUsername }) {
     border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
     border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
   }
+  .nav-link{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
+  }
+  .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
 
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
   .tile{
@@ -1978,6 +2148,7 @@ function generateHTML(prData, { operatorUsername }) {
   <div class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated">Updated ${formatUpdated(now)}</span>
+    <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
 
@@ -2177,6 +2348,284 @@ ${monitoringSection}
 </html>`
 
 	fs.writeFileSync("tracker-report.html", html)
+}
+
+function renderAuthorGroup(group) {
+	const anchor = group.author.toLowerCase()
+	const rows = group.items
+		.map(({ pr, mark }) => {
+			const key = cacheKey(pr.sourceRepo, pr.number)
+			const markHtml =
+				mark.kind === "review"
+					? `<span class="mark review">Need review</span>`
+					: `<span class="mark respond">Response to comment from ${escapeHtml(mark.who)}</span>`
+			const codePRHtml = pr.appPRNumber
+				? `<a href="${pr.appPRUrl}" target="_blank">mautic/mautic #${pr.appPRNumber}</a>`
+				: `<span class="none">No linked code PR</span>`
+			return `
+        <tr data-key="${escapeHtml(key)}">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
+          <td>${codePRHtml}</td>
+          <td>${markHtml}</td>
+        </tr>`
+		})
+		.join("")
+	return `
+  <section class="author-group" id="author-${escapeHtml(anchor)}">
+    <div class="author-head">
+      <h2><a href="https://github.com/${escapeHtml(group.author)}" target="_blank">@${escapeHtml(group.author)}</a></h2>
+      <span class="author-progress">0/${group.items.length} checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </section>`
+}
+
+// A separate, self-contained page (mirrors generateHTML's structure but not
+// its markup) meant to be shared directly with code PR authors — a plain
+// per-person checklist of docs PRs waiting on them, with no internal
+// severity/escalation framing.
+function generateReminderHTML(groups, { now }) {
+	const totalItems = groups.reduce((sum, g) => sum + g.items.length, 0)
+	const tocHtml =
+		groups.length > 1
+			? `
+  <div class="toc">${groups
+		.map(
+			(g) =>
+				`<a href="#author-${escapeHtml(g.author.toLowerCase())}">@${escapeHtml(g.author)} <span class="tc">${g.items.length}</span></a>`,
+		)
+		.join("")}</div>`
+			: ""
+	const bodyHtml =
+		groups.length === 0
+			? `<div class="empty">Nothing to remind anyone about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
+			: groups.map(renderAuthorGroup).join("")
+
+	const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs PR Review Reminders</title>
+<style>
+  :root{
+    --page:#f9f9f7;
+    --surface:#fcfcfb;
+    --ink:#0b0b0b;
+    --ink-2:#52514e;
+    --ink-3:#898781;
+    --line:#e1e0d9;
+    --ring:rgba(11,11,11,.10);
+    --accent:#2a78d6;
+    --shadow:0 1px 2px rgba(11,11,11,.05);
+    --manual:#c2255c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+      --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+      --accent:#3987e5; --shadow:none; --manual:#e57e9f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+    --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+    --accent:#3987e5; --shadow:none; --manual:#e57e9f;
+  }
+  :root[data-theme="light"]{
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+    --ink-3:#898781; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --accent:#2a78d6; --shadow:0 1px 2px rgba(11,11,11,.05); --manual:#c2255c;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page); color:var(--ink);
+    font-size:14px; line-height:1.45;
+    padding:24px 16px 48px;
+  }
+  .wrap{max-width:820px;margin:0 auto}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  b{font-weight:600}
+
+  .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .theme-btn{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
+  }
+  .nav-link{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
+  }
+  .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
+  .intro{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:14px 16px;margin:16px 0 24px;font-size:13px;color:var(--ink-2);box-shadow:var(--shadow);
+  }
+  .intro b{color:var(--ink)}
+
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+  .toc a{
+    display:inline-flex;align-items:center;gap:5px;
+    border:1px solid var(--ring);background:var(--surface);border-radius:999px;
+    padding:3px 10px 3px 12px;font-size:12px;color:var(--ink-2);text-decoration:none;
+  }
+  .toc a:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .toc .tc{
+    background:color-mix(in srgb, var(--ink) 8%, var(--surface));border-radius:999px;
+    padding:0 6px;font-weight:600;color:var(--ink-2);
+  }
+
+  .author-group{margin-bottom:28px}
+  .author-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+  .author-head h2{font-size:16px;font-weight:650}
+  .author-progress{font-size:12px;color:var(--ink-3)}
+
+  table{
+    width:100%;border-collapse:collapse;background:var(--surface);
+    border:1px solid var(--ring);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);
+  }
+  th,td{padding:8px 12px;text-align:left;font-size:13px;border-top:1px solid var(--line)}
+  th{
+    background:color-mix(in srgb, var(--ink) 3%, var(--surface));font-size:11px;
+    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);font-weight:600;border-top:none;
+  }
+  tbody tr:first-child td{border-top:none}
+  td.chk{width:36px;text-align:center}
+  tr.checked td{color:var(--ink-3);text-decoration:line-through}
+  tr.checked td.chk{text-decoration:none}
+  input[type=checkbox]{width:16px;height:16px;cursor:pointer}
+
+  .mark{display:inline-flex;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+  .mark.review{
+    background:color-mix(in srgb, var(--accent) 11%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 78%, var(--ink));
+  }
+  .mark.respond{
+    background:color-mix(in srgb, var(--manual) 10%, var(--surface));
+    color:color-mix(in srgb, var(--manual) 72%, var(--ink));
+  }
+  .none{color:var(--ink-3)}
+
+  .empty{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:40px 24px;text-align:center;box-shadow:var(--shadow);color:var(--ink-2);
+  }
+
+  .back-to-top{
+    position:fixed;bottom:22px;right:22px;z-index:20;
+    width:42px;height:42px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--ring);box-shadow:var(--shadow);
+    color:var(--ink-2);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .15s,transform .15s,visibility .15s,border-color .15s;
+  }
+  .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
+  footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center}
+
+  @media (max-width:640px){
+    th:nth-child(3),td:nth-child(3){display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>Docs PR Review Reminders</h1>
+    <span class="updated">Updated ${formatUpdated(now)}</span>
+    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
+    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+  </div>
+
+  <div class="intro">
+    Docs PRs waiting on <b>your</b> review or response to a comment, grouped
+    by name — either your linked code PR has merged, or it's a docs PR you
+    opened yourself that's waiting on your reply. Checking a box only saves
+    to <b>your own browser</b>, purely to help you track your own progress —
+    it doesn't change anything on our end, so this list keeps reflecting the
+    real current state either way, and updates automatically as things get
+    resolved.
+  </div>
+${tocHtml}
+${bodyHtml}
+  <footer>Generated by <code>node tracker.js</code> · ${formatUpdated(now)} · ${totalItems} PR${totalItems === 1 ? "" : "s"} across ${groups.length} author${groups.length === 1 ? "" : "s"}</footer>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
+<script>
+  function toggleTheme(){
+    const r = document.documentElement;
+    const cur = r.getAttribute('data-theme');
+    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  }
+
+  // ---- checklist (saved to this browser only, via localStorage) ----
+  (function(){
+    var STORE_KEY = 'docsReminderChecklist';
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { state = {}; }
+
+    function updateProgress(group){
+      if (!group) return;
+      var total = group.querySelectorAll('tr[data-key]').length;
+      var done = group.querySelectorAll('tr[data-key].checked').length;
+      var badge = group.querySelector('.author-progress');
+      if (badge) badge.textContent = done + '/' + total + ' checked';
+    }
+
+    var validKeys = {};
+    document.querySelectorAll('tr[data-key]').forEach(function(row){
+      var key = row.getAttribute('data-key');
+      validKeys[key] = true;
+      var cb = row.querySelector('input[type=checkbox]');
+      if (state[key]) { cb.checked = true; row.classList.add('checked'); }
+      cb.addEventListener('change', function(){
+        if (cb.checked) state[key] = true; else delete state[key];
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        row.classList.toggle('checked', cb.checked);
+        updateProgress(row.closest('.author-group'));
+      });
+    });
+    // Drop saved keys for items no longer listed (already resolved) so
+    // localStorage doesn't grow forever with stale entries.
+    var changed = false;
+    Object.keys(state).forEach(function(k){
+      if (!validKeys[k]) { delete state[k]; changed = true; }
+    });
+    if (changed) localStorage.setItem(STORE_KEY, JSON.stringify(state));
+
+    document.querySelectorAll('.author-group').forEach(updateProgress);
+  })();
+
+  // ---- back to top ----
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', function(){
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
+</body>
+</html>`
+
+	fs.writeFileSync("tracker-reminders.html", html)
 }
 
 module.exports = { main }

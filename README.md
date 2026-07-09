@@ -185,6 +185,35 @@ Reviewing a docs PR is optional while its code PR is open (it sits quietly
 in triage), but becomes **mandatory and prominent** — bumped to orange — the
 moment the code PR merges.
 
+## Author reminder page
+
+`tracker.js` also writes `tracker-reminders.html` — a second, separate page
+meant to be **shared directly with code PR authors**, not just used by you.
+Linked from the main dashboard's header (📋 Author reminders) and vice versa.
+
+It lists every docs PR whose linked code PR has **merged** and where the
+ball is genuinely in the code author's court — grouped into one table per
+author (bots, including Promptless, are never a "person" here). Each row
+gets one of two marks:
+
+- **Need review** — nobody's tagged them about this docs PR yet (or the
+  thread went quiet after they last replied).
+- **Response to comment from X** — X (you, a teammate, or Promptless) tagged
+  them and they haven't replied since.
+
+This deliberately drops the internal follow-up/escalate urgency language —
+the escalation clock still runs the same underneath (see above), but this
+page exists to remind the author, never to tell them they're about to be
+escalated to the core team.
+
+Each row has a checkbox. Checking it off is saved to **that visitor's own
+browser only** (`localStorage`) — it doesn't touch the underlying data or
+notify anyone. That's a deliberate tradeoff: it's not synced across devices
+and clearing browser data resets it, but it needs no backend or login for a
+static, freely-shared page, and the list itself always reflects the real
+current state regardless of what's checked — a PR drops off automatically
+once it's actually been handled, whether or not anyone ticked the box.
+
 ## Filtering
 
 The report has two tab strips at the top: filter by **repo** and by
@@ -230,8 +259,11 @@ or set `TRACKER_NO_CACHE=1`.
 ## Automation (GitHub Actions + Pages)
 
 `.github/workflows/update-tracker.yml` runs the tracker on a schedule,
-commits the updated report + cache back to the repo, and publishes
-`tracker-report.html` to GitHub Pages. Two schedules:
+commits the updated report + cache back to the repo, and publishes both
+`tracker-report.html` (as the Pages site's `index.html`) and
+`tracker-reminders.html` to GitHub Pages, each also kept under their own
+filename in the deployment so the pages' cross-links to each other work the
+same whether you're viewing them locally or on Pages. Two schedules:
 
 - **Every hour, 8am–8pm UK time, Mon–Fri** — incremental (`node tracker.js`,
   cache-assisted). Anchored to GMT; GitHub Actions cron has no DST support,

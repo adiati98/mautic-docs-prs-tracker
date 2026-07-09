@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs PR Review Reminders</title>
+<style>
+  :root{
+    --page:#f9f9f7;
+    --surface:#fcfcfb;
+    --ink:#0b0b0b;
+    --ink-2:#52514e;
+    --ink-3:#898781;
+    --line:#e1e0d9;
+    --ring:rgba(11,11,11,.10);
+    --accent:#2a78d6;
+    --shadow:0 1px 2px rgba(11,11,11,.05);
+    --manual:#c2255c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+      --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+      --accent:#3987e5; --shadow:none; --manual:#e57e9f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+    --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+    --accent:#3987e5; --shadow:none; --manual:#e57e9f;
+  }
+  :root[data-theme="light"]{
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+    --ink-3:#898781; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --accent:#2a78d6; --shadow:0 1px 2px rgba(11,11,11,.05); --manual:#c2255c;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page); color:var(--ink);
+    font-size:14px; line-height:1.45;
+    padding:24px 16px 48px;
+  }
+  .wrap{max-width:820px;margin:0 auto}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  b{font-weight:600}
+
+  .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .theme-btn{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
+  }
+  .nav-link{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
+  }
+  .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
+  .intro{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:14px 16px;margin:16px 0 24px;font-size:13px;color:var(--ink-2);box-shadow:var(--shadow);
+  }
+  .intro b{color:var(--ink)}
+
+  .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+  .toc a{
+    display:inline-flex;align-items:center;gap:5px;
+    border:1px solid var(--ring);background:var(--surface);border-radius:999px;
+    padding:3px 10px 3px 12px;font-size:12px;color:var(--ink-2);text-decoration:none;
+  }
+  .toc a:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .toc .tc{
+    background:color-mix(in srgb, var(--ink) 8%, var(--surface));border-radius:999px;
+    padding:0 6px;font-weight:600;color:var(--ink-2);
+  }
+
+  .author-group{margin-bottom:28px}
+  .author-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+  .author-head h2{font-size:16px;font-weight:650}
+  .author-progress{font-size:12px;color:var(--ink-3)}
+
+  table{
+    width:100%;border-collapse:collapse;background:var(--surface);
+    border:1px solid var(--ring);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);
+  }
+  th,td{padding:8px 12px;text-align:left;font-size:13px;border-top:1px solid var(--line)}
+  th{
+    background:color-mix(in srgb, var(--ink) 3%, var(--surface));font-size:11px;
+    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);font-weight:600;border-top:none;
+  }
+  tbody tr:first-child td{border-top:none}
+  td.chk{width:36px;text-align:center}
+  tr.checked td{color:var(--ink-3);text-decoration:line-through}
+  tr.checked td.chk{text-decoration:none}
+  input[type=checkbox]{width:16px;height:16px;cursor:pointer}
+
+  .mark{display:inline-flex;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+  .mark.review{
+    background:color-mix(in srgb, var(--accent) 11%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 78%, var(--ink));
+  }
+  .mark.respond{
+    background:color-mix(in srgb, var(--manual) 10%, var(--surface));
+    color:color-mix(in srgb, var(--manual) 72%, var(--ink));
+  }
+  .none{color:var(--ink-3)}
+
+  .empty{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:40px 24px;text-align:center;box-shadow:var(--shadow);color:var(--ink-2);
+  }
+
+  .back-to-top{
+    position:fixed;bottom:22px;right:22px;z-index:20;
+    width:42px;height:42px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--ring);box-shadow:var(--shadow);
+    color:var(--ink-2);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .15s,transform .15s,visibility .15s,border-color .15s;
+  }
+  .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
+  footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center}
+
+  @media (max-width:640px){
+    th:nth-child(3),td:nth-child(3){display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>Docs PR Review Reminders</h1>
+    <span class="updated">Updated Thu, Jul 9, 6:53 PM</span>
+    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
+    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+  </div>
+
+  <div class="intro">
+    Docs PRs waiting on <b>your</b> review or response to a comment, grouped
+    by name — either your linked code PR has merged, or it's a docs PR you
+    opened yourself that's waiting on your reply. Checking a box only saves
+    to <b>your own browser</b>, purely to help you track your own progress —
+    it doesn't change anything on our end, so this list keeps reflecting the
+    real current state either way, and updates automatically as things get
+    resolved.
+  </div>
+
+  <div class="toc"><a href="#author-andersonjeccel">@andersonjeccel <span class="tc">6</span></a><a href="#author-kuzmany">@kuzmany <span class="tc">3</span></a><a href="#author-patrykgruszka">@patrykgruszka <span class="tc">2</span></a><a href="#author-rohitpavaskar">@rohitpavaskar <span class="tc">3</span></a><a href="#author-shinde-rahul">@shinde-rahul <span class="tc">2</span></a><a href="#author-theyoungrossco">@theyoungrossco <span class="tc">2</span></a></div>
+
+  <section class="author-group" id="author-andersonjeccel">
+    <div class="author-head">
+      <h2><a href="https://github.com/andersonjeccel" target="_blank">@andersonjeccel</a></h2>
+      <span class="author-progress">0/6 checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/user-documentation#770">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank">user-documentation #770</a> docs: Document Quick filters dropdown for Reports</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr>
+        <tr data-key="mautic/developer-documentation-new#505">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#782">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank">user-documentation #782</a> Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16304" target="_blank">mautic/mautic #16304</a></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#750">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#712">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank">user-documentation #712</a> EVERYTHING about UTM tags in Mautic</td>
+          <td><span class="none">No linked code PR</span></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#774">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank">user-documentation #774</a> Fix contradictory note about duplicate Stage weights</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15404" target="_blank">mautic/mautic #15404</a></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-kuzmany">
+    <div class="author-head">
+      <h2><a href="https://github.com/kuzmany" target="_blank">@kuzmany</a></h2>
+      <span class="author-progress">0/3 checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/developer-documentation-new#550">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank">developer-documentation #550</a> docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#796">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/796" target="_blank">user-documentation #796</a> docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#811">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/811" target="_blank">user-documentation #811</a> docs: Document A/B testing for Segment Emails</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15897" target="_blank">mautic/mautic #15897</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-patrykgruszka">
+    <div class="author-head">
+      <h2><a href="https://github.com/patrykgruszka" target="_blank">@patrykgruszka</a></h2>
+      <span class="author-progress">0/2 checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/developer-documentation-new#551">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/developer-documentation-new/pull/551" target="_blank">developer-documentation #551</a> docs: Document entity token formatting with getFormattedTokens() method</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#805">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/805" target="_blank">user-documentation #805</a> docs: Document token category prefixes in Email builder</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-rohitpavaskar">
+    <div class="author-head">
+      <h2><a href="https://github.com/rohitpavaskar" target="_blank">@rohitpavaskar</a></h2>
+      <span class="author-progress">0/3 checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/user-documentation#709">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank">user-documentation #709</a> Add documentation for mautic:campaigns:resume-stuck command</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15310" target="_blank">mautic/mautic #15310</a></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#714">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank">user-documentation #714</a> Docs for https://github.com/mautic/mautic/pull/16123</td>
+          <td><span class="none">No linked code PR</span></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#783">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/783" target="_blank">user-documentation #783</a> Document Campaign event ID display in the Campaign Builder</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16103" target="_blank">mautic/mautic #16103</a></td>
+          <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-shinde-rahul">
+    <div class="author-head">
+      <h2><a href="https://github.com/shinde-rahul" target="_blank">@shinde-rahul</a></h2>
+      <span class="author-progress">0/2 checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/user-documentation#779">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/779" target="_blank">user-documentation #779</a> Document Tag removal confirmation and expandable Tags tile on Contact detail page</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15845" target="_blank">mautic/mautic #15845</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#802">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/802" target="_blank">user-documentation #802</a> docs: Document webhook process command exit code behavior</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15135" target="_blank">mautic/mautic #15135</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-theyoungrossco">
+    <div class="author-head">
+      <h2><a href="https://github.com/theyoungrossco" target="_blank">@theyoungrossco</a></h2>
+      <span class="author-progress">0/2 checked</span>
+    </div>
+    <table>
+      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/user-documentation#803">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/803" target="_blank">user-documentation #803</a> docs: Document Widget error handling on the Dashboard</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15989" target="_blank">mautic/mautic #15989</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#807">
+          <td class="chk"><input type="checkbox"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/807" target="_blank">user-documentation #807</a> docs: Document Asset Manager image formats and SVG support in GrapesJS Builder</td>
+          <td><a href="https://github.com/mautic/mautic/pull/15954" target="_blank">mautic/mautic #15954</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <footer>Generated by <code>node tracker.js</code> · Thu, Jul 9, 6:53 PM · 18 PRs across 6 authors</footer>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
+<script>
+  function toggleTheme(){
+    const r = document.documentElement;
+    const cur = r.getAttribute('data-theme');
+    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  }
+
+  // ---- checklist (saved to this browser only, via localStorage) ----
+  (function(){
+    var STORE_KEY = 'docsReminderChecklist';
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { state = {}; }
+
+    function updateProgress(group){
+      if (!group) return;
+      var total = group.querySelectorAll('tr[data-key]').length;
+      var done = group.querySelectorAll('tr[data-key].checked').length;
+      var badge = group.querySelector('.author-progress');
+      if (badge) badge.textContent = done + '/' + total + ' checked';
+    }
+
+    var validKeys = {};
+    document.querySelectorAll('tr[data-key]').forEach(function(row){
+      var key = row.getAttribute('data-key');
+      validKeys[key] = true;
+      var cb = row.querySelector('input[type=checkbox]');
+      if (state[key]) { cb.checked = true; row.classList.add('checked'); }
+      cb.addEventListener('change', function(){
+        if (cb.checked) state[key] = true; else delete state[key];
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        row.classList.toggle('checked', cb.checked);
+        updateProgress(row.closest('.author-group'));
+      });
+    });
+    // Drop saved keys for items no longer listed (already resolved) so
+    // localStorage doesn't grow forever with stale entries.
+    var changed = false;
+    Object.keys(state).forEach(function(k){
+      if (!validKeys[k]) { delete state[k]; changed = true; }
+    });
+    if (changed) localStorage.setItem(STORE_KEY, JSON.stringify(state));
+
+    document.querySelectorAll('.author-group').forEach(updateProgress);
+  })();
+
+  // ---- back to top ----
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', function(){
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+</script>
+</body>
+</html>
