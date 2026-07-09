@@ -484,11 +484,25 @@ const REMINDER_SHOWN_INLINE = new Set([
 // from the single most recent qualifying docs-PR comment that nobody has
 // answered — someone waiting on you, on a third party (including promptless
 // chasing a reviewer), or an untagged comment you must triage.
-function computeCommunityThread({ rawDocsComments, rawDocsReviews, operatorLogins, appPRAuthor }) {
+function computeCommunityThread({
+	rawDocsComments,
+	rawDocsReviews,
+	operatorLogins,
+	appPRAuthor,
+	lastApprovalDate,
+}) {
 	const none = { lit: false }
-	const comments = rawDocsComments.filter((c) => !IGNORED_BOTS.includes(c.user.login))
+	// Once the PR is approved, whatever was said before that is settled
+	// business — only what's happened *since* is still live. Without this, an
+	// old tag from before the approval keeps reading as an outstanding thread
+	// even after the approval has moved things on.
+	let comments = rawDocsComments.filter((c) => !IGNORED_BOTS.includes(c.user.login))
+	let reviews = rawDocsReviews.filter((r) => !IGNORED_BOTS.includes(r.user.login))
+	if (lastApprovalDate) {
+		comments = comments.filter((c) => new Date(c.created_at) > lastApprovalDate)
+		reviews = reviews.filter((r) => new Date(r.submitted_at) > lastApprovalDate)
+	}
 	if (comments.length === 0) return none
-	const reviews = rawDocsReviews.filter((r) => !IGNORED_BOTS.includes(r.user.login))
 
 	// Independent check: the most recent tag of the code PR author on the
 	// docs PR, and whether they've replied since — checked on its own, not
@@ -859,6 +873,7 @@ async function main() {
 			rawDocsReviews,
 			operatorLogins,
 			appPRAuthor,
+			lastApprovalDate,
 		})
 
 		// §5a — independent action flags.
@@ -2072,6 +2087,9 @@ function generateHTML(prData, { operatorUsername }) {
   .dot.critical{background:var(--critical)}
   .dot.serious{background:var(--serious)}
   .dot.dismiss{background:var(--dismiss)}
+  .dot.act{background:var(--accent)}
+  .dot.triage{background:var(--ink-3)}
+  .dot.stale{background:var(--warning)}
 
   .legend{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -2376,7 +2394,7 @@ ${filterBar}
     <div class="legend-body">
 
       <section>
-        <h2 class="legend-h">The three bands — whose turn is it?</h2>
+        <h2 class="legend-h">1. The three bands — whose turn is it?</h2>
         <table>
           <tr><td><b>Need you today</b></td><td>Actions only you can take.</td></tr>
           <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR still needs to merge (no clock yet), or a reminder's out and the clock is running.</td></tr>
@@ -2385,7 +2403,23 @@ ${filterBar}
       </section>
 
       <section>
-        <h2 class="legend-h">Reading a row</h2>
+        <h2 class="legend-h">2. Filters — narrowing what you see</h2>
+        <p class="legend-note">Both filter bars live at the top of the page, above the bands.</p>
+        <table>
+          <tr><td><b>Repo</b></td><td>Switches the whole board to one repo. Counts on each tab are totals across all three bands, not just Need-today.</td></tr>
+          <tr><td><b>Priority</b></td><td>Narrows the <b>Need-today</b> band only — picking one hides Waiting and Monitoring entirely, since priority is a Need-today concept. Counts follow whichever repo tab is selected. The one exception is <b>Stale</b> (below), which spans every band, so picking it filters within all three instead of hiding any.</td></tr>
+        </table>
+        <table>
+          <tr><td><span class="dot critical"></span><b>Critical</b></td><td>You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate to the core team.</td></tr>
+          <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's directly waiting on an operator's reply — send a follow-up.</td></tr>
+          <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs you specifically, right now: check the author's response, remind the code author, review a standalone PR, or do a final review on one that's approved and ready.</td></tr>
+          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Setup or a first pass: add a label/milestone, or review a PR that's still waiting on its linked code PR to merge.</td></tr>
+          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on either PR for 30+ days, regardless of what the row would otherwise be — pulled out separately, across all three bands.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="legend-h">3. Reading a row</h2>
         <table>
           <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage → green approved/ready to merge.</td></tr>
           <tr><td><span class="pill open">Open</span></td><td>A <b>pill</b> — a fact about the PR: Draft / Open / Merged / Closed.</td></tr>
@@ -2394,7 +2428,7 @@ ${filterBar}
       </section>
 
       <section>
-        <h2 class="legend-h">Colour key — same kind of task, same colour</h2>
+        <h2 class="legend-h">4. Colour key — same kind of task, same colour</h2>
         <table>
           <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add ${PENDING_LABEL} label (drafts) · Add ${BACKPORT_LABEL} label (older branch)</td></tr>
           <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The nudge ladder — one hue, hotter = more urgent.</td></tr>
@@ -2409,7 +2443,15 @@ ${filterBar}
       </section>
 
       <section>
-        <h2 class="legend-h">The escalation clock</h2>
+        <h2 class="legend-h">5. Live threads &amp; approvals</h2>
+        <table>
+          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Once the PR is approved, anything said before that approval no longer counts — only what's happened since. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
+          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="legend-h">6. The escalation clock</h2>
         <p class="legend-note">Only a comment that <b>@-tags the code author</b> starts this clock — yours or a teammate's, but not a plain reply — and it stops the instant the author replies.</p>
         <table>
           <tr><td>Day 0</td><td>Code PR merges, someone @-tags the code author.</td></tr>
@@ -2420,12 +2462,9 @@ ${filterBar}
       </section>
 
       <section>
-        <h2 class="legend-h">Good to know</h2>
+        <h2 class="legend-h">7. Good to know</h2>
         <table>
-          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
           <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
-          <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
           <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock.</td></tr>
         </table>
       </section>

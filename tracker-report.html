@@ -125,6 +125,9 @@
   .dot.critical{background:var(--critical)}
   .dot.serious{background:var(--serious)}
   .dot.dismiss{background:var(--dismiss)}
+  .dot.act{background:var(--accent)}
+  .dot.triage{background:var(--ink-3)}
+  .dot.stale{background:var(--warning)}
 
   .legend{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -400,7 +403,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated">Updated Thu, Jul 9, 10:55 PM</span>
+    <span class="updated">Updated Thu, Jul 9, 11:13 PM</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
@@ -433,7 +436,7 @@
     <div class="legend-body">
 
       <section>
-        <h2 class="legend-h">The three bands — whose turn is it?</h2>
+        <h2 class="legend-h">1. The three bands — whose turn is it?</h2>
         <table>
           <tr><td><b>Need you today</b></td><td>Actions only you can take.</td></tr>
           <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR still needs to merge (no clock yet), or a reminder's out and the clock is running.</td></tr>
@@ -442,7 +445,23 @@
       </section>
 
       <section>
-        <h2 class="legend-h">Reading a row</h2>
+        <h2 class="legend-h">2. Filters — narrowing what you see</h2>
+        <p class="legend-note">Both filter bars live at the top of the page, above the bands.</p>
+        <table>
+          <tr><td><b>Repo</b></td><td>Switches the whole board to one repo. Counts on each tab are totals across all three bands, not just Need-today.</td></tr>
+          <tr><td><b>Priority</b></td><td>Narrows the <b>Need-today</b> band only — picking one hides Waiting and Monitoring entirely, since priority is a Need-today concept. Counts follow whichever repo tab is selected. The one exception is <b>Stale</b> (below), which spans every band, so picking it filters within all three instead of hiding any.</td></tr>
+        </table>
+        <table>
+          <tr><td><span class="dot critical"></span><b>Critical</b></td><td>You reminded the code author 14+ days ago and it's still quiet — escalate to the core team.</td></tr>
+          <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author 7–14 days ago, or someone's directly waiting on an operator's reply — send a follow-up.</td></tr>
+          <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs you specifically, right now: check the author's response, remind the code author, review a standalone PR, or do a final review on one that's approved and ready.</td></tr>
+          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Setup or a first pass: add a label/milestone, or review a PR that's still waiting on its linked code PR to merge.</td></tr>
+          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on either PR for 30+ days, regardless of what the row would otherwise be — pulled out separately, across all three bands.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="legend-h">3. Reading a row</h2>
         <table>
           <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage → green approved/ready to merge.</td></tr>
           <tr><td><span class="pill open">Open</span></td><td>A <b>pill</b> — a fact about the PR: Draft / Open / Merged / Closed.</td></tr>
@@ -451,7 +470,7 @@
       </section>
 
       <section>
-        <h2 class="legend-h">Colour key — same kind of task, same colour</h2>
+        <h2 class="legend-h">4. Colour key — same kind of task, same colour</h2>
         <table>
           <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add pending-pr-merge label (drafts) · Add needs-backport label (older branch)</td></tr>
           <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The nudge ladder — one hue, hotter = more urgent.</td></tr>
@@ -466,7 +485,15 @@
       </section>
 
       <section>
-        <h2 class="legend-h">The escalation clock</h2>
+        <h2 class="legend-h">5. Live threads &amp; approvals</h2>
+        <table>
+          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Once the PR is approved, anything said before that approval no longer counts — only what's happened since. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
+          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="legend-h">6. The escalation clock</h2>
         <p class="legend-note">Only a comment that <b>@-tags the code author</b> starts this clock — yours or a teammate's, but not a plain reply — and it stops the instant the author replies.</p>
         <table>
           <tr><td>Day 0</td><td>Code PR merges, someone @-tags the code author.</td></tr>
@@ -477,12 +504,9 @@
       </section>
 
       <section>
-        <h2 class="legend-h">Good to know</h2>
+        <h2 class="legend-h">7. Good to know</h2>
         <table>
-          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
           <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
-          <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
           <tr><td>Labels</td><td><code>pending-pr-merge</code> — removed once the code PR merges. <code>needs-backport</code> — added when a PR targets an older branch than the latest. <code>needs-rebase</code> — surfaced as-is, no clock.</td></tr>
         </table>
       </section>
@@ -799,7 +823,7 @@
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/138" target="_blank" class="name">user-documentation #138</a> <span class="desc">Add an overview of local.php for mautic 4 documentation</span></div>
           <div class="meta">No linked code PR</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 112d quiet</span><span class="chip manual">👀 RCheesley is waiting on sdoering</span><span class="chip finish">Approved by RCheesley — ready to merge</span></div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 112d quiet</span><span class="chip finish">Approved by RCheesley — ready to merge</span></div>
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
@@ -1041,7 +1065,7 @@
   </section>
 
   </main>
-  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 10:55 PM</footer>
+  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 11:13 PM</footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
