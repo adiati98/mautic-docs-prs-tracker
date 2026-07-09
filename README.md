@@ -179,10 +179,39 @@ node tracker.js --fresh
 ```
 or set `TRACKER_NO_CACHE=1`.
 
-This also sets the project up for GitHub Actions automation (scheduled
-`node tracker.js` runs that commit `tracker-report.html` and the cache back
-to the repo) — not wired up yet, but the cache being committed rather than
-gitignored is what makes that viable later.
+## Automation (GitHub Actions + Pages)
+
+`.github/workflows/update-tracker.yml` runs the tracker on a schedule,
+commits the updated report + cache back to the repo, and publishes
+`tracker-report.html` to GitHub Pages. Two schedules:
+
+- **Every hour, 8am–8pm UK time, Mon–Fri** — incremental (`node tracker.js`,
+  cache-assisted). Anchored to GMT; GitHub Actions cron has no DST support,
+  so during BST (late Mar–late Oct) these land about an hour later by the UK
+  clock. Accepted tradeoff for an internal tool.
+- **Sunday 11pm UK/GMT** — the only run that day, a full fresh fetch
+  (`node tracker.js --fresh`), ignoring the cache to correct any drift.
+  Nothing runs on Saturday.
+
+You can also trigger it manually from the Actions tab (`workflow_dispatch`),
+optionally forcing a fresh fetch via the "Force a full fresh fetch" input.
+
+**Setup** (one-time, see the project's setup notes for the full walkthrough):
+1. Create a **fine-grained personal access token** scoped to
+   *Public repositories (read-only)* — this needs no organization approval
+   since it only grants read access to already-public data, and is
+   meaningfully narrower than a classic `public_repo`-scoped token (which
+   also grants write).
+2. Add it as a repository secret named `TRACKER_PAT`
+   (Settings → Secrets and variables → Actions).
+3. Enable Pages: Settings → Pages → Build and deployment → Source =
+   **GitHub Actions**.
+
+The workflow uses two different tokens for two different jobs, deliberately
+kept separate: `TRACKER_PAT` (the secret above) is only ever passed to
+`node tracker.js` for reading the public `mautic/*` repos; the ambient,
+auto-rotated `GITHUB_TOKEN` GitHub provides per run is what commits and
+pushes back to *this* repo. Neither token can do the other's job.
 
 ## Tips
 

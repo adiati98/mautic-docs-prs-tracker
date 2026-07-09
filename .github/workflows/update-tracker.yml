@@ -1,0 +1,96 @@
+name: Update Docs PR Tracker
+
+on:
+  schedule:
+    # Incremental update, every hour, 8am-8pm UK time, Mon-Fri.
+    # Anchored to GMT (UTC+0). GitHub Actions cron has no DST support, so
+    # during BST (late Mar-late Oct) these land ~1h later by UK clock time
+    # (e.g. 8:00 UTC = 9:00 BST). Accepted tradeoff for an internal tool.
+    - cron: "0 8-20 * * 1-5"
+    # Weekly full resync - Sunday 11pm UK/GMT time. The only run on Sundays;
+    # no runs at all on Saturdays.
+    - cron: "0 23 * * 0"
+  workflow_dispatch:
+    inputs:
+      fresh:
+        description: "Force a full fresh fetch (ignore the cache)"
+        type: boolean
+        default: false
+
+# Serialize runs instead of racing on data/pr-cache.json or the git branch -
+# a manual dispatch overlapping a scheduled run waits rather than cancels,
+# since cancelling mid-fetch or mid-push could leave things half-updated.
+concurrency:
+  group: docs-pr-tracker
+  cancel-in-progress: false
+
+# Deny-by-default; each job grants only what it needs.
+permissions: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # GITHUB_TOKEN here is the tracker's own read-only PAT (repo secret),
+      # used only for GitHub API reads against the public mautic/* repos -
+      # unrelated to the ambient token used below to push back to this repo.
+      - name: Run tracker
+        env:
+          GITHUB_TOKEN: ${{ secrets.TRACKER_PAT }}
+        run: |
+          if [ "${{ github.event.schedule }}" = "0 23 * * 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
+            echo "Running full fresh fetch..."
+            node tracker.js --fresh
+          else
+            echo "Running incremental update..."
+            node tracker.js
+          fi
+
+      - name: Commit and push updated report + cache
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tracker-report.html data/pr-cache.json
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update tracker report [skip ci]"
+            git push
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Stage report for Pages
+        run: |
+          mkdir -p _site
+          cp tracker-report.html _site/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
