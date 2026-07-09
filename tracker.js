@@ -1660,8 +1660,10 @@ function hasOutstandingDocsAuthorPing(pr) {
 }
 
 // Grouped by whoever needs to act (never a bot — Promptless included),
-// sorted alphabetically so the page reads like a directory; each person's
-// own items are oldest-first, since that's the most overdue.
+// sorted alphabetically so the page reads like a directory; within each
+// person's own items, a live "respond" tag outranks a plain "review" ask —
+// someone's waiting on a reply — and each of those two buckets is
+// oldest-first, since that's the most overdue.
 function buildReminderGroups(prData) {
 	const groups = new Map()
 	for (const pr of prData) {
@@ -1710,6 +1712,7 @@ function buildReminderGroups(prData) {
 	}
 	return [...groups.keys()].sort((a, b) => a.localeCompare(b)).map((author) => {
 		const items = groups.get(author).sort((a, b) => {
+			if (a.mark.kind !== b.mark.kind) return a.mark.kind === "respond" ? -1 : 1
 			const da = a.mark.sortDate ? a.mark.sortDate.getTime() : 0
 			const db = b.mark.sortDate ? b.mark.sortDate.getTime() : 0
 			return da - db
@@ -2603,6 +2606,11 @@ function generateReminderHTML(groups, { now }) {
     padding:14px 16px;margin:16px 0 24px;font-size:13px;color:var(--ink-2);box-shadow:var(--shadow);
   }
   .intro b{color:var(--ink)}
+  .intro p{margin:0 0 8px}
+  .intro p:last-child,.intro ul:last-child{margin-bottom:0}
+  .intro .intro-lead{font-weight:600;color:var(--ink);margin:12px 0 4px}
+  .intro ul{margin:0 0 8px 18px}
+  .intro li{margin:2px 0}
 
   .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
   .toc a{
@@ -2701,14 +2709,25 @@ function generateReminderHTML(groups, { now }) {
   </div>
 
   <div class="intro">
-    Docs PRs waiting on <b>your</b> review or response to a comment, grouped
-    by name — either your linked code PR has merged, or it's a docs PR you
-    opened yourself that's waiting on your reply. Click your name below to
-    jump straight to your list. Checking a box saves to <b>your own
-    browser</b> only, as a personal checklist of what you've reviewed — it
-    updates automatically as PRs get resolved. To review a PR, open its
-    <b>Files changed</b> tab and click <b>Submit review</b> to approve it or
-    request changes.
+    <p>
+      Docs PRs waiting on <b>your</b> review or response to a comment,
+      grouped by name — either your linked code PR has merged, or it's a
+      docs PR you opened yourself that's waiting on your reply.
+    </p>
+    <p class="intro-lead">Using this list:</p>
+    <ul>
+      <li>Click your name below to jump straight to your section.</li>
+      <li>
+        Check a box to track what you've reviewed — it saves to
+        <b>your own browser</b> only, and updates automatically as PRs get
+        resolved.
+      </li>
+    </ul>
+    <p class="intro-lead">To review a PR:</p>
+    <ul>
+      <li>Open its <b>Files changed</b> tab.</li>
+      <li>Click <b>Submit review</b> to approve it or request changes.</li>
+    </ul>
   </div>
   <main id="main-content">
 ${tocHtml}

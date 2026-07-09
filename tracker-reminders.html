@@ -67,6 +67,11 @@
     padding:14px 16px;margin:16px 0 24px;font-size:13px;color:var(--ink-2);box-shadow:var(--shadow);
   }
   .intro b{color:var(--ink)}
+  .intro p{margin:0 0 8px}
+  .intro p:last-child,.intro ul:last-child{margin-bottom:0}
+  .intro .intro-lead{font-weight:600;color:var(--ink);margin:12px 0 4px}
+  .intro ul{margin:0 0 8px 18px}
+  .intro li{margin:2px 0}
 
   .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
   .toc a{
@@ -159,20 +164,31 @@
 
   <div class="top">
     <h1>Docs PR Review Reminders</h1>
-    <span class="updated">Updated Thu, Jul 9, 8:42 PM</span>
+    <span class="updated">Updated Thu, Jul 9, 8:51 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
 
   <div class="intro">
-    Docs PRs waiting on <b>your</b> review or response to a comment, grouped
-    by name — either your linked code PR has merged, or it's a docs PR you
-    opened yourself that's waiting on your reply. Click your name below to
-    jump straight to your list. Checking a box saves to <b>your own
-    browser</b> only, as a personal checklist of what you've reviewed — it
-    updates automatically as PRs get resolved. To review a PR, open its
-    <b>Files changed</b> tab and click <b>Submit review</b> to approve it or
-    request changes.
+    <p>
+      Docs PRs waiting on <b>your</b> review or response to a comment,
+      grouped by name — either your linked code PR has merged, or it's a
+      docs PR you opened yourself that's waiting on your reply.
+    </p>
+    <p class="intro-lead">Using this list:</p>
+    <ul>
+      <li>Click your name below to jump straight to your section.</li>
+      <li>
+        Check a box to track what you've reviewed — it saves to
+        <b>your own browser</b> only, and updates automatically as PRs get
+        resolved.
+      </li>
+    </ul>
+    <p class="intro-lead">To review a PR:</p>
+    <ul>
+      <li>Open its <b>Files changed</b> tab.</li>
+      <li>Click <b>Submit review</b> to approve it or request changes.</li>
+    </ul>
   </div>
   <main id="main-content">
 
@@ -192,23 +208,11 @@
           <td><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
-        <tr data-key="mautic/developer-documentation-new#505">
-          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></td>
-          <td><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
-          <td><span class="mark review">Need review</span></td>
-        </tr>
         <tr data-key="mautic/user-documentation#782">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #782: Document Email details stat cards and Pending card scope for Segment vs. triggered Emails as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank">user-documentation #782</a> Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</td>
           <td><a href="https://github.com/mautic/mautic/pull/16304" target="_blank">mautic/mautic #16304</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
-        </tr>
-        <tr data-key="mautic/user-documentation#750">
-          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #750: Document Find and Replace bulk action for Contacts and Companies as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
-          <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#712">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #712: EVERYTHING about UTM tags in Mautic as done"></td>
@@ -221,6 +225,18 @@
           <td><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank">user-documentation #774</a> Fix contradictory note about duplicate Stage weights</td>
           <td><a href="https://github.com/mautic/mautic/pull/15404" target="_blank">mautic/mautic #15404</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
+        </tr>
+        <tr data-key="mautic/developer-documentation-new#505">
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></td>
+          <td><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
+          <td><span class="mark review">Need review</span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#750">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #750: Document Find and Replace bulk action for Contacts and Companies as done"></td>
+          <td><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
+          <td><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
+          <td><span class="mark review">Need review</span></td>
         </tr></tbody>
     </table>
   </section>
@@ -347,7 +363,7 @@
     </table>
   </section>
   </main>
-  <footer>Generated by <code>node tracker.js</code> · Thu, Jul 9, 8:42 PM · 18 PRs across 6 authors</footer>
+  <footer>Generated by <code>node tracker.js</code> · Thu, Jul 9, 8:51 PM · 18 PRs across 6 authors</footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
