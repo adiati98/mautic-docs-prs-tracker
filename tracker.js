@@ -1176,19 +1176,23 @@ function severityFor(pr) {
 }
 
 function sortRank(pr) {
+	// A stale PR isn't a fresh nudge candidate anymore (see chipsFor) — it's a
+	// human decision, not an action tier, so it drops below every other row
+	// regardless of category.
+	if (pr.staleFlag) return 100
 	if (pr.category === "needs-close-docs-pr") return 0
-	if (pr.category === "needs-escalate-core-team") return 1
-	if (pr.category === "needs-followup") return 2
-	if (pr.community.lit && pr.community.waitingOnKind === "operator") return 2.5
-	if (pr.finalReviewActionable) return 3
-	if (pr.category === "needs-remind-code-author") return 4
-	if (pr.category === "needs-operator-review" || pr.category === "needs-check-author-response")
-		return 5
-	if (pr.community.lit) return 5.5
 	if (pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone")
-		return 6
-	if (pr.category === "blocked-no-code-pr") return 7
-	return 8
+		return 1
+	if (pr.category === "needs-escalate-core-team") return 2
+	if (pr.category === "needs-followup") return 3
+	if (pr.community.lit && pr.community.waitingOnKind === "operator") return 3.5
+	if (pr.category === "needs-remind-code-author") return 4
+	if (pr.finalReviewActionable) return pr.backportModifierActive ? 5 : 6
+	if (pr.category === "needs-operator-review" || pr.category === "needs-check-author-response")
+		return 7
+	if (pr.community.lit) return 7.5
+	if (pr.category === "blocked-no-code-pr") return 8
+	return 9
 }
 
 function codePRClause(pr) {
@@ -1353,10 +1357,15 @@ function buildClock(pr) {
 
 function chipsFor(pr) {
 	const chips = []
+	// Needs-rebase and stale are structural/status flags, not action nudges —
+	// lead with them so they're never buried under a list of chips.
+	const leadingStale = staleChip(pr)
+	if (leadingStale) chips.push(leadingStale)
+	if (pr.needsRebaseFlag) chips.push({ cls: "manual", text: "Needs rebase" })
 	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
 	// / "remind them" stops being an honest next step — it's not a fresh
 	// nudge anymore, it's a stale situation that needs a human decision, not
-	// another automated poke. The stale badge (added below) covers it instead.
+	// another automated poke. The stale badge (added above) covers it instead.
 	switch (pr.category) {
 		case "needs-escalate-core-team":
 			if (!pr.staleFlag) chips.push({ cls: "nudge3", text: "▲ Escalate to core team" })
@@ -1424,11 +1433,6 @@ function chipsFor(pr) {
 	if (pr.backportLabelFlag) {
 		chips.push({ cls: "setup", text: `Add ${BACKPORT_LABEL} label` })
 	}
-	if (pr.needsRebaseFlag) {
-		chips.push({ cls: "manual", text: "Needs rebase" })
-	}
-	const stale = staleChip(pr)
-	if (stale) chips.push(stale)
 
 	return chips
 }
@@ -1487,6 +1491,8 @@ function remindedOpenChip(pr) {
 
 function waitingChipsFor(pr) {
 	const chips = []
+	const stale = staleChip(pr)
+	if (stale) chips.push(stale)
 	const community = communityChip(pr)
 	if (community) chips.push(community)
 	const reminded = remindedOpenChip(pr)
@@ -1494,8 +1500,6 @@ function waitingChipsFor(pr) {
 	if (pr.reviewPendingFlag) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
-	const stale = staleChip(pr)
-	if (stale) chips.push(stale)
 	return chips
 }
 
@@ -1561,7 +1565,7 @@ function renderMonitoringRow(pr) {
 	// waiting on the author for something unrelated (community), still need
 	// a formal review, or just be stale, none of which the day-count above
 	// captures on its own.
-	const overlayChips = [remindedOpenChip(pr), staleChip(pr)]
+	const overlayChips = [staleChip(pr), remindedOpenChip(pr)]
 		.filter(Boolean)
 		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
 		.join("")
