@@ -1,2 +1,6 @@
 .env
 _site/
+docs/
+mockups/
+archive/
+.claude/

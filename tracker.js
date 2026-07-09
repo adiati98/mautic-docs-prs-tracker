@@ -49,12 +49,24 @@ const ESCALATE_DAYS = 14
 const CACHE_PATH = "data/pr-cache.json"
 const NO_CACHE = process.argv.includes("--fresh") || process.env.TRACKER_NO_CACHE === "1"
 
-// Optional comma-separated list of additional maintainer logins who all
-// count as "the operator" (team mode). The authenticated user always counts.
-const CONFIGURED_OPERATOR_LOGINS = (process.env.OPERATOR_LOGINS || "")
-	.split(",")
-	.map((s) => s.trim().toLowerCase())
-	.filter(Boolean)
+// maintainers.json lists the team's GitHub logins who all count as "the
+// operator" (team mode) - see loadConfiguredMaintainers() below. The
+// authenticated user always counts too, even if not listed there.
+const MAINTAINERS_CONFIG_PATH = "maintainers.json"
+
+function loadConfiguredMaintainers() {
+	if (!fs.existsSync(MAINTAINERS_CONFIG_PATH)) return []
+	try {
+		const raw = JSON.parse(fs.readFileSync(MAINTAINERS_CONFIG_PATH, "utf8"))
+		if (!Array.isArray(raw.maintainers)) return []
+		return raw.maintainers.map((s) => String(s).trim().toLowerCase()).filter(Boolean)
+	} catch (err) {
+		console.error(`⚠ Could not parse ${MAINTAINERS_CONFIG_PATH}: ${err.message}`)
+		return []
+	}
+}
+
+const CONFIGURED_OPERATOR_LOGINS = loadConfiguredMaintainers()
 
 // ---------------------------------------------------------------------------
 // GitHub API helpers
@@ -241,6 +253,23 @@ function targetsOlderBranch(baseBranch, latestReleaseBranch) {
 	return compareVersions(baseBranch, latestReleaseBranch) < 0
 }
 
+// Pulls the "X.Y" out of a milestone title like "Mautic 7.2".
+function milestoneVersion(title) {
+	if (!title) return null
+	const m = title.match(/\d+\.\d+/)
+	return m ? m[0] : null
+}
+
+// A PR targeting an older branch than its own milestone isn't a genuine
+// backport — it's aimed at the wrong branch entirely (the milestone says
+// where it should land, and it doesn't match). That's what the needs-rebase
+// label is for, so it should win over the backport suggestion, not sit
+// alongside a suggestion that contradicts it.
+function backportContradictsMilestone(baseBranch, milestoneTitle) {
+	const mv = milestoneVersion(milestoneTitle)
+	return mv !== null && mv !== baseBranch
+}
+
 // Extract app PR info from description (supports any mautic/* repo)
 function extractAppPR(description) {
 	if (!description) return null
@@ -329,12 +358,16 @@ function computeOperatorReviewDate(docsReviews, docsComments, operatorLogins) {
 }
 
 // The reminder/response conversation. A "ping" is any comment — by an
-// operator OR anyone else who isn't the code author — that @-tags the code
-// PR author. Whoever tags the author is effectively reminding them, so any
-// such tag starts the remind/follow-up/escalate clock (this is what lets a
-// teammate's reminder, not just yours, drive escalation). The @-tag is an
-// unambiguous signal, so no date anchor is needed — an old, never-answered
-// tag is still an outstanding reminder.
+// operator, a teammate, or Promptless (the only bot let in here, since it
+// speaks for the docs PR when it relays "I've addressed your feedback") —
+// that @-tags the code PR author. Whoever tags the author is effectively
+// reminding them, so any such tag starts the remind/follow-up/escalate
+// clock (this is what lets a teammate's reminder, or Promptless's, not just
+// yours, drive escalation). The @-tag is an unambiguous signal, so no date
+// anchor is needed — an old, never-answered tag is still an outstanding
+// reminder. Callers pass ping-eligible comments (human + Promptless) as
+// docsComments/codeComments here; other derivations elsewhere use the
+// strictly-human-filtered versions.
 //
 // A plain operator comment (no tag) is just a reply: it moves the PR into
 // "monitoring" with its own, separate staleness clock (see the category
@@ -402,17 +435,66 @@ function computeConversationState({
 const IGNORED_BOTS = BOTS.filter((b) => b !== "promptless-for-oss")
 const PROMPTLESS = "promptless-for-oss"
 
+// Categories whose own metaLine text already names the ping (who sent it,
+// and that it's outstanding or answered) — the "Reminded code PR author"
+// badge would just repeat that, so it's skipped for these.
+const REMINDER_SHOWN_INLINE = new Set([
+	"needs-remind-code-author",
+	"needs-check-author-response",
+	"needs-followup",
+	"needs-escalate-core-team",
+	"waiting-code-author-response",
+	"monitoring",
+])
+
 // A live thread on the *docs* PR (never the code PR) that isn't the
 // operator's own author-reminder (those are pings, handled above). Answers
-// "who is waiting on whom" from the most recent qualifying docs-PR comment
-// that nobody has answered. Author-targeted tags are deliberately excluded
-// here — they're pings and drive the escalation clock instead. What's left:
-// someone waiting on you, on a third party (including promptless chasing a
-// reviewer), or an untagged comment you must triage.
+// "who is waiting on whom": first, independently, whether a non-operator
+// tag of the code author is still unanswered (checked on its own, since a
+// later unrelated exchange with someone else shouldn't bury it); otherwise,
+// from the single most recent qualifying docs-PR comment that nobody has
+// answered — someone waiting on you, on a third party (including promptless
+// chasing a reviewer), or an untagged comment you must triage.
 function computeCommunityThread({ rawDocsComments, rawDocsReviews, operatorLogins, appPRAuthor }) {
 	const none = { lit: false }
 	const comments = rawDocsComments.filter((c) => !IGNORED_BOTS.includes(c.user.login))
 	if (comments.length === 0) return none
+	const reviews = rawDocsReviews.filter((r) => !IGNORED_BOTS.includes(r.user.login))
+
+	// Independent check: the most recent tag of the code PR author on the
+	// docs PR, and whether they've replied since — checked on its own, not
+	// gated by whatever the single latest comment overall happens to be
+	// about. A later, unrelated exchange with someone else (e.g. Promptless
+	// replying to you) shouldn't hide an author-directed tag that's still
+	// sitting unanswered. A tag *from* an operator is skipped here — that's
+	// a reminder, tracked by the escalation clock instead.
+	if (appPRAuthor) {
+		const authorTags = comments.filter(
+			(c) => c.user.login !== appPRAuthor && mentions(c.body, appPRAuthor),
+		)
+		const lastAuthorTag = authorTags.reduce(
+			(best, c) => (!best || new Date(c.created_at) > new Date(best.created_at) ? c : best),
+			null,
+		)
+		if (lastAuthorTag && !operatorLogins.has(lastAuthorTag.user.login.toLowerCase())) {
+			const tagDate = new Date(lastAuthorTag.created_at)
+			const answeredByAuthor = [...comments, ...reviews].some(
+				(e) =>
+					e.user.login === appPRAuthor &&
+					new Date(e.submitted_at || e.created_at) > tagDate,
+			)
+			if (!answeredByAuthor) {
+				return {
+					lit: true,
+					commenter: lastAuthorTag.user.login,
+					commenterIsOperator: false,
+					waitingOn: appPRAuthor,
+					waitingOnKind: "author",
+					date: tagDate,
+				}
+			}
+		}
+	}
 
 	const last = comments.reduce((best, c) =>
 		new Date(c.created_at) > new Date(best.created_at) ? c : best,
@@ -425,7 +507,6 @@ function computeCommunityThread({ rawDocsComments, rawDocsReviews, operatorLogin
 	if (!commenterIsPromptless && appPRAuthor && commenter === appPRAuthor) return none
 
 	// Answered already? Any later qualifying comment/review by someone else.
-	const reviews = rawDocsReviews.filter((r) => !IGNORED_BOTS.includes(r.user.login))
 	const answered = [...comments, ...reviews].some((e) => {
 		const who = e.user.login
 		const when = new Date(e.submitted_at || e.created_at)
@@ -433,10 +514,17 @@ function computeCommunityThread({ rawDocsComments, rawDocsReviews, operatorLogin
 	})
 	if (answered) return none
 
-	// Ignore self-mentions and any @-mention of a known bot — neither is a
-	// real "waiting on someone" signal.
+	// Ignore self-mentions, any @-mention of a known bot, and a tag of the
+	// code author — the author case is already fully handled above (either
+	// surfaced there as unanswered, or, if the tagger was an operator,
+	// deliberately left to the escalation clock instead). Without this, an
+	// operator's own tag of the author would fall through and get
+	// mislabeled as "waiting on a third party" below.
 	const tagged = extractMentions(last.body).filter(
-		(t) => t !== commenter.toLowerCase() && !BOTS.includes(t),
+		(t) =>
+			t !== commenter.toLowerCase() &&
+			!BOTS.includes(t) &&
+			t !== (appPRAuthor || "").toLowerCase(),
 	)
 	const commenterIsOperator = operatorLogins.has(commenter.toLowerCase())
 
@@ -444,7 +532,8 @@ function computeCommunityThread({ rawDocsComments, rawDocsReviews, operatorLogin
 		// Only worth surfacing if promptless tagged a real reviewer outside
 		// the operator/team — that's "go check what they asked for changes
 		// on, promptless just addressed it." A tag of you/your team (you'll
-		// see it yourself) or no tag at all is not worth a row.
+		// see it yourself) or no tag at all is not worth a row. (A tag of
+		// the code author was already handled above, independently.)
 		const nonOperatorTagged = tagged.filter((t) => !operatorLogins.has(t))
 		if (nonOperatorTagged.length === 0) return none
 		return {
@@ -453,23 +542,6 @@ function computeCommunityThread({ rawDocsComments, rawDocsReviews, operatorLogin
 			commenterIsOperator: false,
 			waitingOn: nonOperatorTagged[0],
 			waitingOnKind: "third-party",
-			date: lastDate,
-		}
-	}
-
-	// A tag of the code author is a reminder ping. If an operator sent it,
-	// the escalation clock owns it — nothing to add here. If someone else did
-	// (a teammate contributor chasing the author), surface it for visibility:
-	// the clock only activates after *you've* reviewed, so until then this is
-	// the only thing that shows the author is being waited on.
-	if (appPRAuthor && tagged.includes(appPRAuthor.toLowerCase())) {
-		if (commenterIsOperator) return none
-		return {
-			lit: true,
-			commenter,
-			commenterIsOperator,
-			waitingOn: appPRAuthor,
-			waitingOnKind: "author",
 			date: lastDate,
 		}
 	}
@@ -647,6 +719,19 @@ async function main() {
 		const codeComments = rawCodeComments.filter((c) => isHuman(c.user.login))
 		const codeReviews = rawCodeReviews.filter((r) => isHuman(r.user.login))
 
+		// Promptless relaying "I've addressed your feedback" while tagging the
+		// code PR author functions exactly like a human teammate's reminder —
+		// the one bot action let into ping detection, since every other bot
+		// comment is pure noise there. Used only for the ping clock below, not
+		// for operatorReviewDate/approvals (promptless's login never matches
+		// an operator or the author, so it's a no-op for those anyway).
+		const pingEligibleDocsComments = rawDocsComments.filter(
+			(c) => isHuman(c.user.login) || c.user.login === PROMPTLESS,
+		)
+		const pingEligibleCodeComments = rawCodeComments.filter(
+			(c) => isHuman(c.user.login) || c.user.login === PROMPTLESS,
+		)
+
 		const operatorReviewDate = computeOperatorReviewDate(
 			docsReviews,
 			docsComments,
@@ -674,9 +759,9 @@ async function main() {
 			lastOperatorTouchDate,
 			lastAuthorEventDate,
 		} = computeConversationState({
-			docsComments,
+			docsComments: pingEligibleDocsComments,
 			docsReviews,
-			codeComments,
+			codeComments: pingEligibleCodeComments,
 			codeReviews,
 			operatorLogins,
 			appPRAuthor,
@@ -696,12 +781,6 @@ async function main() {
 			appPRAuthor,
 		})
 
-		// Reminded the code author, but the code PR is still open — no clock
-		// starts (that waits for the merge), it's just worth showing you've
-		// already nudged them so you don't do it twice.
-		const remindedWhileOpen =
-			pingEverSent && appPRNumber && !codeMerged && !codeClosed
-
 		// §5a — independent action flags.
 		//
 		// The final-review action ("do the review, then merge") is only
@@ -711,17 +790,38 @@ async function main() {
 		// waiting row rather than as a merge action.
 		let removeLabelFlag = codeMerged && hasLabel
 		let finalReviewActionable = approvedByNonOperator && (codeMerged || !appPRNumber)
-		let backportLabelFlag = olderBranch && !hasBackportLabel
 		// Just a label check — no clock, no "since when". You put the label on
 		// (or a bot did); this just makes sure it doesn't go unnoticed.
 		let needsRebaseFlag = hasNeedsRebaseLabel
+		// If the PR is already flagged as needing a rebase AND its milestone
+		// doesn't match the branch it's targeting, the branch itself is wrong
+		// — rebase wins, so neither the backport-label suggestion nor the
+		// "backport, then merge" framing below should sit alongside it; both
+		// would contradict "the branch needs fixing first."
+		let rebaseWinsOverBackport =
+			needsRebaseFlag && backportContradictsMilestone(baseBranch, milestoneTitle)
+		let backportLabelFlag = olderBranch && !hasBackportLabel && !rebaseWinsOverBackport
 		if (codeClosed) {
 			removeLabelFlag = false
 			finalReviewActionable = false
 			backportLabelFlag = false
 			needsRebaseFlag = false
+			rebaseWinsOverBackport = false
 		}
-		const backportModifierActive = finalReviewActionable && olderBranch
+		const backportModifierActive =
+			finalReviewActionable && olderBranch && !rebaseWinsOverBackport
+
+		// Plain inactivity signal — nothing has happened on either PR (docs
+		// or linked code) for 30+ days. Independent of category, so it can
+		// surface even on a row that otherwise looks fine (e.g. quietly
+		// "monitoring").
+		const lastActivityDate = latestDate(
+			[pr.updated_at, codeUpdatedAt].filter(Boolean).map((d) => new Date(d)),
+		)
+		const daysSinceActivity = lastActivityDate
+			? Math.floor((Date.now() - lastActivityDate.getTime()) / 86400000)
+			: null
+		const staleFlag = daysSinceActivity !== null && daysSinceActivity > 30
 
 		// §5b — primary lifecycle category, first match wins.
 		//
@@ -738,15 +838,14 @@ async function main() {
 			category = "needs-label-and-milestone"
 		} else if (!isDraft && !hasMilestone) {
 			category = "needs-milestone"
-		} else if (hasMilestone && !operatorReviewDone) {
-			category = "needs-operator-review"
-		} else if (operatorReviewDone && appPRNumber && !codeMerged) {
-			// Code PR still open — don't start any clock, just wait.
-			category = "waiting-code-pr-merge"
-		} else if (operatorReviewDone && appPRNumber && codeMerged) {
+		} else if (appPRNumber && codeMerged) {
+			// The remind/follow-up/escalate clock no longer waits on a formal
+			// docs-PR review — some docs PRs need no content changes at all,
+			// so review is skipped by design and you wait for the code
+			// author to confirm instead. Whether you've reviewed is tracked
+			// separately (reviewPendingFlag below) as an overlay chip, not a
+			// gate on this chain.
 			if (!pingEverSent) {
-				// Reviewed, code merged, but the author has never been
-				// explicitly @-tagged yet.
 				category = "needs-remind-code-author"
 			} else if (lastAuthorEventDate && lastAuthorEventDate > lastPingDate) {
 				// Author replied since the last ping.
@@ -769,9 +868,30 @@ async function main() {
 				else if (daysSincePing >= FOLLOWUP_DAYS) category = "needs-followup"
 				else category = "waiting-code-author-response"
 			}
+		} else if (hasMilestone && !operatorReviewDone) {
+			category = "needs-operator-review"
+		} else if (operatorReviewDone && appPRNumber && !codeMerged) {
+			// Code PR still open — don't start any clock, just wait.
+			category = "waiting-code-pr-merge"
 		} else {
 			category = "monitoring"
 		}
+
+		// Independent flag: the code PR merged but you haven't formally
+		// reviewed the docs PR yet. The clock above no longer waits on that
+		// (see the comment above), so this just keeps "you still haven't
+		// reviewed it" visible as its own chip alongside whatever the clock
+		// is showing, instead of being lost.
+		const reviewPendingFlag = appPRNumber && codeMerged && !operatorReviewDone
+
+		// Already pinged the code author (on either PR), and the fact isn't
+		// already narrated by the category's own metaLine text above (the
+		// post-merge remind/follow-up/escalate categories all name the ping
+		// inline). Mainly covers the pre-merge "still open" case, plus any
+		// PR still stuck in triage (needs-milestone etc.) despite an
+		// already-sent ping.
+		const remindedWhileOpen =
+			pingEverSent && appPRNumber && !codeClosed && !REMINDER_SHOWN_INLINE.has(category)
 
 		prData.push({
 			title: pr.title,
@@ -779,6 +899,7 @@ async function main() {
 			sourceRepo: pr.sourceRepo,
 			repoShort: pr.sourceRepo.split("/")[1].replace("-new", ""),
 			url: pr.html_url,
+			docsAuthor: pr.user.login,
 			createdAt: pr.created_at,
 			isDraft,
 			hasLabel,
@@ -808,6 +929,7 @@ async function main() {
 			lastOperatorTouchDate,
 			daysSinceOperatorTouch,
 			lastAuthorEventDate,
+			reviewPendingFlag,
 			community,
 			remindedWhileOpen,
 			removeLabelFlag,
@@ -815,6 +937,9 @@ async function main() {
 			backportLabelFlag,
 			needsRebaseFlag,
 			backportModifierActive,
+			rebaseWinsOverBackport,
+			daysSinceActivity,
+			staleFlag,
 			category,
 		})
 	}
@@ -856,8 +981,13 @@ const ACTIONABLE_CATEGORIES = new Set([
 // A community thread waiting on the code *author* is visibility-only and
 // doesn't itself pull a row into Need-today (the primary category decides
 // where it sits); every other community thread — waiting on you, a third
-// party, or untagged — does.
+// party, or untagged — does. Exception: once you've reviewed the docs PR
+// and its code PR is still open, that's a pure waiting state by design —
+// only review status should gate Need-today vs. Waiting there, so a live
+// thread on top of it stays visible (via waitingChipsFor) without pulling
+// the row back into Need-today.
 function communityForcesToday(pr) {
+	if (pr.category === "waiting-code-pr-merge") return false
 	return pr.community.lit && pr.community.waitingOnKind !== "author"
 }
 
@@ -907,9 +1037,6 @@ function categorySeverity(pr) {
 		case "needs-check-author-response":
 			return "act"
 		case "needs-operator-review":
-			// Optional while the code PR is open (triage housekeeping);
-			// mandatory — and prominent — once it has merged.
-			return pr.codeMerged ? "serious" : "triage"
 		case "needs-label-and-milestone":
 		case "needs-milestone":
 		case "blocked-no-code-pr":
@@ -918,7 +1045,8 @@ function categorySeverity(pr) {
 			return pr.finalReviewActionable ||
 				pr.removeLabelFlag ||
 				pr.backportLabelFlag ||
-				pr.needsRebaseFlag
+				pr.needsRebaseFlag ||
+				pr.reviewPendingFlag
 				? "act"
 				: "none"
 	}
@@ -945,7 +1073,6 @@ function sortRank(pr) {
 	if (pr.category === "needs-followup") return 2
 	if (pr.community.lit && pr.community.waitingOnKind === "operator") return 2.5
 	if (pr.finalReviewActionable) return 3
-	if (pr.category === "needs-operator-review" && pr.codeMerged) return 3.5
 	if (pr.category === "needs-remind-code-author") return 4
 	if (pr.category === "needs-operator-review" || pr.category === "needs-check-author-response")
 		return 5
@@ -983,11 +1110,11 @@ function metaLine(pr) {
 			parts.push(`responded ${daysAgoText(pr.lastAuthorEventDate)}`)
 			break
 		case "needs-remind-code-author":
-			parts.push(
-				pr.pingEverSent
-					? `quiet since your reply ${daysAgoText(pr.lastOperatorTouchDate)}`
-					: `you reviewed ${daysAgoText(pr.operatorReviewDate)}`,
-			)
+			if (pr.pingEverSent) {
+				parts.push(`quiet since your reply ${daysAgoText(pr.lastOperatorTouchDate)}`)
+			} else if (pr.operatorReviewDone) {
+				parts.push(`you reviewed ${daysAgoText(pr.operatorReviewDate)}`)
+			}
 			break
 		case "needs-operator-review":
 			if (pr.hasMilestone && pr.milestoneTitle)
@@ -1002,6 +1129,7 @@ function metaLine(pr) {
 				)
 			break
 		case "blocked-no-code-pr":
+			parts.push(`docs author <b>${escapeHtml(pr.docsAuthor)}</b>`)
 			parts.push(`you reviewed ${daysAgoText(pr.operatorReviewDate)}`)
 			break
 		case "waiting-code-author-response":
@@ -1026,6 +1154,11 @@ function metaLine(pr) {
 	if (pr.backportModifierActive) {
 		parts.push(
 			`targets <b>${escapeHtml(pr.baseBranch)}</b> (latest is <b>${escapeHtml(pr.latestReleaseBranch || "—")}</b>)`,
+		)
+	}
+	if (pr.rebaseWinsOverBackport) {
+		parts.push(
+			`targets <b>${escapeHtml(pr.baseBranch)}</b>, milestone <b>${escapeHtml(pr.milestoneTitle)}</b> — wrong branch, not a backport`,
 		)
 	}
 
@@ -1067,7 +1200,7 @@ function buildClock(pr) {
 		case "needs-milestone":
 			return { big: "New", sub: "needs triage" }
 		case "blocked-no-code-pr":
-			return { big: "—", sub: "nobody to remind" }
+			return { big: "—", sub: "remind the docs author" }
 		case "waiting-code-author-response": {
 			const remaining = FOLLOWUP_DAYS - pr.daysSincePing
 			const sub = remaining <= 1 ? "follow up tomorrow" : `follow up at ${FOLLOWUP_DAYS}`
@@ -1111,17 +1244,18 @@ function chipsFor(pr) {
 			chips.push({ cls: "nudge2", text: "Send a follow-up" })
 			break
 		case "needs-remind-code-author":
-			chips.push({ cls: "nudge1", text: "Remind the code author" })
+			chips.push({
+				cls: "nudge1",
+				text: pr.pingEverSent
+					? "Remind the code author again — quiet"
+					: "Remind code PR author — code PR merged",
+			})
 			break
 		case "needs-check-author-response":
 			chips.push({ cls: "act", text: "Check the author’s response" })
 			break
 		case "needs-operator-review":
-			chips.push(
-				pr.codeMerged
-					? { cls: "act", text: "Review this docs PR — code PR merged" }
-					: { cls: "muted", text: "Review this docs PR" },
-			)
+			chips.push({ cls: "muted", text: "Review this docs PR" })
 			break
 		case "needs-label-and-milestone":
 			if (!pr.hasLabel) chips.push({ cls: "setup", text: `Add ${PENDING_LABEL} label` })
@@ -1131,32 +1265,22 @@ function chipsFor(pr) {
 			chips.push({ cls: "setup", text: "Add milestone" })
 			break
 		case "blocked-no-code-pr":
-			chips.push({ cls: "manual", text: "No code PR linked — needs a manual look" })
+			chips.push({ cls: "manual", text: "Remind docs PR author — no code PR linked" })
 			break
 		case "needs-close-docs-pr":
 			chips.push({ cls: "dismiss", text: "Close this docs PR" })
 			break
 	}
 
-	// Community thread — names both people so the social action is obvious.
-	// A thread waiting on the code author is handled by remindedOpenChip
-	// instead (it covers a teammate's tag or your own, on any row, not just
-	// this category's), so it's skipped here to avoid a duplicate chip.
-	if (pr.community.lit && pr.community.waitingOnKind !== "author") {
-		const c = pr.community
-		let text
-		if (c.waitingOnKind === "untagged") {
-			text = `👀 ${escapeHtml(c.commenter)} commented — no reply yet`
-		} else if (c.commenterIsOperator) {
-			text = `👀 you're waiting on ${escapeHtml(c.waitingOn)}`
-		} else {
-			text = `👀 ${escapeHtml(c.commenter)} is waiting on ${escapeHtml(c.waitingOn)}`
-		}
-		chips.push({ cls: "manual", text })
-	}
+	const community = communityChip(pr)
+	if (community) chips.push(community)
 
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
+
+	if (pr.reviewPendingFlag) {
+		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
+	}
 
 	if (pr.finalReviewActionable) {
 		chips.push(
@@ -1174,33 +1298,75 @@ function chipsFor(pr) {
 	if (pr.needsRebaseFlag) {
 		chips.push({ cls: "manual", text: "Needs rebase" })
 	}
+	const stale = staleChip(pr)
+	if (stale) chips.push(stale)
 
 	return chips
 }
 
-// A reminder already sent while the code PR is still open — shown on
-// whichever row the PR currently lands on (Need-today triage/review, or
-// Waiting), so you never duplicate it. Named when a non-operator sent it,
-// generic when it was you or a teammate operator (the point is just "already
-// pinged", not who).
+// No activity on either PR for 30+ days — a plain inactivity signal, not
+// tied to any category, so it can flag a row even when nothing else does.
+function staleChip(pr) {
+	if (!pr.staleFlag) return null
+	return { cls: "stale", text: `🕸 Stale — ${pr.daysSinceActivity}d quiet` }
+}
+
+// Community thread — names both people so the social action is obvious. A
+// thread waiting on the code author is handled by remindedOpenChip instead
+// (it covers a teammate's tag or your own, on any row, not just this
+// category's), so it's skipped here to avoid a duplicate chip. Shown on
+// Need-today and Waiting rows alike — reviewed-but-code-still-open rows no
+// longer get pulled into Need-today just for having one (see
+// communityForcesToday), so this is what keeps the thread visible there.
+function communityChip(pr) {
+	if (!pr.community.lit || pr.community.waitingOnKind === "author") return null
+	const c = pr.community
+	const text =
+		c.waitingOnKind === "untagged"
+			? `👀 ${escapeHtml(c.commenter)} commented — no reply yet`
+			: `👀 ${escapeHtml(c.commenter)} is waiting on ${escapeHtml(c.waitingOn)}`
+	return { cls: "manual", text }
+}
+
+// Two overlapping "someone's waiting on the code author" signals, shown on
+// whichever row the PR currently lands on (Need-today, Waiting, or
+// Monitoring) so it's never lost, never duplicated: a live, still-unanswered
+// tag from a non-operator (community.waitingOnKind === "author") renders as
+// a "waiting on" chip; once *you've* pinged them (any category, tracked via
+// remindedWhileOpen), it's a done-fact "already reminded" chip instead.
 function remindedOpenChip(pr) {
-	if (pr.community.lit && pr.community.waitingOnKind === "author") {
+	// Skip this when the category already narrates the same outstanding tag
+	// inline (e.g. needs-followup's "X reminded the author, no reply
+	// since") — now that Promptless's tags feed the ping clock too, that's
+	// the common case post-merge; this chip is left to cover what the clock
+	// can't reach, mainly pre-merge (waiting-code-pr-merge has no clock yet).
+	if (
+		pr.community.lit &&
+		pr.community.waitingOnKind === "author" &&
+		!REMINDER_SHOWN_INLINE.has(pr.category)
+	) {
 		return {
-			cls: "muted",
-			text: `${escapeHtml(pr.community.commenter)} reminded the code author`,
+			cls: "manual",
+			text: `👀 ${escapeHtml(pr.community.commenter)} is waiting on ${escapeHtml(pr.community.waitingOn)}`,
 		}
 	}
 	if (pr.remindedWhileOpen) {
-		return { cls: "muted", text: "Reminded code PR author" }
+		return { cls: "muted", text: "✅ Reminded code PR author" }
 	}
 	return null
 }
 
-// Waiting rows are otherwise chip-free (nothing to *do*).
 function waitingChipsFor(pr) {
 	const chips = []
+	const community = communityChip(pr)
+	if (community) chips.push(community)
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
+	if (pr.reviewPendingFlag) {
+		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
+	}
+	const stale = staleChip(pr)
+	if (stale) chips.push(stale)
 	return chips
 }
 
@@ -1221,7 +1387,7 @@ function renderNeedTodayRow(pr) {
 		.join("")
 	const draftPill = pr.isDraft ? ' <span class="pill draft">Draft</span>' : ""
 	return `
-      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}">
+      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
@@ -1239,7 +1405,7 @@ function renderWaitingRow(pr) {
 		? `<div class="chips">${chips.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`).join("")}</div>`
 		: ""
 	return `
-      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}">
+      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
@@ -1262,7 +1428,18 @@ function renderMonitoringRow(pr) {
 		pr.daysSinceOperatorTouch != null
 			? `Day ${pr.daysSinceOperatorTouch} since your reply · remind again at ${FOLLOWUP_DAYS}`
 			: "quiet"
-	return `<div class="mon-row" data-repo="${escapeHtml(pr.repoShort)}"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${codePart} <span class="why">${dayText}</span></div>`
+	// Overlay flags apply regardless of band — a monitoring row can still be
+	// waiting on the author for something unrelated (community), still need
+	// a formal review, or just be stale, none of which the day-count above
+	// captures on its own.
+	const overlayChips = [remindedOpenChip(pr), staleChip(pr)]
+		.filter(Boolean)
+		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
+		.join("")
+	const reviewChip = pr.reviewPendingFlag
+		? `<span class="chip act">Review this docs PR — code PR merged</span>`
+		: ""
+	return `<div class="mon-row" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${codePart} <span class="why">${dayText}</span>${reviewChip}${overlayChips}</div>`
 }
 
 function formatUpdated(date) {
@@ -1321,8 +1498,12 @@ function generateHTML(prData, { operatorUsername }) {
 		needTodayBits.push(`<span class="dot serious"></span>${followupCount} follow-up`)
 	const needTodaySub = needTodayBits.join(" · ")
 
+	// The band mixes two different kinds of "waiting" — keep this text
+	// honest about which one is actually driving the count, since the two
+	// mean different things (no clock yet vs. a clock counting down).
 	const authorWaiting = waiting.filter((p) => p.category === "waiting-code-author-response")
-	let waitingSub = "waiting for code PRs to merge"
+	const mergeWaiting = waiting.filter((p) => p.category === "waiting-code-pr-merge")
+	let waitingSub
 	if (authorWaiting.length > 0) {
 		const minDays = Math.min(
 			...authorWaiting.map((p) => FOLLOWUP_DAYS - p.daysSincePing),
@@ -1330,6 +1511,10 @@ function generateHTML(prData, { operatorUsername }) {
 		if (minDays <= 0) waitingSub = "next follow-up due today"
 		else if (minDays === 1) waitingSub = "next follow-up due tomorrow"
 		else waitingSub = `next follow-up due in ${minDays} days`
+	} else if (mergeWaiting.length > 0) {
+		waitingSub = "waiting for code PRs to merge"
+	} else {
+		waitingSub = "you've done your part"
 	}
 
 	// ---- filter tabs (repo + priority) -----------------------------------
@@ -1342,12 +1527,17 @@ function generateHTML(prData, { operatorUsername }) {
 		["serious", "Serious"],
 		["act", "Act"],
 		["triage", "Triage"],
+		["stale", "🕸 Stale"],
 	]
 	const sevCounts = { critical: 0, serious: 0, act: 0, triage: 0 }
 	for (const p of needToday) {
 		const s = severityFor(p)
 		if (sevCounts[s] != null) sevCounts[s]++
 	}
+	// Unlike the severity tabs (Need-today only), Stale spans every band —
+	// that's the point, it's meant to catch things Waiting/Monitoring would
+	// otherwise quietly hide.
+	sevCounts.stale = prData.filter((p) => p.staleFlag).length
 
 	const repoTabs = [
 		`<button class="ftab active" data-f="repo" data-v="all">All <span class="fc">${prData.length}</span></button>`,
@@ -1394,7 +1584,7 @@ function generateHTML(prData, { operatorUsername }) {
 			? `
   <section class="band-secondary" data-band="waiting">
     <div class="sec-head">
-      <h2>Waiting on others</h2><span class="count">${waiting.length}</span>
+      <h2>Waiting on others and for code PR to merge</h2><span class="count">${waiting.length}</span>
       <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
     </div>
     <div class="card">${waiting.map(renderWaitingRow).join("")}
@@ -1637,6 +1827,12 @@ function generateHTML(prData, { operatorUsername }) {
     color:var(--ink-3);
     border-color:color-mix(in srgb, var(--ink-3) 30%, transparent);
   }
+  .chip.stale{
+    background:color-mix(in srgb, var(--warning) 10%, var(--surface));
+    color:color-mix(in srgb, var(--warning) 55%, var(--ink));
+    border-color:color-mix(in srgb, var(--warning) 35%, transparent);
+    border-style:dashed;
+  }
 
   .pill{
     display:inline-block;font-size:11px;font-weight:600;border-radius:999px;
@@ -1738,7 +1934,9 @@ function generateHTML(prData, { operatorUsername }) {
   section.all-hidden .no-match{display:inline}
   section.all-hidden .card{display:none}
   /* choosing a specific priority hides the lower-priority bands entirely */
-  body:not([data-fpri="all"]) .band-secondary{display:none}
+  /* Stale spans every band, so picking it shouldn't hide Waiting/Monitoring
+     the way the severity tabs do — those are Need-today-only concepts. */
+  body:not([data-fpri="all"]):not([data-fpri="stale"]) .band-secondary{display:none}
 
   @media (max-width:640px){
     body{padding:16px 10px 40px}
@@ -1774,7 +1972,7 @@ function generateHTML(prData, { operatorUsername }) {
     </div>
     <div class="tile">
       <div class="num">${waiting.length}</div>
-      <div><div class="lbl">Waiting on others</div>
+      <div><div class="lbl">Waiting on others and for code PR to merge</div>
       <div class="sub">${waitingSub}</div></div>
     </div>
     <div class="tile">
@@ -1792,7 +1990,7 @@ ${filterBar}
         <h4>The three bands — whose turn is it?</h4>
         <table>
           <tr><td><b>Need you today</b></td><td>Actions only you can take.</td></tr>
-          <tr><td><b>Waiting on others</b></td><td>You've done your part — a clock is running.</td></tr>
+          <tr><td><b>Waiting on others and for code PR to merge</b></td><td>You've done your part — either the code PR still needs to merge (no clock yet), or a reminder's out and the clock is running.</td></tr>
           <tr><td><b>Monitoring</b></td><td>The author replied and you've already looked. Collapsed by default — has its own quiet-conversation clock, and resurfaces if it goes quiet for a week.</td></tr>
         </table>
       </section>
@@ -1817,6 +2015,7 @@ ${filterBar}
           <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase.</td></tr>
           <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
           <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was abandoned.</td></tr>
+          <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on either PR for 30+ days — purely informational, no clock of its own.</td></tr>
         </table>
       </section>
 
@@ -1834,8 +2033,9 @@ ${filterBar}
       <section>
         <h4>Good to know</h4>
         <table>
-          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
+          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
           <tr><td>Approvals</td><td>"approved by …" is shown as a fact everywhere. The "Final review, then merge" action only appears once the code PR has merged.</td></tr>
+          <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
           <tr><td>Filtering</td><td>The tabs above filter by <b>repo</b> and <b>priority</b>. Priority counts follow whichever repo is selected.</td></tr>
           <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock.</td></tr>
         </table>
@@ -1863,16 +2063,20 @@ ${monitoringSection}
 
   function applyFilters(){
     const { repo, pri } = filterState;
-    // A specific priority is meaningful only in "Need you today"; the CSS
-    // hides the Waiting/Monitoring bands whenever pri !== 'all'.
+    // A specific severity priority is meaningful only in "Need you today";
+    // the CSS hides the Waiting/Monitoring bands whenever pri is a severity.
+    // "stale" is different — it spans every band, so it filters rows within
+    // each band instead of hiding whole bands.
     document.querySelectorAll('.row').forEach(function(row){
       const okRepo = repo === 'all' || row.getAttribute('data-repo') === repo;
-      const okPri  = pri  === 'all' || row.getAttribute('data-sev')  === pri;
+      const okPri  = pri === 'all' ||
+        (pri === 'stale' ? row.getAttribute('data-stale') === '1' : row.getAttribute('data-sev') === pri);
       row.classList.toggle('hidden', !(okRepo && okPri));
     });
     document.querySelectorAll('.mon-row').forEach(function(row){
       const okRepo = repo === 'all' || row.getAttribute('data-repo') === repo;
-      row.classList.toggle('hidden', !okRepo);
+      const okPri = pri === 'all' || (pri === 'stale' && row.getAttribute('data-stale') === '1');
+      row.classList.toggle('hidden', !(okRepo && okPri));
     });
     // Recompute per-section visible counts and empty states.
     document.querySelectorAll('section[data-band]').forEach(function(sec){
@@ -1881,13 +2085,14 @@ ${monitoringSection}
       rows.forEach(function(r){ if(!r.classList.contains('hidden')) vis++; });
       const badge = sec.querySelector('.sec-head .count');
       if (badge) badge.textContent = vis;
-      const hiddenByBand = sec.classList.contains('band-secondary') && pri !== 'all';
+      const hiddenByBand = sec.classList.contains('band-secondary') && pri !== 'all' && pri !== 'stale';
       sec.classList.toggle('all-hidden', vis === 0 && !hiddenByBand);
     });
     // Priority tab counts follow the repo selection — "3 triage" should mean
     // 3 in the repo you're looking at, not 3 across everything. These counts
-    // are scoped to "Need you today" only and ignore the *priority* filter
-    // itself (each tab shows what it would find if you picked it next).
+    // ignore the *priority* filter itself (each tab shows what it would find
+    // if you picked it next). Severity counts are Need-today only; Stale
+    // counts across every band, to match what picking it actually reveals.
     const todayRows = document.querySelectorAll('section[data-band="today"] .row');
     const bySev = { critical: 0, serious: 0, act: 0, triage: 0 };
     let repoTotal = 0;
@@ -1897,11 +2102,18 @@ ${monitoringSection}
       const sev = row.getAttribute('data-sev');
       if (bySev[sev] != null) bySev[sev]++;
     });
+    let staleTotal = 0;
+    document.querySelectorAll('.row, .mon-row').forEach(function(row){
+      if (repo !== 'all' && row.getAttribute('data-repo') !== repo) return;
+      if (row.getAttribute('data-stale') === '1') staleTotal++;
+    });
     document.querySelectorAll('.ftab[data-f="pri"]').forEach(function(tab){
       const fc = tab.querySelector('.fc');
       if (!fc) return;
       const v = tab.getAttribute('data-v');
-      fc.textContent = v === 'all' ? repoTotal : (bySev[v] || 0);
+      if (v === 'all') fc.textContent = repoTotal;
+      else if (v === 'stale') fc.textContent = staleTotal;
+      else fc.textContent = bySev[v] || 0;
     });
   }
 

@@ -24,12 +24,14 @@ anything on GitHub. It only tells you what to do next.
 ## Setup (1 minute)
 
 ### 1. Get a GitHub Token
+
 - Go to: https://github.com/settings/tokens
 - Click "Generate new token" (classic)
 - Check only: `public_repo` (read access)
 - Copy the token
 
 ### 2. Set Token
+
 Create a `.env` file in this directory:
 ```
 GITHUB_TOKEN="your_token_here"
@@ -40,15 +42,23 @@ export GITHUB_TOKEN="your_token_here"
 ```
 
 ### 3. (Optional) Team mode
+
 By default, "the operator" (you) is whoever the token belongs to. If several
 maintainers share triage duty and you want any of their reviews/reminders to
-count as "done", add their GitHub logins to `.env`:
+count as "done", list their GitHub logins in `maintainers.json` (committed,
+shared by the whole team — not a secret, just usernames):
+
+```json
+{
+	"maintainers": ["maintainer1", "maintainer2"]
+}
 ```
-OPERATOR_LOGINS="maintainer1,maintainer2"
-```
-The authenticated user always counts, whether or not this is set.
+
+The authenticated user (whoever the token belongs to) always counts, whether
+or not they're listed here.
 
 ### 4. Run
+
 ```bash
 node tracker.js
 ```
@@ -78,6 +88,7 @@ question: **whose turn is it?**
 On top of that lifecycle state, independent flags can light up on **any**
 row, regardless of its band, because they're triggered by separate
 conditions:
+
 - **Remove `pending-pr-merge` label** — the linked code PR merged.
 - **Final review, then merge** — someone other than you approved the docs PR
   (adds a "backport first" step if the PR targets an older release branch).
@@ -99,19 +110,33 @@ since only open PRs are fetched.
 The clock only counts comments that explicitly **@-tag the code PR author**
 — on either the code PR or the docs PR. A plain comment or review doesn't
 start or reset it; it has to be a comment that literally names them. The tag
-can be **yours or a teammate's** (anyone who isn't the code author) — whoever
-tags the author is reminding them, so any such tag drives the clock, and the
-row names who sent it. This is deliberate: an @-mention is the only signal
-precise enough to say "someone asked them directly."
+can be **yours, a teammate's, or Promptless's** (the AI docs bot — the one
+bot let into this, since it speaks for the docs PR when it relays "I've
+addressed your feedback" to the code author) — whoever tags the author is
+reminding them, so any such tag drives the clock, and the row names who sent
+it. This is deliberate: an @-mention is the only signal precise enough to
+say "someone asked them directly." It's also chronological, not
+role-based — if Promptless's tag is the *most recent* one, it's what the
+clock and row text go by, even if you touched the PR earlier for something
+unrelated (e.g. a side conversation with Promptless itself) — that touch
+didn't answer the author, so it doesn't reset anything.
 
 The clock can't start until the linked code PR has merged (before that, the
 PR just sits in **Waiting on others** as "Code PR is still open" — no count).
-Once merged and reviewed:
+It does **not** wait for you to have formally reviewed the docs PR first —
+some docs PRs need no content changes at all, so review is skipped by
+design and you're really just waiting on the code author to confirm things
+look right. Once merged:
 
-- **No tag sent yet**: shows "Remind the code author" — no count.
+- **No tag sent yet**: shows "Remind code PR author — code PR merged" — no
+  count.
 - **Day 0–6 since your last tag**: waiting on others.
 - **Day 7**: send a follow-up.
 - **Day 14**: escalate to the core team.
+
+If you still haven't formally reviewed the docs PR by the time any of this
+kicks in, a separate **"Review this docs PR — code PR merged"** chip sits
+alongside whatever the clock is showing, so that's never lost either.
 
 The clock stops the moment the code author responds — on either PR, as a
 comment, review, or approval — and the PR moves to **Need you today** as
@@ -124,14 +149,29 @@ asking you to send another explicit reminder.
 
 A docs PR can have a live conversation the clock above doesn't model — e.g.
 a contributor or another maintainer asks a question and nobody's replied.
-When the most recent human comment on a docs PR is unanswered, the row shows
-a **👀 X is waiting on Y** chip and surfaces in **Need you today**:
+The row shows a **👀 X is waiting on Y** chip in whichever band it's
+currently in (Need you today, Waiting, or Monitoring):
 
 - Waiting on **you** (someone @-tagged you or a teammate operator) → orange,
   sorted high — you owe a reply.
 - Waiting on a **third party**, or an **untagged** comment → blue, just so
-  you can keep an eye on it. No clock (an @-tag of *the code author*, by
-  contrast, feeds the escalation clock above instead).
+  you can keep an eye on it. No clock.
+- Waiting on **the code author** — any @-tag of them (yours, a teammate's,
+  or Promptless's) feeds the escalation clock above, so once the code PR
+  has merged it's named right in the row's own text ("promptless-for-oss
+  reminded the author, no reply since") rather than a separate chip. This
+  chip only steps in where the clock can't yet — mainly pre-merge, where
+  there's no clock at all — checked independently of whatever the single
+  most recent comment happens to be about, so a later, unrelated exchange
+  with someone else can't bury it.
+
+## Stale
+
+Independent of any of the above: if neither the docs PR nor its linked code
+PR has had any activity for more than 30 days, the row gets a dashed
+**🕸 Stale** badge naming the day count. It's purely an inactivity signal —
+it doesn't change the category or the clock, just flags rows that have gone
+quiet for longer than normal, in case something fell through the cracks.
 
 ## Approvals
 
@@ -148,10 +188,13 @@ moment the code PR merges.
 ## Filtering
 
 The report has two tab strips at the top: filter by **repo** and by
-**priority** (Critical / Serious / Act / Triage). Picking a specific
-priority focuses "Need you today" and hides the calmer Waiting / Monitoring
-bands. Counts update as you filter; it's all client-side in the one HTML
-file.
+**priority** (Critical / Serious / Act / Triage / Stale). Picking a severity
+tab (Critical–Triage) focuses "Need you today" and hides the calmer
+Waiting / Monitoring bands, since severity is a Need-today concept. **Stale**
+is different — it spans every band, so picking it filters rows *within*
+Need today, Waiting, and Monitoring alike instead of hiding any of them,
+since a stale PR could be sitting quietly in any of the three. Counts update
+as you filter; it's all client-side in the one HTML file.
 
 ## Caching
 
