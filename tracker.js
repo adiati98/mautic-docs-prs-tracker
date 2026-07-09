@@ -300,24 +300,21 @@ function tryExtractAppPR(text) {
 	return null
 }
 
-// Extract app PR info from description (supports any mautic/* repo). A
-// description's free-text prose can legitimately mention an unrelated PR
-// number before ever getting to the one that's actually linked (e.g. "similar
-// to what we did in mautic/mautic#100" ahead of the real reference) — a
-// plain first-match-in-the-whole-body scan would silently link the wrong
-// code PR. So this looks first under a recognized heading — Promptless's own
-// "Trigger Events" convention, or this repo's PR-template "Linked issue"
-// section — and only falls back to scanning the whole body if neither
-// heading is present, which is exactly today's behavior for anything
-// differently formatted.
+// Extract app PR info from description (supports any mautic/* repo). Takes
+// the first match in the body.
+//
+// A "prefer a recognized heading (Promptless's 'Trigger Events', this repo's
+// 'Linked issue' template section) over a plain first-match scan" version of
+// this was tried and reverted: on mautic/user-documentation#774, the
+// "Trigger Events" PR (mautic/api-library#348, a validation tweak) was a
+// different, less-relevant PR than the one actually mentioned first in the
+// prose (mautic/mautic#15404, the real feature PR) — humans in the thread
+// confirmed the first-mentioned one was the one that mattered for review
+// purposes. So "first PR number mentioned" is closer to this project's real
+// convention than "whatever's under this particular heading," at least
+// until there's positive evidence otherwise.
 function extractAppPR(description) {
 	if (!description) return null
-
-	const heading = description.match(/(?:Trigger Events|Linked issue)[\s\S]*/i)
-	if (heading) {
-		const scoped = tryExtractAppPR(heading[0])
-		if (scoped) return scoped
-	}
 	return tryExtractAppPR(description)
 }
 
@@ -542,8 +539,15 @@ function computeCommunityThread({
 	// gated by whatever the single latest comment overall happens to be
 	// about. A later, unrelated exchange with someone else (e.g. Promptless
 	// replying to you) shouldn't hide an author-directed tag that's still
-	// sitting unanswered. A tag *from* an operator is skipped here — that's
-	// a reminder, tracked by the escalation clock instead.
+	// sitting unanswered. An operator's own tag used to be excluded here on
+	// the assumption the escalation clock's metaLine text always names them
+	// instead — but that text only names the pinger when they're *not* an
+	// operator (see metaLine's needs-followup/needs-escalate-core-team/
+	// waiting-code-author-response cases); for an operator ping it goes
+	// generic ("reminder sent, waiting for a reply") and never says who, so
+	// excluding it here just made the tag disappear entirely instead of
+	// being covered elsewhere. remindedOpenChip below handles not double-
+	// narrating the non-operator case.
 	if (appPRAuthor) {
 		const authorTags = comments.filter(
 			(c) => c.user.login !== appPRAuthor && mentions(c.body, appPRAuthor),
@@ -552,7 +556,7 @@ function computeCommunityThread({
 			(best, c) => (!best || new Date(c.created_at) > new Date(best.created_at) ? c : best),
 			null,
 		)
-		if (lastAuthorTag && !operatorLogins.has(lastAuthorTag.user.login.toLowerCase())) {
+		if (lastAuthorTag) {
 			const tagDate = new Date(lastAuthorTag.created_at)
 			const answeredByAuthor = [...comments, ...reviews].some(
 				(e) =>
@@ -563,7 +567,7 @@ function computeCommunityThread({
 				return {
 					lit: true,
 					commenter: lastAuthorTag.user.login,
-					commenterIsOperator: false,
+					commenterIsOperator: operatorLogins.has(lastAuthorTag.user.login.toLowerCase()),
 					waitingOn: appPRAuthor,
 					waitingOnKind: "author",
 					date: tagDate,
@@ -1613,17 +1617,30 @@ function communityChip(pr) {
 // tag from a non-operator (community.waitingOnKind === "author") renders as
 // a "waiting on" chip; once *you've* pinged them (any category, tracked via
 // remindedWhileOpen), it's a done-fact "already reminded" chip instead.
+// These categories carry their own dedicated nudge/action chip (Remind /
+// Check the author's response / Send a follow-up / Escalate), which already
+// signals "you're the one waiting" on its own — naming the pinger on top of
+// that chip is redundant regardless of who sent it, so these stay suppressed
+// unconditionally, same as before.
+const NAMED_BY_OWN_CHIP = new Set([
+	"needs-remind-code-author",
+	"needs-check-author-response",
+	"needs-followup",
+	"needs-escalate-core-team",
+])
+
 function remindedOpenChip(pr) {
-	// Skip this when the category already narrates the same outstanding tag
-	// inline (e.g. needs-followup's "X reminded the author, no reply
-	// since") — now that Promptless's tags feed the ping clock too, that's
-	// the common case post-merge; this chip is left to cover what the clock
-	// can't reach, mainly pre-merge (waiting-code-pr-merge has no clock yet).
-	if (
-		pr.community.lit &&
-		pr.community.waitingOnKind === "author" &&
-		!REMINDER_SHOWN_INLINE.has(pr.category)
-	) {
+	// Otherwise, skip this only when the category's own metaLine text
+	// already names the same outstanding tag (e.g.
+	// waiting-code-author-response's "X reminded the author, waiting for a
+	// reply") — which only happens when the ping wasn't from an operator; an
+	// operator ping renders generically there ("reminder sent, waiting for a
+	// reply") without naming anyone, so for these passive categories (no
+	// chip of their own) this chip is what's left to actually say who.
+	const alreadyNamedInline =
+		NAMED_BY_OWN_CHIP.has(pr.category) ||
+		(pr.category === "waiting-code-author-response" && !pr.lastPingByOperator)
+	if (pr.community.lit && pr.community.waitingOnKind === "author" && !alreadyNamedInline) {
 		return {
 			cls: "manual",
 			text: `👀 ${escapeHtml(pr.community.commenter)} is waiting on ${escapeHtml(pr.community.waitingOn)}`,
