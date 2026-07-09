@@ -98,6 +98,26 @@ function makeRequest(url) {
 	})
 }
 
+// GitHub caps every list endpoint at 100 items per page regardless of what
+// (if anything) the caller passes as per_page — silently, with no error and
+// no indication in the response that more pages exist beyond the Link
+// header. A PR that crosses that boundary would have its *oldest* items
+// returned (comments/reviews) or an arbitrary subset (branches), so without
+// this, activity past page 1 just vanishes from every derivation that reads
+// it. Loops until a short page confirms there's nothing left.
+async function fetchAllPages(baseUrl) {
+	const results = []
+	let page = 1
+	for (;;) {
+		const sep = baseUrl.includes("?") ? "&" : "?"
+		const batch = await makeRequest(`${baseUrl}${sep}per_page=100&page=${page}`)
+		results.push(...batch)
+		if (batch.length < 100) break
+		page++
+	}
+	return results
+}
+
 async function getAuthenticatedUser() {
 	try {
 		const user = await makeRequest("https://api.github.com/user")
@@ -110,8 +130,7 @@ async function getAuthenticatedUser() {
 
 async function getOpenPRs(repo) {
 	try {
-		const url = `https://api.github.com/repos/${repo}/pulls?state=open&per_page=100`
-		return await makeRequest(url)
+		return await fetchAllPages(`https://api.github.com/repos/${repo}/pulls?state=open`)
 	} catch (e) {
 		console.error(`Error fetching PRs from ${repo}:`, e.message)
 		return []
@@ -131,7 +150,7 @@ function isHuman(login) {
 // never be mistaken for an empty result and cached as one.
 async function fetchPRReviews(repo, number) {
 	try {
-		return await makeRequest(
+		return await fetchAllPages(
 			`https://api.github.com/repos/${repo}/pulls/${number}/reviews`,
 		)
 	} catch (e) {
@@ -142,7 +161,7 @@ async function fetchPRReviews(repo, number) {
 
 async function fetchIssueComments(repo, number) {
 	try {
-		return await makeRequest(
+		return await fetchAllPages(
 			`https://api.github.com/repos/${repo}/issues/${number}/comments`,
 		)
 	} catch (e) {
@@ -229,9 +248,7 @@ async function getLatestReleaseBranch(repo) {
 	if (branchCache.has(repo)) return branchCache.get(repo)
 	let latest = null
 	try {
-		const branches = await makeRequest(
-			`https://api.github.com/repos/${repo}/branches?per_page=100`,
-		)
+		const branches = await fetchAllPages(`https://api.github.com/repos/${repo}/branches`)
 		const versioned = branches
 			.map((b) => b.name)
 			.filter((name) => RELEASE_BRANCH_PATTERN.test(name))
@@ -270,26 +287,38 @@ function backportContradictsMilestone(baseBranch, milestoneTitle) {
 	return mv !== null && mv !== baseBranch
 }
 
-// Extract app PR info from description (supports any mautic/* repo)
+function tryExtractAppPR(text) {
+	let match = text.match(/mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/i)
+	if (match) return { repo: `mautic/${match[1]}`, number: match[2] }
+
+	match = text.match(/mautic\s+PR\s*#(\d+)/i)
+	if (match) return { repo: "mautic/mautic", number: match[1] }
+
+	match = text.match(/\[PR\s*#(\d+)\]/i)
+	if (match) return { repo: "mautic/mautic", number: match[1] }
+
+	return null
+}
+
+// Extract app PR info from description (supports any mautic/* repo). A
+// description's free-text prose can legitimately mention an unrelated PR
+// number before ever getting to the one that's actually linked (e.g. "similar
+// to what we did in mautic/mautic#100" ahead of the real reference) — a
+// plain first-match-in-the-whole-body scan would silently link the wrong
+// code PR. So this looks first under a recognized heading — Promptless's own
+// "Trigger Events" convention, or this repo's PR-template "Linked issue"
+// section — and only falls back to scanning the whole body if neither
+// heading is present, which is exactly today's behavior for anything
+// differently formatted.
 function extractAppPR(description) {
 	if (!description) return null
 
-	let match = description.match(/mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/i)
-	if (match) {
-		return { repo: `mautic/${match[1]}`, number: match[2] }
+	const heading = description.match(/(?:Trigger Events|Linked issue)[\s\S]*/i)
+	if (heading) {
+		const scoped = tryExtractAppPR(heading[0])
+		if (scoped) return scoped
 	}
-
-	match = description.match(/mautic\s+PR\s*#(\d+)/i)
-	if (match) {
-		return { repo: "mautic/mautic", number: match[1] }
-	}
-
-	match = description.match(/\[PR\s*#(\d+)\]/i)
-	if (match) {
-		return { repo: "mautic/mautic", number: match[1] }
-	}
-
-	return null
+	return tryExtractAppPR(description)
 }
 
 // ---------------------------------------------------------------------------
@@ -489,18 +518,22 @@ function computeCommunityThread({
 	rawDocsReviews,
 	operatorLogins,
 	appPRAuthor,
-	lastApprovalDate,
+	lastOperatorApprovalDate,
 }) {
 	const none = { lit: false }
-	// Once the PR is approved, whatever was said before that is settled
+	// Once an operator approves, whatever was said before that is settled
 	// business — only what's happened *since* is still live. Without this, an
 	// old tag from before the approval keeps reading as an outstanding thread
-	// even after the approval has moved things on.
+	// even after the approval has moved things on. Scoped to an operator's
+	// own approval specifically — a non-operator approval (the code author, a
+	// community reviewer) doesn't carry the same "someone with authority
+	// looked at the whole thread" weight, so it shouldn't get to silently
+	// erase someone else's still-unanswered question.
 	let comments = rawDocsComments.filter((c) => !IGNORED_BOTS.includes(c.user.login))
 	let reviews = rawDocsReviews.filter((r) => !IGNORED_BOTS.includes(r.user.login))
-	if (lastApprovalDate) {
-		comments = comments.filter((c) => new Date(c.created_at) > lastApprovalDate)
-		reviews = reviews.filter((r) => new Date(r.submitted_at) > lastApprovalDate)
+	if (lastOperatorApprovalDate) {
+		comments = comments.filter((c) => new Date(c.created_at) > lastOperatorApprovalDate)
+		reviews = reviews.filter((r) => new Date(r.submitted_at) > lastOperatorApprovalDate)
 	}
 	if (comments.length === 0) return none
 
@@ -660,12 +693,20 @@ async function main() {
 	let cacheHits = 0
 	let cacheMisses = 0
 	let fetchFailures = 0
+	let processingFailures = 0
 
 	const prData = []
 	for (let i = 0; i < allPRs.length; i++) {
 		const pr = allPRs[i]
 		process.stdout.write(`\r  Processing PR ${i + 1}/${allPRs.length}`)
 
+		// One PR with unexpected data (a malformed milestone, an odd body
+		// shape) must not take the whole run down — every other fetch in
+		// this loop already fails soft with its own try/catch; this is the
+		// same guarantee for the categorization logic itself. A failed PR is
+		// simply left out of this run's report rather than losing all of
+		// them.
+		try {
 		const isDraft = pr.draft
 		const hasLabel = pr.labels.some((l) => l.name === PENDING_LABEL)
 		const hasBackportLabel = pr.labels.some((l) => l.name === BACKPORT_LABEL)
@@ -833,6 +874,17 @@ async function main() {
 		// outstanding comment "wins" — and by noteSinceApprovalFlag below, to
 		// catch anything that landed after the fact.
 		const lastApprovalDate = latestDate(qualifyingApprovals.map((r) => new Date(r.submitted_at)))
+		// Same, but scoped to an operator's own approval specifically — used
+		// only to gate dropping earlier community-thread comments (see
+		// computeCommunityThread). A non-operator approval doesn't carry the
+		// same "a maintainer looked at the whole thread and signed off"
+		// weight, so it shouldn't get to silently erase someone else's still-
+		// unanswered question just because it happened to land first.
+		const lastOperatorApprovalDate = latestDate(
+			qualifyingApprovals
+				.filter((r) => operatorLogins.has(r.user.login.toLowerCase()))
+				.map((r) => new Date(r.submitted_at)),
+		)
 		// A comment or a non-approving review after the latest approval — the
 		// approval might not actually be the last word (a late second thought,
 		// a rebase/backport note left alongside it), so it's worth a glance
@@ -873,7 +925,7 @@ async function main() {
 			rawDocsReviews,
 			operatorLogins,
 			appPRAuthor,
-			lastApprovalDate,
+			lastOperatorApprovalDate,
 		})
 
 		// §5a — independent action flags.
@@ -1095,6 +1147,12 @@ async function main() {
 			staleFlag,
 			category,
 		})
+		} catch (err) {
+			console.error(
+				`\n  ⚠ skipping ${cacheKey(pr.sourceRepo, pr.number)} — processing failed: ${err.message}`,
+			)
+			processingFailures++
+		}
 	}
 
 	// Drop entries for docs PRs no longer open (merged/closed) so the cache
@@ -1106,8 +1164,10 @@ async function main() {
 	saveCache(cache)
 
 	const failNote = fetchFailures > 0 ? `, ${fetchFailures} fetch failed (kept prior)` : ""
+	const skippedNote =
+		processingFailures > 0 ? `, ${processingFailures} skipped (processing failed)` : ""
 	console.log(
-		`\n✅ Done! 📦 cache: ${cacheHits} reused, ${cacheMisses} fetched${failNote}\n`,
+		`\n✅ Done! 📦 cache: ${cacheHits} reused, ${cacheMisses} fetched${failNote}${skippedNote}\n`,
 	)
 
 	generateHTML(prData, { operatorUsername: authenticatedUser })

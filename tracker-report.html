@@ -403,7 +403,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated">Updated Thu, Jul 9, 11:13 PM</span>
+    <span class="updated">Updated Thu, Jul 9, 11:58 PM</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
@@ -411,12 +411,12 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">37</div>
+      <div class="num">38</div>
       <div><div class="lbl">Need you today</div>
-      <div class="sub"><span class="dot critical"></span>8 overdue · <span class="dot serious"></span>12 follow-up</div></div>
+      <div class="sub"><span class="dot critical"></span>7 overdue · <span class="dot serious"></span>12 follow-up</div></div>
     </button>
     <button class="tile" data-goto="waiting" type="button">
-      <div class="num">22</div>
+      <div class="num">21</div>
       <div><div class="lbl">Waiting on others or for code PR to merge</div>
       <div class="sub">next follow-up due in 6 days</div></div>
     </button>
@@ -429,7 +429,7 @@
 
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">59</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">17</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">42</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">37</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">8</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">12</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">6</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">11</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">38</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">7</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">12</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">8</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">11</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
   </div>
   <details class="legend">
     <summary><span class="tw">▶</span> New here? How to read this board</summary>
@@ -516,7 +516,7 @@
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">37</span>
+      <h2>Need you today</h2><span class="count">38</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -565,15 +565,6 @@
           <div class="chips"><span class="chip nudge3">▲ Escalate to core team</span></div>
         </div>
         <div class="when"><div class="days critical">Day 14</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0">
-        <div class="edge"></div>
-        <div>
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/361" target="_blank" class="name">user-documentation #361</a> <span class="desc">Campaign import export user docs</span></div>
-          <div class="meta">No linked code PR · docs author <b>dcjarvis</b> · no reply since your review 27 days ago</div>
-          <div class="chips"><span class="chip nudge3">▲ Escalate to core team</span><span class="chip manual">👀 adiati98 is waiting on vukovicpredrag</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 27</div><div class="sub">since your review</div></div>
       </article>
       <article class="row" data-sev="serious" data-repo="developer-documentation" data-stale="0" data-approved="0">
         <div class="edge"></div>
@@ -683,12 +674,30 @@
         </div>
         <div class="when"><div class="days serious">Day 12</div><div class="sub">since your review · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank" class="name">user-documentation #774</a> <span class="desc">Fix contradictory note about duplicate Stage weights</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/api-library/pull/348" target="_blank">#348</a> <span class="pill merged">Merged</span> · author <b>escopecz</b> · you reviewed today</div>
+          <div class="chips"><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">no reminder sent yet</div></div>
+      </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1">
         <div class="edge"></div>
         <div>
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/800" target="_blank" class="name">user-documentation #800</a> <span class="desc">docs: Document Contact change log CSV export feature</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15994" target="_blank">#15994</a> <span class="pill merged">Merged</span> · author <b>BeniShoga1</b> · targets <b>7.1</b> (latest is <b>7.2</b>)</div>
           <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip backport">Final review · backport, then merge</span></div>
+        </div>
+        <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1">
+        <div class="edge"></div>
+        <div>
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/361" target="_blank" class="name">user-documentation #361</a> <span class="desc">Campaign import export user docs</span></div>
+          <div class="meta">No linked code PR · targets <b>7.0</b> (latest is <b>7.2</b>)</div>
+          <div class="chips"><span class="chip finish">Approved by vukovicpredrag</span><span class="chip act">Note since approval — take a look</span><span class="chip backport">Final review · backport, then merge</span></div>
         </div>
         <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
       </article>
@@ -859,7 +868,7 @@
 
   <section class="band-secondary" data-band="waiting">
     <div class="sec-head">
-      <h2>Waiting on others or for code PR to merge</h2><span class="count">22</span>
+      <h2>Waiting on others or for code PR to merge</h2><span class="count">21</span>
       <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
     </div>
     <div class="card">
@@ -871,15 +880,6 @@
           
         </div>
         <div class="when"><div class="days">Day 1</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:14%"></i></div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0">
-        <div class="edge"></div>
-        <div>
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank" class="name">user-documentation #774</a> <span class="desc">Fix contradictory note about duplicate Stage weights</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15404" target="_blank">#15404</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminder sent, waiting for a reply</div>
-          
-        </div>
-        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0">
         <div class="edge"></div>
@@ -1065,7 +1065,7 @@
   </section>
 
   </main>
-  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 11:13 PM</footer>
+  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · Thu, Jul 9, 11:58 PM</footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
