@@ -2718,9 +2718,9 @@ function generateReminderHTML(groups, { now }) {
     <ul>
       <li>Click your name below to jump straight to your section.</li>
       <li>
-        Check a box to track what you've reviewed — it saves to
-        <b>your own browser</b> only, and updates automatically as PRs get
-        resolved.
+        Check a box to track your progress — it saves to <b>your own
+        browser</b> only. The reminder list updates when the tracker runs on
+        schedule.
       </li>
     </ul>
     <p class="intro-lead">To review a PR:</p>
