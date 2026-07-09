@@ -767,6 +767,17 @@ async function main() {
 			pingEligibleDocsComments,
 			pr.user.login,
 		)
+		// The docs PR author's own most recent activity — the equivalent of
+		// lastAuthorEventDate, but for the docs PR's own author rather than a
+		// linked code PR's author. Powers the standalone-PR clock below.
+		const docsAuthorLastEventDate = latestDate([
+			...docsComments
+				.filter((c) => c.user.login === pr.user.login)
+				.map((c) => new Date(c.created_at)),
+			...docsReviews
+				.filter((r) => r.user.login === pr.user.login)
+				.map((r) => new Date(r.submitted_at)),
+		])
 
 		const operatorReviewDate = computeOperatorReviewDate(
 			docsReviews,
@@ -877,7 +888,34 @@ async function main() {
 		if (codeClosed) {
 			category = "needs-close-docs-pr"
 		} else if (operatorReviewDone && !appPRNumber) {
-			category = "blocked-no-code-pr"
+			// A standalone docs PR has no linked code PR to wait on, so unlike
+			// the code-author clock below, your own review is itself the ask
+			// — no explicit @-tag is required to start counting, since
+			// there's no merge to defer to instead.
+			//
+			// A non-operator approval settles it the same way it does the
+			// code-author flow — unless it still needs a rebase, since a
+			// wrong branch target is worth flagging regardless of content
+			// approval.
+			if (approvedByNonOperator && !needsRebaseFlag) {
+				category = "monitoring"
+			} else if (
+				docsAuthorLastEventDate &&
+				lastOperatorTouchDate &&
+				docsAuthorLastEventDate > lastOperatorTouchDate
+			) {
+				// They've replied since your most recent touch — come take a
+				// look. (Anchored on your *latest* comment/review, not the
+				// first one — you may well have looked more than once.)
+				category = "needs-check-author-response"
+			} else {
+				const daysSinceReview = Math.floor(
+					(Date.now() - lastOperatorTouchDate.getTime()) / 86400000,
+				)
+				if (daysSinceReview >= ESCALATE_DAYS) category = "needs-escalate-core-team"
+				else if (daysSinceReview >= FOLLOWUP_DAYS) category = "needs-followup"
+				else category = "blocked-no-code-pr"
+			}
 		} else if (isDraft && (!hasLabel || !hasMilestone)) {
 			category = "needs-label-and-milestone"
 		} else if (!isDraft && !hasMilestone) {
@@ -889,7 +927,16 @@ async function main() {
 			// author to confirm instead. Whether you've reviewed is tracked
 			// separately (reviewPendingFlag below) as an overlay chip, not a
 			// gate on this chain.
-			if (!pingEverSent) {
+			//
+			// An approval from anyone other than a maintainer — the code
+			// author themselves, or a community reviewer — outranks the
+			// clock entirely: maintainers typically approve *last*, as a
+			// final sign-off, so a non-maintainer approval is a strong,
+			// independent signal that content-wise this is done. No more
+			// nudging; it settles into monitoring like a normal reply would.
+			if (devApproved || approvedByNonOperator) {
+				category = "monitoring"
+			} else if (!pingEverSent) {
 				category = "needs-remind-code-author"
 			} else if (lastAuthorEventDate && lastAuthorEventDate > lastPingDate) {
 				// Author replied since the last ping.
@@ -977,6 +1024,7 @@ async function main() {
 			lastOperatorTouchDate,
 			daysSinceOperatorTouch,
 			lastAuthorEventDate,
+			docsAuthorLastEventDate,
 			reviewPendingFlag,
 			community,
 			remindedWhileOpen,
@@ -1073,6 +1121,15 @@ function daysAgoText(date) {
 	return `${days} days ago`
 }
 
+// needs-followup/needs-escalate-core-team/needs-check-author-response are
+// shared by two clocks: the code-author one (anchored on the last ping) and
+// the standalone-docs-PR one (anchored on your own review, no linked code
+// PR to wait on) — this picks whichever anchor actually applies.
+function clockDaysSince(pr) {
+	const anchor = pr.appPRNumber ? pr.lastPingDate : pr.lastOperatorTouchDate
+	return anchor ? Math.floor((Date.now() - anchor.getTime()) / 86400000) : null
+}
+
 const SEV_RANK = { critical: 5, dismiss: 4, serious: 3, act: 2, triage: 1, none: 0 }
 
 // Severity from the primary category alone.
@@ -1151,14 +1208,22 @@ function metaLine(pr) {
 			break
 		case "needs-escalate-core-team":
 		case "needs-followup":
-			parts.push(
-				pr.pingEverSent && !pr.lastPingByOperator
-					? `${escapeHtml(pr.lastPingActor)} reminded the author, no reply since`
-					: "reminded, no reply since",
-			)
+			if (!pr.appPRNumber) {
+				parts.push(`docs author <b>${escapeHtml(pr.docsAuthor)}</b>`)
+				parts.push(`no reply since your review ${daysAgoText(pr.lastOperatorTouchDate)}`)
+			} else {
+				parts.push(
+					pr.pingEverSent && !pr.lastPingByOperator
+						? `${escapeHtml(pr.lastPingActor)} reminded the author, no reply since`
+						: "reminded, no reply since",
+				)
+			}
 			break
 		case "needs-check-author-response":
-			parts.push(`responded ${daysAgoText(pr.lastAuthorEventDate)}`)
+			if (!pr.appPRNumber) parts.push(`docs author <b>${escapeHtml(pr.docsAuthor)}</b>`)
+			parts.push(
+				`responded ${daysAgoText(pr.appPRNumber ? pr.lastAuthorEventDate : pr.docsAuthorLastEventDate)}`,
+			)
 			break
 		case "needs-remind-code-author":
 			if (pr.pingEverSent) {
@@ -1181,7 +1246,7 @@ function metaLine(pr) {
 			break
 		case "blocked-no-code-pr":
 			parts.push(`docs author <b>${escapeHtml(pr.docsAuthor)}</b>`)
-			parts.push(`you reviewed ${daysAgoText(pr.operatorReviewDate)}`)
+			parts.push(`you reviewed ${daysAgoText(pr.lastOperatorTouchDate)}`)
 			break
 		case "waiting-code-author-response":
 			parts.push(
@@ -1222,16 +1287,17 @@ function buildClock(pr) {
 			return { big: "—", sub: "code PR abandoned" }
 		case "needs-escalate-core-team":
 			return {
-				big: `Day ${pr.daysSincePing}`,
+				big: `Day ${clockDaysSince(pr)}`,
 				bigClass: "critical",
-				sub: "since reminder",
+				sub: pr.appPRNumber ? "since reminder" : "since your review",
 			}
 		case "needs-followup": {
-			const pct = Math.min(100, Math.round((pr.daysSincePing / ESCALATE_DAYS) * 100))
+			const days = clockDaysSince(pr)
+			const pct = Math.min(100, Math.round((days / ESCALATE_DAYS) * 100))
 			return {
-				big: `Day ${pr.daysSincePing}`,
+				big: `Day ${days}`,
 				bigClass: "serious",
-				sub: `since reminder · escalate at ${ESCALATE_DAYS}`,
+				sub: `${pr.appPRNumber ? "since reminder" : "since your review"} · escalate at ${ESCALATE_DAYS}`,
 				meterPct: pct,
 				meterLate: true,
 			}
@@ -1239,7 +1305,7 @@ function buildClock(pr) {
 		case "needs-check-author-response":
 			return {
 				big: "Replied",
-				sub: `${daysAgoText(pr.lastAuthorEventDate)} · clock stopped`,
+				sub: `${daysAgoText(pr.appPRNumber ? pr.lastAuthorEventDate : pr.docsAuthorLastEventDate)} · clock stopped`,
 			}
 		case "needs-remind-code-author":
 			return pr.pingEverSent
@@ -1287,20 +1353,26 @@ function buildClock(pr) {
 
 function chipsFor(pr) {
 	const chips = []
+	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
+	// / "remind them" stops being an honest next step — it's not a fresh
+	// nudge anymore, it's a stale situation that needs a human decision, not
+	// another automated poke. The stale badge (added below) covers it instead.
 	switch (pr.category) {
 		case "needs-escalate-core-team":
-			chips.push({ cls: "nudge3", text: "▲ Escalate to core team" })
+			if (!pr.staleFlag) chips.push({ cls: "nudge3", text: "▲ Escalate to core team" })
 			break
 		case "needs-followup":
-			chips.push({ cls: "nudge2", text: "Send a follow-up" })
+			if (!pr.staleFlag) chips.push({ cls: "nudge2", text: "Send a follow-up" })
 			break
 		case "needs-remind-code-author":
-			chips.push({
-				cls: "nudge1",
-				text: pr.pingEverSent
-					? "Remind the code author again — quiet"
-					: "Remind code PR author — code PR merged",
-			})
+			if (!pr.staleFlag) {
+				chips.push({
+					cls: "nudge1",
+					text: pr.pingEverSent
+						? "Remind the code author again — quiet"
+						: "Remind code PR author — code PR merged",
+				})
+			}
 			break
 		case "needs-check-author-response":
 			chips.push({ cls: "act", text: "Check the author’s response" })
@@ -1316,7 +1388,13 @@ function chipsFor(pr) {
 			chips.push({ cls: "setup", text: "Add milestone" })
 			break
 		case "blocked-no-code-pr":
-			chips.push({ cls: "manual", text: "Remind docs PR author — no code PR linked" })
+			// A non-operator approval settles it too, same as the code-author
+			// clock above — unless it still needs a rebase, since the branch
+			// itself being wrong is a reason to keep nagging regardless of
+			// content approval.
+			if (!pr.staleFlag && (!pr.approvedByNonOperator || pr.needsRebaseFlag)) {
+				chips.push({ cls: "manual", text: "Remind docs PR author — no code PR linked" })
+			}
 			break
 		case "needs-close-docs-pr":
 			chips.push({ cls: "dismiss", text: "Close this docs PR" })
@@ -1601,7 +1679,18 @@ function buildReminderGroups(prData) {
 			remindLogin = pr.appPRAuthor
 			mark = reminderMark(pr)
 		} else {
-			if (pr.category !== "blocked-no-code-pr") continue
+			// The standalone-PR clock (see main()) can carry a docs PR through
+			// blocked-no-code-pr into needs-followup/needs-escalate-core-team
+			// too, purely from your review going unanswered — no tag required.
+			// This page's own bar stays higher regardless (see
+			// hasOutstandingDocsAuthorPing below): only include it once
+			// someone's actually tagged the author, same as before.
+			if (
+				!["blocked-no-code-pr", "needs-followup", "needs-escalate-core-team"].includes(
+					pr.category,
+				)
+			)
+				continue
 			if (!hasOutstandingDocsAuthorPing(pr)) continue
 			remindLogin = pr.docsAuthor
 			mark = {
@@ -1705,23 +1794,23 @@ function generateHTML(prData, { operatorUsername }) {
 	sevCounts.stale = prData.filter((p) => p.staleFlag).length
 
 	const repoTabs = [
-		`<button class="ftab active" data-f="repo" data-v="all">All <span class="fc">${prData.length}</span></button>`,
+		`<button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">${prData.length}</span></button>`,
 		...repoList.map(
 			(r) =>
-				`<button class="ftab" data-f="repo" data-v="${escapeHtml(r)}">${escapeHtml(r)} <span class="fc">${repoCounts[r]}</span></button>`,
+				`<button class="ftab" data-f="repo" data-v="${escapeHtml(r)}" aria-pressed="false">${escapeHtml(r)} <span class="fc">${repoCounts[r]}</span></button>`,
 		),
 	].join("")
 	const priorityTabs = [
-		`<button class="ftab active" data-f="pri" data-v="all">All <span class="fc">${needToday.length}</span></button>`,
+		`<button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">${needToday.length}</span></button>`,
 		...PRIORITY_TABS.map(
 			([v, label]) =>
-				`<button class="ftab" data-f="pri" data-v="${v}">${label} <span class="fc">${sevCounts[v]}</span></button>`,
+				`<button class="ftab" data-f="pri" data-v="${v}" aria-pressed="false">${label} <span class="fc">${sevCounts[v]}</span></button>`,
 		),
 	].join("")
 	const filterBar = `
   <div class="filters">
-    <div class="fbar"><span class="fbar-label">Repo</span>${repoTabs}</div>
-    <div class="fbar"><span class="fbar-label">Priority</span>${priorityTabs}</div>
+    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span>${repoTabs}</div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span>${priorityTabs}</div>
   </div>`
 
 	const needTodaySection =
@@ -1786,7 +1875,11 @@ function generateHTML(prData, { operatorUsername }) {
     --surface:#fcfcfb;
     --ink:#0b0b0b;
     --ink-2:#52514e;
-    --ink-3:#898781;
+    /* ink-3 and accent are darkened from their original #898781/#2a78d6 to
+       clear 4.5:1 body-text contrast against --page/--surface (WCAG AA) —
+       both were ~3.4-4.3:1, since neither was originally picked with small
+       running text in mind. */
+    --ink-3:#6e6c67;
     --line:#e1e0d9;
     --ring:rgba(11,11,11,.10);
     --critical:#d03b3b;
@@ -1794,7 +1887,7 @@ function generateHTML(prData, { operatorUsername }) {
     --warning:#fab219;
     --good:#0ca30c;
     --good-ink:#006300;
-    --accent:#2a78d6;
+    --accent:#266cc1;
     --shadow:0 1px 2px rgba(11,11,11,.05);
     --setup:#0e7490;
     --manual:#c2255c;
@@ -1822,8 +1915,8 @@ function generateHTML(prData, { operatorUsername }) {
   }
   :root[data-theme="light"]{
     --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
-    --ink-3:#898781; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
-    --good-ink:#006300; --accent:#2a78d6; --shadow:0 1px 2px rgba(11,11,11,.05);
+    --ink-3:#6e6c67; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --good-ink:#006300; --accent:#266cc1; --shadow:0 1px 2px rgba(11,11,11,.05);
     --setup:#0e7490; --manual:#c2255c; --dismiss:#8a5252;
     --gh-open:#1a7f37; --gh-merged:#8250df; --gh-closed:#cf222e; --gh-draft:#59636e;
   }
@@ -1880,6 +1973,19 @@ function generateHTML(prData, { operatorUsername }) {
   }
   .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
   .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .skip-link{
+    position:absolute;top:-40px;left:8px;z-index:100;
+    background:var(--surface);color:var(--ink);border:1px solid var(--ring);
+    border-radius:6px;padding:8px 14px;font-size:13px;text-decoration:none;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px}
+
   .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px;vertical-align:1px}
   .dot.critical{background:var(--critical)}
   .dot.serious{background:var(--serious)}
@@ -1902,7 +2008,7 @@ function generateHTML(prData, { operatorUsername }) {
     padding:4px 16px 16px;font-size:12.5px;color:var(--ink-2);
   }
   .legend section{margin-top:16px}
-  .legend h4{
+  .legend-h{
     font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
     color:var(--ink-3);margin-bottom:6px;
   }
@@ -1950,6 +2056,9 @@ function generateHTML(prData, { operatorUsername }) {
   .row[data-sev="act"]      .edge{background:var(--accent)}
   .row[data-sev="triage"]   .edge{background:var(--ink-3)}
   .row[data-sev="dismiss"]  .edge{background:var(--dismiss)}
+  /* Stale overrides whatever severity color would otherwise show - it's a
+     different kind of signal ("gone quiet") than urgency. */
+  .row[data-stale="1"]      .edge{background:var(--warning)}
 
   .row .title{font-size:14px}
   .row .title .name{font-weight:600}
@@ -2140,9 +2249,15 @@ function generateHTML(prData, { operatorUsername }) {
     .meter{margin:0}
     .mon-row .why{margin-left:0;width:100%}
   }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;scroll-behavior:auto !important}
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
   <div class="top">
@@ -2152,6 +2267,7 @@ function generateHTML(prData, { operatorUsername }) {
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
 
+  <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
       <div class="num">${needToday.length}</div>
@@ -2175,7 +2291,7 @@ ${filterBar}
     <div class="legend-body">
 
       <section>
-        <h4>The three bands — whose turn is it?</h4>
+        <h2 class="legend-h">The three bands — whose turn is it?</h2>
         <table>
           <tr><td><b>Need you today</b></td><td>Actions only you can take.</td></tr>
           <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR still needs to merge (no clock yet), or a reminder's out and the clock is running.</td></tr>
@@ -2184,7 +2300,7 @@ ${filterBar}
       </section>
 
       <section>
-        <h4>Reading a row</h4>
+        <h2 class="legend-h">Reading a row</h2>
         <table>
           <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage.</td></tr>
           <tr><td><span class="pill open">Open</span></td><td>A <b>pill</b> — a fact about the PR: Draft / Open / Merged / Closed.</td></tr>
@@ -2193,7 +2309,7 @@ ${filterBar}
       </section>
 
       <section>
-        <h4>Colour key — same kind of task, same colour</h4>
+        <h2 class="legend-h">Colour key — same kind of task, same colour</h2>
         <table>
           <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add ${PENDING_LABEL} label (drafts) · Add ${BACKPORT_LABEL} label (older branch)</td></tr>
           <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The nudge ladder — one hue, hotter = more urgent.</td></tr>
@@ -2208,7 +2324,7 @@ ${filterBar}
       </section>
 
       <section>
-        <h4>The escalation clock</h4>
+        <h2 class="legend-h">The escalation clock</h2>
         <p class="legend-note">Only a comment that <b>@-tags the code author</b> starts this clock — yours or a teammate's, but not a plain reply — and it stops the instant the author replies.</p>
         <table>
           <tr><td>Day 0</td><td>Code PR merges, someone @-tags the code author.</td></tr>
@@ -2219,7 +2335,7 @@ ${filterBar}
       </section>
 
       <section>
-        <h4>Good to know</h4>
+        <h2 class="legend-h">Good to know</h2>
         <table>
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
           <tr><td>Approvals</td><td>"approved by …" is shown as a fact everywhere. The "Final review, then merge" action only appears once the code PR has merged.</td></tr>
@@ -2234,6 +2350,7 @@ ${filterBar}
 ${needTodaySection}
 ${waitingSection}
 ${monitoringSection}
+  </main>
   <footer>Generated by <code>node tracker.js</code> as <code>${escapeHtml(operatorUsername)}</code> · ${formatUpdated(now)}</footer>
 </div>
 
@@ -2314,13 +2431,17 @@ ${monitoringSection}
       filterState[dim] = val;
       document.body.setAttribute(dim === 'repo' ? 'data-frepo' : 'data-fpri', val);
       tab.parentElement.querySelectorAll('.ftab').forEach(function(t){
-        t.classList.toggle('active', t === tab);
+        const isActive = t === tab;
+        t.classList.toggle('active', isActive);
+        t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
       applyFilters();
     });
   });
 
   // ---- summary tiles: jump to section ----
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scrollBehavior = reduceMotion ? 'auto' : 'smooth';
   document.querySelectorAll('.tile[data-goto]').forEach(function(tile){
     tile.addEventListener('click', function(){
       const sec = document.querySelector('section[data-band="' + tile.getAttribute('data-goto') + '"]');
@@ -2329,7 +2450,7 @@ ${monitoringSection}
       // actually shows something instead of landing on a closed summary.
       const details = sec.querySelector('details');
       if (details) details.open = true;
-      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      sec.scrollIntoView({ behavior: scrollBehavior, block: 'start' });
     });
   });
 
@@ -2340,7 +2461,10 @@ ${monitoringSection}
       backToTop.classList.toggle('show', window.scrollY > 400);
     }, { passive: true });
     backToTop.addEventListener('click', function(){
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: scrollBehavior });
+      backToTop.blur();
+      document.querySelector('h1').setAttribute('tabindex', '-1');
+      document.querySelector('h1').focus();
     });
   }
 </script>
@@ -2362,9 +2486,10 @@ function renderAuthorGroup(group) {
 			const codePRHtml = pr.appPRNumber
 				? `<a href="${pr.appPRUrl}" target="_blank">mautic/mautic #${pr.appPRNumber}</a>`
 				: `<span class="none">No linked code PR</span>`
+			const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 			return `
         <tr data-key="${escapeHtml(key)}">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
           <td><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
           <td>${codePRHtml}</td>
           <td>${markHtml}</td>
@@ -2378,7 +2503,7 @@ function renderAuthorGroup(group) {
       <span class="author-progress">0/${group.items.length} checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>
   </section>`
@@ -2417,10 +2542,12 @@ function generateReminderHTML(groups, { now }) {
     --surface:#fcfcfb;
     --ink:#0b0b0b;
     --ink-2:#52514e;
-    --ink-3:#898781;
+    /* Darkened from #898781/#2a78d6 for 4.5:1 body-text contrast (WCAG AA)
+       against --page/--surface — see the same note in the dashboard. */
+    --ink-3:#6e6c67;
     --line:#e1e0d9;
     --ring:rgba(11,11,11,.10);
-    --accent:#2a78d6;
+    --accent:#266cc1;
     --shadow:0 1px 2px rgba(11,11,11,.05);
     --manual:#c2255c;
   }
@@ -2438,8 +2565,8 @@ function generateReminderHTML(groups, { now }) {
   }
   :root[data-theme="light"]{
     --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
-    --ink-3:#898781; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
-    --accent:#2a78d6; --shadow:0 1px 2px rgba(11,11,11,.05); --manual:#c2255c;
+    --ink-3:#6e6c67; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --accent:#266cc1; --shadow:0 1px 2px rgba(11,11,11,.05); --manual:#c2255c;
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
@@ -2504,6 +2631,19 @@ function generateReminderHTML(groups, { now }) {
   tr.checked td{color:var(--ink-3);text-decoration:line-through}
   tr.checked td.chk{text-decoration:none}
   input[type=checkbox]{width:16px;height:16px;cursor:pointer}
+  input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .skip-link{
+    position:absolute;top:-40px;left:8px;z-index:100;
+    background:var(--surface);color:var(--ink);border:1px solid var(--ring);
+    border-radius:6px;padding:8px 14px;font-size:13px;text-decoration:none;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px}
 
   .mark{display:inline-flex;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
   .mark.review{
@@ -2538,9 +2678,15 @@ function generateReminderHTML(groups, { now }) {
   @media (max-width:640px){
     th:nth-child(3),td:nth-child(3){display:none}
   }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;scroll-behavior:auto !important}
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
   <div class="top">
@@ -2559,8 +2705,10 @@ function generateReminderHTML(groups, { now }) {
     real current state either way, and updates automatically as things get
     resolved.
   </div>
+  <main id="main-content">
 ${tocHtml}
 ${bodyHtml}
+  </main>
   <footer>Generated by <code>node tracker.js</code> · ${formatUpdated(now)} · ${totalItems} PR${totalItems === 1 ? "" : "s"} across ${groups.length} author${groups.length === 1 ? "" : "s"}</footer>
 </div>
 
@@ -2612,13 +2760,16 @@ ${bodyHtml}
   })();
 
   // ---- back to top ----
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const backToTop = document.getElementById('backToTop');
   if (backToTop) {
     window.addEventListener('scroll', function(){
       backToTop.classList.toggle('show', window.scrollY > 400);
     }, { passive: true });
     backToTop.addEventListener('click', function(){
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      document.querySelector('h1').setAttribute('tabindex', '-1');
+      document.querySelector('h1').focus();
     });
   }
 </script>

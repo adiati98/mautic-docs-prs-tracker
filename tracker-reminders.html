@@ -10,10 +10,12 @@
     --surface:#fcfcfb;
     --ink:#0b0b0b;
     --ink-2:#52514e;
-    --ink-3:#898781;
+    /* Darkened from #898781/#2a78d6 for 4.5:1 body-text contrast (WCAG AA)
+       against --page/--surface — see the same note in the dashboard. */
+    --ink-3:#6e6c67;
     --line:#e1e0d9;
     --ring:rgba(11,11,11,.10);
-    --accent:#2a78d6;
+    --accent:#266cc1;
     --shadow:0 1px 2px rgba(11,11,11,.05);
     --manual:#c2255c;
   }
@@ -31,8 +33,8 @@
   }
   :root[data-theme="light"]{
     --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
-    --ink-3:#898781; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
-    --accent:#2a78d6; --shadow:0 1px 2px rgba(11,11,11,.05); --manual:#c2255c;
+    --ink-3:#6e6c67; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --accent:#266cc1; --shadow:0 1px 2px rgba(11,11,11,.05); --manual:#c2255c;
   }
 
   *{margin:0;padding:0;box-sizing:border-box}
@@ -97,6 +99,19 @@
   tr.checked td{color:var(--ink-3);text-decoration:line-through}
   tr.checked td.chk{text-decoration:none}
   input[type=checkbox]{width:16px;height:16px;cursor:pointer}
+  input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  .skip-link{
+    position:absolute;top:-40px;left:8px;z-index:100;
+    background:var(--surface);color:var(--ink);border:1px solid var(--ring);
+    border-radius:6px;padding:8px 14px;font-size:13px;text-decoration:none;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px}
 
   .mark{display:inline-flex;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
   .mark.review{
@@ -131,14 +146,20 @@
   @media (max-width:640px){
     th:nth-child(3),td:nth-child(3){display:none}
   }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;scroll-behavior:auto !important}
+  }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
   <div class="top">
     <h1>Docs PR Review Reminders</h1>
-    <span class="updated">Updated Thu, Jul 9, 6:53 PM</span>
+    <span class="updated">Updated Thu, Jul 9, 7:52 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
@@ -152,6 +173,7 @@
     real current state either way, and updates automatically as things get
     resolved.
   </div>
+  <main id="main-content">
 
   <div class="toc"><a href="#author-andersonjeccel">@andersonjeccel <span class="tc">6</span></a><a href="#author-kuzmany">@kuzmany <span class="tc">3</span></a><a href="#author-patrykgruszka">@patrykgruszka <span class="tc">2</span></a><a href="#author-rohitpavaskar">@rohitpavaskar <span class="tc">3</span></a><a href="#author-shinde-rahul">@shinde-rahul <span class="tc">2</span></a><a href="#author-theyoungrossco">@theyoungrossco <span class="tc">2</span></a></div>
 
@@ -161,40 +183,40 @@
       <span class="author-progress">0/6 checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
         <tr data-key="mautic/user-documentation#770">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #770: docs: Document Quick filters dropdown for Reports as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank">user-documentation #770</a> docs: Document Quick filters dropdown for Reports</td>
           <td><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/developer-documentation-new#505">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></td>
           <td><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
           <td><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#782">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #782: Document Email details stat cards and Pending card scope for Segment vs. triggered Emails as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank">user-documentation #782</a> Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</td>
           <td><a href="https://github.com/mautic/mautic/pull/16304" target="_blank">mautic/mautic #16304</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#750">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #750: Document Find and Replace bulk action for Contacts and Companies as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
           <td><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#712">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #712: EVERYTHING about UTM tags in Mautic as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank">user-documentation #712</a> EVERYTHING about UTM tags in Mautic</td>
           <td><span class="none">No linked code PR</span></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#774">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #774: Fix contradictory note about duplicate Stage weights as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank">user-documentation #774</a> Fix contradictory note about duplicate Stage weights</td>
           <td><a href="https://github.com/mautic/mautic/pull/15404" target="_blank">mautic/mautic #15404</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
@@ -207,22 +229,22 @@
       <span class="author-progress">0/3 checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
         <tr data-key="mautic/developer-documentation-new#550">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #550: docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection as done"></td>
           <td><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank">developer-documentation #550</a> docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</td>
           <td><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#796">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #796: docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/796" target="_blank">user-documentation #796</a> docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic</td>
           <td><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#811">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #811: docs: Document A/B testing for Segment Emails as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/811" target="_blank">user-documentation #811</a> docs: Document A/B testing for Segment Emails</td>
           <td><a href="https://github.com/mautic/mautic/pull/15897" target="_blank">mautic/mautic #15897</a></td>
           <td><span class="mark review">Need review</span></td>
@@ -235,16 +257,16 @@
       <span class="author-progress">0/2 checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
         <tr data-key="mautic/developer-documentation-new#551">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #551: docs: Document entity token formatting with getFormattedTokens() method as done"></td>
           <td><a href="https://github.com/mautic/developer-documentation-new/pull/551" target="_blank">developer-documentation #551</a> docs: Document entity token formatting with getFormattedTokens() method</td>
           <td><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#805">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #805: docs: Document token category prefixes in Email builder as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/805" target="_blank">user-documentation #805</a> docs: Document token category prefixes in Email builder</td>
           <td><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
           <td><span class="mark review">Need review</span></td>
@@ -257,22 +279,22 @@
       <span class="author-progress">0/3 checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
         <tr data-key="mautic/user-documentation#709">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #709: Add documentation for mautic:campaigns:resume-stuck command as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank">user-documentation #709</a> Add documentation for mautic:campaigns:resume-stuck command</td>
           <td><a href="https://github.com/mautic/mautic/pull/15310" target="_blank">mautic/mautic #15310</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#714">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #714: Docs for https://github.com/mautic/mautic/pull/16123 as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank">user-documentation #714</a> Docs for https://github.com/mautic/mautic/pull/16123</td>
           <td><span class="none">No linked code PR</span></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#783">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #783: Document Campaign event ID display in the Campaign Builder as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/783" target="_blank">user-documentation #783</a> Document Campaign event ID display in the Campaign Builder</td>
           <td><a href="https://github.com/mautic/mautic/pull/16103" target="_blank">mautic/mautic #16103</a></td>
           <td><span class="mark respond">Response to comment from adiati98</span></td>
@@ -285,16 +307,16 @@
       <span class="author-progress">0/2 checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
         <tr data-key="mautic/user-documentation#779">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #779: Document Tag removal confirmation and expandable Tags tile on Contact detail page as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/779" target="_blank">user-documentation #779</a> Document Tag removal confirmation and expandable Tags tile on Contact detail page</td>
           <td><a href="https://github.com/mautic/mautic/pull/15845" target="_blank">mautic/mautic #15845</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#802">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #802: docs: Document webhook process command exit code behavior as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/802" target="_blank">user-documentation #802</a> docs: Document webhook process command exit code behavior</td>
           <td><a href="https://github.com/mautic/mautic/pull/15135" target="_blank">mautic/mautic #15135</a></td>
           <td><span class="mark review">Need review</span></td>
@@ -307,23 +329,24 @@
       <span class="author-progress">0/2 checked</span>
     </div>
     <table>
-      <thead><tr><th></th><th>Docs PR</th><th>Code PR</th><th>Mark</th></tr></thead>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
         <tr data-key="mautic/user-documentation#803">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #803: docs: Document Widget error handling on the Dashboard as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/803" target="_blank">user-documentation #803</a> docs: Document Widget error handling on the Dashboard</td>
           <td><a href="https://github.com/mautic/mautic/pull/15989" target="_blank">mautic/mautic #15989</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#807">
-          <td class="chk"><input type="checkbox"></td>
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #807: docs: Document Asset Manager image formats and SVG support in GrapesJS Builder as done"></td>
           <td><a href="https://github.com/mautic/user-documentation/pull/807" target="_blank">user-documentation #807</a> docs: Document Asset Manager image formats and SVG support in GrapesJS Builder</td>
           <td><a href="https://github.com/mautic/mautic/pull/15954" target="_blank">mautic/mautic #15954</a></td>
           <td><span class="mark review">Need review</span></td>
         </tr></tbody>
     </table>
   </section>
-  <footer>Generated by <code>node tracker.js</code> · Thu, Jul 9, 6:53 PM · 18 PRs across 6 authors</footer>
+  </main>
+  <footer>Generated by <code>node tracker.js</code> · Thu, Jul 9, 7:52 PM · 18 PRs across 6 authors</footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
@@ -374,13 +397,16 @@
   })();
 
   // ---- back to top ----
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const backToTop = document.getElementById('backToTop');
   if (backToTop) {
     window.addEventListener('scroll', function(){
       backToTop.classList.toggle('show', window.scrollY > 400);
     }, { passive: true });
     backToTop.addEventListener('click', function(){
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      document.querySelector('h1').setAttribute('tabindex', '-1');
+      document.querySelector('h1').focus();
     });
   }
 </script>
