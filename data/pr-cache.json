@@ -877,7 +877,7 @@
     "rawCodeReviews": []
   },
   "mautic/developer-documentation-new#561": {
-    "docsUpdatedAt": "2026-07-09T09:34:13Z",
+    "docsUpdatedAt": "2026-07-10T19:02:37Z",
     "codeUpdatedAt": "2026-07-09T09:34:43Z",
     "rawDocsReviews": [
       {
@@ -4050,7 +4050,7 @@
     "rawCodeReviews": []
   },
   "mautic/user-documentation#837": {
-    "docsUpdatedAt": "2026-07-10T10:13:04Z",
+    "docsUpdatedAt": "2026-07-10T19:03:25Z",
     "codeUpdatedAt": "2026-07-10T10:28:46Z",
     "rawDocsReviews": [
       {
@@ -9884,7 +9884,7 @@
     "rawCodeReviews": []
   },
   "mautic/developer-documentation-new#593": {
-    "docsUpdatedAt": "2026-07-10T11:43:14Z",
+    "docsUpdatedAt": "2026-07-10T18:51:03Z",
     "codeUpdatedAt": "2026-07-10T12:47:42Z",
     "rawDocsReviews": [
       {
@@ -9931,8 +9931,8 @@
     "rawCodeReviews": []
   },
   "mautic/user-documentation#838": {
-    "docsUpdatedAt": "2026-07-10T16:45:32Z",
-    "codeUpdatedAt": "2026-07-10T16:45:58Z",
+    "docsUpdatedAt": "2026-07-10T18:59:38Z",
+    "codeUpdatedAt": "2026-07-10T18:54:10Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -9951,7 +9951,22 @@
         "body": ""
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-10T18:55:00Z",
+        "body": "@promptless-for-oss please rebase to 7.2 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T18:59:38Z",
+        "body": "Thanks @adiati98! The branch was already based on `7.2` — the large unrelated diff was just because the PR's **base** was still pointing at `7.1`. I've retargeted the base to `7.2`, which collapses this back down to the intended 2-file change:\n\n- `docs/builders/email_landing_page.rst` (Typography blocks section)\n- `docs/builders/images/editor_typography_blocks.png` (sidebar screenshot)\n\nIt should be ready for review now.\n"
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -10050,6 +10065,13 @@
         },
         "created_at": "2026-07-10T16:45:58Z",
         "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by this PR (Typography blocks for the GrapesJS email builder).\n\nDocuments the new Typography block category (H1–H4 and Subtitle) in the GrapesJS Email Builder, the relocated Text block, its position between Sections and Blocks (collapsed by default), the instant inline-edit-on-drop behavior, Theme-token styling, and MJML-only availability.\n\nReview: [docs PR #838 in mautic/user-documentation](https://github.com/mautic/user-documentation/pull/838)\n\nNo developer-documentation change was needed — this PR adds preset blocks and translation strings but introduces no new developer extension points, events, services, or APIs.\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-10T18:54:09Z",
+        "body": "Hi @andersonjeccel,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/15694#issuecomment-4937534874"
       }
     ],
     "rawCodeReviews": [
@@ -10200,7 +10222,7 @@
     ]
   },
   "mautic/developer-documentation-new#594": {
-    "docsUpdatedAt": "2026-07-10T17:20:16Z",
+    "docsUpdatedAt": "2026-07-10T18:51:48Z",
     "codeUpdatedAt": "2026-07-10T17:13:43Z",
     "rawDocsReviews": [
       {
