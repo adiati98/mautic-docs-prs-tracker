@@ -2238,6 +2238,16 @@ function generateHTML(prData, { operatorUsername }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Docs PR Tracker</title>
+<script>
+  (function(){
+    try {
+      var saved = localStorage.getItem('docsPrTrackerTheme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  })();
+</script>
 <style>
   :root{
     --page:#f9f9f7;
@@ -2764,8 +2774,11 @@ ${monitoringSection}
 <script>
   function toggleTheme(){
     const r = document.documentElement;
-    const cur = r.getAttribute('data-theme');
-    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    const cur = r.getAttribute('data-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', next);
+    try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
   }
 
   // ---- filter tabs (repo + priority) ----
@@ -2947,6 +2960,16 @@ function generateReminderHTML(groups, { now }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Docs PR Review Reminders</title>
+<script>
+  (function(){
+    try {
+      var saved = localStorage.getItem('docsPrTrackerTheme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  })();
+</script>
 <style>
   :root{
     --page:#f9f9f7;
@@ -3145,8 +3168,11 @@ ${bodyHtml}
 <script>
   function toggleTheme(){
     const r = document.documentElement;
-    const cur = r.getAttribute('data-theme');
-    r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    const cur = r.getAttribute('data-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', next);
+    try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
   }
 
   // ---- checklist (saved to this browser only, via localStorage) ----
