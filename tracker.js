@@ -1911,10 +1911,13 @@ function renderNeedTodayRow(pr) {
 		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
 		.join("")
 	const draftPill = pr.isDraft ? ' <span class="pill draft">Draft</span>' : ""
+	const key = cacheKey(pr.sourceRepo, pr.number)
+	const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 	return `
-      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}">
+      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}">
+        <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
-        <div>
+        <div class="body">
           <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
           <div class="meta">${metaLine(pr)}</div>
           <div class="chips">${chipsHtml}</div>
@@ -1929,10 +1932,13 @@ function renderWaitingRow(pr) {
 	const chipsHtml = chips.length
 		? `<div class="chips">${chips.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`).join("")}</div>`
 		: ""
+	const key = cacheKey(pr.sourceRepo, pr.number)
+	const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 	return `
-      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}">
+      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}">
+        <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
-        <div>
+        <div class="body">
           <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
           <div class="meta">${metaLine(pr)}</div>
           ${chipsHtml}
@@ -2237,6 +2243,7 @@ function generateHTML(prData, { operatorUsername }) {
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span>${repoTabs}</div>
     <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span>${priorityTabs}</div>
+    <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>`
 
 	const needTodaySection =
@@ -2245,6 +2252,7 @@ function generateHTML(prData, { operatorUsername }) {
   <section data-band="today">
     <div class="sec-head">
       <h2>Need you today</h2><span class="count">${needToday.length}</span>
+      <span class="chk-progress" data-state="zero">0/${needToday.length} checked</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -2265,6 +2273,7 @@ function generateHTML(prData, { operatorUsername }) {
   <section class="band-secondary" data-band="forward">
     <div class="sec-head">
       <h2>Bring it forward</h2><span class="count">${bringForward.length}</span>
+      <span class="chk-progress" data-state="zero">0/${bringForward.length} checked</span>
       <span class="hint">not urgent — new PRs to triage, approvals ready to merge, anything gone quiet</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -2279,6 +2288,7 @@ function generateHTML(prData, { operatorUsername }) {
   <section class="band-secondary" data-band="waiting">
     <div class="sec-head">
       <h2>Waiting on others or for code PR to merge</h2><span class="count">${waiting.length}</span>
+      <span class="chk-progress" data-state="zero">0/${waiting.length} checked</span>
       <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
     </div>
     <div class="card">${waiting.map(renderWaitingRow).join("")}
@@ -2492,17 +2502,35 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:999px;padding:1px 8px;
   }
   .sec-head .hint{font-size:12px;color:var(--ink-3)}
+  .chk-progress{
+    display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 8px;
+    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-3);
+  }
+  /* Some checked but not all - same accent used for "Act" chips elsewhere. */
+  .chk-progress[data-state="partial"]{
+    background:color-mix(in srgb, var(--accent) 11%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 78%, var(--ink));
+  }
+  /* Whole band checked off - same green used for "ready to merge" elsewhere. */
+  .chk-progress[data-state="done"]{
+    background:color-mix(in srgb, var(--good) 12%, var(--surface));
+    color:color-mix(in srgb, var(--good) 62%, var(--ink));
+  }
   .card{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
     box-shadow:var(--shadow);overflow:hidden;
   }
 
   .row{
-    display:grid;grid-template-columns:4px 1fr auto;gap:0 14px;
+    position:relative;
+    display:grid;grid-template-columns:18px 4px 1fr auto;gap:0 14px;
     padding:12px 16px 12px 12px;border-bottom:1px solid var(--line);
     align-items:center;
   }
   .row:last-child{border-bottom:none}
+  .row .chk{display:flex;align-items:center;justify-content:center}
+  .row .chk input[type=checkbox]{width:15px;height:15px;cursor:pointer}
+  .row .chk input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .row .edge{width:4px;border-radius:2px;background:var(--line);align-self:stretch}
   .row[data-sev="critical"] .edge{background:var(--critical)}
   .row[data-sev="serious"]  .edge{background:var(--serious)}
@@ -2515,6 +2543,12 @@ function generateHTML(prData, { operatorUsername }) {
   /* Approved-and-ready-to-merge wins over both severity and staleness - it's
      the one state that's actually good news. */
   .row[data-approved="1"]   .edge{background:var(--good)}
+  /* Checked rows dim in place rather than disappearing (unless "Hide
+     checked" is on) - only the title gets struck through, meta/chips stay
+     legible so you can still see why the row was there. */
+  .row.checked .edge{opacity:.5}
+  .row.checked .body,.row.checked .when{opacity:.65}
+  .row.checked .title{text-decoration:line-through}
 
   .row .title{font-size:14px}
   .row .title .name{font-weight:600}
@@ -2681,6 +2715,30 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:999px;padding:0 6px;color:var(--ink-2);
   }
   .ftab.active .fc{background:color-mix(in srgb, var(--accent) 22%, transparent)}
+  .switch-ctrl{
+    font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+    border:none;background:none;padding:2px 0;color:var(--ink-2);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .switch-track{
+    position:relative;width:34px;height:20px;border-radius:999px;
+    background:var(--line);flex-shrink:0;transition:background .15s;
+  }
+  .switch-thumb{
+    position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+    background:var(--surface);box-shadow:0 1px 2px rgba(11,11,11,.15);
+    transition:transform .15s;
+  }
+  .switch-ctrl[aria-checked="true"]{color:color-mix(in srgb, var(--accent) 80%, var(--ink))}
+  .switch-ctrl[aria-checked="true"] .switch-track{background:var(--accent)}
+  .switch-ctrl[aria-checked="true"] .switch-thumb{transform:translateX(14px)}
+  .switch-ctrl:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:999px}
+  .switch-ctrl .fc{
+    font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+    background:color-mix(in srgb, var(--ink) 8%, transparent);
+    border-radius:999px;padding:0 6px;color:var(--ink-2);
+  }
+  .switch-ctrl[aria-checked="true"] .fc{background:color-mix(in srgb, var(--accent) 22%, transparent)}
   .row.hidden,.mon-row.hidden{display:none}
   .no-match{font-size:12px;color:var(--ink-3);display:none}
   section.all-hidden .no-match{display:inline}
@@ -2701,7 +2759,8 @@ function generateHTML(prData, { operatorUsername }) {
     .legend td:first-child{white-space:normal;width:auto;display:block;padding-bottom:2px}
     .legend tr{display:block;padding:6px 0;border-bottom:1px solid var(--line)}
     .legend tr td{border-bottom:none;padding-left:0}
-    .row{grid-template-columns:4px 1fr;row-gap:6px}
+    .row{grid-template-columns:4px 1fr;row-gap:6px;padding:10px 44px 10px 12px}
+    .row .chk{position:absolute;top:10px;right:10px}
     .when{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap}
     .when .sub{margin-top:0}
     .meter{margin:0}
@@ -2754,28 +2813,28 @@ ${filterBar}
     <div class="legend-body">
 
       <section>
-        <h2 class="legend-h">1. The four bands — whose turn is it?</h2>
+        <h2 class="legend-h">1. The four groups — whose turn is it?</h2>
         <table>
           <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
-          <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth pushing along on your own schedule — carved out of Need-today so it doesn't bury the actually urgent rows: brand-new PRs still needing their first label/milestone, approvals that are cleanly ready to merge with nothing else attached, and anything gone stale.</td></tr>
-          <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR still needs to merge (no clock yet), or a reminder's out and the clock is running.</td></tr>
-          <tr><td><b>Monitoring</b></td><td>The author replied and you've already looked. Collapsed by default — has its own quiet-conversation clock, and resurfaces if it goes quiet for a week.</td></tr>
+          <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth doing on your own schedule — brand-new PRs that still need a label or milestone, approvals that are ready to merge with nothing else going on, and anything that's gone quiet for a while (stale).</td></tr>
+          <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, or a reminder to the code PR author has been sent.</td></tr>
+          <tr><td><b>Monitoring</b></td><td>The author replied and you've already looked. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
         </table>
       </section>
 
       <section>
         <h2 class="legend-h">2. Filters — narrowing what you see</h2>
-        <p class="legend-note">Both filter bars live at the top of the page, above the bands.</p>
+        <p class="legend-note">Both filter bars live at the top of the page, above the groups.</p>
         <table>
-          <tr><td><b>Repo</b></td><td>Switches the whole board to one repo. Counts on each tab are totals across all four bands, not just Need-today.</td></tr>
-          <tr><td><b>Priority</b></td><td><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> are Need-today-specific escalation states — picking one hides Bring it forward, Waiting, and Monitoring entirely. <b>Act</b> and <b>Stale</b> (below) both span every band instead, filtering within each rather than hiding it — Bring it forward carries actionable and stale rows of its own. Counts follow whichever repo tab is selected.</td></tr>
+          <tr><td><b>Repo</b></td><td>Switches the whole board to show just one repo. The counts on each tab are totals across all four groups.</td></tr>
+          <tr><td><b>Priority</b></td><td><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> only apply to <b>Need you today</b> — picking one of these hides the other three groups entirely. <b>Act</b> and <b>Stale</b> work differently: they show up in every group instead of hiding the rest, since <b>Bring it forward</b> has its own actionable and stale rows too. Counts follow whichever repo tab is selected.</td></tr>
         </table>
         <table>
           <tr><td><span class="dot critical"></span><b>Critical</b></td><td>You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate to the core team.</td></tr>
-          <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's directly waiting on an operator's reply — send a follow-up.</td></tr>
+          <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting directly on your reply — send a follow-up.</td></tr>
           <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs doing: check the author's response, remind the code author, review a standalone PR, do a final review on an approval that has something else attached, add a label/milestone to a new PR, or merge one that's cleanly approved and ready.</td></tr>
-          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Review a PR that's still waiting on its own linked code PR to merge — or, for a standalone PR, waiting on its author before it escalates.</td></tr>
-          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on either PR for 30+ days, regardless of what the row would otherwise be — pulled out separately, across all four bands.</td></tr>
+          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Review a draft PR — still waiting the code PR to merge — or, for a standalone PR, waiting on its author before it escalates.</td></tr>
+          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on the PR for 30+ days.</td></tr>
         </table>
       </section>
 
@@ -2783,8 +2842,8 @@ ${filterBar}
         <h2 class="legend-h">3. Reading a row</h2>
         <table>
           <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage → green approved/ready to merge.</td></tr>
-          <tr><td><span class="pill open">Open</span></td><td>A <b>pill</b> — a fact about the PR: Draft / Open / Merged / Closed.</td></tr>
-          <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>chip</b> — an action for you. Colour = task family (below).</td></tr>
+          <tr><td><span class="pill open">Open</span></td><td>A <b>badge</b> — a fact about the code PR: Draft / Open / Merged / Closed.</td></tr>
+          <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>label</b> — an action for you. Colour = the type of task (see below).</td></tr>
         </table>
       </section>
 
@@ -2792,42 +2851,52 @@ ${filterBar}
         <h2 class="legend-h">4. Colour key — same kind of task, same colour</h2>
         <table>
           <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add ${PENDING_LABEL} label (drafts) · Add ${BACKPORT_LABEL} label (older branch)</td></tr>
-          <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The nudge ladder — one hue, hotter = more urgent.</td></tr>
+          <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same colour, getting more intense the more urgent it gets: Remind → Follow up → Escalate.</td></tr>
           <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR (standalone, awaiting your review) · Check the author's response · Note since approval.</td></tr>
-          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label · Approved by X (and Approved — ready to merge, once it's an operator's own approval on a standalone PR).</td></tr>
+          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label · Approved by X · Approved — ready to merge.</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
           <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase · code PR's milestone doesn't match the docs branch/milestone yet.</td></tr>
-          <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
-          <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was abandoned.</td></tr>
-          <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on either PR for 30+ days — purely informational, no clock of its own.</td></tr>
+          <tr><td><span class="chip muted">Optional / already done</span></td><td>Review draft PR · a reminder you already sent.</td></tr>
+          <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was closed.</td></tr>
+          <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on the PR for 30+ days.</td></tr>
         </table>
       </section>
 
       <section>
         <h2 class="legend-h">5. Live threads &amp; approvals</h2>
         <table>
-          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Once the PR is approved, anything said before that approval no longer counts — only what's happened since. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
-          <tr><td>Content-approved label</td><td>GitHub auto-dismisses an approval the moment new commits land, even when the push only addresses unrelated feedback — the "Approved by X" chip and everything it unlocks (final review, the escalation-clock shortcut) disappears with it. If you've checked and the dismissal was spurious, add the <code>${CONTENT_APPROVED_LABEL}</code> label yourself: the row gets a separate "Content approved by X — review dismissed" chip, naming whichever reviewer's approval GitHub dismissed, and everything downstream behaves as if the approval still stood.</td></tr>
+          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown if someone outside the review team is waiting on the <b>code author</b> — checked separately, so a later unrelated reply to someone else can't hide it. Once the PR is approved, only what's been said since that approval counts — earlier comments don't. Otherwise, it's just there so you can keep an eye on it. Includes Promptless when it @-mentions a reviewer outside your team for feedback.</td></tr>
+          <tr><td>Approvals</td><td>"Approved by X" is a label shown wherever there's an active approval — whether that's you, a teammate, or someone else (the one exception: a PR author can't approve their own PR, except for one admin account GitHub allows this for). "Final review, then merge" only appears once the code PR has merged. For a standalone PR with no code PR to wait on, your own approval combines both into one label: "Approved by X — ready to merge". Anything added after the approval gets its own "Note since approval" label.</td></tr>
+          <tr><td>Content-approved label</td><td>GitHub automatically removes an approval the moment new commits land — even if the push only addresses unrelated feedback. When that happens, the "Approved by X" label and everything it unlocked (final review, the escalation shortcut) disappear too. If you've checked and the new commits didn't actually change what was approved, add the <code>${CONTENT_APPROVED_LABEL}</code> label yourself: the row gets a separate "Content approved by X — review dismissed" label, naming the reviewer, and everything behaves as if the approval were still standing.</td></tr>
         </table>
       </section>
 
       <section>
-        <h2 class="legend-h">6. The escalation clock</h2>
-        <p class="legend-note">Only a comment that <b>@-tags the code author</b> starts this clock — yours or a teammate's, but not a plain reply — and it stops the instant the author replies.</p>
+        <h2 class="legend-h">6. Follow-up &amp; escalation timeline</h2>
+        <p class="legend-note">Only a comment that <b>@-mentions the code author</b> starts this timeline — yours or a teammate's, not just a regular reply — and it stops the moment the author replies.</p>
         <table>
-          <tr><td>Day 0</td><td>Code PR merges, someone @-tags the code author.</td></tr>
+          <tr><td>Day 0</td><td>Code PR merges, someone @-mentions the code author.</td></tr>
           <tr><td>Day ${FOLLOWUP_DAYS}</td><td>Row asks for a follow-up.</td></tr>
           <tr><td>Day ${ESCALATE_DAYS}</td><td>Row asks you to escalate to the core team.</td></tr>
-          <tr><td>Any day</td><td>Author replies → clock stops, row asks you to check their response.</td></tr>
+          <tr><td>Any day</td><td>Author replies — the row asks you to check their response.</td></tr>
         </table>
       </section>
 
       <section>
         <h2 class="legend-h">7. Good to know</h2>
         <table>
-          <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
-          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock. <code>${CONTENT_APPROVED_LABEL}</code> — add it yourself after confirming a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
+          <tr><td>Review vs. the timeline</td><td>The remind/follow-up/escalate timeline no longer waits on you having formally reviewed the docs PR — it only needs the code PR to have merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" label shows up alongside whatever the timeline shows.</td></tr>
+          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — just shown as-is, it doesn't affect timing. <code>${CONTENT_APPROVED_LABEL}</code> — add it yourself after confirming a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="legend-h">8. Your personal checklist</h2>
+        <p class="legend-note">Every row in Need you today, Bring it forward, and Waiting has a checkbox — Monitoring doesn't, since it's already "nothing to do."</p>
+        <table>
+          <tr><td><input type="checkbox" disabled></td><td>Tick it off once you've actually handled a row. It's saved to <b>your own browser only</b> — nobody else sees it, and it won't change anything on GitHub or on this page's data. The row dims and its title gets struck through; clearing your browser data resets everything.</td></tr>
+          <tr><td><span class="chk-progress" data-state="partial">2/5 checked</span></td><td>Each group's header shows its own progress, always out of the <b>whole group</b> — not just whatever's currently filtered into view. Grey while untouched, blue while in progress, green with a ✓ once every row in that group is checked off.</td></tr>
+          <tr><td><b>Hide checked rows</b></td><td>A switch next to the Repo/Priority filters (Checklist row) that collapses checked rows out of view instead of just dimming them. Your checked state is exactly the same either way — this only changes what's shown.</td></tr>
         </table>
       </section>
 
@@ -2863,12 +2932,12 @@ ${monitoringSection}
   }
 
   // ---- filter tabs (repo + priority) ----
-  const filterState = { repo: 'all', pri: 'all' };
+  const filterState = { repo: 'all', pri: 'all', hideChecked: false };
   document.body.setAttribute('data-frepo', 'all');
   document.body.setAttribute('data-fpri', 'all');
 
   function applyFilters(){
-    const { repo, pri } = filterState;
+    const { repo, pri, hideChecked } = filterState;
     // A specific severity priority is meaningful only in "Need you today";
     // the CSS hides the Waiting/Monitoring bands whenever pri is a severity.
     // "stale" is different — it spans every band, so it filters rows within
@@ -2877,7 +2946,8 @@ ${monitoringSection}
       const okRepo = repo === 'all' || row.getAttribute('data-repo') === repo;
       const okPri  = pri === 'all' ||
         (pri === 'stale' ? row.getAttribute('data-stale') === '1' : row.getAttribute('data-sev') === pri);
-      row.classList.toggle('hidden', !(okRepo && okPri));
+      const okChecked = !hideChecked || !row.classList.contains('checked');
+      row.classList.toggle('hidden', !(okRepo && okPri && okChecked));
     });
     document.querySelectorAll('.mon-row').forEach(function(row){
       const okRepo = repo === 'all' || row.getAttribute('data-repo') === repo;
@@ -2929,7 +2999,7 @@ ${monitoringSection}
     });
   }
 
-  document.querySelectorAll('.ftab').forEach(function(tab){
+  document.querySelectorAll('.ftab[data-f]').forEach(function(tab){
     tab.addEventListener('click', function(){
       const dim = tab.getAttribute('data-f');   // 'repo' | 'pri'
       const val = tab.getAttribute('data-v');
@@ -2943,6 +3013,69 @@ ${monitoringSection}
       applyFilters();
     });
   });
+
+  // ---- checklist (saved to this browser only, via localStorage) ----
+  (function(){
+    var STORE_KEY = 'docsPrTrackerChecklist';
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { state = {}; }
+
+    var hideCheckedBtn = document.getElementById('hideCheckedBtn');
+    function updateHideCheckedCount(){
+      if (!hideCheckedBtn) return;
+      var fc = hideCheckedBtn.querySelector('.fc');
+      if (fc) fc.textContent = document.querySelectorAll('.row.checked').length;
+    }
+    // Per-band progress ("10/40 checked") - always counts the whole band,
+    // not just what's currently visible, so it stays a stable progress
+    // tracker regardless of the repo/priority filters or "Hide checked".
+    function updateBandProgress(){
+      document.querySelectorAll('.chk-progress').forEach(function(el){
+        var sec = el.closest('section[data-band]');
+        if (!sec) return;
+        var total = sec.querySelectorAll('.row[data-key]').length;
+        var done = sec.querySelectorAll('.row[data-key].checked').length;
+        var allDone = total > 0 && done === total;
+        el.textContent = done + '/' + total + ' checked' + (allDone ? ' ✓' : '');
+        el.setAttribute('data-state', allDone ? 'done' : (done > 0 ? 'partial' : 'zero'));
+      });
+    }
+
+    var validKeys = {};
+    document.querySelectorAll('.row[data-key]').forEach(function(row){
+      var key = row.getAttribute('data-key');
+      validKeys[key] = true;
+      var cb = row.querySelector('.chk input[type=checkbox]');
+      if (!cb) return;
+      if (state[key]) { cb.checked = true; row.classList.add('checked'); }
+      cb.addEventListener('change', function(){
+        if (cb.checked) { state[key] = true; row.classList.add('checked'); }
+        else { delete state[key]; row.classList.remove('checked'); }
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+        updateHideCheckedCount();
+        updateBandProgress();
+        applyFilters();
+      });
+    });
+    // Drop saved keys for rows no longer listed (already resolved) so
+    // localStorage doesn't grow forever with stale entries.
+    var changed = false;
+    Object.keys(state).forEach(function(k){
+      if (!validKeys[k]) { delete state[k]; changed = true; }
+    });
+    if (changed) localStorage.setItem(STORE_KEY, JSON.stringify(state));
+
+    updateHideCheckedCount();
+    updateBandProgress();
+    if (hideCheckedBtn) {
+      hideCheckedBtn.addEventListener('click', function(){
+        const active = hideCheckedBtn.getAttribute('aria-checked') !== 'true';
+        hideCheckedBtn.setAttribute('aria-checked', active ? 'true' : 'false');
+        filterState.hideChecked = active;
+        applyFilters();
+      });
+    }
+  })();
 
   // ---- summary tiles: jump to section ----
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

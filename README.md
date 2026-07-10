@@ -68,26 +68,28 @@ This creates `tracker-report.html` — open it in your browser.
 
 ## How It Works
 
-Every open docs PR sorts into exactly one of three bands, answering a single
+Every open docs PR sorts into exactly one of four groups, answering a single
 question: **whose turn is it?**
 
-1. **Need you today** — something only you can do: triage a new PR, review
-   it, remind the code author, follow up, escalate to the core team, do a
-   final review and merge, or close a docs PR whose linked code PR was
-   abandoned.
-2. **Waiting on others** — you've done your part; a clock is running
-   (follow up at day 7, escalate at day 14 since your reminder). If the
-   linked code PR is still open, there's no clock at all yet — it just
-   shows **Code PR is still open** until it merges.
-3. **Monitoring** — the author replied and you've already looked; a normal
+1. **Need you today** — something only you can do: review a PR, remind the
+   code author, follow up, escalate to the core team, do a final review and
+   merge, or close a docs PR whose linked code PR was closed without
+   merging.
+2. **Bring it forward** — not urgent, but worth doing on your own schedule:
+   brand-new PRs that still need a label or milestone, approvals that are
+   ready to merge with nothing else going on, and anything that's gone
+   quiet for a while (stale).
+3. **Waiting on others or for code PR to merge** — you've done your part —
+   either the code PR hasn't merged yet, or a reminder to the code PR
+   author has been sent.
+4. **Monitoring** — the author replied and you've already looked; a normal
    back-and-forth is happening. Collapsed by default, but each row still
    shows a day count since your last reply — if the conversation goes quiet
    for a week, it resurfaces in "Need you today" asking you to remind them
    again.
 
-On top of that lifecycle state, independent flags can light up on **any**
-row, regardless of its band, because they're triggered by separate
-conditions:
+On top of that, a few extra things can show up on any row, regardless of
+which group it's in, because they're triggered separately:
 
 - **Remove `pending-pr-merge` label** — the linked code PR merged.
 - **Final review, then merge** — someone other than you approved the docs PR
@@ -95,8 +97,8 @@ conditions:
 - **Add `needs-backport` label** — the PR targets a branch older than the
   repo's latest release branch.
 - **Needs rebase** — the docs PR carries a `needs-rebase` label. This is a
-  plain label check, nothing more — no clock, no "since when". It's there so
-  a rebase-blocked PR never quietly falls out of view.
+  plain label check, nothing more — it doesn't track how long it's been
+  there. It's there so a rebase-blocked PR never quietly falls out of view.
 
 A docs PR whose linked code PR closed without merging always shows
 **Close this docs PR** — that one action outranks everything else, since the
@@ -105,105 +107,106 @@ documented change is dead.
 Docs PRs disappear from the report automatically once merged or closed,
 since only open PRs are fetched.
 
-## Escalation clock
+## Follow-up & escalation timeline
 
-The clock only counts comments that explicitly **@-tag the code PR author**
-— on either the code PR or the docs PR. A plain comment or review doesn't
-start or reset it; it has to be a comment that literally names them. The tag
-can be **yours, a teammate's, or Promptless's** (the AI docs bot — the one
-bot let into this, since it speaks for the docs PR when it relays "I've
-addressed your feedback" to the code author) — whoever tags the author is
-reminding them, so any such tag drives the clock, and the row names who sent
-it. This is deliberate: an @-mention is the only signal precise enough to
-say "someone asked them directly." It's also chronological, not
-role-based — if Promptless's tag is the *most recent* one, it's what the
-clock and row text go by, even if you touched the PR earlier for something
-unrelated (e.g. a side conversation with Promptless itself) — that touch
-didn't answer the author, so it doesn't reset anything.
+This timeline only counts comments that explicitly **@-mention the code PR
+author** — on either the code PR or the docs PR. A plain comment or review
+doesn't start or reset it; it has to be a comment that literally names
+them. The @-mention can be **yours, a teammate's, or Promptless's** (the AI
+docs bot — the one bot let into this, since it speaks for the docs PR when
+it relays "I've addressed your feedback" to the code author) — whoever
+@-mentions the author is reminding them, and the row names who sent it.
+This is deliberate: an @-mention is the only signal precise enough to say
+"someone asked them directly." It also goes by time, not role — if
+Promptless's @-mention is the *most recent* one, it's what the row goes by,
+even if you touched the PR earlier for something unrelated (e.g. a side
+conversation with Promptless itself) — that touch didn't answer the
+author, so it doesn't reset anything.
 
-The clock can't start until the linked code PR has merged (before that, the
-PR just sits in **Waiting on others** as "Code PR is still open" — no count).
-It does **not** wait for you to have formally reviewed the docs PR first —
-some docs PRs need no content changes at all, so review is skipped by
-design and you're really just waiting on the code author to confirm things
-look right. Once merged:
+This timeline can't start until the linked code PR has merged (before
+that, the PR just sits in **Waiting on others** as "Code PR is still open"
+— no day count). It does **not** wait for you to have formally reviewed
+the docs PR first — some docs PRs need no content changes at all, so
+review is skipped by design and you're really just waiting on the code
+author to confirm things look right. Once merged:
 
-- **No tag sent yet**: shows "Remind code PR author — code PR merged" — no
-  count.
-- **Day 0–6 since your last tag**: waiting on others.
+- **No @-mention sent yet**: shows "Remind code PR author — code PR
+  merged" — no day count.
+- **Day 0–6 since your last @-mention**: waiting on others.
 - **Day 7**: send a follow-up.
 - **Day 14**: escalate to the core team.
 
 If you still haven't formally reviewed the docs PR by the time any of this
-kicks in, a separate **"Review this docs PR — code PR merged"** chip sits
-alongside whatever the clock is showing, so that's never lost either.
+kicks in, a separate **"Review this docs PR — code PR merged"** label sits
+alongside whatever this timeline is showing, so that's never lost either.
 
-The clock stops the moment the code author responds — on either PR, as a
-comment, review, or approval — and the PR moves to **Need you today** as
-"Check the author's response." Once you reply (even without tagging them
-again), it settles into **Monitoring** with its own day count: if that goes
-quiet for 7 days with no further reply from the author, it resurfaces
-asking you to send another explicit reminder.
+This timeline stops the moment the code author responds — on either PR, as
+a comment, review, or approval — and the PR moves to **Need you today** as
+"Check the author's response." Once you reply (even without @-mentioning
+them again), it settles into **Monitoring** with its own day count: if
+that goes quiet for 7 days with no further reply from the author, it
+resurfaces asking you to send another explicit reminder.
 
 ## Live human threads
 
-A docs PR can have a live conversation the clock above doesn't model — e.g.
-a contributor or another maintainer asks a question and nobody's replied.
-The row shows a **👀 X is waiting on Y** chip in whichever band it's
-currently in (Need you today, Waiting, or Monitoring):
+A docs PR can have a live conversation the timeline above doesn't cover —
+e.g. a contributor or another maintainer asks a question and nobody's
+replied. The row shows a **👀 X is waiting on Y** label in whichever group
+it's currently in (Need you today, Waiting, or Monitoring):
 
-- Waiting on **you** (someone @-tagged you or a teammate operator) → orange,
+- Waiting on **you** (someone @-mentioned you or a teammate) → orange,
   sorted high — you owe a reply.
-- Waiting on a **third party**, or an **untagged** comment → blue, just so
-  you can keep an eye on it. No clock.
-- Waiting on **the code author** — any @-tag of them (yours, a teammate's,
-  or Promptless's) feeds the escalation clock above, so once the code PR
-  has merged it's named right in the row's own text ("promptless-for-oss
-  reminded the author, no reply since") rather than a separate chip. This
-  chip only steps in where the clock can't yet — mainly pre-merge, where
-  there's no clock at all — checked independently of whatever the single
-  most recent comment happens to be about, so a later, unrelated exchange
-  with someone else can't bury it.
+- Waiting on a **third party**, or a comment that doesn't @-mention anyone
+  → blue, just so you can keep an eye on it.
+- Waiting on **the code author** — any @-mention of them (yours, a
+  teammate's, or Promptless's) feeds the follow-up timeline above, so once
+  the code PR has merged it's named right in the row's own text
+  ("promptless-for-oss reminded the author, no reply since") rather than a
+  separate label. This label only steps in where the timeline can't yet —
+  mainly before the code PR merges — checked independently of whatever the
+  single most recent comment happens to be about, so a later, unrelated
+  exchange with someone else can't bury it.
 
 ## Stale
 
 Independent of any of the above: if neither the docs PR nor its linked code
 PR has had any activity for more than 30 days, the row gets a dashed
 **🕸 Stale** badge naming the day count. It's purely an inactivity signal —
-it doesn't change the category or the clock, just flags rows that have gone
-quiet for longer than normal, in case something fell through the cracks.
+it doesn't change which group a row is in or its timeline, it just marks
+rows that have gone quiet for longer than normal, in case something fell
+through the cracks.
 
 ## Approvals
 
-When someone other than an operator approves a docs PR, the row names them
-(**approved by …**) in any band. But the actionable **Final review, then
-merge** step only appears once the linked code PR has merged — while it's
-still open, the approval is shown as a fact on a waiting row, since you
-won't merge the docs ahead of the code.
+When someone approves a docs PR — you, a teammate, or someone else — the
+row names them (**approved by …**) in any group. But the actionable
+**Final review, then merge** step only appears once the linked code PR has
+merged — while it's still open, the approval is shown as a fact on a
+waiting row, since you won't merge the docs ahead of the code.
 
 Reviewing a docs PR is optional while its code PR is open (it sits quietly
-in triage), but becomes **mandatory and prominent** — bumped to orange — the
-moment the code PR merges.
+waiting its turn), but becomes **mandatory and prominent** — bumped to
+orange — the moment the code PR merges.
 
-### Preserving a dismissed approval
+### Keeping an approval that GitHub dismissed
 
-GitHub auto-dismisses an `APPROVED` review the moment new commits land on
+GitHub automatically removes an approval the moment new commits land on
 the PR — even when the push only addresses feedback that has nothing to do
 with the content the approver actually signed off on. Once that happens,
-the approval disappears from the tracker too: the "Approved by X" chip
+the approval disappears from the tracker too: the "Approved by X" label
 goes away, and everything it unlocked (the "Final review, then merge" step,
-the escalation-clock shortcut once the code PR merges) reverts as if nobody
-had approved at all.
+the escalation shortcut once the code PR merges) reverts as if nobody had
+approved at all.
 
-If you've checked and the dismissal was spurious — the new commits didn't
-touch anything the approver reviewed — add the **`content-approved`**
-label yourself. The tracker then treats the approval as still standing:
-the row shows a separate **"Content approved by X — review dismissed"**
-chip (naming the reviewer GitHub's dismissal wiped out), and every
-downstream flow (final review, monitoring, the escalation clock) behaves
-as if that approval were still live. It's a
-deliberate, manual call — never inferred automatically — because only a
-human can judge whether the new commits actually invalidate the review.
+If you've checked and the new commits didn't actually touch anything the
+approver reviewed, add the **`content-approved`** label yourself. The
+tracker then treats the approval as still standing: the row shows a
+separate **"Content approved by X — review dismissed"** label (naming the
+reviewer GitHub's dismissal wiped out), and everything downstream (final
+review, monitoring, the escalation timeline) behaves as if that approval
+were still active. It's a deliberate, manual call — never inferred
+automatically — because only a human can judge whether the new commits
+actually invalidate the review.
 
 ## Author reminder page
 
@@ -216,36 +219,62 @@ ball is genuinely in the code author's court — grouped into one table per
 author (bots, including Promptless, are never a "person" here). Each row
 gets one of two marks:
 
-- **Need review** — nobody's tagged them about this docs PR yet (or the
-  thread went quiet after they last replied).
-- **Response to comment from X** — X (you, a teammate, or Promptless) tagged
-  them and they haven't replied since.
+- **Need review** — nobody's @-mentioned them about this docs PR yet (or
+  the thread went quiet after they last replied).
+- **Response to comment from X** — X (you, a teammate, or Promptless)
+  @-mentioned them and they haven't replied since.
 
 This deliberately drops the internal follow-up/escalate urgency language —
-the escalation clock still runs the same underneath (see above), but this
-page exists to remind the author, never to tell them they're about to be
-escalated to the core team.
+the same timeline still runs underneath (see above), but this page exists
+to remind the author, never to tell them they're about to be escalated to
+the core team.
 
 Each row has a checkbox. Checking it off is saved to **that visitor's own
-browser only** (`localStorage`) — it doesn't touch the underlying data or
-notify anyone. That's a deliberate tradeoff: it's not synced across devices
-and clearing browser data resets it, but it needs no backend or login for a
-static, freely-shared page, and the list itself always reflects the real
-current state regardless of what's checked — a PR drops off automatically
-once it's actually been handled, whether or not anyone ticked the box.
+browser only** — nobody else sees it, and it doesn't notify anyone or
+change anything on GitHub. That's a deliberate tradeoff: it's not synced
+across devices, and clearing browser data resets it — but it means anyone
+can open this page and use it right away, with no account needed. The
+list itself always reflects the real current state regardless of what's
+checked — a PR drops off automatically once it's actually been handled,
+whether or not anyone ticked the box.
+
+## Checklist
+
+Every row in Need you today, Bring it forward, and Waiting has a
+checkbox — Monitoring doesn't, since it's already "nothing to do." Same
+tradeoff as the reminder page's checkbox (above): it's saved to **your own
+browser only**, doesn't touch GitHub or anything the tracker computes, and
+resets if you clear browser data. A checked row dims in place, with its
+title struck through — the rest of the row's details stay legible so you
+can still see why it was there.
+
+Each group's header shows a live progress badge (e.g. "2/5 checked"),
+always counted against the **whole group**, not just whatever the Repo/
+Priority filters currently show — so it stays a stable "how far am I
+through this" number instead of shifting under you as you filter. It's
+grey while untouched, blue while in progress, and turns green with a ✓
+once every row in that group is checked off.
+
+A **Hide checked rows** switch sits next to the Repo/Priority filters — it
+collapses checked rows out of view entirely instead of just dimming them.
+Your checked state is unchanged either way; it only changes what's shown.
+
+Like the reminder page, checklist entries for PRs no longer on the board
+are cleared out automatically, so your saved data never grows forever.
 
 ## Filtering
 
 The report has two tab strips at the top: filter by **repo** and by
-**priority** (Critical / Serious / Act / Triage / Stale). Picking a severity
-tab (Critical–Triage) focuses "Need you today" and hides the calmer
-Waiting / Monitoring bands, since severity is a Need-today concept. **Stale**
-is different — it spans every band, so picking it filters rows *within*
-Need today, Waiting, and Monitoring alike instead of hiding any of them,
-since a stale PR could be sitting quietly in any of the three. Counts update
-as you filter; it's all client-side in the one HTML file.
+**priority** (Critical / Serious / Act / Triage / Stale). Picking a
+severity tab (Critical–Triage) focuses "Need you today" and hides the
+calmer Bring it forward / Waiting / Monitoring groups, since severity is a
+Need-today concept. **Stale** is different — it spans every group, so
+picking it filters rows *within* Need you today, Bring it forward,
+Waiting, and Monitoring alike instead of hiding any of them, since a stale
+PR could be sitting quietly in any of the four. Counts update as you
+filter; it's all handled in your browser, in the one HTML file.
 
-The three summary tiles at the top are also buttons — click one to jump
+The four summary tiles at the top are also buttons — click one to jump
 straight to its section (Monitoring auto-expands, since it's collapsed by
 default). A "back to top" button appears in the bottom-right corner once
 you've scrolled past the tiles.
