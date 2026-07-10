@@ -255,7 +255,7 @@ through this" number instead of shifting under you as you filter. It's
 grey while untouched, blue while in progress, and turns green with a ✓
 once every row in that group is checked off.
 
-A **Hide checked** toggle sits next to the Repo/Priority filters — it
+A **Hide checked rows** switch sits next to the Repo/Priority filters — it
 collapses checked rows out of view entirely instead of just dimming them.
 Your checked state is unchanged either way; it only changes what's shown.
 

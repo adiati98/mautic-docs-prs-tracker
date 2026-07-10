@@ -2243,7 +2243,7 @@ function generateHTML(prData, { operatorUsername }) {
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span>${repoTabs}</div>
     <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span>${priorityTabs}</div>
-    <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="ftab" id="hideCheckedBtn" type="button" aria-pressed="false">Hide checked <span class="fc">0</span></button></div>
+    <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>`
 
 	const needTodaySection =
@@ -2715,6 +2715,30 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:999px;padding:0 6px;color:var(--ink-2);
   }
   .ftab.active .fc{background:color-mix(in srgb, var(--accent) 22%, transparent)}
+  .switch-ctrl{
+    font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+    border:none;background:none;padding:2px 0;color:var(--ink-2);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .switch-track{
+    position:relative;width:34px;height:20px;border-radius:999px;
+    background:var(--line);flex-shrink:0;transition:background .15s;
+  }
+  .switch-thumb{
+    position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+    background:var(--surface);box-shadow:0 1px 2px rgba(11,11,11,.15);
+    transition:transform .15s;
+  }
+  .switch-ctrl[aria-checked="true"]{color:color-mix(in srgb, var(--accent) 80%, var(--ink))}
+  .switch-ctrl[aria-checked="true"] .switch-track{background:var(--accent)}
+  .switch-ctrl[aria-checked="true"] .switch-thumb{transform:translateX(14px)}
+  .switch-ctrl:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:999px}
+  .switch-ctrl .fc{
+    font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;
+    background:color-mix(in srgb, var(--ink) 8%, transparent);
+    border-radius:999px;padding:0 6px;color:var(--ink-2);
+  }
+  .switch-ctrl[aria-checked="true"] .fc{background:color-mix(in srgb, var(--accent) 22%, transparent)}
   .row.hidden,.mon-row.hidden{display:none}
   .no-match{font-size:12px;color:var(--ink-3);display:none}
   section.all-hidden .no-match{display:inline}
@@ -2872,7 +2896,7 @@ ${filterBar}
         <table>
           <tr><td><input type="checkbox" disabled></td><td>Tick it off once you've actually handled a row. It's saved to <b>your own browser only</b> — nobody else sees it, and it won't change anything on GitHub or on this page's data. The row dims and its title gets struck through; clearing your browser data resets everything.</td></tr>
           <tr><td><span class="chk-progress" data-state="partial">2/5 checked</span></td><td>Each group's header shows its own progress, always out of the <b>whole group</b> — not just whatever's currently filtered into view. Grey while untouched, blue while in progress, green with a ✓ once every row in that group is checked off.</td></tr>
-          <tr><td><b>Hide checked</b></td><td>A toggle next to the Repo/Priority filters (Checklist row) that collapses checked rows out of view instead of just dimming them. Your checked state is exactly the same either way — this only changes what's shown.</td></tr>
+          <tr><td><b>Hide checked rows</b></td><td>A switch next to the Repo/Priority filters (Checklist row) that collapses checked rows out of view instead of just dimming them. Your checked state is exactly the same either way — this only changes what's shown.</td></tr>
         </table>
       </section>
 
@@ -3045,9 +3069,8 @@ ${monitoringSection}
     updateBandProgress();
     if (hideCheckedBtn) {
       hideCheckedBtn.addEventListener('click', function(){
-        const active = !hideCheckedBtn.classList.contains('active');
-        hideCheckedBtn.classList.toggle('active', active);
-        hideCheckedBtn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        const active = hideCheckedBtn.getAttribute('aria-checked') !== 'true';
+        hideCheckedBtn.setAttribute('aria-checked', active ? 'true' : 'false');
         filterState.hideChecked = active;
         applyFilters();
       });
