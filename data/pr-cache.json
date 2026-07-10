@@ -1727,7 +1727,7 @@
     ]
   },
   "mautic/developer-documentation-new#505": {
-    "docsUpdatedAt": "2026-07-05T13:41:00Z",
+    "docsUpdatedAt": "2026-07-10T08:40:35Z",
     "codeUpdatedAt": "2026-06-26T04:37:49Z",
     "rawDocsReviews": [
       {
@@ -1885,6 +1885,13 @@
         },
         "created_at": "2026-06-24T09:08:21Z",
         "body": "Can you please review the content here, @andersonjeccel? TIA! ✨ "
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-10T08:40:01Z",
+        "body": "/aside\r\n\r\nCan you please review the content here, @andersonjeccel? TIA! ✨"
       }
     ],
     "rawCodeComments": [

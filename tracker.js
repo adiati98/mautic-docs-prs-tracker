@@ -181,10 +181,18 @@ async function fetchCodePR(repo, number) {
 			state: pr.state,
 			author: pr.user.login,
 			updatedAt: pr.updated_at,
+			milestoneTitle: pr.milestone ? pr.milestone.title : null,
 		}
 	} catch (e) {
 		console.error(`Error fetching code PR ${repo}#${number}:`, e.message)
-		return { merged: false, mergedAt: null, state: "open", author: null, updatedAt: null }
+		return {
+			merged: false,
+			mergedAt: null,
+			state: "open",
+			author: null,
+			updatedAt: null,
+			milestoneTitle: null,
+		}
 	}
 }
 
@@ -730,6 +738,7 @@ async function main() {
 		let codeMergedDate = null
 		let codeClosed = false
 		let codeUpdatedAt = null
+		let codeMilestoneTitle = null
 
 		if (appPRData) {
 			appPRRepo = appPRData.repo
@@ -741,6 +750,7 @@ async function main() {
 			codeClosed = codePR.state === "closed" && !codePR.merged
 			appPRAuthor = codePR.author
 			codeUpdatedAt = codePR.updatedAt
+			codeMilestoneTitle = codePR.milestoneTitle
 		}
 
 		// Raw lists keep the bots (needed by the community detector); the human
@@ -974,6 +984,28 @@ async function main() {
 		const standaloneOperatorReady =
 			finalReviewActionable && !appPRNumber && operatorApproved && !backportModifierActive
 
+		// Mautic release branches are always "X.Y" — but a code PR's
+		// milestone (the actual source of truth for where a docs PR should
+		// eventually land) can be set to a patch/pre-release title like
+		// "7.1.1" or "7.1.0-rc" at any point, before or after the code PR
+		// merges. milestoneVersion() already normalizes those down to "X.Y".
+		// If that disagrees with either the docs PR's current target branch
+		// or its own milestone, that's worth an early heads-up — before
+		// anyone's manually caught it and applied needs-rebase, which is
+		// when this stands down instead of piling on.
+		const codeMilestoneBranch = milestoneVersion(codeMilestoneTitle)
+		const docsMilestoneBranch = milestoneVersion(milestoneTitle)
+		const codeMilestoneBranchMismatch =
+			codeMilestoneBranch !== null && codeMilestoneBranch !== baseBranch
+		const codeMilestoneDocsMismatch =
+			codeMilestoneBranch !== null &&
+			docsMilestoneBranch !== null &&
+			docsMilestoneBranch !== codeMilestoneBranch
+		const codeMilestoneAdvisoryFlag =
+			!codeClosed &&
+			!needsRebaseFlag &&
+			(codeMilestoneBranchMismatch || codeMilestoneDocsMismatch)
+
 		// Plain inactivity signal — nothing has happened on either PR (docs
 		// or linked code) for 30+ days. Independent of category, so it can
 		// surface even on a row that otherwise looks fine (e.g. quietly
@@ -1147,6 +1179,11 @@ async function main() {
 			backportModifierActive,
 			standaloneOperatorReady,
 			rebaseWinsOverBackport,
+			codeMilestoneBranch,
+			docsMilestoneBranch,
+			codeMilestoneBranchMismatch,
+			codeMilestoneDocsMismatch,
+			codeMilestoneAdvisoryFlag,
 			daysSinceActivity,
 			staleFlag,
 			category,
@@ -1218,6 +1255,7 @@ function isNeedTodayRow(pr) {
 		pr.removeLabelFlag ||
 		pr.backportLabelFlag ||
 		pr.needsRebaseFlag ||
+		pr.codeMilestoneAdvisoryFlag ||
 		communityForcesToday(pr)
 	)
 }
@@ -1478,6 +1516,8 @@ function chipsFor(pr) {
 	const leadingStale = staleChip(pr)
 	if (leadingStale) chips.push(leadingStale)
 	if (pr.needsRebaseFlag) chips.push({ cls: "manual", text: "Needs rebase" })
+	const codeMilestone = codeMilestoneAdvisoryChip(pr)
+	if (codeMilestone) chips.push(codeMilestone)
 	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
 	// / "remind them" stops being an honest next step — it's not a fresh
 	// nudge anymore, it's a stale situation that needs a human decision, not
@@ -1592,6 +1632,33 @@ function approvalChips(pr) {
 function staleChip(pr) {
 	if (!pr.staleFlag) return null
 	return { cls: "stale", text: `🕸 Stale — ${pr.daysSinceActivity}d quiet` }
+}
+
+// An early, automatic heads-up that the code PR's milestone doesn't match
+// where the docs PR currently sits — before anyone's noticed and manually
+// applied needs-rebase (see codeMilestoneAdvisoryFlag). Names whichever of
+// branch/milestone is actually out of step, since either can lag
+// independently.
+function codeMilestoneAdvisoryChip(pr) {
+	if (!pr.codeMilestoneAdvisoryFlag) return null
+	const code = escapeHtml(pr.codeMilestoneBranch)
+	const docs = escapeHtml(pr.docsMilestoneBranch)
+	if (pr.codeMilestoneBranchMismatch && pr.codeMilestoneDocsMismatch) {
+		return {
+			cls: "manual",
+			text: `Code PR milestone is ${code} — docs targets ${escapeHtml(pr.baseBranch)} and is milestoned ${docs}, both should follow`,
+		}
+	}
+	if (pr.codeMilestoneBranchMismatch) {
+		return {
+			cls: "manual",
+			text: `Code PR milestone is ${code} — docs targets ${escapeHtml(pr.baseBranch)}, check destination branch`,
+		}
+	}
+	return {
+		cls: "manual",
+		text: `Code PR milestone is ${code} — docs is milestoned ${docs}, update it`,
+	}
 }
 
 // Community thread — names both people so the social action is obvious. A
@@ -2512,7 +2579,7 @@ ${filterBar}
           <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR (standalone, awaiting your review) · Check the author's response · Note since approval.</td></tr>
           <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label · Approved by X (and Approved — ready to merge, once it's an operator's own approval on a standalone PR).</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
-          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase.</td></tr>
+          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase · code PR's milestone doesn't match the docs branch/milestone yet.</td></tr>
           <tr><td><span class="chip muted">Optional / already done</span></td><td>Review while the code PR's still open · a reminder you already sent.</td></tr>
           <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was abandoned.</td></tr>
           <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on either PR for 30+ days — purely informational, no clock of its own.</td></tr>
