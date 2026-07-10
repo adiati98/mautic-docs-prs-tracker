@@ -9914,5 +9914,322 @@
       }
     ],
     "rawCodeReviews": []
+  },
+  "mautic/user-documentation#838": {
+    "docsUpdatedAt": "2026-07-10T16:45:32Z",
+    "codeUpdatedAt": "2026-07-10T16:45:58Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-10T16:45:32Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-10T16:45:33Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2025-12-04T14:00:11Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15694) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15694&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15694&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15694&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15694&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15694&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15694)\n\n"
+      },
+      {
+        "user": {
+          "login": "codecov[bot]"
+        },
+        "created_at": "2025-12-04T14:14:59Z",
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/15694?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 70.95%. Comparing base ([`634cbdc`](https://app.codecov.io/gh/mautic/mautic/commit/634cbdcd368ffa0753fe78b1624ec35d6558d315?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`f6422b8`](https://app.codecov.io/gh/mautic/mautic/commit/f6422b892b5263bae015b91e7df32914eb3d2ad5?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/15694/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/15694?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@            Coverage Diff            @@\n##                7.x   #15694   +/-   ##\n=========================================\n  Coverage     70.95%   70.95%           \n  Complexity    38270    38270           \n=========================================\n  Files          2480     2480           \n  Lines        144157   144157           \n=========================================\n  Hits         102292   102292           \n  Misses        41865    41865           \n```\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-06-22T12:15:00Z",
+        "body": "@biozshock could you review this one when you have a minute?"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-06-25T10:46:02Z",
+        "body": "@biozshock done, pushed! Could you take another look when you have a minute?"
+      },
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "created_at": "2026-06-25T20:51:55Z",
+        "body": "@andersonjeccel After taking a closer look into the code i have a question: why this is not implemented in the `plugins/GrapesJsBuilderBundle/Assets/library/js/plugins/grapesjs-mjmlThemeTokens/blocks.js`?"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-06-29T10:52:26Z",
+        "body": "@biozshock moved it into the MJML block patcher. Could you take another look?"
+      },
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "created_at": "2026-06-30T20:34:51Z",
+        "body": "@andersonjeccel Seems like new buttons are not properly categorized. Also i think that you could set the \"Text\" button straight in the settings object?"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-07-01T13:07:06Z",
+        "body": "@biozshock it's working now, sorry for the oversight\r\n\r\n<img width=\"271\" height=\"469\" alt=\"image\" src=\"https://github.com/user-attachments/assets/004645d5-8ee4-4f0a-ac97-cc81e6d83a2c\" />\r\n"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-07-02T13:36:14Z",
+        "body": "@biozshock updated this again, could you take another look?"
+      },
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "created_at": "2026-07-02T22:18:39Z",
+        "body": "@patrykgruszka Can you please give it a quick review? Thanks!"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-07-09T10:41:29Z",
+        "body": "@patrykgruszka updated this, could you take another look when you get a chance?"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-07-10T11:11:44Z",
+        "body": "@patrykgruszka fixed those, could you take another look?"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-07-10T15:16:34Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15694) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15694&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15694&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15694&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15694&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15694&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15694)\n\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T16:45:58Z",
+        "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by this PR (Typography blocks for the GrapesJS email builder).\n\nDocuments the new Typography block category (H1–H4 and Subtitle) in the GrapesJS Email Builder, the relocated Text block, its position between Sections and Blocks (collapsed by default), the instant inline-edit-on-drop behavior, Theme-token styling, and MJML-only availability.\n\nReview: [docs PR #838 in mautic/user-documentation](https://github.com/mautic/user-documentation/pull/838)\n\nNo developer-documentation change was needed — this PR adds preset blocks and translation strings but introduces no new developer extension points, events, services, or APIs.\n"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-06-23T22:35:25Z",
+        "body": "There was a lot of package downgrades. Is that really necessary for this patch?"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-06-25T10:45:47Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-06-25T10:45:49Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-06-25T10:45:51Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-01T21:26:51Z",
+        "body": "Have few minor suggestions to the code.\n\nAnd a couple questions:\n1. Would be great that newly added blocks (H1..H4 and subtitle) would perform same way as \"Text\": when User adds a block to the builder - the editor opens instantly.\n2. Would be cool to select the default text in text editor after blocks (text, H1..H4 and subtitle) are added, if the previous is implemented. Please create a bug report if task is too complicated!"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-02T13:35:46Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-02T13:35:48Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "hluchas"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-02T14:33:05Z",
+        "body": "I see no issue. Works well. Handy thing.\nTY!"
+      },
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-02T22:17:55Z",
+        "body": "~~Probably last one from me.~~\r\nThe text block is again migrated to \"Blocks\" instead of \"Typography\"."
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-03T12:28:31Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-09T09:43:13Z",
+        "body": "The theme-token implementation for other themes is still in progress (currently only Brienz uses it), but we should adjust this PR so the new typography blocks are compatible with the token contract introduced by the [MJML theme tokens](https://github.com/mautic/mautic/pull/16042) work.\r\n\r\nAt minimum, the new heading blocks should use existing theme tokens where available, especially `t-h1` and `t-h2`, and only keep hardcoded typography attributes as a fallback for themes that do not define those tokens. Right now the blocks use the generic text token and hardcoded typography attributes, so token-aware themes cannot control the heading styles from `mj-attributes`."
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-09T10:41:00Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-09T10:41:08Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-09T13:02:05Z",
+        "body": "Works well with theme tokens :) Two minor findings left"
+      },
+      {
+        "user": {
+          "login": "MadlenF"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-10T09:00:36Z",
+        "body": "Besides the open comments it's working as described, cool improvement! 👍 "
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-10T11:11:20Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-10T11:11:20Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-10T15:15:39Z",
+        "body": "Looks good 👍 "
+      }
+    ]
+  },
+  "mautic/developer-documentation-new#594": {
+    "docsUpdatedAt": "2026-07-10T17:20:16Z",
+    "codeUpdatedAt": "2026-07-10T17:13:43Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-10T17:13:09Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiux"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-10T17:20:12Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T17:20:16Z",
+        "body": "Just a reminder: I review PR comments by default. If you want me to ignore a specific comment, start it with `aside` or `/aside`."
+      }
+    ],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-07-10T17:07:03Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16517) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16517&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16517&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16517&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16517&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16517&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16517)\n\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T17:13:43Z",
+        "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by [PR #16517](https://github.com/mautic/mautic/pull/16517)\n\nThis PR adds the optional `tooltip` parameter to `@MauticCore/Helper/tableheader.html.twig`, letting bundle/template developers attach a hover tooltip to any list-column header. The docs update adds a new developer-docs page under Design templates documenting the helper and its `tooltip` parameter (targets the 7.2 docs branch).\n\nReview: [Document tableheader.html.twig helper and its new tooltip parameter](https://github.com/mautic/developer-documentation-new/pull/594)\n"
+      }
+    ],
+    "rawCodeReviews": []
   }
 }

@@ -42,6 +42,8 @@ const BOTS = [
 const PENDING_LABEL = process.env.PENDING_LABEL || "pending-pr-merge"
 const BACKPORT_LABEL = process.env.BACKPORT_LABEL || "needs-backport"
 const NEEDS_REBASE_LABEL = process.env.NEEDS_REBASE_LABEL || "needs-rebase"
+const CONTENT_APPROVED_LABEL =
+	process.env.CONTENT_APPROVED_LABEL || "content-approved"
 const RELEASE_BRANCH_PATTERN = /^\d+\.\d+$/
 const FOLLOWUP_DAYS = 7
 const ESCALATE_DAYS = 14
@@ -736,6 +738,9 @@ async function main() {
 		const hasLabel = pr.labels.some((l) => l.name === PENDING_LABEL)
 		const hasBackportLabel = pr.labels.some((l) => l.name === BACKPORT_LABEL)
 		const hasNeedsRebaseLabel = pr.labels.some((l) => l.name === NEEDS_REBASE_LABEL)
+		const hasContentApprovedLabel = pr.labels.some(
+			(l) => l.name === CONTENT_APPROVED_LABEL,
+		)
 		const hasMilestone = pr.milestone != null
 		const milestoneTitle = pr.milestone ? pr.milestone.title : null
 		const baseBranch = pr.base.ref
@@ -877,7 +882,29 @@ async function main() {
 			(r) =>
 				r.state === "APPROVED" && !operatorLogins.has(r.user.login.toLowerCase()),
 		)
-		const approvedByNonOperator = nonOperatorApprovals.length > 0
+		// GitHub auto-dismisses an APPROVED review the moment new commits
+		// land — even a push that only addresses feedback unrelated to what
+		// the approver actually signed off on — and every downstream
+		// approval fact (finalReviewActionable, the escalation-clock
+		// shortcut, the "Approved by X" chip) disappears along with it. The
+		// content-approved label is how an operator manually restores that
+		// fact once they've confirmed the dismissal was spurious: a
+		// deliberate human call, not something inferred from the API. Login
+		// attribution reuses whichever non-author human reviews now show up
+		// as DISMISSED — the state GitHub's stale-approval auto-dismissal
+		// always leaves behind (a CHANGES_REQUESTED review is never
+		// auto-dismissed this way) — so no extra API call is needed to name
+		// them.
+		const dismissedApproverLogins = [
+			...new Set(
+				docsReviews
+					.filter((r) => r.state === "DISMISSED" && r.user.login !== pr.user.login)
+					.map((r) => r.user.login),
+			),
+		]
+		const contentApprovedByLabel =
+			hasContentApprovedLabel && dismissedApproverLogins.length > 0
+		const approvedByNonOperator = nonOperatorApprovals.length > 0 || contentApprovedByLabel
 		// Any unrevoked approval that isn't the PR author approving their own
 		// work — GitHub blocks self-approval for everyone except one admin
 		// exception, so in practice this exclusion only ever catches that one
@@ -888,12 +915,15 @@ async function main() {
 		const qualifyingApprovals = docsReviews.filter(
 			(r) => r.state === "APPROVED" && r.user.login !== pr.user.login,
 		)
-		const hasQualifyingApproval = qualifyingApprovals.length > 0
+		const hasQualifyingApproval = qualifyingApprovals.length > 0 || contentApprovedByLabel
 		const operatorApproved = qualifyingApprovals.some((r) =>
 			operatorLogins.has(r.user.login.toLowerCase()),
 		)
 		// Unique approver logins in order — shown as a fact ("Approved by X")
-		// in any band, regardless of category.
+		// in any band, regardless of category. Deliberately live-only (unlike
+		// hasQualifyingApproval above): a label-preserved approval gets its
+		// own, differently-worded chip (see approvalChips) so the row is
+		// honest about GitHub no longer showing this as a formal approval.
 		const approverLogins = [...new Set(qualifyingApprovals.map((r) => r.user.login))]
 		// Most recent qualifying approval on the docs PR. Read by the reminder
 		// report (buildReminderGroups) to compare against the last ping —
@@ -1165,6 +1195,9 @@ async function main() {
 			isDraft,
 			hasLabel,
 			hasBackportLabel,
+			hasContentApprovedLabel,
+			contentApprovedByLabel,
+			dismissedApproverLogins,
 			hasMilestone,
 			milestoneTitle,
 			baseBranch,
@@ -1710,6 +1743,17 @@ function approvalChips(pr) {
 				? { cls: "finish", text: `Approved by ${names} — ready to merge` }
 				: { cls: "finish", text: `Approved by ${names}` },
 		)
+	}
+	// GitHub dismissed the actual review (new commits landed), but the
+	// content-approved label says an operator manually confirmed the
+	// dismissal didn't undo the approval — named separately from the chip
+	// above so the row stays honest that this isn't a live GitHub approval.
+	if (pr.contentApprovedByLabel) {
+		const names = pr.dismissedApproverLogins.map(escapeHtml).join(", ")
+		chips.push({
+			cls: "finish",
+			text: `Content approved by ${names} — review dismissed`,
+		})
 	}
 	if (pr.noteSinceApprovalFlag) {
 		chips.push({ cls: "act", text: "Note since approval — take a look" })
@@ -2737,6 +2781,7 @@ ${filterBar}
         <table>
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown live if a non-operator is waiting on the <b>code author</b> — checked on its own, so a later unrelated reply to someone else can't hide it. Once the PR is approved, anything said before that approval no longer counts — only what's happened since. Otherwise it's just visibility, no clock. Includes Promptless when it tags a reviewer outside your team for feedback.</td></tr>
           <tr><td>Approvals</td><td>"Approved by X" is a chip shown everywhere there's an unrevoked approval — operator or not (the one exception: a PR author approving their own PR, which GitHub only allows for one admin account). "Final review, then merge" only appears once the code PR has merged; for a standalone PR with no code PR to wait on, an operator's own approval collapses both into one chip: "Approved by X — ready to merge". Anything that lands after the approval gets its own "Note since approval" chip.</td></tr>
+          <tr><td>Content-approved label</td><td>GitHub auto-dismisses an approval the moment new commits land, even when the push only addresses unrelated feedback — the "Approved by X" chip and everything it unlocks (final review, the escalation-clock shortcut) disappears with it. If you've checked and the dismissal was spurious, add the <code>${CONTENT_APPROVED_LABEL}</code> label yourself: the row gets a separate "Content approved by X — review dismissed" chip, naming whichever reviewer's approval GitHub dismissed, and everything downstream behaves as if the approval still stood.</td></tr>
         </table>
       </section>
 
@@ -2755,7 +2800,7 @@ ${filterBar}
         <h2 class="legend-h">7. Good to know</h2>
         <table>
           <tr><td>Review vs. the clock</td><td>The remind/follow-up/escalate clock no longer waits on you having formally reviewed the docs PR — it only needs the code PR merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" chip rides alongside whatever the clock shows.</td></tr>
-          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock.</td></tr>
+          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — surfaced as-is, no clock. <code>${CONTENT_APPROVED_LABEL}</code> — add it yourself after confirming a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
         </table>
       </section>
 
