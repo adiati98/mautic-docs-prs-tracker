@@ -230,7 +230,12 @@ function slimComment(c) {
 }
 
 function slimReview(r) {
-	return { user: { login: r.user.login }, state: r.state, submitted_at: r.submitted_at }
+	return {
+		user: { login: r.user.login },
+		state: r.state,
+		submitted_at: r.submitted_at,
+		body: r.body,
+	}
 }
 
 function cacheHit(entry, docsUpdatedAt, codeUpdatedAt) {
@@ -293,6 +298,14 @@ function milestoneVersion(title) {
 function backportContradictsMilestone(baseBranch, milestoneTitle) {
 	const mv = milestoneVersion(milestoneTitle)
 	return mv !== null && mv !== baseBranch
+}
+
+// Promptless opens one sibling PR per release branch by design, each titled
+// with the branch it targets (e.g. "... (7.0)" against base branch "7.0").
+// That per-branch PR *is* the backport — there's no separate porting step
+// left to do, so asking for needs-backport on top of it would be redundant.
+function isPurposeBuiltForBranch(title, baseBranch, authorLogin) {
+	return authorLogin === PROMPTLESS && milestoneVersion(title) === baseBranch
 }
 
 function tryExtractAppPR(text) {
@@ -899,17 +912,29 @@ async function main() {
 				.filter((r) => operatorLogins.has(r.user.login.toLowerCase()))
 				.map((r) => new Date(r.submitted_at)),
 		)
+		// The approval itself can carry the caveat — "LGTM but needs a rebase
+		// onto 5.x first" written straight into the review body — so trust in
+		// the approval shouldn't hinge only on what came after it.
+		const lastApproval = qualifyingApprovals.reduce(
+			(latest, r) =>
+				!latest || new Date(r.submitted_at) > new Date(latest.submitted_at)
+					? r
+					: latest,
+			null,
+		)
+		const approvalHasNote = Boolean(lastApproval?.body?.trim())
 		// A comment or a non-approving review after the latest approval — the
 		// approval might not actually be the last word (a late second thought,
 		// a rebase/backport note left alongside it), so it's worth a glance
 		// rather than trusting the approval blindly.
 		const noteSinceApprovalFlag =
 			lastApprovalDate !== null &&
-			[...docsComments, ...docsReviews].some(
-				(e) =>
-					e.state !== "APPROVED" &&
-					new Date(e.submitted_at || e.created_at) > lastApprovalDate,
-			)
+			(approvalHasNote ||
+				[...docsComments, ...docsReviews].some(
+					(e) =>
+						e.state !== "APPROVED" &&
+						new Date(e.submitted_at || e.created_at) > lastApprovalDate,
+				))
 
 		const {
 			lastPingDate,
@@ -965,7 +990,11 @@ async function main() {
 		// would contradict "the branch needs fixing first."
 		let rebaseWinsOverBackport =
 			needsRebaseFlag && backportContradictsMilestone(baseBranch, milestoneTitle)
-		let backportLabelFlag = olderBranch && !hasBackportLabel && !rebaseWinsOverBackport
+		let backportLabelFlag =
+			olderBranch &&
+			!hasBackportLabel &&
+			!rebaseWinsOverBackport &&
+			!isPurposeBuiltForBranch(pr.title, baseBranch, pr.user.login)
 		if (codeClosed) {
 			removeLabelFlag = false
 			finalReviewActionable = false
