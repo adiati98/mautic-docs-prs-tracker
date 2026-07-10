@@ -4128,7 +4128,7 @@
     "rawCodeReviews": []
   },
   "mautic/user-documentation#835": {
-    "docsUpdatedAt": "2026-07-10T12:32:14Z",
+    "docsUpdatedAt": "2026-07-10T14:13:32Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -4170,6 +4170,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-10T12:15:48Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-10T14:01:21Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -4193,6 +4201,13 @@
         },
         "created_at": "2026-07-10T12:32:14Z",
         "body": "Thanks for the thorough review, @adiati98! I've addressed all of the points:\n\n1. Removed the redundant `Projects overview` subsection header — the intro now flows directly under the main `Projects` title.\n2. `To create a Project:` and `To delete one or more Projects:` — bold removed, now plain text.\n3. Added the five screenshots under `docs/projects/images/` with snake_case filenames and descriptive alt text (none starting with \"Screenshot of\"):\n   - **`projects_list_view.png`** (intro) — *\"Projects list showing the New button and the Projects item in the left menu\"*\n   - **`create_new_project_form.png`** (Creating Projects) — *\"Create new Project screen with Name and Description fields\"*\n   - **`assign_project_from_email.png`** (Assigning items → From the item) — *\"Email edit view with the Projects field used to assign the Email to a Project\"*\n   - **`add_entities_to_project_button.png`** (between steps 1 and 2 of the From the Project list) — *\"Project detail view highlighting the Add Entities to Project button\"*\n   - **`remove_item_from_project.png`** — this image shows the three-dots Options menu with **Remove from project**, so I placed it under **Deleting items from Projects** (the per-item flow it depicts) rather than under **Deleting Projects**. Happy to move it if you'd prefer. Alt: *\"Options menu on a Project item showing the Remove from project action\"*\n\nVale passes clean on the updated page.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T14:13:32Z",
+        "body": "Thanks again, @adiati98 — I've applied all of your review suggestions and pushed the update to this branch:\n\n1. **`projects_list_view.png`** — moved to the end of the **Managing Projects** section.\n2. **`create_new_project_form.png`** — added a `|` line break with blank lines between the image and the following paragraph about the unique-name check.\n3. **New screenshot** — added `delete_selected_projects.png` under `docs/projects/images/` (the Projects list with two Projects selected and the blue 'Delete selected' banner). It's placed in the **Deleting Projects** section after the delete steps, uses snake_case naming, has descriptive alt text (\"Projects list with two Projects selected and the Delete selected banner\"), and includes the `|` spacing.\n4. **`assign_project_from_email.png`** — indented under the **From the item** unordered list item so it aligns with that bullet, with the `|` spacing.\n5. **`remove_item_from_project.png`** — added the `|` line break for spacing before the next section.\n\nVale passes clean on the updated page. Ready for another look.\n"
       }
     ],
     "rawCodeComments": [],
