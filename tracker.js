@@ -1256,8 +1256,52 @@ function isNeedTodayRow(pr) {
 		pr.backportLabelFlag ||
 		pr.needsRebaseFlag ||
 		pr.codeMilestoneAdvisoryFlag ||
+		// The code PR merged and nobody's formally reviewed the docs PR yet —
+		// without this, a row whose category is otherwise quiet (monitoring,
+		// waiting-code-pr-merge) would carry the blue "Review this docs PR —
+		// code PR merged" chip while sitting in a band with no severity/edge
+		// concept at all (Waiting hardcodes data-sev="none"; Monitoring rows
+		// have no edge). This is a real "you need to review it" action item,
+		// so it belongs here regardless of what else the category says.
+		pr.reviewPendingFlag ||
 		communityForcesToday(pr)
 	)
+}
+
+// Approved and ready, with nothing else going on — every chip on the row
+// belongs to the finish/backport family (the "Approved by X" fact plus the
+// merge action itself). Anything else present (a rebase flag, a live
+// thread, a milestone advisory, a stale badge...) means there's still a
+// human judgment call to make, so it doesn't count as "clean" — that row
+// stays in Need-today instead (see sortRank), right at the top.
+function isCleanApprovedRow(pr) {
+	if (!pr.finalReviewActionable) return false
+	return chipsFor(pr).every((c) => c.cls === "finish" || c.cls === "backport")
+}
+
+// Bring it forward: not urgent, but worth surfacing on your own schedule
+// rather than buried in — or missing entirely from — the urgent list. Carved
+// out of what would otherwise be Need-today (never out of Waiting or
+// Monitoring, which stay as they are): brand-new PRs still needing their
+// first label/milestone, approvals that are cleanly ready to merge, and
+// anything stale. Stale wins over "clean approved" by construction — a
+// stale row's chip list always includes the stale badge, so it can never
+// pass the all-finish/backport check above.
+function isBringForwardRow(pr) {
+	return (
+		pr.category === "needs-label-and-milestone" ||
+		pr.category === "needs-milestone" ||
+		pr.staleFlag ||
+		isCleanApprovedRow(pr)
+	)
+}
+
+// Which of the three Bring-it-forward groups a row belongs to, in the order
+// they're listed: new PRs to triage, then clean approvals, then stale.
+function bringForwardRank(pr) {
+	if (pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") return 0
+	if (pr.staleFlag) return 2
+	return 1
 }
 
 function escapeHtml(text) {
@@ -1302,10 +1346,18 @@ function categorySeverity(pr) {
 			return "serious"
 		case "needs-remind-code-author":
 		case "needs-check-author-response":
-			return "act"
-		case "needs-operator-review":
+		// New PRs still needing a label/milestone always land in Bring it
+		// forward now (see isBringForwardRow), never Need-today — but
+		// something genuinely needs doing, so it's "act", not "triage".
 		case "needs-label-and-milestone":
 		case "needs-milestone":
+			return "act"
+		case "needs-operator-review":
+			// A standalone PR with nothing else gating it renders the blue
+			// "act" chip (see chipsFor) since your review is the entire
+			// blocker — the edge should match. Stays the muted triage color
+			// when a linked code PR is still open and there's no rush yet.
+			return !pr.appPRNumber && !pr.isDraft ? "act" : "triage"
 		case "blocked-no-code-pr":
 			return "triage"
 		default:
@@ -1334,19 +1386,28 @@ function severityFor(pr) {
 	return SEV_RANK[b] > SEV_RANK[a] ? b : a
 }
 
+// Only ever called on rows that already passed !isBringForwardRow, so
+// staleFlag, the two triage categories, and a clean approval never reach
+// here — they've moved to Bring it forward entirely.
 function sortRank(pr) {
-	// A stale PR isn't a fresh nudge candidate anymore (see chipsFor) — it's a
-	// human decision, not an action tier, so it drops below every other row
-	// regardless of category.
-	if (pr.staleFlag) return 100
+	// A finalReviewActionable row still in Need-today is the messy kind —
+	// approved and ready, but with something else attached (a rebase flag, a
+	// live thread, a milestone advisory...) that keeps it out of Bring it
+	// forward's "clean" bucket. It's the closest to done of anything here,
+	// so it goes to the very top to push it over the line.
+	if (pr.finalReviewActionable) return -1
 	if (pr.category === "needs-close-docs-pr") return 0
-	if (pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone")
-		return 1
 	if (pr.category === "needs-escalate-core-team") return 2
 	if (pr.category === "needs-followup") return 3
 	if (pr.community.lit && pr.community.waitingOnKind === "operator") return 3.5
 	if (pr.category === "needs-remind-code-author") return 4
-	if (pr.finalReviewActionable) return pr.backportModifierActive ? 5 : 6
+	// "You still need to review this" — whether that's because the code PR
+	// merged and nobody's looked (reviewPendingFlag) or it's a standalone PR
+	// with nothing else gating it (the blue chip case, see categorySeverity)
+	// — ranks above the muted/gray needs-operator-review tier it'd otherwise
+	// share with linked-but-still-open PRs, which aren't as pressing.
+	if (pr.reviewPendingFlag || (pr.category === "needs-operator-review" && !pr.appPRNumber && !pr.isDraft))
+		return 6
 	if (pr.category === "needs-operator-review" || pr.category === "needs-check-author-response")
 		return 7
 	if (pr.community.lit) return 7.5
@@ -1953,7 +2014,10 @@ function buildReminderGroups(prData) {
 }
 
 function generateHTML(prData, { operatorUsername }) {
-	const needToday = prData.filter(isNeedTodayRow)
+	// Bring-forward is carved entirely out of what would otherwise be
+	// Need-today — never out of Waiting or Monitoring, which are untouched.
+	const needToday = prData.filter((p) => isNeedTodayRow(p) && !isBringForwardRow(p))
+	const bringForward = prData.filter((p) => isNeedTodayRow(p) && isBringForwardRow(p))
 	const waiting = prData.filter(
 		(p) => !isNeedTodayRow(p) && p.category.startsWith("waiting-"),
 	)
@@ -1965,9 +2029,17 @@ function generateHTML(prData, { operatorUsername }) {
 		const ra = sortRank(a)
 		const rb = sortRank(b)
 		if (ra !== rb) return ra - rb
-		// Stale tier: newest activity first, longest-quiet last — the
-		// opposite of every other tier, where the most-overdue row leads.
-		if (ra === 100) return (a.daysSinceActivity ?? 0) - (b.daysSinceActivity ?? 0)
+		const da = a.daysSincePing ?? -1
+		const db = b.daysSincePing ?? -1
+		return db - da
+	})
+	bringForward.sort((a, b) => {
+		const ra = bringForwardRank(a)
+		const rb = bringForwardRank(b)
+		if (ra !== rb) return ra - rb
+		// Stale group: newest activity first, longest-quiet last — the
+		// opposite of the other two groups, where the most-overdue row leads.
+		if (ra === 2) return (a.daysSinceActivity ?? 0) - (b.daysSinceActivity ?? 0)
 		const da = a.daysSincePing ?? -1
 		const db = b.daysSincePing ?? -1
 		return db - da
@@ -2012,6 +2084,18 @@ function generateHTML(prData, { operatorUsername }) {
 		waitingSub = "you've done your part"
 	}
 
+	const newTriageCount = bringForward.filter(
+		(p) => p.category === "needs-label-and-milestone" || p.category === "needs-milestone",
+	).length
+	const readyCount = bringForward.filter((p) => isCleanApprovedRow(p)).length
+	const bringForwardStaleCount = bringForward.filter((p) => p.staleFlag).length
+	const bringForwardBits = []
+	if (newTriageCount > 0) bringForwardBits.push(`${newTriageCount} new`)
+	if (readyCount > 0) bringForwardBits.push(`${readyCount} ready to merge`)
+	if (bringForwardStaleCount > 0)
+		bringForwardBits.push(`<span class="dot stale"></span>${bringForwardStaleCount} stale`)
+	const bringForwardSub = bringForwardBits.join(" · ")
+
 	// ---- filter tabs (repo + priority) -----------------------------------
 	const repoCounts = {}
 	for (const p of prData) repoCounts[p.repoShort] = (repoCounts[p.repoShort] || 0) + 1
@@ -2029,9 +2113,10 @@ function generateHTML(prData, { operatorUsername }) {
 		const s = severityFor(p)
 		if (sevCounts[s] != null) sevCounts[s]++
 	}
-	// Unlike the severity tabs (Need-today only), Stale spans every band —
-	// that's the point, it's meant to catch things Waiting/Monitoring would
-	// otherwise quietly hide.
+	// Act and Stale both span every band — Bring it forward carries its own
+	// actionable (new-PR, clean-approved) rows and stale rows, and picking
+	// either tab is meant to surface those too rather than hide them.
+	sevCounts.act += bringForward.filter((p) => severityFor(p) === "act").length
 	sevCounts.stale = prData.filter((p) => p.staleFlag).length
 
 	const repoTabs = [
@@ -2071,8 +2156,22 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="mark">✓</div>
     <h3>Nothing needs you today</h3>
     <p>${EMPTY_LINES[Math.floor(Date.now() / 86400000) % EMPTY_LINES.length]}</p>
-    <p class="tail">${waiting.length} waiting on others · ${monitoring.length} monitoring</p>
+    <p class="tail">${bringForward.length} to bring forward · ${waiting.length} waiting on others · ${monitoring.length} monitoring</p>
   </div>`
+
+	const bringForwardSection =
+		bringForward.length > 0
+			? `
+  <section class="band-secondary" data-band="forward">
+    <div class="sec-head">
+      <h2>Bring it forward</h2><span class="count">${bringForward.length}</span>
+      <span class="hint">not urgent — new PRs to triage, approvals ready to merge, anything gone quiet</span>
+      <span class="no-match">no rows match this filter</span>
+    </div>
+    <div class="card">${bringForward.map(renderNeedTodayRow).join("")}
+    </div>
+  </section>`
+			: ""
 
 	const waitingSection =
 		waiting.length > 0
@@ -2477,9 +2576,11 @@ function generateHTML(prData, { operatorUsername }) {
   section.all-hidden .no-match{display:inline}
   section.all-hidden .card{display:none}
   /* choosing a specific priority hides the lower-priority bands entirely */
-  /* Stale spans every band, so picking it shouldn't hide Waiting/Monitoring
-     the way the severity tabs do — those are Need-today-only concepts. */
-  body:not([data-fpri="all"]):not([data-fpri="stale"]) .band-secondary{display:none}
+  /* Stale and Act both span every band — Bring it forward genuinely has
+     actionable (new-PR, clean-approved) and stale rows of its own — so
+     picking either shouldn't hide it. Critical/Serious/Triage stay
+     Need-today-only escalation states, so they still hide everything else. */
+  body:not([data-fpri="all"]):not([data-fpri="stale"]):not([data-fpri="act"]) .band-secondary{display:none}
 
   @media (max-width:640px){
     body{padding:16px 10px 40px}
@@ -2521,6 +2622,11 @@ function generateHTML(prData, { operatorUsername }) {
       <div><div class="lbl">Need you today</div>
       <div class="sub">${needTodaySub}</div></div>
     </button>
+    <button class="tile" data-goto="forward" type="button">
+      <div class="num">${bringForward.length}</div>
+      <div><div class="lbl">Bring it forward</div>
+      <div class="sub">${bringForwardSub}</div></div>
+    </button>
     <button class="tile" data-goto="waiting" type="button">
       <div class="num">${waiting.length}</div>
       <div><div class="lbl">Waiting on others or for code PR to merge</div>
@@ -2538,9 +2644,10 @@ ${filterBar}
     <div class="legend-body">
 
       <section>
-        <h2 class="legend-h">1. The three bands — whose turn is it?</h2>
+        <h2 class="legend-h">1. The four bands — whose turn is it?</h2>
         <table>
-          <tr><td><b>Need you today</b></td><td>Actions only you can take.</td></tr>
+          <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
+          <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth pushing along on your own schedule — carved out of Need-today so it doesn't bury the actually urgent rows: brand-new PRs still needing their first label/milestone, approvals that are cleanly ready to merge with nothing else attached, and anything gone stale.</td></tr>
           <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR still needs to merge (no clock yet), or a reminder's out and the clock is running.</td></tr>
           <tr><td><b>Monitoring</b></td><td>The author replied and you've already looked. Collapsed by default — has its own quiet-conversation clock, and resurfaces if it goes quiet for a week.</td></tr>
         </table>
@@ -2550,15 +2657,15 @@ ${filterBar}
         <h2 class="legend-h">2. Filters — narrowing what you see</h2>
         <p class="legend-note">Both filter bars live at the top of the page, above the bands.</p>
         <table>
-          <tr><td><b>Repo</b></td><td>Switches the whole board to one repo. Counts on each tab are totals across all three bands, not just Need-today.</td></tr>
-          <tr><td><b>Priority</b></td><td>Narrows the <b>Need-today</b> band only — picking one hides Waiting and Monitoring entirely, since priority is a Need-today concept. Counts follow whichever repo tab is selected. The one exception is <b>Stale</b> (below), which spans every band, so picking it filters within all three instead of hiding any.</td></tr>
+          <tr><td><b>Repo</b></td><td>Switches the whole board to one repo. Counts on each tab are totals across all four bands, not just Need-today.</td></tr>
+          <tr><td><b>Priority</b></td><td><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> are Need-today-specific escalation states — picking one hides Bring it forward, Waiting, and Monitoring entirely. <b>Act</b> and <b>Stale</b> (below) both span every band instead, filtering within each rather than hiding it — Bring it forward carries actionable and stale rows of its own. Counts follow whichever repo tab is selected.</td></tr>
         </table>
         <table>
           <tr><td><span class="dot critical"></span><b>Critical</b></td><td>You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate to the core team.</td></tr>
           <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's directly waiting on an operator's reply — send a follow-up.</td></tr>
-          <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs you specifically, right now: check the author's response, remind the code author, review a standalone PR, or do a final review on one that's approved and ready.</td></tr>
-          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Setup or a first pass: add a label/milestone, or review a PR that's still waiting on its linked code PR to merge.</td></tr>
-          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on either PR for 30+ days, regardless of what the row would otherwise be — pulled out separately, across all three bands.</td></tr>
+          <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs doing: check the author's response, remind the code author, review a standalone PR, do a final review on an approval that has something else attached, add a label/milestone to a new PR, or merge one that's cleanly approved and ready.</td></tr>
+          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Review a PR that's still waiting on its own linked code PR to merge — or, for a standalone PR, waiting on its author before it escalates.</td></tr>
+          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on either PR for 30+ days, regardless of what the row would otherwise be — pulled out separately, across all four bands.</td></tr>
         </table>
       </section>
 
@@ -2616,6 +2723,7 @@ ${filterBar}
     </div>
   </details>
 ${needTodaySection}
+${bringForwardSection}
 ${waitingSection}
 ${monitoringSection}
   </main>
@@ -2660,16 +2768,19 @@ ${monitoringSection}
       rows.forEach(function(r){ if(!r.classList.contains('hidden')) vis++; });
       const badge = sec.querySelector('.sec-head .count');
       if (badge) badge.textContent = vis;
-      const hiddenByBand = sec.classList.contains('band-secondary') && pri !== 'all' && pri !== 'stale';
+      const hiddenByBand = sec.classList.contains('band-secondary') &&
+        pri !== 'all' && pri !== 'stale' && pri !== 'act';
       sec.classList.toggle('all-hidden', vis === 0 && !hiddenByBand);
     });
     // Priority tab counts follow the repo selection — "3 triage" should mean
     // 3 in the repo you're looking at, not 3 across everything. These counts
     // ignore the *priority* filter itself (each tab shows what it would find
-    // if you picked it next). Severity counts are Need-today only; Stale
-    // counts across every band, to match what picking it actually reveals.
+    // if you picked it next). Critical/Serious/Triage are Need-today-only
+    // escalation states; Act and Stale both span every band — Bring it
+    // forward has actionable and stale rows of its own — so they count
+    // across everything, to match what picking either actually reveals.
     const todayRows = document.querySelectorAll('section[data-band="today"] .row');
-    const bySev = { critical: 0, serious: 0, act: 0, triage: 0 };
+    const bySev = { critical: 0, serious: 0, triage: 0 };
     let repoTotal = 0;
     todayRows.forEach(function(row){
       if (repo !== 'all' && row.getAttribute('data-repo') !== repo) return;
@@ -2678,9 +2789,11 @@ ${monitoringSection}
       if (bySev[sev] != null) bySev[sev]++;
     });
     let staleTotal = 0;
+    let actTotal = 0;
     document.querySelectorAll('.row, .mon-row').forEach(function(row){
       if (repo !== 'all' && row.getAttribute('data-repo') !== repo) return;
       if (row.getAttribute('data-stale') === '1') staleTotal++;
+      if (row.getAttribute('data-sev') === 'act') actTotal++;
     });
     document.querySelectorAll('.ftab[data-f="pri"]').forEach(function(tab){
       const fc = tab.querySelector('.fc');
@@ -2688,6 +2801,7 @@ ${monitoringSection}
       const v = tab.getAttribute('data-v');
       if (v === 'all') fc.textContent = repoTotal;
       else if (v === 'stale') fc.textContent = staleTotal;
+      else if (v === 'act') fc.textContent = actTotal;
       else fc.textContent = bySev[v] || 0;
     });
   }
