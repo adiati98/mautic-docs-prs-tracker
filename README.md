@@ -185,6 +185,26 @@ Reviewing a docs PR is optional while its code PR is open (it sits quietly
 in triage), but becomes **mandatory and prominent** — bumped to orange — the
 moment the code PR merges.
 
+### Preserving a dismissed approval
+
+GitHub auto-dismisses an `APPROVED` review the moment new commits land on
+the PR — even when the push only addresses feedback that has nothing to do
+with the content the approver actually signed off on. Once that happens,
+the approval disappears from the tracker too: the "Approved by X" chip
+goes away, and everything it unlocked (the "Final review, then merge" step,
+the escalation-clock shortcut once the code PR merges) reverts as if nobody
+had approved at all.
+
+If you've checked and the dismissal was spurious — the new commits didn't
+touch anything the approver reviewed — add the **`content-approved`**
+label yourself. The tracker then treats the approval as still standing:
+the row shows a separate **"Content approved by X — review dismissed"**
+chip (naming the reviewer GitHub's dismissal wiped out), and every
+downstream flow (final review, monitoring, the escalation clock) behaves
+as if that approval were still live. It's a
+deliberate, manual call — never inferred automatically — because only a
+human can judge whether the new commits actually invalidate the review.
+
 ## Author reminder page
 
 `tracker.js` also writes `tracker-reminders.html` — a second, separate page
