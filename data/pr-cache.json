@@ -4128,7 +4128,7 @@
     "rawCodeReviews": []
   },
   "mautic/user-documentation#835": {
-    "docsUpdatedAt": "2026-07-10T14:13:32Z",
+    "docsUpdatedAt": "2026-07-10T14:56:59Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -4178,6 +4178,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-10T14:01:21Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-10T14:47:16Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -4208,6 +4216,13 @@
         },
         "created_at": "2026-07-10T14:13:32Z",
         "body": "Thanks again, @adiati98 — I've applied all of your review suggestions and pushed the update to this branch:\n\n1. **`projects_list_view.png`** — moved to the end of the **Managing Projects** section.\n2. **`create_new_project_form.png`** — added a `|` line break with blank lines between the image and the following paragraph about the unique-name check.\n3. **New screenshot** — added `delete_selected_projects.png` under `docs/projects/images/` (the Projects list with two Projects selected and the blue 'Delete selected' banner). It's placed in the **Deleting Projects** section after the delete steps, uses snake_case naming, has descriptive alt text (\"Projects list with two Projects selected and the Delete selected banner\"), and includes the `|` spacing.\n4. **`assign_project_from_email.png`** — indented under the **From the item** unordered list item so it aligns with that bullet, with the `|` spacing.\n5. **`remove_item_from_project.png`** — added the `|` line break for spacing before the next section.\n\nVale passes clean on the updated page. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T14:58:50Z",
+        "body": "Thanks @adiati98 — addressed all five in the latest commit:\n\n1. ✅ Added `|` spacing around the assign-from-Email screenshot, indented under the 'From the item' bullet.\n2. ✅ Restructured the 'Add Entities to Project' step with the button screenshot indented under it.\n3. Investigated `ProjectBundle`. The `project:` search matches the Project name **exactly and case-sensitively** (`ProjectRepositoryTrait::handleProjectFilter` uses `eq('project.name', …)`, no partial match), and it's only registered on the supported list views (Emails, Campaigns, Segments, Forms, Landing Pages, Assets, Text messages, Marketing Messages, Companies, Points, Point Triggers, Stages, Dynamic Content, Focus Items) — **not** the Contacts list, which is the likely cause of the \"No Result Found.\" I've documented the reliable alternative you flagged: clicking the count in the '# Entities' column opens the Project view, which lists all assigned items grouped by type. Both methods are now covered in the \"Finding items by Project\" section.\n4. ✅ Added where to find Roles (Settings > Roles) and cross-linked the existing Roles documentation.\n5. ✅ Fixed \"entity\" → \"item\" in the remove-from-Project step.\n\nNo remaining blockers on my side — Vale passes clean.\n"
       }
     ],
     "rawCodeComments": [],
