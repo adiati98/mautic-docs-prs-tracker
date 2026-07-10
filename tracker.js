@@ -2968,9 +2968,9 @@ function renderAuthorGroup(group) {
 			return `
         <tr data-key="${escapeHtml(key)}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
-          <td><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
-          <td>${codePRHtml}</td>
-          <td>${markHtml}</td>
+          <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
+          <td data-label="Code PR">${codePRHtml}</td>
+          <td data-label="Mark">${markHtml}</td>
         </tr>`
 		})
 		.join("")
@@ -3169,7 +3169,21 @@ function generateReminderHTML(groups, { now }) {
   footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center}
 
   @media (max-width:640px){
-    th:nth-child(3),td:nth-child(3){display:none}
+    table{display:block;border:none;border-radius:0;box-shadow:none;background:none}
+    thead{display:none}
+    tbody{display:block}
+    tr{
+      display:block;position:relative;
+      background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+      box-shadow:var(--shadow);padding:10px 44px 10px 12px;margin-bottom:10px;
+    }
+    td{display:block;border-top:none;padding:3px 0;width:auto}
+    td.chk{position:absolute;top:10px;right:10px;padding:0}
+    td[data-label]::before{
+      content:attr(data-label);display:block;font-size:11px;
+      text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);
+      font-weight:600;margin-bottom:2px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){

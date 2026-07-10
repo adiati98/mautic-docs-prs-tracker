@@ -159,7 +159,21 @@
   footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center}
 
   @media (max-width:640px){
-    th:nth-child(3),td:nth-child(3){display:none}
+    table{display:block;border:none;border-radius:0;box-shadow:none;background:none}
+    thead{display:none}
+    tbody{display:block}
+    tr{
+      display:block;position:relative;
+      background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+      box-shadow:var(--shadow);padding:10px 44px 10px 12px;margin-bottom:10px;
+    }
+    td{display:block;border-top:none;padding:3px 0;width:auto}
+    td.chk{position:absolute;top:10px;right:10px;padding:0}
+    td[data-label]::before{
+      content:attr(data-label);display:block;font-size:11px;
+      text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);
+      font-weight:600;margin-bottom:2px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -214,39 +228,39 @@
       <tbody>
         <tr data-key="mautic/user-documentation#770">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #770: docs: Document Quick filters dropdown for Reports as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank">user-documentation #770</a> docs: Document Quick filters dropdown for Reports</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank">user-documentation #770</a> docs: Document Quick filters dropdown for Reports</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#782">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #782: Document Email details stat cards and Pending card scope for Segment vs. triggered Emails as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank">user-documentation #782</a> Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16304" target="_blank">mautic/mautic #16304</a></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank">user-documentation #782</a> Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16304" target="_blank">mautic/mautic #16304</a></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#712">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #712: EVERYTHING about UTM tags in Mautic as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank">user-documentation #712</a> EVERYTHING about UTM tags in Mautic</td>
-          <td><span class="none">No linked code PR</span></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank">user-documentation #712</a> EVERYTHING about UTM tags in Mautic</td>
+          <td data-label="Code PR"><span class="none">No linked code PR</span></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#774">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #774: Fix contradictory note about duplicate Stage weights as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank">user-documentation #774</a> Fix contradictory note about duplicate Stage weights</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15404" target="_blank">mautic/mautic #15404</a></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank">user-documentation #774</a> Fix contradictory note about duplicate Stage weights</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15404" target="_blank">mautic/mautic #15404</a></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/developer-documentation-new#505">
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></td>
-          <td><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#750">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #750: Document Find and Replace bulk action for Contacts and Companies as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr></tbody>
     </table>
   </section>
@@ -260,21 +274,21 @@
       <tbody>
         <tr data-key="mautic/developer-documentation-new#550">
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #550: docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection as done"></td>
-          <td><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank">developer-documentation #550</a> docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank">developer-documentation #550</a> docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#796">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #796: docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/796" target="_blank">user-documentation #796</a> docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/796" target="_blank">user-documentation #796</a> docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#811">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #811: docs: Document A/B testing for Segment Emails as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/811" target="_blank">user-documentation #811</a> docs: Document A/B testing for Segment Emails</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15897" target="_blank">mautic/mautic #15897</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/811" target="_blank">user-documentation #811</a> docs: Document A/B testing for Segment Emails</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15897" target="_blank">mautic/mautic #15897</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr></tbody>
     </table>
   </section>
@@ -288,15 +302,15 @@
       <tbody>
         <tr data-key="mautic/developer-documentation-new#551">
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #551: docs: Document entity token formatting with getFormattedTokens() method as done"></td>
-          <td><a href="https://github.com/mautic/developer-documentation-new/pull/551" target="_blank">developer-documentation #551</a> docs: Document entity token formatting with getFormattedTokens() method</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/551" target="_blank">developer-documentation #551</a> docs: Document entity token formatting with getFormattedTokens() method</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#805">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #805: docs: Document token category prefixes in Email builder as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/805" target="_blank">user-documentation #805</a> docs: Document token category prefixes in Email builder</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/805" target="_blank">user-documentation #805</a> docs: Document token category prefixes in Email builder</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr></tbody>
     </table>
   </section>
@@ -310,21 +324,21 @@
       <tbody>
         <tr data-key="mautic/user-documentation#709">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #709: Add documentation for mautic:campaigns:resume-stuck command as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank">user-documentation #709</a> Add documentation for mautic:campaigns:resume-stuck command</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15310" target="_blank">mautic/mautic #15310</a></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank">user-documentation #709</a> Add documentation for mautic:campaigns:resume-stuck command</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15310" target="_blank">mautic/mautic #15310</a></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#714">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #714: Docs for https://github.com/mautic/mautic/pull/16123 as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank">user-documentation #714</a> Docs for https://github.com/mautic/mautic/pull/16123</td>
-          <td><span class="none">No linked code PR</span></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank">user-documentation #714</a> Docs for https://github.com/mautic/mautic/pull/16123</td>
+          <td data-label="Code PR"><span class="none">No linked code PR</span></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#783">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #783: Document Campaign event ID display in the Campaign Builder as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/783" target="_blank">user-documentation #783</a> Document Campaign event ID display in the Campaign Builder</td>
-          <td><a href="https://github.com/mautic/mautic/pull/16103" target="_blank">mautic/mautic #16103</a></td>
-          <td><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/783" target="_blank">user-documentation #783</a> Document Campaign event ID display in the Campaign Builder</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16103" target="_blank">mautic/mautic #16103</a></td>
+          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
         </tr></tbody>
     </table>
   </section>
@@ -338,15 +352,15 @@
       <tbody>
         <tr data-key="mautic/user-documentation#779">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #779: Document Tag removal confirmation and expandable Tags tile on Contact detail page as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/779" target="_blank">user-documentation #779</a> Document Tag removal confirmation and expandable Tags tile on Contact detail page</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15845" target="_blank">mautic/mautic #15845</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/779" target="_blank">user-documentation #779</a> Document Tag removal confirmation and expandable Tags tile on Contact detail page</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15845" target="_blank">mautic/mautic #15845</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr>
         <tr data-key="mautic/user-documentation#802">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #802: docs: Document webhook process command exit code behavior as done"></td>
-          <td><a href="https://github.com/mautic/user-documentation/pull/802" target="_blank">user-documentation #802</a> docs: Document webhook process command exit code behavior</td>
-          <td><a href="https://github.com/mautic/mautic/pull/15135" target="_blank">mautic/mautic #15135</a></td>
-          <td><span class="mark review">Need review</span></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/802" target="_blank">user-documentation #802</a> docs: Document webhook process command exit code behavior</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15135" target="_blank">mautic/mautic #15135</a></td>
+          <td data-label="Mark"><span class="mark review">Need review</span></td>
         </tr></tbody>
     </table>
   </section>
