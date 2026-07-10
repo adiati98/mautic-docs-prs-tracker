@@ -184,6 +184,7 @@ async function fetchCodePR(repo, number) {
 			author: pr.user.login,
 			updatedAt: pr.updated_at,
 			milestoneTitle: pr.milestone ? pr.milestone.title : null,
+			baseBranch: pr.base.ref,
 		}
 	} catch (e) {
 		console.error(`Error fetching code PR ${repo}#${number}:`, e.message)
@@ -194,6 +195,7 @@ async function fetchCodePR(repo, number) {
 			author: null,
 			updatedAt: null,
 			milestoneTitle: null,
+			baseBranch: null,
 		}
 	}
 }
@@ -757,6 +759,7 @@ async function main() {
 		let codeClosed = false
 		let codeUpdatedAt = null
 		let codeMilestoneTitle = null
+		let codeBaseBranch = null
 
 		if (appPRData) {
 			appPRRepo = appPRData.repo
@@ -769,6 +772,7 @@ async function main() {
 			appPRAuthor = codePR.author
 			codeUpdatedAt = codePR.updatedAt
 			codeMilestoneTitle = codePR.milestoneTitle
+			codeBaseBranch = codePR.baseBranch
 		}
 
 		// Raw lists keep the bots (needed by the community detector); the human
@@ -1048,18 +1052,35 @@ async function main() {
 		// eventually land) can be set to a patch/pre-release title like
 		// "7.1.1" or "7.1.0-rc" at any point, before or after the code PR
 		// merges. milestoneVersion() already normalizes those down to "X.Y".
+		// When no milestone is set yet (e.g. Promptless opens the docs PR
+		// the moment the code PR lands, before triage), fall back to the
+		// code PR's own base branch: a real release branch (e.g. "7.1")
+		// names a specific version directly, while a dev-line branch (e.g.
+		// "7.x" — doesn't match RELEASE_BRANCH_PATTERN) has no version of
+		// its own and means "whatever's next", i.e. the docs repo's current
+		// latest release branch, not its default branch.
+		//
 		// If that disagrees with either the docs PR's current target branch
 		// or its own milestone, that's worth an early heads-up — before
 		// anyone's manually caught it and applied needs-rebase, which is
 		// when this stands down instead of piling on.
 		const codeMilestoneBranch = milestoneVersion(codeMilestoneTitle)
+		const codeExpectedFromBaseBranch = codeMilestoneBranch === null && codeBaseBranch !== null
+		const codeExpectedBranch =
+			codeMilestoneBranch !== null
+				? codeMilestoneBranch
+				: codeBaseBranch === null
+					? null
+					: RELEASE_BRANCH_PATTERN.test(codeBaseBranch)
+						? codeBaseBranch
+						: latestReleaseBranch
 		const docsMilestoneBranch = milestoneVersion(milestoneTitle)
 		const codeMilestoneBranchMismatch =
-			codeMilestoneBranch !== null && codeMilestoneBranch !== baseBranch
+			codeExpectedBranch !== null && codeExpectedBranch !== baseBranch
 		const codeMilestoneDocsMismatch =
-			codeMilestoneBranch !== null &&
+			codeExpectedBranch !== null &&
 			docsMilestoneBranch !== null &&
-			docsMilestoneBranch !== codeMilestoneBranch
+			docsMilestoneBranch !== codeExpectedBranch
 		const codeMilestoneAdvisoryFlag =
 			!codeClosed &&
 			!needsRebaseFlag &&
@@ -1241,7 +1262,10 @@ async function main() {
 			backportModifierActive,
 			standaloneOperatorReady,
 			rebaseWinsOverBackport,
+			codeBaseBranch,
 			codeMilestoneBranch,
+			codeExpectedBranch,
+			codeExpectedFromBaseBranch,
 			docsMilestoneBranch,
 			codeMilestoneBranchMismatch,
 			codeMilestoneDocsMismatch,
@@ -1768,30 +1792,33 @@ function staleChip(pr) {
 	return { cls: "stale", text: `🕸 Stale — ${pr.daysSinceActivity}d quiet` }
 }
 
-// An early, automatic heads-up that the code PR's milestone doesn't match
-// where the docs PR currently sits — before anyone's noticed and manually
-// applied needs-rebase (see codeMilestoneAdvisoryFlag). Names whichever of
-// branch/milestone is actually out of step, since either can lag
-// independently.
+// An early, automatic heads-up that the code PR's milestone — or, absent
+// one, its base branch — doesn't match where the docs PR currently sits,
+// before anyone's noticed and manually applied needs-rebase (see
+// codeMilestoneAdvisoryFlag). Names whichever of branch/milestone is
+// actually out of step, since either can lag independently.
 function codeMilestoneAdvisoryChip(pr) {
 	if (!pr.codeMilestoneAdvisoryFlag) return null
-	const code = escapeHtml(pr.codeMilestoneBranch)
+	const code = escapeHtml(pr.codeExpectedBranch)
 	const docs = escapeHtml(pr.docsMilestoneBranch)
+	const source = pr.codeExpectedFromBaseBranch
+		? `Code PR has no milestone and targets ${escapeHtml(pr.codeBaseBranch)} — next is ${code}`
+		: `Code PR milestone is ${code}`
 	if (pr.codeMilestoneBranchMismatch && pr.codeMilestoneDocsMismatch) {
 		return {
 			cls: "manual",
-			text: `Code PR milestone is ${code} — docs targets ${escapeHtml(pr.baseBranch)} and is milestoned ${docs}, both should follow`,
+			text: `${source} — docs targets ${escapeHtml(pr.baseBranch)} and is milestoned ${docs}, both should follow`,
 		}
 	}
 	if (pr.codeMilestoneBranchMismatch) {
 		return {
 			cls: "manual",
-			text: `Code PR milestone is ${code} — docs targets ${escapeHtml(pr.baseBranch)}, check destination branch`,
+			text: `${source} — docs targets ${escapeHtml(pr.baseBranch)}, check destination branch`,
 		}
 	}
 	return {
 		cls: "manual",
-		text: `Code PR milestone is ${code} — docs is milestoned ${docs}, update it`,
+		text: `${source} — docs is milestoned ${docs}, update it`,
 	}
 }
 
