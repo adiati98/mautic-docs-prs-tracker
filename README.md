@@ -82,7 +82,7 @@ question: **whose turn is it?**
 3. **Waiting on others or for code PR to merge** — you've done your part —
    either the code PR hasn't merged yet, or a reminder to the code PR
    author has been sent.
-4. **Monitoring** — the author replied and you've already looked; a normal
+4. **Monitoring** — the author replied and you've already responded; a normal
    back-and-forth is happening. Collapsed by default, but each row still
    shows a day count since your last reply — if the conversation goes quiet
    for a week, it resurfaces in "Need you today" asking you to remind them

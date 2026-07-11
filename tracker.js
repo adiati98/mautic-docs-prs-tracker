@@ -442,7 +442,10 @@ function computeConversationState({
 	const taggedCodeComments = codeComments.map((c) => ({ ...c, _pingSource: "code" }))
 	const pings = appPRAuthor
 		? [...taggedDocsComments, ...taggedCodeComments].filter(
-				(c) => c.user.login !== appPRAuthor && mentions(c.body, appPRAuthor),
+				(c) =>
+					c.user.login !== appPRAuthor &&
+					(operatorLogins.has(c.user.login.toLowerCase()) || c.user.login === PROMPTLESS) &&
+					mentions(c.body, appPRAuthor),
 			)
 		: []
 	const lastPing = pings.reduce(
@@ -2818,7 +2821,7 @@ ${filterBar}
           <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
           <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth doing on your own schedule — brand-new PRs that still need a label or milestone, approvals that are ready to merge with nothing else going on, and anything that's gone quiet for a while (stale).</td></tr>
           <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, or a reminder to the code PR author has been sent.</td></tr>
-          <tr><td><b>Monitoring</b></td><td>The author replied and you've already looked. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
+          <tr><td><b>Monitoring</b></td><td>The author replied and you've already responded. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
         </table>
       </section>
 
