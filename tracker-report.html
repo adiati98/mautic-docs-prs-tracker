@@ -464,7 +464,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-07-10T22:12:41.663Z">Updated Fri, Jul 10, 10:12 PM</span>
+    <span class="updated" data-updated-iso="2026-07-11T07:34:26.493Z">Updated Sat, Jul 11, 7:34 AM</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
   </div>
@@ -472,7 +472,7 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">29</div>
+      <div class="num">30</div>
       <div><div class="lbl">Need you today</div>
       <div class="sub"><span class="dot critical"></span>6 overdue · <span class="dot serious"></span>7 follow-up</div></div>
     </button>
@@ -487,7 +487,7 @@
       <div class="sub">next follow-up due in 5 days</div></div>
     </button>
     <button class="tile" data-goto="monitoring" type="button">
-      <div class="num">1</div>
+      <div class="num">0</div>
       <div><div class="lbl">Monitoring</div>
       <div class="sub">already handled — nothing to do</div></div>
     </button>
@@ -495,7 +495,7 @@
 
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">92</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">49</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">43</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">29</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">6</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">7</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">40</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">10</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">30</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">6</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">7</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">41</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">10</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
   <details class="legend">
@@ -508,7 +508,7 @@
           <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
           <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth doing on your own schedule — brand-new PRs that still need a label or milestone, approvals that are ready to merge with nothing else going on, and anything that's gone quiet for a while (stale).</td></tr>
           <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, or a reminder to the code PR author has been sent.</td></tr>
-          <tr><td><b>Monitoring</b></td><td>The author replied and you've already looked. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
+          <tr><td><b>Monitoring</b></td><td>The author replied and you've already responded. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
         </table>
       </section>
 
@@ -595,8 +595,8 @@
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">29</span>
-      <span class="chk-progress" data-state="zero">0/29 checked</span>
+      <h2>Need you today</h2><span class="count">30</span>
+      <span class="chk-progress" data-state="zero">0/30 checked</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -651,6 +651,16 @@
         </div>
         <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
       </article>
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#782">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #782: Document Email details stat cards and Pending card scope for Segment vs. triggered Emails as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank" class="name">user-documentation #782</a> <span class="desc">Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16304" target="_blank">#16304</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminded, no reply since</div>
+          <div class="chips"><span class="chip nudge3">▲ Escalate to core team</span><span class="chip finish">Approved by adiati98</span><span class="chip act">Note since approval — take a look</span></div>
+        </div>
+        <div class="when"><div class="days critical">Day 15</div><div class="sub">since reminder</div></div>
+      </article>
       <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#779">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #779: Document Tag removal confirmation and expandable Tags tile on Contact detail page as done"></div>
         <div class="edge"></div>
@@ -688,16 +698,6 @@
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/796" target="_blank" class="name">user-documentation #796</a> <span class="desc">docs: Document automatic tracking filtering for bot, monitoring, and privacy opt-out traffic</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15844" target="_blank">#15844</a> <span class="pill merged">Merged</span> · author <b>kuzmany</b> · reminded, no reply since</div>
           <div class="chips"><span class="chip manual">Code PR milestone is 7.1 — docs targets 7.2 and is milestoned 7.2, both should follow</span><span class="chip nudge3">▲ Escalate to core team</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 14</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#782">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #782: Document Email details stat cards and Pending card scope for Segment vs. triggered Emails as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank" class="name">user-documentation #782</a> <span class="desc">Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16304" target="_blank">#16304</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip nudge3">▲ Escalate to core team</span><span class="chip finish">Approved by adiati98</span><span class="chip act">Note since approval — take a look</span></div>
         </div>
         <div class="when"><div class="days critical">Day 14</div><div class="sub">since reminder</div></div>
       </article>
@@ -771,6 +771,16 @@
         </div>
         <div class="when"><div class="days serious">Day 13</div><div class="sub">since your review · escalate at 14</div><div class="meter late"><i style="width:93%"></i></div></div>
       </article>
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#563">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #563: docs: Document GrapesJS Builder asset build workflow as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/563" target="_blank" class="name">developer-documentation #563</a> <span class="desc">docs: Document GrapesJS Builder asset build workflow</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16435" target="_blank">#16435</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · you reviewed today</div>
+          <div class="chips"><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">no reminder sent yet</div></div>
+      </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#834">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #834: docs: Document the Projects feature (7.1) as done"></div>
         <div class="edge"></div>
@@ -779,7 +789,7 @@
           <div class="meta">No linked code PR · milestone <b>Mautic 7.1</b></div>
           <div class="chips"><span class="chip act">Review this docs PR</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened yesterday</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 2 days ago</div></div>
       </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#833">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #833: docs: Document the Projects feature (7.0) as done"></div>
@@ -789,7 +799,7 @@
           <div class="meta">No linked code PR · milestone <b>Mautic 7.0</b></div>
           <div class="chips"><span class="chip act">Review this docs PR</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened yesterday</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 2 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#752">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #752: Document Campaign condition event details in Contact history as done"></div>
@@ -799,7 +809,7 @@
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15664" target="_blank">#15664</a> <span class="pill open">Open</span> · author <b>adiux</b> · milestone <b>Mautic 7.2</b></div>
           <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span><span class="chip finish">Approved by adiux</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 31 days ago</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 32 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#788">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #788: Document the form: contact search filter as done"></div>
@@ -819,7 +829,7 @@
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16352" target="_blank">#16352</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · milestone <b>Mautic 7.2</b></div>
           <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 16 days ago</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 17 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#784">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #784: Document Support Mautic navigation menu item and support_mautic_enabled option as done"></div>
@@ -830,16 +840,6 @@
           <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip manual">👀 promptless-for-oss is waiting on escopecz</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 17 days ago</div></div>
-      </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#812">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #812: docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/812" target="_blank" class="name">user-documentation #812</a> <span class="desc">docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16413" target="_blank">#16413</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · milestone <b>Mautic 7.2</b></div>
-          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 10 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#594">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #594: docs: Document tableheader.html.twig helper and its new tooltip parameter as done"></div>
@@ -890,6 +890,16 @@
           <div class="chips"><span class="chip muted">Review this docs PR</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 3 days ago</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#812">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #812: docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/812" target="_blank" class="name">user-documentation #812</a> <span class="desc">docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16413" target="_blank">#16413</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 10 days ago</div></div>
       </article>
     </div>
   </section>
@@ -1237,10 +1247,10 @@
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/250" target="_blank" class="name">developer-documentation #250</a> <span class="desc">Navigating UI resources</span></div>
-          <div class="meta">No linked code PR · docs author <b>andersonjeccel</b> · no reply since your review 80 days ago</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 80d quiet</span><span class="chip manual">👀 adiati98 is waiting on andersonjeccel</span></div>
+          <div class="meta">No linked code PR · docs author <b>andersonjeccel</b> · no reply since your review 81 days ago</div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 81d quiet</span><span class="chip manual">👀 adiati98 is waiting on andersonjeccel</span></div>
         </div>
-        <div class="when"><div class="days critical">Day 80</div><div class="sub">since your review</div></div>
+        <div class="when"><div class="days critical">Day 81</div><div class="sub">since your review</div></div>
       </article>
       <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0" data-key="mautic/user-documentation#542">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #542: Update Stages.png image as done"></div>
@@ -1267,30 +1277,30 @@
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/341" target="_blank" class="name">user-documentation #341</a> <span class="desc">First attempt to add Doctor-RST</span></div>
-          <div class="meta">No linked code PR · docs author <b>RCheesley</b> · no reply since your review 114 days ago</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 114d quiet</span></div>
+          <div class="meta">No linked code PR · docs author <b>RCheesley</b> · no reply since your review 115 days ago</div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 115d quiet</span></div>
         </div>
-        <div class="when"><div class="days critical">Day 114</div><div class="sub">since your review</div></div>
+        <div class="when"><div class="days critical">Day 115</div><div class="sub">since your review</div></div>
       </article>
       <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0" data-key="mautic/user-documentation#279">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #279: add audit log in the list as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/279" target="_blank" class="name">user-documentation #279</a> <span class="desc">add audit log in the list</span></div>
-          <div class="meta">No linked code PR · docs author <b>fakela</b> · no reply since your review 210 days ago</div>
+          <div class="meta">No linked code PR · docs author <b>fakela</b> · no reply since your review 211 days ago</div>
           <div class="chips"><span class="chip stale">🕸 Stale — 127d quiet</span><span class="chip manual">👀 adiati98 is waiting on fakela</span></div>
         </div>
-        <div class="when"><div class="days critical">Day 210</div><div class="sub">since your review</div></div>
+        <div class="when"><div class="days critical">Day 211</div><div class="sub">since your review</div></div>
       </article>
       <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="1" data-approved="0" data-key="mautic/user-documentation#246">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #246: Add back the 2-&gt;3 upgrade docs as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/246" target="_blank" class="name">user-documentation #246</a> <span class="desc">Add back the 2-&gt;3 upgrade docs</span></div>
-          <div class="meta">No linked code PR · docs author <b>Joseph2001-braganza</b> · no reply since your review 157 days ago</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 157d quiet</span></div>
+          <div class="meta">No linked code PR · docs author <b>Joseph2001-braganza</b> · no reply since your review 158 days ago</div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 158d quiet</span></div>
         </div>
-        <div class="when"><div class="days critical">Day 157</div><div class="sub">since your review</div></div>
+        <div class="when"><div class="days critical">Day 158</div><div class="sub">since your review</div></div>
       </article>
     </div>
   </section>
@@ -1352,16 +1362,6 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#516">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #516: Document Notes API permissions and endpoints as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/516" target="_blank" class="name">developer-documentation #516</a> <span class="desc">Document Notes API permissions and endpoints</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · code PR is still open</div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#310">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #310: docs: Document PostgreSQL database support for Mautic 7.x as done"></div>
         <div class="edge"></div>
@@ -1369,76 +1369,6 @@
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/310" target="_blank" class="name">developer-documentation #310</a> <span class="desc">docs: Document PostgreSQL database support for Mautic 7.x</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15926" target="_blank">#15926</a> <span class="pill open">Open</span> · author <b>wieslawgolec</b> · code PR is still open</div>
           <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#704">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #704: Document dedicated Notes permissions as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/704" target="_blank" class="name">user-documentation #704</a> <span class="desc">Document dedicated Notes permissions</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · code PR is still open</div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#552">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #552: docs: Add Company Segments REST API documentation as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/552" target="_blank" class="name">developer-documentation #552</a> <span class="desc">docs: Add Company Segments REST API documentation</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16025" target="_blank">#16025</a> <span class="pill open">Open</span> · author <b>JonasLudwig1998</b> · code PR is still open</div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#809">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #809: docs: Document Company Segments for Account-Based Marketing as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/809" target="_blank" class="name">user-documentation #809</a> <span class="desc">docs: Document Company Segments for Account-Based Marketing</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16025" target="_blank">#16025</a> <span class="pill open">Open</span> · author <b>JonasLudwig1998</b> · code PR is still open</div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#540">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #540: Document Send example Email REST API endpoint as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/540" target="_blank" class="name">developer-documentation #540</a> <span class="desc">Document Send example Email REST API endpoint</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16308" target="_blank">#16308</a> <span class="pill open">Open</span> · author <b>greichel-evrima</b> · code PR is still open</div>
-          <div class="chips"><span class="chip manual">👀 adiati98 is waiting on greichel-evrima</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#547">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #547: Document uri and linkAttributes keys for menu items as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/547" target="_blank" class="name">developer-documentation #547</a> <span class="desc">Document uri and linkAttributes keys for menu items</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16337" target="_blank">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · code PR is still open</div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span><span class="chip finish">Approved by escopecz</span><span class="chip act">Note since approval — take a look</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#527">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #527: Document form style-only Theme import requirements as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/527" target="_blank" class="name">developer-documentation #527</a> <span class="desc">Document form style-only Theme import requirements</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16257" target="_blank">#16257</a> <span class="pill open">Open</span> · author <b>Thecesar85</b> · code PR is still open</div>
-          <div class="chips"><span class="chip manual">👀 adiati98 is waiting on Thecesar85</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#798">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #798: docs: Document Segment filter for Form submissions as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/798" target="_blank" class="name">user-documentation #798</a> <span class="desc">docs: Document Segment filter for Form submissions</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15964" target="_blank">#15964</a> <span class="pill open">Open</span> · author <b>introfini</b> · code PR is still open</div>
-          <div class="chips"><span class="chip manual">👀 promptless-for-oss is waiting on introfini</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
@@ -1462,21 +1392,21 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#540">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #540: Document Send example Email REST API endpoint as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/540" target="_blank" class="name">developer-documentation #540</a> <span class="desc">Document Send example Email REST API endpoint</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16308" target="_blank">#16308</a> <span class="pill open">Open</span> · author <b>greichel-evrima</b> · code PR is still open</div>
+          <div class="chips"><span class="chip manual">👀 adiati98 is waiting on greichel-evrima</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#531">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #531: Document Field Groups REST API and FIELD_GROUP_LIST_ON_GENERATE event as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/531" target="_blank" class="name">developer-documentation #531</a> <span class="desc">Document Field Groups REST API and FIELD_GROUP_LIST_ON_GENERATE event</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16265" target="_blank">#16265</a> <span class="pill open">Open</span> · author <b>mzagmajster</b> · code PR is still open</div>
-          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#768">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #768: Document Custom Field Groups for Contacts and Companies as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/768" target="_blank" class="name">user-documentation #768</a> <span class="desc">Document Custom Field Groups for Contacts and Companies</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16265" target="_blank">#16265</a> <span class="pill open">Open</span> · author <b>mzagmajster</b> · code PR is still open</div>
           <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
         </div>
@@ -1492,6 +1422,16 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#768">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #768: Document Custom Field Groups for Contacts and Companies as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/768" target="_blank" class="name">user-documentation #768</a> <span class="desc">Document Custom Field Groups for Contacts and Companies</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16265" target="_blank">#16265</a> <span class="pill open">Open</span> · author <b>mzagmajster</b> · code PR is still open</div>
+          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
       <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#728">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #728: Document same-role permissions for team-based access control as done"></div>
         <div class="edge"></div>
@@ -1502,12 +1442,72 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#527">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #527: Document form style-only Theme import requirements as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/527" target="_blank" class="name">developer-documentation #527</a> <span class="desc">Document form style-only Theme import requirements</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16257" target="_blank">#16257</a> <span class="pill open">Open</span> · author <b>Thecesar85</b> · code PR is still open</div>
+          <div class="chips"><span class="chip manual">👀 adiati98 is waiting on Thecesar85</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#798">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #798: docs: Document Segment filter for Form submissions as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/798" target="_blank" class="name">user-documentation #798</a> <span class="desc">docs: Document Segment filter for Form submissions</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15964" target="_blank">#15964</a> <span class="pill open">Open</span> · author <b>introfini</b> · code PR is still open</div>
+          <div class="chips"><span class="chip manual">👀 promptless-for-oss is waiting on introfini</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#554">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #554: docs: Add Projects REST API reference as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/554" target="_blank" class="name">developer-documentation #554</a> <span class="desc">docs: Add Projects REST API reference</span> <span class="pill draft">Draft</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15569" target="_blank">#15569</a> <span class="pill open">Open</span> · author <b>aarohiprasad</b> · code PR is still open</div>
+          
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#552">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #552: docs: Add Company Segments REST API documentation as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/552" target="_blank" class="name">developer-documentation #552</a> <span class="desc">docs: Add Company Segments REST API documentation</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16025" target="_blank">#16025</a> <span class="pill open">Open</span> · author <b>JonasLudwig1998</b> · code PR is still open</div>
+          
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#547">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #547: Document uri and linkAttributes keys for menu items as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/547" target="_blank" class="name">developer-documentation #547</a> <span class="desc">Document uri and linkAttributes keys for menu items</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16337" target="_blank">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · code PR is still open</div>
+          <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip act">Note since approval — take a look</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#516">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #516: Document Notes API permissions and endpoints as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/516" target="_blank" class="name">developer-documentation #516</a> <span class="desc">Document Notes API permissions and endpoints</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · code PR is still open</div>
+          
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#809">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #809: docs: Document Company Segments for Account-Based Marketing as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/809" target="_blank" class="name">user-documentation #809</a> <span class="desc">docs: Document Company Segments for Account-Based Marketing</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16025" target="_blank">#16025</a> <span class="pill open">Open</span> · author <b>JonasLudwig1998</b> · code PR is still open</div>
           
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
@@ -1532,23 +1532,21 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#704">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #704: Document dedicated Notes permissions as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/704" target="_blank" class="name">user-documentation #704</a> <span class="desc">Document dedicated Notes permissions</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · code PR is still open</div>
+          
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
     </div>
   </section>
 
-  <section class="band-secondary" data-band="monitoring">
-    <div class="sec-head">
-      <h2>Monitoring</h2><span class="count">1</span>
-      <span class="hint">healthy — collapsed by default</span>
-    </div>
-    <div class="card">
-      <details class="mon">
-        <summary><span class="tw">▶</span> 1 PR in a normal back-and-forth — already handled, nothing to do</summary>
-        <div class="mon-row" data-repo="developer-documentation" data-stale="0"><a href="https://github.com/mautic/developer-documentation-new/pull/563" target="_blank">developer-documentation #563</a> <span class="code">Code PR <a href="https://github.com/mautic/mautic/pull/16435" target="_blank">#16435</a> <span class="pill merged">Merged</span></span> <span class="why">Day 0 since your reply · remind again at 7</span></div>
-      </details>
-    </div>
-  </section>
   </main>
-  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · <span data-updated-iso="2026-07-10T22:12:41.663Z">Fri, Jul 10, 10:12 PM</span></footer>
+  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · <span data-updated-iso="2026-07-11T07:34:26.493Z">Sat, Jul 11, 7:34 AM</span></footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
