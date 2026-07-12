@@ -393,19 +393,28 @@ function extractMentions(body) {
 	return found
 }
 
-// §4 — operator's own docs-PR review done
+// §4 — operator's own docs-PR review done. Also names whichever operator got
+// there first — in team mode, that's what tells a second maintainer someone
+// already looked, instead of them finding out only by the review chip's
+// absence (see reviewInProgressChip).
 function computeOperatorReviewDate(docsReviews, docsComments, operatorLogins) {
-	const reviewDates = docsReviews
-		.filter(
-			(r) =>
-				operatorLogins.has(r.user.login.toLowerCase()) &&
-				["COMMENTED", "APPROVED", "CHANGES_REQUESTED"].includes(r.state),
-		)
-		.map((r) => new Date(r.submitted_at))
-	const commentDates = docsComments
-		.filter((c) => operatorLogins.has(c.user.login.toLowerCase()))
-		.map((c) => new Date(c.created_at))
-	return earliestDate([...reviewDates, ...commentDates])
+	const events = [
+		...docsReviews
+			.filter(
+				(r) =>
+					operatorLogins.has(r.user.login.toLowerCase()) &&
+					["COMMENTED", "APPROVED", "CHANGES_REQUESTED"].includes(r.state),
+			)
+			.map((r) => ({ date: new Date(r.submitted_at), actor: r.user.login })),
+		...docsComments
+			.filter((c) => operatorLogins.has(c.user.login.toLowerCase()))
+			.map((c) => ({ date: new Date(c.created_at), actor: c.user.login })),
+	]
+	const earliest = events.reduce(
+		(best, e) => (!best || e.date < best.date ? e : best),
+		null,
+	)
+	return { date: earliest ? earliest.date : null, actor: earliest ? earliest.actor : null }
 }
 
 // The reminder/response conversation. A "ping" is any comment — by an
@@ -873,11 +882,8 @@ async function main() {
 				.map((r) => new Date(r.submitted_at)),
 		])
 
-		const operatorReviewDate = computeOperatorReviewDate(
-			docsReviews,
-			docsComments,
-			operatorLogins,
-		)
+		const { date: operatorReviewDate, actor: operatorReviewActor } =
+			computeOperatorReviewDate(docsReviews, docsComments, operatorLogins)
 		const operatorReviewDone = operatorReviewDate !== null
 
 		const devApproved = appPRAuthor
@@ -1236,6 +1242,7 @@ async function main() {
 			codeClosed,
 			operatorReviewDate,
 			operatorReviewDone,
+			operatorReviewActor,
 			devApproved,
 			approvedByNonOperator,
 			hasQualifyingApproval,
@@ -1763,6 +1770,9 @@ function chipsFor(pr) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
 
+	const reviewInProgress = reviewInProgressChip(pr)
+	if (reviewInProgress) chips.push(reviewInProgress)
+
 	chips.push(...approvalChips(pr))
 
 	if (pr.finalReviewActionable && !pr.standaloneOperatorReady) {
@@ -1780,6 +1790,19 @@ function chipsFor(pr) {
 	}
 
 	return chips
+}
+
+// In team mode, two maintainers can land on the same row at once — without
+// this, the only signal that one of them already looked is the review chip's
+// absence, which is easy to miss and doesn't say who or that it's still
+// open. Fires the moment any operator has reviewed/commented and nobody's
+// approved yet; once an approval lands (see approvalChips below), that's the
+// more important fact, so this one steps aside rather than doubling up.
+function reviewInProgressChip(pr) {
+	if (!pr.operatorReviewDone || pr.hasQualifyingApproval || pr.contentApprovedByLabel) {
+		return null
+	}
+	return { cls: "muted", text: `${escapeHtml(pr.operatorReviewActor)} reviewed this` }
 }
 
 // "Approved by X" is a fact worth showing on any row, in any band, the
@@ -1922,6 +1945,9 @@ function waitingChipsFor(pr) {
 	if (pr.reviewPendingFlag) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
+	const reviewInProgress = reviewInProgressChip(pr)
+	if (reviewInProgress) chips.push(reviewInProgress)
+
 	chips.push(...approvalChips(pr))
 	return chips
 }
@@ -2947,7 +2973,7 @@ ${filterBar}
           <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label · Approved by X · Approved — ready to merge.</td></tr>
           <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
           <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase · code PR's milestone doesn't match the docs branch/milestone yet.</td></tr>
-          <tr><td><span class="chip muted">Optional / already done</span></td><td>Review draft PR · a reminder you already sent.</td></tr>
+          <tr><td><span class="chip muted">Optional / already done</span></td><td>Review draft PR · a reminder you already sent · X reviewed this (someone's looked, no approval yet).</td></tr>
           <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was closed.</td></tr>
           <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on the PR for 30+ days.</td></tr>
         </table>
