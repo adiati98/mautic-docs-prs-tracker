@@ -5806,7 +5806,7 @@
     ]
   },
   "mautic/user-documentation#802": {
-    "docsUpdatedAt": "2026-06-27T12:21:30Z",
+    "docsUpdatedAt": "2026-07-12T18:34:40Z",
     "codeUpdatedAt": "2026-06-27T09:31:22Z",
     "rawDocsReviews": [
       {
@@ -5815,6 +5815,14 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-06-27T09:30:11Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-12T18:27:16Z",
         "body": ""
       }
     ],
@@ -5832,6 +5840,13 @@
         },
         "created_at": "2026-06-27T09:38:17Z",
         "body": "Done — I've rebased this branch onto the `7.2` branch and retargeted the PR base accordingly. The diff is now a single focused change to `docs/configuration/cron_jobs.rst` adding the note about `mautic:webhooks:process` returning a success exit code (0) when there are no published Webhooks to process. Thanks for the catch, @adiati98!\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-12T18:34:40Z",
+        "body": "Thanks @adiati98 — addressed all three:\n\n- **Vale.Terms 'false'**: reworded to \"without triggering failure alerts\", removing the standalone \"false\".\n- **Mautic.FeatureList 'published'**: I checked the codebase as you suggested. The Webhook's `isPublished` toggle is rendered as a `YesNoButtonGroupType` with no label override, so it inherits the core label `mautic.core.form.active` — i.e. the UI term users see is **\"Active\"** (there's no webhook-specific label). `mautic:webhooks:process` filters on `isPublished = 1`. So I changed \"published Webhooks\" → \"Active Webhooks\" to match the UI.\n- **Google.Parens**: replaced the \"(0)\" parenthetical with a dash — \"a success exit code — `0` —\".\n\nVale is now clean on the changed line. Let me know if you'd prefer different phrasing.\n"
       }
     ],
     "rawCodeComments": [
@@ -5901,6 +5916,48 @@
         "state": "APPROVED",
         "submitted_at": "2026-04-27T07:47:13Z",
         "body": "Makes sense 👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:30:11Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:30:11Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:30:11Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-12T18:25:04Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
       }
     ]
   },
