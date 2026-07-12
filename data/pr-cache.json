@@ -48,7 +48,7 @@
     "rawCodeReviews": []
   },
   "mautic/developer-documentation-new#593": {
-    "docsUpdatedAt": "2026-07-10T18:51:03Z",
+    "docsUpdatedAt": "2026-07-11T18:57:40Z",
     "codeUpdatedAt": "2026-07-10T12:47:42Z",
     "rawDocsReviews": [
       {
@@ -66,9 +66,70 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-10T11:43:15Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-11T12:01:30Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-11T16:54:47Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-11T18:22:30Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-11T18:54:16Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-11T12:06:04Z",
+        "body": "Thanks @adiati98! Addressed all three points:\n\n1. Capitalized 'Integrations' and reworded the 'reports the outcome' verb to 'includes the outcome' to clear the `Mautic.FeatureList` Vale warnings.\n2. The 'company' warning was on the literal API response message `Contact added to company` — that's the exact string this endpoint returns (`const MESSAGE_ADDED`), so rather than change the API's wording I formatted all the per-pair status message values as inline code literals, which is accurate and clears the warning.\n3. Renamed the request-body heading to 'POST parameters' to match the convention used elsewhere on this page and in `forms.rst`.\n\nVale now runs clean on all changed lines. (There's one pre-existing Vale suggestion on line 441 about `published` → 'Active or Available', but it's on the `publishedOnly` query parameter outside this PR's section, so I left it untouched.)\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-11T16:59:43Z",
+        "body": "Thanks @adiati98! These property tables describe the `results` array entries and the `summary` object, which are both sub-groups under the h4 \"Properties\" section (not nested inside `summary` itself). I've turned the two intro sentences into proper h5 headings — **The `results` entry properties** and **The `summary` object properties** — consistent with the h5 subsections already used elsewhere on this page (e.g. \"Core fields\"/\"Professional fields\"). Vale is clean on the changed lines.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-11T18:27:44Z",
+        "body": "Thanks @adiati98! Addressed the remaining comment. The plain-sentence `Per-pair ``status`` values:` intro is now a proper h5 heading — **Per-pair `status` values** — a peer of the existing **The `results` entry properties** and **The `summary` object properties** subsections under the h4 \"Properties\" section.\n\nTo clarify the question in your comment: that table describes the `status` field of each `results` entry, not the `summary` object, so it belongs directly under \"Properties\" as an h5 rather than nested inside `summary`. Vale is clean on the changed lines.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-11T18:57:39Z",
+        "body": "@adiati98 Thanks for the review — done. I shortened the three heading underlines to match the reviewer suggestions exactly:\n\n- `The ``results`` entry properties` → 30 `~`\n- `The ``summary`` object properties` → 31 `~`\n- `Per-pair ``status`` values` → 22 `~`\n\nThe changes are pushed to this branch. Vale is clean on the changed lines.\n"
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -739,7 +800,7 @@
     "rawCodeReviews": []
   },
   "mautic/developer-documentation-new#564": {
-    "docsUpdatedAt": "2026-07-10T09:34:33Z",
+    "docsUpdatedAt": "2026-07-12T10:13:13Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -749,9 +810,70 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-10T09:34:33Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-12T08:50:06Z",
+        "body": "@promptless-for-oss There are a couple of things:\r\n\r\n1. Specifically for the REST API pages, we want to keep the structure and wording (if applicable) consistent throughout the pages. Refer to https://github.com/mautic/developer-documentation-new/blob/7.1/docs/rest_api/forms.rst for the format.\r\n\r\n  Please address this, also for other open PRs that updating the REST API pages.\r\n\r\n2. Remove the first note admonition right after main title. Also apply this for other open PRs."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-12T09:22:35Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-12T09:47:35Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-12T10:05:02Z",
+        "body": "@promptless-for-oss please address the suggestions. I think you should use the parameters from the response code-block and create a new table. Please do deep analyze if you need to."
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-12T09:04:57Z",
+        "body": "Thanks for the review, @adiati98! I've updated this PR to address both points:\n\n1. **Consistent REST API page format** — I restructured and reworded `docs/rest_api/point_actions.rst` to follow the canonical format of [`forms.rst`](https://github.com/mautic/developer-documentation-new/blob/7.1/docs/rest_api/forms.rst), aligning section ordering, heading style, and wording conventions.\n2. **Leading note admonition** — removed the `.. note::` admonition that appeared right after the main title.\n\nVale passes on the changed file. Your broader request to apply the same conventions to the other open REST API PRs is noted and will be handled per-PR separately.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-12T09:34:06Z",
+        "body": "Thanks for the review, @adiati98! I've pushed updates addressing all your suggestions:\n\n- **Feature-name capitalization** — Removed the `Point Action`/`Point Actions` entries from the Vale vocab accept list so the Mautic FeatureList governs capitalization, and followed the style throughout the page.\n- **`integer` → `int`** — Changed all property/parameter types to `int` per the devs' convention.\n- **`publishedOnly` description** — Now reads 'Returns only currently activated entities'.\n- **Get Point Action types** — Renamed the heading, and updated its description to 'Retrieves an array of available Point Action types.' and the response wording to `* Returns ``200 OK`` when the request successfully retrieves the Point Action types.`\n\nRan Vale on the changed RST file and resolved the findings. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-12T09:49:58Z",
+        "body": "Thanks, @adiati98! I've applied your suggestion.\n\n- Changed the `isPublished` property description from `Point Action publication status` → `Point Action activation status`, aligning with the Activate/Turn On terminology convention.\n\nI also re-checked the rest of the page for consistency: the `publishUp`/`publishDown` rows already read \"Activation/Deactivation date and time\" and the `publishedOnly` parameter already reads \"Returns only currently activated entities\" from the prior review round. The remaining `publishUp`/`publishDown`/`isPublished` tokens are literal API property names, so those stay verbatim. Vale passes on the changed file. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-12T10:13:13Z",
+        "body": "Thanks @adiati98 — good catch. I dug into the source: the classic REST create/edit endpoints validate through `PointType` (`PointBundle/Form/Type/PointType.php`), and `Point::loadValidatorMetadata` marks only `name`, `type`, and `delta` as required. I've replaced the property cross-references with a dedicated **POST parameters** table under Create listing just the writable request fields (with required markers), and Edit now references that table with an \"all parameters optional\" note — matching the `forms.rst` pattern you linked. Ready for another look.\n"
+      }
+    ],
     "rawCodeComments": [],
     "rawCodeReviews": []
   },
@@ -1639,7 +1761,7 @@
     ]
   },
   "mautic/developer-documentation-new#550": {
-    "docsUpdatedAt": "2026-06-27T12:39:23Z",
+    "docsUpdatedAt": "2026-07-11T08:25:49Z",
     "codeUpdatedAt": "2026-06-27T12:26:39Z",
     "rawDocsReviews": [
       {
@@ -4145,7 +4267,7 @@
     "rawCodeReviews": []
   },
   "mautic/user-documentation#838": {
-    "docsUpdatedAt": "2026-07-10T18:59:38Z",
+    "docsUpdatedAt": "2026-07-12T08:52:43Z",
     "codeUpdatedAt": "2026-07-10T18:54:10Z",
     "rawDocsReviews": [
       {
@@ -4179,6 +4301,20 @@
         },
         "created_at": "2026-07-10T18:59:38Z",
         "body": "Thanks @adiati98! The branch was already based on `7.2` — the large unrelated diff was just because the PR's **base** was still pointing at `7.1`. I've retargeted the base to `7.2`, which collapses this back down to the intended 2-file change:\n\n- `docs/builders/email_landing_page.rst` (Typography blocks section)\n- `docs/builders/images/editor_typography_blocks.png` (sidebar screenshot)\n\nIt should be ready for review now.\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-11T16:58:57Z",
+        "body": "@promptless-for-oss, there are unrelated, old commits. Please clean rebase to 7.2 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-11T17:05:16Z",
+        "body": "Thanks @adiati98 — you're right, the branch had picked up unrelated old commits. I've done a clean rebase onto the current `7.2` tip. The PR now contains only the two intended changes:\n\n- `docs/builders/email_landing_page.rst` — the new Typography blocks section\n- `docs/builders/images/editor_typography_blocks.png` — the sidebar screenshot\n\nNo other commits remain. Vale is clean on the changed section (the GrapesJS \"category\" wording is wrapped in `.. vale off`/`.. vale on` since it refers to the builder's UI categories, not the Mautic Category feature — consistent with the existing wrappers in this file).\n"
       }
     ],
     "rawCodeComments": [
@@ -4475,7 +4611,7 @@
     "rawCodeReviews": []
   },
   "mautic/user-documentation#836": {
-    "docsUpdatedAt": "2026-07-09T11:32:47Z",
+    "docsUpdatedAt": "2026-07-12T08:41:51Z",
     "codeUpdatedAt": "2026-07-09T11:56:23Z",
     "rawDocsReviews": [
       {
@@ -4511,180 +4647,6 @@
         "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16493?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 70.82%. Comparing base ([`27a76af`](https://app.codecov.io/gh/mautic/mautic/commit/27a76aff64aed8e50f6dd784ea86ec95d45d4616?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`1ab3343`](https://app.codecov.io/gh/mautic/mautic/commit/1ab3343bca7e9ad1a28b8cb93df4b44824bbd844?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 1994 commits behind head on 7.x.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16493/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16493?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16493      +/-   ##\n============================================\n+ Coverage     69.75%   70.82%   +1.07%     \n- Complexity    37398    38267     +869     \n============================================\n  Files          2421     2480      +59     \n  Lines        140164   144131    +3967     \n============================================\n+ Hits          97768   102082    +4314     \n+ Misses        42396    42049     -347     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16493?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/EmailBundle/Entity/EmailRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16493?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEntity%2FEmailRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRW50aXR5L0VtYWlsUmVwb3NpdG9yeS5waHA=) | `90.42% <100.00%> (-1.78%)` | :arrow_down: |\n\n... and [875 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16493/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       }
     ],
-    "rawCodeReviews": []
-  },
-  "mautic/user-documentation#835": {
-    "docsUpdatedAt": "2026-07-10T18:17:19Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:14:13Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:14:14Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "DISMISSED",
-        "submitted_at": "2026-07-09T09:45:02Z",
-        "body": "Reads great! Thanks!"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-10T11:39:53Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-10T12:15:48Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-10T14:01:21Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-10T14:47:16Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-10T18:03:53Z",
-        "body": "@promptless-for-oss please address the suggestions.\n\nAlso, change the word 'item' to 'entity' to follow the UI. This also applies to images' alt texts if any."
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-09T09:33:38Z",
-        "body": "/aside\r\n\r\n@escopecz can you please review the content in this PR? It's filling the docs gap where we don't have any section at all introducing Projects.\r\n\r\nTIA! ✨   "
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T11:49:26Z",
-        "body": "Thanks for the thorough review, @adiati98 — I've applied all of your suggestions and pushed the update to this branch.\n\nSummary of what changed:\n- Restructured the page into your subsection layout with the exact heading text/underline styles and `.. vale off` / `.. vale on` guards you suggested.\n- **Creating Projects**: `New` → name + optional description, keeping the unique-name error 'A project with this name already exists.'\n- **Deleting Projects**: checkbox selection → blue banner → **Delete selected**, and noted that deletion removes references from assigned items but doesn't delete the items themselves.\n- **Assigning items** — both flows: the Projects field + **Hit enter to create** (from the item), and the three-step **Add Entities to Project** flow (from the Project).\n- **Deleting items from Projects**: added the brief intro plus the three-dots Options menu → **Remove from project** → confirm steps (also corrected the small \"form\" → \"from\" typo).\n- **Permissions**: bolded **Project permissions** and the separate **Associate with other entities** permission.\n\nOn your request to confirm the assignment flow against the codebase (comment #8): I checked the `ProjectBundle` in `mautic/mautic` (7.x) and your instinct was correct. **Add Entities to Project** (`mautic.project.add_entity`) is the primary button that opens the entity-type chooser, so I used your label. The older \"Add new to project\" text is a secondary per-section button (`mautic.project.add`), which is why your label is the right one for the main flow. I also verified 'Remove from project', the 'Projects' field label, 'Hit enter to create', the duplicate-name error, and the 'Associate with other entities' permission — all exact matches.\n\nVale passes clean. Ready for another look.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T12:32:14Z",
-        "body": "Thanks for the thorough review, @adiati98! I've addressed all of the points:\n\n1. Removed the redundant `Projects overview` subsection header — the intro now flows directly under the main `Projects` title.\n2. `To create a Project:` and `To delete one or more Projects:` — bold removed, now plain text.\n3. Added the five screenshots under `docs/projects/images/` with snake_case filenames and descriptive alt text (none starting with \"Screenshot of\"):\n   - **`projects_list_view.png`** (intro) — *\"Projects list showing the New button and the Projects item in the left menu\"*\n   - **`create_new_project_form.png`** (Creating Projects) — *\"Create new Project screen with Name and Description fields\"*\n   - **`assign_project_from_email.png`** (Assigning items → From the item) — *\"Email edit view with the Projects field used to assign the Email to a Project\"*\n   - **`add_entities_to_project_button.png`** (between steps 1 and 2 of the From the Project list) — *\"Project detail view highlighting the Add Entities to Project button\"*\n   - **`remove_item_from_project.png`** — this image shows the three-dots Options menu with **Remove from project**, so I placed it under **Deleting items from Projects** (the per-item flow it depicts) rather than under **Deleting Projects**. Happy to move it if you'd prefer. Alt: *\"Options menu on a Project item showing the Remove from project action\"*\n\nVale passes clean on the updated page.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T14:13:32Z",
-        "body": "Thanks again, @adiati98 — I've applied all of your review suggestions and pushed the update to this branch:\n\n1. **`projects_list_view.png`** — moved to the end of the **Managing Projects** section.\n2. **`create_new_project_form.png`** — added a `|` line break with blank lines between the image and the following paragraph about the unique-name check.\n3. **New screenshot** — added `delete_selected_projects.png` under `docs/projects/images/` (the Projects list with two Projects selected and the blue 'Delete selected' banner). It's placed in the **Deleting Projects** section after the delete steps, uses snake_case naming, has descriptive alt text (\"Projects list with two Projects selected and the Delete selected banner\"), and includes the `|` spacing.\n4. **`assign_project_from_email.png`** — indented under the **From the item** unordered list item so it aligns with that bullet, with the `|` spacing.\n5. **`remove_item_from_project.png`** — added the `|` line break for spacing before the next section.\n\nVale passes clean on the updated page. Ready for another look.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T14:58:50Z",
-        "body": "Thanks @adiati98 — addressed all five in the latest commit:\n\n1. ✅ Added `|` spacing around the assign-from-Email screenshot, indented under the 'From the item' bullet.\n2. ✅ Restructured the 'Add Entities to Project' step with the button screenshot indented under it.\n3. Investigated `ProjectBundle`. The `project:` search matches the Project name **exactly and case-sensitively** (`ProjectRepositoryTrait::handleProjectFilter` uses `eq('project.name', …)`, no partial match), and it's only registered on the supported list views (Emails, Campaigns, Segments, Forms, Landing Pages, Assets, Text messages, Marketing Messages, Companies, Points, Point Triggers, Stages, Dynamic Content, Focus Items) — **not** the Contacts list, which is the likely cause of the \"No Result Found.\" I've documented the reliable alternative you flagged: clicking the count in the '# Entities' column opens the Project view, which lists all assigned items grouped by type. Both methods are now covered in the \"Finding items by Project\" section.\n4. ✅ Added where to find Roles (Settings > Roles) and cross-linked the existing Roles documentation.\n5. ✅ Fixed \"entity\" → \"item\" in the remove-from-Project step.\n\nNo remaining blockers on my side — Vale passes clean.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T18:17:19Z",
-        "body": "Thanks @adiati98 — I've applied all of your review points and pushed the update to this branch:\n\n1. **'item' → 'entity'** throughout the page (and in image alt texts) to follow the UI wording, including the section heading, which is now 'Finding entities by Project'.\n\n2. **Unordered lists** — converted the flagged instruction list to a bulleted list for clarity.\n\n3. **'Finding entities by Project' rewritten as user-facing steps** — removed the technical second paragraph (the `project:` search-command explanation and the case-sensitivity/scope details, which are developer-facing and don't reflect the UI). It now documents the actual workflow:\n   - Open a Project's entities by clicking the project name, or by clicking the 'X entities' label in the '# Entities' column — this opens a page listing the entities used in that Project.\n   - The search bar (handy when you have many Projects): type the project name (not case sensitive), hit enter, then click the project name or the entities label.\n\n4. **Added your screenshot** at the end of the section showing the Projects list search workflow, with the same `|` spacing and a descriptive alt text.\n\nVale passes clean on the updated page. Ready for another look.\n"
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": []
-  },
-  "mautic/user-documentation#834": {
-    "docsUpdatedAt": "2026-07-09T09:31:21Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:13:57Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:13:59Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:14:00Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": []
-  },
-  "mautic/user-documentation#833": {
-    "docsUpdatedAt": "2026-07-09T09:31:41Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:13:39Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-09T06:13:40Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
     "rawCodeReviews": []
   },
   "mautic/user-documentation#832": {
@@ -5455,7 +5417,7 @@
     ]
   },
   "mautic/user-documentation#807": {
-    "docsUpdatedAt": "2026-07-10T10:54:01Z",
+    "docsUpdatedAt": "2026-07-12T07:52:12Z",
     "codeUpdatedAt": "2026-06-27T12:20:47Z",
     "rawDocsReviews": [
       {
@@ -5504,6 +5466,13 @@
         },
         "created_at": "2026-07-10T09:39:37Z",
         "body": "Thanks for the review, @adiati98 — I've pushed updates addressing all three comments:\n\n1. **Vale off/on around heading** — Wrapped the `Asset Manager` heading in `.. vale off` / `.. vale on` directives.\n2. **Vocabulary terms** — Added `PNG`, `JPG`, and `JPEG` to `.github/styles/config/vocabularies/Mautic/accept.txt`.\n3. **Passive voice** — Rewrote the `are stored` sentence in active voice: \"Mautic stores uploaded images in the media/images/ directory, so you can reuse them…\"\n\nVale now reports no findings for this content. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-12T07:43:53Z",
+        "body": "/aside \r\n\r\n@escopecz, I have a question. I wanted to add screenshots here, but I got this warning of I need to enable the GrapeJS builder plugin first. How to actually enable the GrapeJS and use the Builder?\r\n\r\nHere's what I did:\r\n\r\n1. I confirmed that GrapeJS is enabled from **Settings > Plugins**.\r\n\r\n  <img width=\"1183\" height=\"618\" alt=\"Screenshot 2026-07-12 092827\" src=\"https://github.com/user-attachments/assets/49e314d3-2b93-4708-bd95-3ea8d802f94c\" />\r\n\r\n2. I created a new Landing Page, selected a theme, and click 'Builder'.\r\n3. It shown this pop message:\r\n\r\n  <img width=\"960\" height=\"368\" alt=\"Screenshot 2026-07-12 092925\" src=\"https://github.com/user-attachments/assets/0bd5ff9b-a61f-49c3-91bb-c4c3fd503c98\" />\r\n  \r\n\r\n\r\n"
       }
     ],
     "rawCodeComments": [
@@ -6030,140 +5999,6 @@
       }
     ]
   },
-  "mautic/user-documentation#800": {
-    "docsUpdatedAt": "2026-07-09T10:28:11Z",
-    "codeUpdatedAt": "2026-06-27T09:25:43Z",
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-27T09:02:12Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-06-27T09:23:15Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-09T10:28:10Z",
-        "body": "👍 "
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-06-27T09:03:15Z",
-        "body": "@promptless-for-oss, there are many unrelated old commits. Please rebase this to 7.1."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-27T09:06:41Z",
-        "body": "Thanks @adiati98! I've rebased this onto the latest `7.1` — the branch now has a single commit and the PR diff shows only the intended change to `docs/contacts/manage_contacts.rst` (the new \"Exporting the change log\" subsection). The unrelated old commits are gone.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-27T09:30:46Z",
-        "body": "Thanks @adiati98 — both suggestions have been applied and pushed to the branch.\n\n- Updated the change log export description to: \"You can export the Contact's change log to CSV for offline analysis or record-keeping. The CSV includes columns for each event's timestamp, action, details, and the User or source that triggered the change.\"\n- Updated the export step to your wording, wrapped in `.. vale off` / `.. vale on` as suggested.\n\nThe change is scoped to `docs/contacts/manage_contacts.rst`. Ready for another look.\n"
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "codecov[bot]"
-        },
-        "created_at": "2026-03-25T12:18:59Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/15994?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `20.00000%` with `4 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 69.35%. Comparing base ([`9fed4ad`](https://app.codecov.io/gh/mautic/mautic/commit/9fed4ad5bf4a749d197c30dd061f23761a19accf?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`9ee2ab1`](https://app.codecov.io/gh/mautic/mautic/commit/9ee2ab18c26db6d9efeebbac1d0654ec6f1addb1?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 130 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15994?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...ndles/LeadBundle/Controller/AuditlogController.php](https://app.codecov.io/gh/mautic/mautic/pull/15994?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FController%2FAuditlogController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Db250cm9sbGVyL0F1ZGl0bG9nQ29udHJvbGxlci5waHA=) | 0.00% | [4 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15994?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/15994/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/15994?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #15994      +/-   ##\n============================================\n- Coverage     69.35%   69.35%   -0.01%     \n  Complexity    37187    37187              \n============================================\n  Files          2414     2414              \n  Lines        139593   139593              \n============================================\n- Hits          96821    96820       -1     \n- Misses        42772    42773       +1     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15994?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...bundles/LeadBundle/Controller/LeadDetailsTrait.php](https://app.codecov.io/gh/mautic/mautic/pull/15994?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FController%2FLeadDetailsTrait.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Db250cm9sbGVyL0xlYWREZXRhaWxzVHJhaXQucGhw) | `59.79% <100.00%> (ø)` | |\n| [...ndles/LeadBundle/Controller/AuditlogController.php](https://app.codecov.io/gh/mautic/mautic/pull/15994?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FController%2FAuditlogController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Db250cm9sbGVyL0F1ZGl0bG9nQ29udHJvbGxlci5waHA=) | `30.58% <0.00%> (ø)` | |\n\n... and [1 file with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/15994/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-04-02T14:18:45Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15994) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15994&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15994&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15994&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15994&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15994&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15994)\n\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-06-27T09:25:43Z",
-        "body": "Hi @BeniShoga1,\r\n\r\nPromptless created a docs PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/user-documentation/pull/800"
-      }
-    ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-03-31T14:50:56Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "BeniShoga1"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-04-01T14:30:06Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-04-01T15:08:20Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "BeniShoga1"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-04-02T12:28:42Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-04-02T13:39:26Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "BeniShoga1"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-04-02T14:18:57Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-04-02T14:29:55Z",
-        "body": "The code changes are minimal and make sense. I tested the export and I can see the new column name:\n\n<img width=\"344\" height=\"224\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/78338f3a-9704-4af3-b831-893258e395d9\" />\n\nThank you! 👍 "
-      }
-    ]
-  },
   "mautic/user-documentation#798": {
     "docsUpdatedAt": "2026-07-08T18:24:32Z",
     "codeUpdatedAt": "2026-07-08T11:17:01Z",
@@ -6307,7 +6142,7 @@
     ]
   },
   "mautic/user-documentation#796": {
-    "docsUpdatedAt": "2026-06-27T12:37:34Z",
+    "docsUpdatedAt": "2026-07-11T08:26:40Z",
     "codeUpdatedAt": "2026-06-27T12:26:39Z",
     "rawDocsReviews": [
       {
@@ -7739,155 +7574,6 @@
       }
     ]
   },
-  "mautic/user-documentation#766": {
-    "docsUpdatedAt": "2026-07-09T13:52:39Z",
-    "codeUpdatedAt": "2026-06-25T11:03:26Z",
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-12T14:47:57Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-06-25T11:02:27Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-06-25T11:24:45Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-09T13:52:39Z",
-        "body": "👍 "
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-25T11:04:57Z",
-        "body": "Thanks @adiati98! I've addressed all the feedback in the latest commit:\n\n- Switched \"published\" → \"activated\" and rewrote \"was first published\" in active voice (\"when you first activated the Campaign\").\n- Applied all five suggestion blocks and lowercased the text after each colon, which clears the `[Google.Colons]` Vale warning.\n\nVale now runs clean on the changed section. Let me know if anything else needs adjusting.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-25T11:32:31Z",
-        "body": "Thanks @adiati98! I've applied your suggested change — the **Has valid Email address** condition bullet now reads:\n\n> Checks if the Contact's Email address has a valid syntax, for example, `name@example.com` without spaces, other invalid characters or formats.\n\n(backticked example and the comma after \"for example\"). Vale is clean on the file. Ready for another look!\n"
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-01-30T17:45:15Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15832) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15832&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15832&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15832&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15832&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15832&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15832)\n\n"
-      },
-      {
-        "user": {
-          "login": "codecov[bot]"
-        },
-        "created_at": "2026-01-30T18:03:01Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/15832?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `40.00000%` with `63 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 70.10%. Comparing base ([`abda87c`](https://app.codecov.io/gh/mautic/mautic/commit/abda87cae9bc9440c49b2c15503c910178650d77?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`aefbfcf`](https://app.codecov.io/gh/mautic/mautic/commit/aefbfcffab6755971e1984bc4524687dc1db6321?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15832?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...Bundle/Form/Type/CampaignEventLeadAttachedType.php](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FCampaignEventLeadAttachedType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvQ2FtcGFpZ25FdmVudExlYWRBdHRhY2hlZFR5cGUucGhw) | 0.00% | [60 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...es/LeadBundle/EventListener/CampaignSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FCampaignSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0NhbXBhaWduU3Vic2NyaWJlci5waHA=) | 92.68% | [3 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/15832/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #15832      +/-   ##\n============================================\n- Coverage     70.13%   70.10%   -0.03%     \n- Complexity    37833    37852      +19     \n============================================\n  Files          2448     2449       +1     \n  Lines        141871   141975     +104     \n============================================\n+ Hits          99495    99536      +41     \n- Misses        42376    42439      +63     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15832?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...gnBundle/EventListener/CampaignEventSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEventListener%2FCampaignEventSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRXZlbnRMaXN0ZW5lci9DYW1wYWlnbkV2ZW50U3Vic2NyaWJlci5waHA=) | `97.36% <100.00%> (+0.14%)` | :arrow_up: |\n| [...es/LeadBundle/EventListener/CampaignSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FCampaignSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0NhbXBhaWduU3Vic2NyaWJlci5waHA=) | `86.31% <92.68%> (+0.56%)` | :arrow_up: |\n| [...Bundle/Form/Type/CampaignEventLeadAttachedType.php](https://app.codecov.io/gh/mautic/mautic/pull/15832?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FCampaignEventLeadAttachedType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvQ2FtcGFpZ25FdmVudExlYWRBdHRhY2hlZFR5cGUucGhw) | `0.00% <0.00%> (ø)` | |\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-06-12T14:24:20Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15832) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [2 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15832&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15832&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15832&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15832&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15832&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15832)\n\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-12T14:48:14Z",
-        "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by [PR #15832](https://github.com/mautic/mautic/pull/15832)\n\nAdds documentation for the new \"Prevent action after date\" Campaign condition that routes Contacts based on elapsed time since Campaign launch, enabling time-limited Campaign actions like flash sale promotions.\n\nReview: [Document Prevent action after date Campaign condition](https://github.com/mautic/user-documentation/pull/766)\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-06-25T11:03:26Z",
-        "body": "Hi @aarohiprasad,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/15832#issuecomment-4692349762"
-      }
-    ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-02-11T15:55:38Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-06-09T13:47:13Z",
-        "body": "A few little suggestions"
-      },
-      {
-        "user": {
-          "login": "aarohiprasad"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-09T14:43:35Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-06-10T08:47:47Z",
-        "body": "I see no other issues. Thanks Aarohi!"
-      },
-      {
-        "user": {
-          "login": "fedys"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-06-10T12:29:18Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "Bastian2718"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-06-11T13:11:12Z",
-        "body": "Contacts which getting triggered in time go through the positive path and contacts triggered to late go through the negative path even if they are already update and in campaign before the timer flys by. But would expect that."
-      },
-      {
-        "user": {
-          "login": "fedys"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-06-12T14:07:22Z",
-        "body": "Thank you @aarohiprasad! I tested the PR. It is working as expected.\n\n<img width=\"1392\" height=\"816\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2b23a7c1-5a92-4ca4-ad97-79c5fe88f19d\" />\n<img width=\"832\" height=\"538\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f633db83-64f0-4572-96f2-23069f1c5942\" />\n<img width=\"1392\" height=\"816\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/eed0f558-0e4d-481c-bf7f-20692331c666\" />\n<img width=\"1392\" height=\"816\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/55694543-b365-44ba-942b-4d064104dcfe\" />\n<img width=\"1392\" height=\"816\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2740a6d5-06f3-455b-baaf-761d06c77d06\" />\n<img width=\"1392\" height=\"816\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/35130613-c1d5-4b7b-941c-adc132e12a4a\" />\n<img width=\"987\" height=\"535\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1e42670c-8e5e-4f0f-a37d-4df0da3f82e7\" />\n<img width=\"986\" height=\"639\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e1a8941a-4e22-440c-a7d5-987b093d8899\" />\n<img width=\"1392\" height=\"816\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dcb2e9ae-1820-4891-bcca-b1b373097c08\" />"
-      }
-    ]
-  },
   "mautic/user-documentation#756": {
     "docsUpdatedAt": "2026-06-26T09:16:50Z",
     "codeUpdatedAt": "2026-07-03T13:57:24Z",
@@ -8994,7 +8680,7 @@
     ]
   },
   "mautic/user-documentation#704": {
-    "docsUpdatedAt": "2026-05-28T07:31:56Z",
+    "docsUpdatedAt": "2026-07-12T10:16:35Z",
     "codeUpdatedAt": "2026-07-03T14:14:42Z",
     "rawDocsReviews": [
       {
@@ -9088,6 +8774,20 @@
         },
         "created_at": "2026-05-26T14:29:43Z",
         "body": "Thanks for the review feedback, @adiati98! I've addressed both suggestions:\n\n1. Updated the reference to use generic \"permissions\" link instead of \"Notes permissions\"\n2. Combined the two note admonitions into a single note with an unordered list and bolded permission types\n\nThe changes have been pushed to this branch.\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-12T10:12:37Z",
+        "body": "@promptless-for-oss there are many old, unrelated commits here. Please clean rebase to 7.2 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-12T10:16:35Z",
+        "body": "Thanks @adiati98 — cleaned this up. I rebased the branch onto `7.2` and dropped the stray merge history, so the PR now contains only the 4 Notes-permissions commits and the diff is limited to `docs/contacts/manage_contacts.rst` and `docs/users_roles/managing_roles.rst`. The PR base now targets `7.2`. Let me know if anything else needs adjusting.\n"
       }
     ],
     "rawCodeComments": [
