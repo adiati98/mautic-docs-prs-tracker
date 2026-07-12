@@ -51,17 +51,18 @@ const ESCALATE_DAYS = 14
 const CACHE_PATH = "data/pr-cache.json"
 const NO_CACHE = process.argv.includes("--fresh") || process.env.TRACKER_NO_CACHE === "1"
 
-// maintainers.json lists the team's GitHub logins who all count as "the
-// operator" (team mode) - see loadConfiguredMaintainers() below. The
-// authenticated user always counts too, even if not listed there.
+// maintainers.json's educationTeam array lists the team's GitHub logins who
+// all count as "the operator" (team mode) - see loadConfiguredMaintainers()
+// below. The authenticated user always counts too, even if not listed
+// there.
 const MAINTAINERS_CONFIG_PATH = "maintainers.json"
 
 function loadConfiguredMaintainers() {
 	if (!fs.existsSync(MAINTAINERS_CONFIG_PATH)) return []
 	try {
 		const raw = JSON.parse(fs.readFileSync(MAINTAINERS_CONFIG_PATH, "utf8"))
-		if (!Array.isArray(raw.maintainers)) return []
-		return raw.maintainers.map((s) => String(s).trim().toLowerCase()).filter(Boolean)
+		if (!Array.isArray(raw.educationTeam)) return []
+		return raw.educationTeam.map((s) => String(s).trim().toLowerCase()).filter(Boolean)
 	} catch (err) {
 		console.error(`⚠ Could not parse ${MAINTAINERS_CONFIG_PATH}: ${err.message}`)
 		return []
@@ -69,6 +70,40 @@ function loadConfiguredMaintainers() {
 }
 
 const CONFIGURED_OPERATOR_LOGINS = loadConfiguredMaintainers()
+
+// Who escalation is requested from — a mix of GitHub teams (e.g.
+// "mautic/core-team") and individual logins, configured the same way as
+// maintainers.json's educationTeam list, since the roster changes for the
+// same reason: it's a team decision, not a code change. Requesting a formal
+// review from any of these on the docs PR is what computeReviewRequests
+// reads as "I've escalated" (see §2b of docs/data-model.md). A bare entry
+// with no "/" is a login; "org/team-slug" is a team, matched on the slug
+// only (org membership isn't re-checked — the event payload already scopes
+// it to this repo's org).
+function loadEscalationTargets() {
+	const fallback = { teams: ["core-team"], logins: [] }
+	if (!fs.existsSync(MAINTAINERS_CONFIG_PATH)) return fallback
+	try {
+		const raw = JSON.parse(fs.readFileSync(MAINTAINERS_CONFIG_PATH, "utf8"))
+		if (!Array.isArray(raw.devTeam) || raw.devTeam.length === 0) {
+			return fallback
+		}
+		const teams = []
+		const logins = []
+		for (const entry of raw.devTeam) {
+			const s = String(entry).trim()
+			if (!s) continue
+			if (s.includes("/")) teams.push(s.split("/").pop().toLowerCase())
+			else logins.push(s.toLowerCase())
+		}
+		return { teams, logins }
+	} catch (err) {
+		console.error(`⚠ Could not parse devTeam from ${MAINTAINERS_CONFIG_PATH}: ${err.message}`)
+		return fallback
+	}
+}
+
+const ESCALATION_TARGETS = loadEscalationTargets()
 
 // ---------------------------------------------------------------------------
 // GitHub API helpers
@@ -172,6 +207,23 @@ async function fetchIssueComments(repo, number) {
 	}
 }
 
+// Live PR objects only show *currently pending* review requests — GitHub
+// clears requested_reviewers/requested_teams the moment the request is
+// fulfilled or removed. To detect a review request that already happened
+// (even if it's since been fulfilled), we need the issue's event history
+// instead. This returns every event, unfiltered; callers keep only
+// event === "review_requested" before caching.
+async function fetchIssueEvents(repo, number) {
+	try {
+		return await fetchAllPages(
+			`https://api.github.com/repos/${repo}/issues/${number}/events`,
+		)
+	} catch (e) {
+		console.error(`Error fetching events for ${repo}#${number}:`, e.message)
+		return null
+	}
+}
+
 async function fetchCodePR(repo, number) {
 	try {
 		const pr = await makeRequest(
@@ -240,6 +292,20 @@ function slimReview(r) {
 		submitted_at: r.submitted_at,
 		body: r.body,
 	}
+}
+
+// The events endpoint returns every issue event (labeled, milestoned,
+// assigned, ...) — only review_requested is ever read downstream, so filter
+// down to that before slimming/caching.
+function slimReviewRequests(events) {
+	return events
+		.filter((e) => e.event === "review_requested")
+		.map((e) => ({
+			actor: { login: e.actor.login },
+			created_at: e.created_at,
+			requested_reviewer: e.requested_reviewer ? { login: e.requested_reviewer.login } : null,
+			requested_team: e.requested_team ? { slug: e.requested_team.slug } : null,
+		}))
 }
 
 function cacheHit(entry, docsUpdatedAt, codeUpdatedAt) {
@@ -417,6 +483,58 @@ function computeOperatorReviewDate(docsReviews, docsComments, operatorLogins) {
 	return { date: earliest ? earliest.date : null, actor: earliest ? earliest.actor : null }
 }
 
+// GitHub's "Reviewers → Request review" is a formal, comment-free equivalent
+// of @-mentioning someone — the operator's own reviewer picker, not a text
+// convention. Requesting the code PR author is an alternative way to remind
+// them (folded into the ping clock by the caller, see authorRequestPing).
+// Requesting one of the configured ESCALATION_TARGETS (a team or a login,
+// see maintainers.json's devTeam array) specifically is the escalation
+// action itself. Only requests made by an operator count — a community
+// member can't act on the team's behalf.
+function computeReviewRequests(rawReviewRequests, operatorLogins, appPRAuthor) {
+	const operatorRequests = rawReviewRequests.filter((e) =>
+		operatorLogins.has(e.actor.login.toLowerCase()),
+	)
+
+	const authorRequests = appPRAuthor
+		? operatorRequests.filter((e) => e.requested_reviewer?.login === appPRAuthor)
+		: []
+	const earliestAuthorRequest = authorRequests.reduce(
+		(best, e) => (!best || new Date(e.created_at) < new Date(best.created_at) ? e : best),
+		null,
+	)
+	const authorRequestPing = earliestAuthorRequest
+		? { date: new Date(earliestAuthorRequest.created_at), actor: earliestAuthorRequest.actor.login }
+		: null
+
+	const escalationRequests = operatorRequests.filter(
+		(e) =>
+			(e.requested_team && ESCALATION_TARGETS.teams.includes(e.requested_team.slug)) ||
+			(e.requested_reviewer &&
+				ESCALATION_TARGETS.logins.includes(e.requested_reviewer.login.toLowerCase())),
+	)
+	let escalationRequest = null
+	if (escalationRequests.length > 0) {
+		const earliest = escalationRequests.reduce((best, e) =>
+			new Date(e.created_at) < new Date(best.created_at) ? e : best,
+		)
+		const targets = [
+			...new Set(
+				escalationRequests.map((e) =>
+					e.requested_team ? `mautic/${e.requested_team.slug}` : e.requested_reviewer.login,
+				),
+			),
+		]
+		escalationRequest = {
+			date: new Date(earliest.created_at),
+			actor: earliest.actor.login,
+			targets,
+		}
+	}
+
+	return { authorRequestPing, escalationRequest }
+}
+
 // The reminder/response conversation. A "ping" is any comment — by an
 // operator, a teammate, or Promptless (the only bot let in here, since it
 // speaks for the docs PR when it relays "I've addressed your feedback") —
@@ -439,6 +557,7 @@ function computeConversationState({
 	codeReviews,
 	operatorLogins,
 	appPRAuthor,
+	authorRequestPing,
 }) {
 	const allComments = [...docsComments, ...codeComments]
 	const allReviews = [...docsReviews, ...codeReviews]
@@ -457,6 +576,18 @@ function computeConversationState({
 					mentions(c.body, appPRAuthor),
 			)
 		: []
+	// A formal "Request review" click is a comment-free equivalent of the
+	// @-mention pings above — same reminder, different mechanism (see
+	// computeReviewRequests). Folded into the same pool so it drives the same
+	// remind/follow-up/escalate clock without any downstream code needing to
+	// know which mechanism was used.
+	if (authorRequestPing) {
+		pings.push({
+			user: { login: authorRequestPing.actor },
+			created_at: authorRequestPing.date.toISOString(),
+			_pingSource: "review-request",
+		})
+	}
 	const lastPing = pings.reduce(
 		(best, c) =>
 			!best || new Date(c.created_at) > new Date(best.created_at) ? c : best,
@@ -529,13 +660,18 @@ const PROMPTLESS = "promptless-for-oss"
 
 // Categories whose own metaLine text already names the ping (who sent it,
 // and that it's outstanding or answered) — the "Reminded code PR author"
-// badge would just repeat that, so it's skipped for these.
+// badge would just repeat that, so it's skipped for these. Also covers
+// waiting-escalation-response: once you've escalated past the code author to
+// the configured escalation target(s), "Reminded code PR author" is stale
+// context, not a current fact worth a badge — the escalation chip (which
+// names who you actually asked) is what matters now.
 const REMINDER_SHOWN_INLINE = new Set([
 	"needs-remind-code-author",
 	"needs-check-author-response",
 	"needs-followup",
 	"needs-escalate-core-team",
 	"waiting-code-author-response",
+	"waiting-escalation-response",
 	"monitoring",
 ])
 
@@ -797,34 +933,46 @@ async function main() {
 		let rawDocsComments
 		let rawCodeComments
 		let rawCodeReviews
+		let rawReviewRequests
 
 		if (cacheHit(cached, pr.updated_at, codeUpdatedAt)) {
 			;({ rawDocsReviews, rawDocsComments, rawCodeComments, rawCodeReviews } = cached)
+			// Older cache entries predate this field.
+			rawReviewRequests = cached.rawReviewRequests || []
 			cacheHits++
 		} else {
 			const dReviews = await fetchPRReviews(pr.sourceRepo, pr.number)
 			const dComments = await fetchIssueComments(pr.sourceRepo, pr.number)
+			const dEvents = await fetchIssueEvents(pr.sourceRepo, pr.number)
 			const cComments = appPRNumber
 				? await fetchIssueComments(appPRRepo, appPRNumber)
 				: []
 			const cReviews = appPRNumber ? await fetchPRReviews(appPRRepo, appPRNumber) : []
 
-			// If any of the four fetches failed (null), don't trust this run's
+			// If any of the five fetches failed (null), don't trust this run's
 			// data for the PR: fall back to the previous cache entry if we have
 			// one (stale but correct), and DON'T overwrite it — so a transient
 			// error never poisons the cache with an empty result. Next run
 			// retries because the (unchanged) entry still fails the hit check
 			// only if updated_at moved; if it didn't, the good cached data is
 			// simply reused.
-			if (dReviews === null || dComments === null || cComments === null || cReviews === null) {
+			if (
+				dReviews === null ||
+				dComments === null ||
+				dEvents === null ||
+				cComments === null ||
+				cReviews === null
+			) {
 				console.error(`  ⚠ fetch failed for ${key} — keeping previous cache entry`)
 				if (cached) {
 					;({ rawDocsReviews, rawDocsComments, rawCodeComments, rawCodeReviews } = cached)
+					rawReviewRequests = cached.rawReviewRequests || []
 				} else {
 					rawDocsReviews = []
 					rawDocsComments = []
 					rawCodeComments = []
 					rawCodeReviews = []
+					rawReviewRequests = []
 				}
 				fetchFailures++
 			} else {
@@ -834,6 +982,7 @@ async function main() {
 				rawDocsComments = dComments.map(slimComment)
 				rawCodeComments = cComments.map(slimComment)
 				rawCodeReviews = cReviews.map(slimReview)
+				rawReviewRequests = slimReviewRequests(dEvents)
 				cache[key] = {
 					docsUpdatedAt: pr.updated_at,
 					codeUpdatedAt,
@@ -841,6 +990,7 @@ async function main() {
 					rawDocsComments,
 					rawCodeComments,
 					rawCodeReviews,
+					rawReviewRequests,
 				}
 				cacheMisses++
 			}
@@ -979,6 +1129,12 @@ async function main() {
 						new Date(e.submitted_at || e.created_at) > lastApprovalDate,
 				))
 
+		const { authorRequestPing, escalationRequest } = computeReviewRequests(
+			rawReviewRequests,
+			operatorLogins,
+			appPRAuthor,
+		)
+
 		const {
 			lastPingDate,
 			lastPingActor,
@@ -993,6 +1149,7 @@ async function main() {
 			codeReviews,
 			operatorLogins,
 			appPRAuthor,
+			authorRequestPing,
 		})
 		const pingEverSent = lastPingDate !== null
 		const daysSincePing = lastPingDate
@@ -1116,6 +1273,19 @@ async function main() {
 		let category
 		if (codeClosed) {
 			category = "needs-close-docs-pr"
+		} else if (escalationRequest && !devApproved && !approvedByNonOperator) {
+			// An explicit escalation is a deliberate operator action — it wins
+			// over whatever the automatic day-count clock below would otherwise
+			// say, even if it fires before the usual ESCALATE_DAYS threshold. An
+			// approval (checked first, same as the code-author clock) still
+			// settles everything regardless. Unlike the code-author ping clock,
+			// a single reply doesn't clear this — a comment isn't necessarily a
+			// resolution, so the badge persists until someone actually approves
+			// (or the code PR closes, checked above). Whatever back-and-forth
+			// happens in the meantime is narrated separately by the community-
+			// thread chip (computeCommunityThread), which runs regardless of
+			// category.
+			category = "waiting-escalation-response"
 		} else if (operatorReviewDone && !appPRNumber) {
 			// A standalone docs PR has no linked code PR to wait on, so unlike
 			// the code-author clock below, your own review is itself the ask
@@ -1257,6 +1427,7 @@ async function main() {
 			lastPingActor,
 			lastPingSource,
 			lastPingByOperator,
+			escalationRequest,
 			daysSincePing,
 			lastOperatorTouchDate,
 			daysSinceOperatorTouch,
@@ -1592,6 +1763,11 @@ function metaLine(pr) {
 					: "reminder sent, waiting for a reply",
 			)
 			break
+		case "waiting-escalation-response":
+			parts.push(
+				`escalated to ${escapeHtml(pr.escalationRequest.targets.join(" & "))} ${daysAgoText(pr.escalationRequest.date)}, waiting for a reply`,
+			)
+			break
 		case "waiting-code-pr-merge":
 			parts.push("code PR is still open")
 			break
@@ -1655,6 +1831,12 @@ function buildClock(pr) {
 			const sub = remaining <= 1 ? "follow up tomorrow" : `follow up at ${FOLLOWUP_DAYS}`
 			const pct = Math.min(100, Math.round((pr.daysSincePing / FOLLOWUP_DAYS) * 100))
 			return { big: `Day ${pr.daysSincePing}`, sub, meterPct: pct }
+		}
+		case "waiting-escalation-response": {
+			const days = Math.floor(
+				(Date.now() - pr.escalationRequest.date.getTime()) / 86400000,
+			)
+			return { big: `Day ${days}`, sub: "waiting for a reply" }
 		}
 		case "waiting-code-pr-merge":
 			return { big: "—", sub: "waiting for the code PR to merge" }
@@ -1762,6 +1944,13 @@ function chipsFor(pr) {
 
 	const community = communityChip(pr)
 	if (community) chips.push(community)
+
+	if (pr.category === "waiting-escalation-response") {
+		chips.push({
+			cls: "muted",
+			text: `✅ Escalated to ${escapeHtml(pr.escalationRequest.targets.join(" & "))}`,
+		})
+	}
 
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
@@ -1940,6 +2129,12 @@ function waitingChipsFor(pr) {
 	if (stale) chips.push(stale)
 	const community = communityChip(pr)
 	if (community) chips.push(community)
+	if (pr.category === "waiting-escalation-response") {
+		chips.push({
+			cls: "muted",
+			text: `✅ Escalated to ${escapeHtml(pr.escalationRequest.targets.join(" & "))}`,
+		})
+	}
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
 	if (pr.reviewPendingFlag) {
@@ -2216,10 +2411,21 @@ function generateHTML(prData, { operatorUsername }) {
 		const db = b.daysSincePing ?? -1
 		return db - da
 	})
+	const WAITING_CATEGORY_ORDER = {
+		"waiting-code-author-response": 0,
+		"waiting-escalation-response": 1,
+		"waiting-code-pr-merge": 2,
+	}
+	const waitingSortDays = (p) =>
+		p.daysSincePing ??
+		(p.escalationRequest
+			? Math.floor((Date.now() - p.escalationRequest.date.getTime()) / 86400000)
+			: -1)
 	waiting.sort((a, b) => {
-		if (a.category !== b.category)
-			return a.category === "waiting-code-author-response" ? -1 : 1
-		return (b.daysSincePing ?? 0) - (a.daysSincePing ?? 0)
+		const ra = WAITING_CATEGORY_ORDER[a.category] ?? 3
+		const rb = WAITING_CATEGORY_ORDER[b.category] ?? 3
+		if (ra !== rb) return ra - rb
+		return waitingSortDays(b) - waitingSortDays(a)
 	})
 
 	const now = new Date()
@@ -2241,6 +2447,7 @@ function generateHTML(prData, { operatorUsername }) {
 	// honest about which one is actually driving the count, since the two
 	// mean different things (no clock yet vs. a clock counting down).
 	const authorWaiting = waiting.filter((p) => p.category === "waiting-code-author-response")
+	const escalationWaiting = waiting.filter((p) => p.category === "waiting-escalation-response")
 	const mergeWaiting = waiting.filter((p) => p.category === "waiting-code-pr-merge")
 	let waitingSub
 	if (authorWaiting.length > 0) {
@@ -2250,6 +2457,8 @@ function generateHTML(prData, { operatorUsername }) {
 		if (minDays <= 0) waitingSub = "next follow-up due today"
 		else if (minDays === 1) waitingSub = "next follow-up due tomorrow"
 		else waitingSub = `next follow-up due in ${minDays} days`
+	} else if (escalationWaiting.length > 0) {
+		waitingSub = "waiting for a reply from core team"
 	} else if (mergeWaiting.length > 0) {
 		waitingSub = "waiting for code PRs to merge"
 	} else {
@@ -2934,7 +3143,7 @@ ${filterBar}
         <table>
           <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
           <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth doing on your own schedule — brand-new PRs that still need a label or milestone, approvals that are ready to merge with nothing else going on, and anything that's gone quiet for a while (stale).</td></tr>
-          <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, or a reminder to the code PR author has been sent.</td></tr>
+          <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, a reminder to the code PR author has been sent, or you've escalated and are waiting for a reply.</td></tr>
           <tr><td><b>Monitoring</b></td><td>The author replied and you've already responded. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
         </table>
       </section>
