@@ -1,3 +1,4 @@
 {
-	"maintainers": ["adiati98", "RCheesley"]
+	"educationTeam": ["adiati98", "RCheesley"],
+	"devTeam": ["mautic/core-team", "escopecz"]
 }

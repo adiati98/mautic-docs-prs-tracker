@@ -45,17 +45,41 @@ export GITHUB_TOKEN="your_token_here"
 
 By default, "the operator" (you) is whoever the token belongs to. If several
 maintainers share triage duty and you want any of their reviews/reminders to
-count as "done", list their GitHub logins in `maintainers.json` (committed,
-shared by the whole team — not a secret, just usernames):
+count as "done", list their GitHub logins in `maintainers.json`'s
+`educationTeam` array (committed, shared by the whole team — not a secret,
+just usernames):
 
 ```json
 {
-	"maintainers": ["maintainer1", "maintainer2"]
+	"educationTeam": ["maintainer1", "maintainer2"]
 }
 ```
 
 The authenticated user (whoever the token belongs to) always counts, whether
 or not they're listed here.
+
+### 3b. (Optional) Who escalation goes to
+
+When you use GitHub's **Reviewers → Request review** on a docs PR to remind
+the code PR author, that's picked up automatically — no config needed.
+Requesting review from specific people or teams instead means "I'm
+escalating past an unresponsive author," and *that* roster is configurable
+in the same file, since it's a team decision that changes over time, not
+something to hard-code:
+
+```json
+{
+	"educationTeam": ["maintainer1", "maintainer2"],
+	"devTeam": ["org/team-slug", "reviewer1"]
+}
+```
+
+Mix teams and individual logins freely — an entry with a `/` (`org/team-
+slug`) is matched as a team, a bare login is matched as a person. Requesting
+review from anyone in this list shows a persistent **"✅ Escalated to
+`<who>`"** status until they approve (see [Follow-up & escalation
+timeline](#follow-up--escalation-timeline)). If this key is omitted
+entirely, it defaults to `["mautic/core-team"]`.
 
 ### 4. Run
 
@@ -80,8 +104,8 @@ question: **whose turn is it?**
    ready to merge with nothing else going on, and anything that's gone
    quiet for a while (stale).
 3. **Waiting on others or for code PR to merge** — you've done your part —
-   either the code PR hasn't merged yet, or a reminder to the code PR
-   author has been sent.
+   either the code PR hasn't merged yet, a reminder to the code PR author
+   has been sent, or you've escalated and are waiting for a reply.
 4. **Monitoring** — the author replied and you've already responded; a normal
    back-and-forth is happening. Collapsed by default, but each row still
    shows a day count since your last reply — if the conversation goes quiet
@@ -109,19 +133,21 @@ since only open PRs are fetched.
 
 ## Follow-up & escalation timeline
 
-This timeline only counts comments that explicitly **@-mention the code PR
-author** — on either the code PR or the docs PR. A plain comment or review
-doesn't start or reset it; it has to be a comment that literally names
-them. The @-mention can be **yours, a teammate's, or Promptless's** (the AI
-docs bot — the one bot let into this, since it speaks for the docs PR when
-it relays "I've addressed your feedback" to the code author) — whoever
-@-mentions the author is reminding them, and the row names who sent it.
-This is deliberate: an @-mention is the only signal precise enough to say
-"someone asked them directly." It also goes by time, not role — if
-Promptless's @-mention is the *most recent* one, it's what the row goes by,
-even if you touched the PR earlier for something unrelated (e.g. a side
-conversation with Promptless itself) — that touch didn't answer the
-author, so it doesn't reset anything.
+This timeline starts on a reminder to the code PR author, which counts
+either of two things: a comment that explicitly **@-mentions** them — on
+either the code PR or the docs PR — or a formal GitHub **Reviewers →
+Request review** aimed at them on the docs PR. A plain comment or review
+doesn't start or reset it; it has to be one of those two explicit acts. The
+@-mention (or request) can be **yours, a teammate's, or Promptless's** (the
+AI docs bot — the one bot let into this, since it speaks for the docs PR
+when it relays "I've addressed your feedback" to the code author) —
+whoever does it is reminding them, and the row names who sent it. This is
+deliberate: an @-mention or a review request is precise enough to say
+"someone asked them directly," where a passing comment isn't. It also goes
+by time, not role — if Promptless's @-mention is the *most recent* one,
+it's what the row goes by, even if you touched the PR earlier for something
+unrelated (e.g. a side conversation with Promptless itself) — that touch
+didn't answer the author, so it doesn't reset anything.
 
 This timeline can't start until the linked code PR has merged (before
 that, the PR just sits in **Waiting on others** as "Code PR is still open"
@@ -130,9 +156,9 @@ the docs PR first — some docs PRs need no content changes at all, so
 review is skipped by design and you're really just waiting on the code
 author to confirm things look right. Once merged:
 
-- **No @-mention sent yet**: shows "Remind code PR author — code PR
+- **No reminder sent yet**: shows "Remind code PR author — code PR
   merged" — no day count.
-- **Day 0–6 since your last @-mention**: waiting on others.
+- **Day 0–6 since your last reminder**: waiting on others.
 - **Day 7**: send a follow-up.
 - **Day 14**: escalate to the core team.
 
@@ -142,10 +168,21 @@ alongside whatever this timeline is showing, so that's never lost either.
 
 This timeline stops the moment the code author responds — on either PR, as
 a comment, review, or approval — and the PR moves to **Need you today** as
-"Check the author's response." Once you reply (even without @-mentioning
-them again), it settles into **Monitoring** with its own day count: if
-that goes quiet for 7 days with no further reply from the author, it
-resurfaces asking you to send another explicit reminder.
+"Check the author's response." Once you reply (even without reminding them
+again), it settles into **Monitoring** with its own day count: if that goes
+quiet for 7 days with no further reply from the author, it resurfaces
+asking you to send another explicit reminder.
+
+**Escalating early:** Day 14 is when the tool *asks* you to escalate — you
+don't have to wait for it. The moment you request review from one of the
+[escalation targets](#3b-optional-who-escalation-goes-to) on the docs PR,
+the row switches straight to **"✅ Escalated to `<who>`"** in **Waiting on
+others**, whatever day the clock was on. Unlike the reminder-to-author
+clock above, a reply doesn't clear this on its own — only an approval (or
+the code PR closing) does, since escalating is a deliberate call that
+shouldn't quietly reset itself the moment someone leaves a comment. Any
+live back-and-forth while it's outstanding still shows up as its own
+[live human thread](#live-human-threads) row alongside it.
 
 ## Live human threads
 
