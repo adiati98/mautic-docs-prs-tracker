@@ -45,7 +45,8 @@
         "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by [PR #16517](https://github.com/mautic/mautic/pull/16517)\n\nThis PR adds the optional `tooltip` parameter to `@MauticCore/Helper/tableheader.html.twig`, letting bundle/template developers attach a hover tooltip to any list-column header. The docs update adds a new developer-docs page under Design templates documenting the helper and its `tooltip` parameter (targets the 7.2 docs branch).\n\nReview: [Document tableheader.html.twig helper and its new tooltip parameter](https://github.com/mautic/developer-documentation-new/pull/594)\n"
       }
     ],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#593": {
     "docsUpdatedAt": "2026-07-11T18:57:40Z",
@@ -153,7 +154,8 @@
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16512) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16512&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16512&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16512&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16512&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [3.3% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16512&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16512)\n\n"
       }
     ],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#592": {
     "docsUpdatedAt": "2026-07-10T10:11:18Z",
@@ -186,7 +188,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:11:17Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:11:18Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:11:18Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#591": {
     "docsUpdatedAt": "2026-07-10T10:02:12Z",
@@ -211,7 +245,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:02:12Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:02:12Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:02:12Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#590": {
     "docsUpdatedAt": "2026-07-10T10:00:26Z",
@@ -236,7 +302,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:00:26Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:00:26Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:00:26Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#589": {
     "docsUpdatedAt": "2026-07-10T10:00:03Z",
@@ -269,7 +367,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:00:02Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:00:03Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T10:00:03Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#588": {
     "docsUpdatedAt": "2026-07-10T09:59:20Z",
@@ -294,7 +424,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:59:19Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:59:20Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:59:20Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#587": {
     "docsUpdatedAt": "2026-07-10T09:58:47Z",
@@ -311,7 +473,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:58:46Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:58:46Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:58:46Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#586": {
     "docsUpdatedAt": "2026-07-10T09:56:47Z",
@@ -336,7 +530,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:56:47Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:56:47Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:56:47Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#585": {
     "docsUpdatedAt": "2026-07-10T09:54:17Z",
@@ -353,7 +579,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:54:16Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:54:17Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:54:17Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#584": {
     "docsUpdatedAt": "2026-07-10T09:54:11Z",
@@ -378,7 +636,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:54:10Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:54:11Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:54:11Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#583": {
     "docsUpdatedAt": "2026-07-10T09:53:44Z",
@@ -403,7 +693,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:53:44Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:53:44Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:53:44Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#582": {
     "docsUpdatedAt": "2026-07-10T09:52:29Z",
@@ -420,7 +742,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:52:28Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:52:29Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:52:29Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#581": {
     "docsUpdatedAt": "2026-07-10T09:51:46Z",
@@ -437,7 +791,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:51:45Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:51:45Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:51:45Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#580": {
     "docsUpdatedAt": "2026-07-10T09:50:55Z",
@@ -454,7 +840,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:50:55Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:50:55Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:50:55Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#579": {
     "docsUpdatedAt": "2026-07-10T09:49:31Z",
@@ -471,7 +889,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:49:30Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:49:31Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:49:31Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#578": {
     "docsUpdatedAt": "2026-07-10T09:49:24Z",
@@ -496,7 +946,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:49:24Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:49:24Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:49:24Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#577": {
     "docsUpdatedAt": "2026-07-10T09:48:25Z",
@@ -513,7 +995,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:48:24Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:48:24Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:48:24Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#576": {
     "docsUpdatedAt": "2026-07-10T09:47:47Z",
@@ -554,7 +1068,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:47:47Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:47:47Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:47:47Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#575": {
     "docsUpdatedAt": "2026-07-10T09:46:49Z",
@@ -571,7 +1117,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:46:49Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:46:49Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:46:49Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#574": {
     "docsUpdatedAt": "2026-07-10T09:45:55Z",
@@ -596,7 +1174,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:45:54Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:45:55Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:45:55Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#573": {
     "docsUpdatedAt": "2026-07-10T09:45:49Z",
@@ -629,7 +1239,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:45:48Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:45:49Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:45:49Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#572": {
     "docsUpdatedAt": "2026-07-10T09:44:30Z",
@@ -662,7 +1304,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:44:29Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:44:30Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:44:30Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#571": {
     "docsUpdatedAt": "2026-07-10T09:41:53Z",
@@ -679,7 +1353,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:41:53Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:41:53Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:41:53Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#570": {
     "docsUpdatedAt": "2026-07-10T09:41:48Z",
@@ -696,7 +1402,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:41:47Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:41:47Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:41:47Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#569": {
     "docsUpdatedAt": "2026-07-10T09:40:51Z",
@@ -721,7 +1459,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:40:50Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:40:51Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:40:51Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#568": {
     "docsUpdatedAt": "2026-07-10T09:40:46Z",
@@ -738,7 +1508,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:40:45Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:40:45Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:40:45Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#567": {
     "docsUpdatedAt": "2026-07-10T09:38:54Z",
@@ -763,7 +1565,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:38:53Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:38:54Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:38:54Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#566": {
     "docsUpdatedAt": "2026-07-10T09:36:40Z",
@@ -780,7 +1614,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:36:39Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:36:40Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:36:40Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#565": {
     "docsUpdatedAt": "2026-07-10T09:35:36Z",
@@ -797,7 +1663,39 @@
     ],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:35:35Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:35:35Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:35:35Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#564": {
     "docsUpdatedAt": "2026-07-12T10:13:13Z",
@@ -875,7 +1773,39 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:34:32Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:34:33Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:34:33Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#563": {
     "docsUpdatedAt": "2026-07-10T12:18:19Z",
@@ -1083,6 +2013,48 @@
         "submitted_at": "2026-07-09T10:15:10Z",
         "body": "I tested by running `composer install`. It generated the prod files in `plugins/GrapesJsBuilderBundle/Assets/library/js/dist` that aren't tracked by git. I can see the assets are being loaded in the browser from the same location at `\nhttps://mautic-community.ddev.site/plugins/GrapesJsBuilderBundle/Assets/library/js/dist/builder.js?vf405b90b`. And testing various features of the landing page builder. I did not notice any issues. Thanks! 👍 "
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:17:40Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:17:41Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T09:17:41Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-10T10:13:36Z",
+        "requested_reviewer": {
+          "login": "patrykgruszka"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#562": {
@@ -1091,7 +2063,39 @@
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-09T20:17:16Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-09T20:17:16Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-09T20:17:16Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/developer-documentation-new#561": {
     "docsUpdatedAt": "2026-07-10T19:02:37Z",
@@ -1124,7 +2128,8 @@
         "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by [api-library PR #349](https://github.com/mautic/api-library/pull/349)\n\nThe PHP API library now throws a new `ConnectionException` when a request can't reach Mautic (DNS failure, connection timeout, TLS error), with a message that surfaces the target URL and the underlying transport error. The existing developer docs only documented server-side JSON error responses, so this adds a \"Handling connection errors with the API library\" subsection with a `try/catch` example.\n\nReview: [docs PR #561](https://github.com/mautic/developer-documentation-new/pull/561)\n"
       }
     ],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#554": {
     "docsUpdatedAt": "2026-07-08T18:26:40Z",
@@ -1281,7 +2286,8 @@
         "submitted_at": "2026-07-07T14:18:49Z",
         "body": "Looks good. Just a tiny suggestion"
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#552": {
     "docsUpdatedAt": "2026-06-30T05:31:07Z",
@@ -1584,7 +2590,8 @@
         "submitted_at": "2026-07-03T13:54:25Z",
         "body": ""
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#551": {
     "docsUpdatedAt": "2026-07-08T18:19:10Z",
@@ -1758,6 +2765,48 @@
         "submitted_at": "2026-04-14T12:00:38Z",
         "body": "Good job. PR works as expected from an user perspective"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:49:15Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:49:16Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:49:16Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-08T18:19:10Z",
+        "requested_reviewer": {
+          "login": "patrykgruszka"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#550": {
@@ -1873,6 +2922,48 @@
         "state": "APPROVED",
         "submitted_at": "2026-02-04T12:38:02Z",
         "body": ""
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-26T15:24:51Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-26T15:24:52Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-26T15:24:52Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-11T08:25:49Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -2041,6 +3132,48 @@
         "submitted_at": "2026-07-09T09:59:49Z",
         "body": "The code changes look good to me. Tested, works as expected. The menu item link is `mau.tc/support` and it redirects to `https://mautic.org/blog/urgent-call-for-community-support-to-secure-mautics-financial-future/`. 👍\n\nhttps://github.com/user-attachments/assets/c9720f85-d725-4385-ac8b-00d0e68fb9c6"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T13:59:58Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T13:59:58Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T13:59:58Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-24T09:15:48Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#540": {
@@ -2179,6 +3312,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-08T11:15:19Z",
         "body": "I'm good with this"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-22T01:19:56Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-22T01:19:56Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-22T01:19:56Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -2396,6 +3561,38 @@
         "submitted_at": "2026-07-03T18:14:36Z",
         "body": "Great!\ntested:\n\n- created field groups\n- aliases auto-gen/read-only\n- created contact/company fields\n- group order correct\n- non-empty group cannot be deleted (despite it'd be great to have a confirmation like \"do you wanna delete all associated fields?\")\n- empty group deleted\n\n<img width=\"1014\" height=\"556\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/77e33f46-1bf2-4481-9c4a-6f9254f1bcae\" />"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T21:45:29Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T21:45:30Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T21:45:30Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#527": {
@@ -2469,7 +3666,7 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-06-18T17:02:10Z",
-        "body": "Thanks @Thecesar85 �� good catch. I've updated the docs to scope the relaxed import requirement to **style-only Form Themes**.\n\nThe note now states that the exception applies only when a Theme declares **only** the `form` feature (with a Form style override file), so it doesn't require `html/form.html.twig` or `html/message.html.twig`. It also clarifies that the exception does **not** apply to mixed-feature Themes (for example `features: [\"form\", \"email\"]` or those that also declare `page`), which still require the normal template files for each declared feature. Verified against the `['form'] === $features` check in mautic/mautic#16257.\n\nChanges are pushed to this PR (`docs/themes/getting_started.rst` and `docs/rest_api/themes.rst`).\n"
+        "body": "Thanks @Thecesar85 ��� good catch. I've updated the docs to scope the relaxed import requirement to **style-only Form Themes**.\n\nThe note now states that the exception applies only when a Theme declares **only** the `form` feature (with a Form style override file), so it doesn't require `html/form.html.twig` or `html/message.html.twig`. It also clarifies that the exception does **not** apply to mixed-feature Themes (for example `features: [\"form\", \"email\"]` or those that also declare `page`), which still require the normal template files for each declared feature. Verified against the `['form'] === $features` check in mautic/mautic#16257.\n\nChanges are pushed to this PR (`docs/themes/getting_started.rst` and `docs/rest_api/themes.rst`).\n"
       },
       {
         "user": {
@@ -2620,6 +3817,38 @@
         "submitted_at": "2026-06-26T11:10:13Z",
         "body": "thanks, this addresses my concern"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-13T09:09:57Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-13T09:09:57Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-13T09:09:57Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#521": {
@@ -2721,6 +3950,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-02T17:14:14Z",
         "body": "Doing what you said in PR desc, it works"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-10T11:24:26Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-10T11:24:27Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-10T11:24:27Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -2914,6 +4175,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-02T17:19:48Z",
         "body": "Works now!"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-03T08:38:58Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-03T08:38:58Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-03T08:38:58Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -3351,6 +4644,48 @@
         "submitted_at": "2026-06-15T12:51:59Z",
         "body": "Valid concern by @matbcvo, but not a blocker from my perspective. "
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-28T13:33:06Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-28T13:33:06Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-28T13:33:06Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-10T08:40:35Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#502": {
@@ -3690,7 +5025,7 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-06-12T09:47:41Z",
-        "body": "## Pull request overview\n\nThis PR introduces “same role” scoped permissions (e.g., `view/edit/delete/publishsamerole`) so users can access content owned by users in the same role, without granting access to content owned by users in other roles.\n\n**Changes:**\n- Extends the core permission system to support `*samerole` permission levels and same-role ownership checks.\n- Updates multiple bundles’ controllers/menus to recognize the new `viewsamerole` capability and apply role-scoped listing filters.\n- Adds/updates automated tests and translations to cover/display the new permission options.\n\n### Reviewed changes\n\nCopilot reviewed 40 out of 40 changed files in this pull request and generated 4 comments.\n\n<details>\n<summary>Show a summary per file</summary>\n\n| File | Description |\r\n| ---- | ----------- |\r\n| plugins/MauticSocialBundle/Config/config.php | Adds `viewsamerole` to Tweets menu access. |\r\n| plugins/MauticFocusBundle/Entity/Focus.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| plugins/MauticFocusBundle/Config/config.php | Switches Focus menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/WebhookBundle/Config/config.php | Adds `viewsamerole` to Webhook menu access. |\r\n| app/bundles/UserBundle/Entity/UserRepository.php | Adds `findUserIdsByRole()` helper for role-scoped filtering. |\r\n| app/bundles/SmsBundle/Controller/SmsController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/SmsBundle/Config/config.php | Adds `viewsamerole` to SMS menu access. |\r\n| app/bundles/ReportBundle/Controller/ReportController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/PageBundle/Controller/PageController.php | Uses shared permission keys and role-based filtering; refactors permission checks. |\r\n| app/bundles/PageBundle/Config/config.php | Adds `viewsamerole` to Page menu access. |\r\n| app/bundles/NotificationBundle/Controller/NotificationController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Controller/MobileNotificationController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Config/config.php | Adds `viewsamerole` to Notification menu access. |\r\n| app/bundles/LeadBundle/Tests/Security/LeadPermissionsFunctionalTest.php | Updates expectations to include new same-role permission checkboxes. |\r\n| app/bundles/LeadBundle/Security/Permissions/LeadPermissions.php | Adds `LISTS_VIEW_SAME_ROLE` constant. |\r\n| app/bundles/LeadBundle/Controller/ListController.php | Applies role-based filtering and passes same-role perm into entity access checks. |\r\n| app/bundles/LeadBundle/Controller/LeadController.php | Adds same-role handling for contact listing restrictions and constants. |\r\n| app/bundles/LeadBundle/Config/config.php | Adds `viewsamerole` to Contacts/Segments menu access. |\r\n| app/bundles/FormBundle/Controller/FormController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/FormBundle/Config/config.php | Adds `viewsamerole` to Forms menu access. |\r\n| app/bundles/EmailBundle/Controller/EmailController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/EmailBundle/Config/config.php | Adds `viewsamerole` to Emails menu access. |\r\n| app/bundles/DynamicContentBundle/Controller/DynamicContentController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/DynamicContentBundle/Config/config.php | Adds `viewsamerole` to Dynamic Content menu access. |\r\n| app/bundles/CoreBundle/Translations/en_US/messages.ini | Adds UI labels for same-role permissions. |\r\n| app/bundles/CoreBundle/Tests/Unit/Security/Permissions/CorePermissionsTest.php | Adds unit coverage for same-role access and permission analysis. |\r\n| app/bundles/CoreBundle/Security/Permissions/CorePermissions.php | Implements same-role resolution/checking in `hasEntityAccess()` and injects `UserRepository`. |\r\n| app/bundles/CoreBundle/Security/Permissions/AbstractPermissions.php | Adds `*samerole` levels, bits, form fields, and prerequisite analysis. |\r\n| app/bundles/CoreBundle/Model/AbstractCommonModel.php | Adds same-role support for Global Search entity restrictions. |\r\n| app/bundles/CoreBundle/Entity/CommonRepository.php | Improves filter column conversion, including nested filter structures. |\r\n| app/bundles/CoreBundle/Controller/CommonController.php | Introduces shared helpers for standard permission keys and role-based filters. |\r\n| app/bundles/CoreBundle/Controller/AbstractStandardFormController.php | Uses shared permission keys and role-based filtering; adjusts export permission check. |\r\n| app/bundles/CoreBundle/Config/config.php | Wires `UserRepository` into the `mautic.security` service. |\r\n| app/bundles/ChannelBundle/Entity/Message.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| app/bundles/ChannelBundle/Config/config.php | Adds `viewsamerole` to Messages menu access. |\r\n| app/bundles/CampaignBundle/Controller/CampaignController.php | Uses shared permission keys and standard permission handling for export. |\r\n| app/bundles/CampaignBundle/Config/config.php | Switches Campaign menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/AssetBundle/Tests/Controller/AssetControllerFunctionalTest.php | Adds functional coverage for viewing same-role-owned assets. |\r\n| app/bundles/AssetBundle/Controller/AssetController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/AssetBundle/Config/config.php | Adds `viewsamerole` to Assets menu access. |\n</details>\n\n\n\n\n\n\n\n---\n\n💡 <a href=\"/mautic/mautic/new/7.x?filename=.github/instructions/*.instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Add Copilot custom instructions</a> for smarter, more guided reviews. <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Learn how to get started</a>."
+        "body": "## Pull request overview\n\nThis PR introduces “same role” scoped permissions (e.g., `view/edit/delete/publishsamerole`) so users can access content owned by users in the same role, without granting access to content owned by users in other roles.\n\n**Changes:**\n- Extends the core permission system to support `*samerole` permission levels and same-role ownership checks.\n- Updates multiple bundles’ controllers/menus to recognize the new `viewsamerole` capability and apply role-scoped listing filters.\n- Adds/updates automated tests and translations to cover/display the new permission options.\n\n### Reviewed changes\n\nCopilot reviewed 40 out of 40 changed files in this pull request and generated 4 comments.\n\n<details>\n<summary>Show a summary per file</summary>\n\n| File | Description |\r\n| ---- | ----------- |\r\n| plugins/MauticSocialBundle/Config/config.php | Adds `viewsamerole` to Tweets menu access. |\r\n| plugins/MauticFocusBundle/Entity/Focus.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| plugins/MauticFocusBundle/Config/config.php | Switches Focus menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/WebhookBundle/Config/config.php | Adds `viewsamerole` to Webhook menu access. |\r\n| app/bundles/UserBundle/Entity/UserRepository.php | Adds `findUserIdsByRole()` helper for role-scoped filtering. |\r\n| app/bundles/SmsBundle/Controller/SmsController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/SmsBundle/Config/config.php | Adds `viewsamerole` to SMS menu access. |\r\n| app/bundles/ReportBundle/Controller/ReportController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/PageBundle/Controller/PageController.php | Uses shared permission keys and role-based filtering; refactors permission checks. |\r\n| app/bundles/PageBundle/Config/config.php | Adds `viewsamerole` to Page menu access. |\r\n| app/bundles/NotificationBundle/Controller/NotificationController.php | Uses shared “standard permissions�� + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Controller/MobileNotificationController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Config/config.php | Adds `viewsamerole` to Notification menu access. |\r\n| app/bundles/LeadBundle/Tests/Security/LeadPermissionsFunctionalTest.php | Updates expectations to include new same-role permission checkboxes. |\r\n| app/bundles/LeadBundle/Security/Permissions/LeadPermissions.php | Adds `LISTS_VIEW_SAME_ROLE` constant. |\r\n| app/bundles/LeadBundle/Controller/ListController.php | Applies role-based filtering and passes same-role perm into entity access checks. |\r\n| app/bundles/LeadBundle/Controller/LeadController.php | Adds same-role handling for contact listing restrictions and constants. |\r\n| app/bundles/LeadBundle/Config/config.php | Adds `viewsamerole` to Contacts/Segments menu access. |\r\n| app/bundles/FormBundle/Controller/FormController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/FormBundle/Config/config.php | Adds `viewsamerole` to Forms menu access. |\r\n| app/bundles/EmailBundle/Controller/EmailController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/EmailBundle/Config/config.php | Adds `viewsamerole` to Emails menu access. |\r\n| app/bundles/DynamicContentBundle/Controller/DynamicContentController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/DynamicContentBundle/Config/config.php | Adds `viewsamerole` to Dynamic Content menu access. |\r\n| app/bundles/CoreBundle/Translations/en_US/messages.ini | Adds UI labels for same-role permissions. |\r\n| app/bundles/CoreBundle/Tests/Unit/Security/Permissions/CorePermissionsTest.php | Adds unit coverage for same-role access and permission analysis. |\r\n| app/bundles/CoreBundle/Security/Permissions/CorePermissions.php | Implements same-role resolution/checking in `hasEntityAccess()` and injects `UserRepository`. |\r\n| app/bundles/CoreBundle/Security/Permissions/AbstractPermissions.php | Adds `*samerole` levels, bits, form fields, and prerequisite analysis. |\r\n| app/bundles/CoreBundle/Model/AbstractCommonModel.php | Adds same-role support for Global Search entity restrictions. |\r\n| app/bundles/CoreBundle/Entity/CommonRepository.php | Improves filter column conversion, including nested filter structures. |\r\n| app/bundles/CoreBundle/Controller/CommonController.php | Introduces shared helpers for standard permission keys and role-based filters. |\r\n| app/bundles/CoreBundle/Controller/AbstractStandardFormController.php | Uses shared permission keys and role-based filtering; adjusts export permission check. |\r\n| app/bundles/CoreBundle/Config/config.php | Wires `UserRepository` into the `mautic.security` service. |\r\n| app/bundles/ChannelBundle/Entity/Message.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| app/bundles/ChannelBundle/Config/config.php | Adds `viewsamerole` to Messages menu access. |\r\n| app/bundles/CampaignBundle/Controller/CampaignController.php | Uses shared permission keys and standard permission handling for export. |\r\n| app/bundles/CampaignBundle/Config/config.php | Switches Campaign menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/AssetBundle/Tests/Controller/AssetControllerFunctionalTest.php | Adds functional coverage for viewing same-role-owned assets. |\r\n| app/bundles/AssetBundle/Controller/AssetController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/AssetBundle/Config/config.php | Adds `viewsamerole` to Assets menu access. |\n</details>\n\n\n\n\n\n\n\n---\n\n💡 <a href=\"/mautic/mautic/new/7.x?filename=.github/instructions/*.instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Add Copilot custom instructions</a> for smarter, more guided reviews. <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Learn how to get started</a>."
       },
       {
         "user": {
@@ -3747,6 +5082,38 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-08T12:02:17Z",
         "body": "One architectural concern worth discussing is that this approach uses roles for two different concepts: the user’s access level and the user’s team/group boundary.\n\nFor example, if Italy marketers and Italy managers need different permissions, they cannot both simply use a `Italy` role. The installation may need roles like `Germany Marketer`, `Germany Manager`, `Italy Marketer`, `Italy Manager`, etc.\n\nThat can become harder to manage as the number of countries, offices, brands, or teams grows. It also makes cases like users belonging to multiple teams or managers needing cross-team access more difficult to model - this approach is not possible with permissions.\n\nA separate team/group concept could keep these concerns apart: roles define what a user can do, while teams/groups define which records they can access.\n\nNot saying this blocks the PR, but it feels worth discussing so we are clear whether same-role permissions are the right direction here."
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-27T14:42:46Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-27T14:42:46Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-27T14:42:46Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -4116,6 +5483,38 @@
         "submitted_at": "2026-06-22T00:45:19Z",
         "body": ""
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T07:51:31Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T07:51:32Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T07:51:32Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/developer-documentation-new#297": {
@@ -4224,6 +5623,58 @@
         "submitted_at": "2026-07-03T13:44:08Z",
         "body": ""
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-04-21T11:11:34Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "core-team"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-01T06:45:51Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-01T06:45:51Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-01T06:45:51Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-25T20:36:31Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      }
     ]
   },
   "mautic/developer-documentation-new#250": {
@@ -4264,7 +5715,39 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-02-05T11:09:24Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-02-05T11:09:25Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-02-05T11:09:25Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#838": {
     "docsUpdatedAt": "2026-07-12T08:52:43Z",
@@ -4569,6 +6052,38 @@
         "submitted_at": "2026-07-10T15:15:39Z",
         "body": "Looks good 👍 "
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T16:45:31Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T16:45:31Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-10T16:45:31Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#837": {
@@ -4608,7 +6123,8 @@
         "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16508?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `83.33333%` with `1 line` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 70.96%. Comparing base ([`9f8b81a`](https://app.codecov.io/gh/mautic/mautic/commit/9f8b81a26b9e783ead017c4f56c85dd5a725766a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`9f38ab0`](https://app.codecov.io/gh/mautic/mautic/commit/9f38ab038cab07cdbe9440db4a6a331e2334d03c?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 29 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16508?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...EmailBundle/Validator/ValidEmailLinksValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FValidEmailLinksValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL1ZhbGlkRW1haWxMaW5rc1ZhbGlkYXRvci5waHA=) | 83.33% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16508/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16508      +/-   ##\n============================================\n+ Coverage     70.82%   70.96%   +0.13%     \n- Complexity    38267    38280      +13     \n============================================\n  Files          2480     2480              \n  Lines        144131   144166      +35     \n============================================\n+ Hits         102082   102303     +221     \n+ Misses        42049    41863     -186     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16508?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...EmailBundle/Validator/ValidEmailLinksValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FValidEmailLinksValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL1ZhbGlkRW1haWxMaW5rc1ZhbGlkYXRvci5waHA=) | `85.71% <83.33%> (-0.78%)` | :arrow_down: |\n\n... and [7 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16508/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       }
     ],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#836": {
     "docsUpdatedAt": "2026-07-12T08:41:51Z",
@@ -4647,7 +6163,8 @@
         "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16493?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 70.82%. Comparing base ([`27a76af`](https://app.codecov.io/gh/mautic/mautic/commit/27a76aff64aed8e50f6dd784ea86ec95d45d4616?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`1ab3343`](https://app.codecov.io/gh/mautic/mautic/commit/1ab3343bca7e9ad1a28b8cb93df4b44824bbd844?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 1994 commits behind head on 7.x.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16493/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16493?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16493      +/-   ##\n============================================\n+ Coverage     69.75%   70.82%   +1.07%     \n- Complexity    37398    38267     +869     \n============================================\n  Files          2421     2480      +59     \n  Lines        140164   144131    +3967     \n============================================\n+ Hits          97768   102082    +4314     \n+ Misses        42396    42049     -347     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16493?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/EmailBundle/Entity/EmailRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16493?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEntity%2FEmailRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRW50aXR5L0VtYWlsUmVwb3NpdG9yeS5waHA=) | `90.42% <100.00%> (-1.78%)` | :arrow_down: |\n\n... and [875 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16493/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       }
     ],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
@@ -4710,7 +6227,8 @@
         "submitted_at": "2026-07-10T15:05:30Z",
         "body": "This PR adds a field selector that changes how the search input is interpreted. It makes the existing search commands more discoverable, which is valuable, but its interaction differs from the current filter UI.\n\nWhen filters are applied through the existing popup, their commands remain visible in the search bar:\n<img width=\"1284\" height=\"489\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1b6b22b9-2afd-4daa-bbc6-fdde9adf1283\" />\n\nWith the new selector, the selected command is represented separately and hidden from the search bar. Should field selection follow the existing filter behavior and keep the resulting command visible, or is this difference intentional?\n\n--- \n\nI'm not sure how some filters should work with query, like in this example:\n<img width=\"704\" height=\"420\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7fb35ce5-f21b-4a52-b51a-6e9d1eb504a5\" />\nThe results are filtered by Is:Unpublished but \"cats\" query seems to not have any effect here. "
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#812": {
     "docsUpdatedAt": "2026-06-30T11:04:01Z",
@@ -4788,7 +6306,8 @@
         "submitted_at": "2026-07-03T17:57:37Z",
         "body": "Looks good\ntested:\n\n- created contact with old social values\n- ran migration\n- old social fields removed\n- X, TikTok, YouTube fields appear\n- edited contact, values saved\n\n<img width=\"1910\" height=\"1012\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/aee035c5-616a-4252-b426-c455b79ddee0\" />"
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#811": {
     "docsUpdatedAt": "2026-06-29T14:40:19Z",
@@ -4872,7 +6391,7 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-06-29T14:02:51Z",
-        "body": "Thanks @adiati98 — converted the variant-management bullets in the \"Managing variants\" section into a numbered (`#.`) list so they read as step-by-step instructions, consistent with the other ordered lists in the section. Pushed to the branch; Vale is clean on the edited lines.\n"
+        "body": "Thanks @adiati98 �� converted the variant-management bullets in the \"Managing variants\" section into a numbered (`#.`) list so they read as step-by-step instructions, consistent with the other ordered lists in the section. Pushed to the branch; Vale is clean on the edited lines.\n"
       },
       {
         "user": {
@@ -5109,6 +6628,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-29T07:43:05Z",
         "body": ""
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-29T09:44:14Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-29T09:44:15Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-29T09:44:15Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -5414,7 +6965,8 @@
         "submitted_at": "2026-07-03T13:54:25Z",
         "body": ""
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#807": {
     "docsUpdatedAt": "2026-07-12T07:52:12Z",
@@ -5644,6 +7196,48 @@
         "submitted_at": "2026-04-18T19:51:23Z",
         "body": "Everything looks good to me 👍"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T11:16:10Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T11:16:10Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T11:16:10Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-10T09:44:30Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#805": {
@@ -5802,6 +7396,48 @@
         "state": "APPROVED",
         "submitted_at": "2026-04-14T12:00:38Z",
         "body": "Good job. PR works as expected from an user perspective"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:48:40Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:48:41Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-27T09:48:41Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-08T18:20:00Z",
+        "requested_reviewer": {
+          "login": "patrykgruszka"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -6054,7 +7690,8 @@
         "submitted_at": "2026-07-03T13:38:03Z",
         "body": ""
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#798": {
     "docsUpdatedAt": "2026-07-08T18:24:32Z",
@@ -6196,7 +7833,8 @@
         "submitted_at": "2026-07-08T11:17:00Z",
         "body": "nothing else from me"
       }
-    ]
+    ],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#796": {
     "docsUpdatedAt": "2026-07-11T08:26:40Z",
@@ -6319,6 +7957,48 @@
         "submitted_at": "2026-02-04T12:38:02Z",
         "body": ""
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-26T15:23:23Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-26T15:23:23Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-26T15:23:23Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-11T08:26:40Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#788": {
@@ -6380,6 +8060,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-25T12:39:21Z",
         "body": "Works well, code looks good.\n\nTY!\n"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-24T11:12:53Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-24T11:12:53Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-24T11:12:53Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -6475,6 +8187,38 @@
         "submitted_at": "2026-07-03T18:05:20Z",
         "body": "All good\ntested:\n\n- set global pref center\n- sent email with blank pref center\n- opened unsubs link\n- changed global pref center\n- reloaded link, new default used"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-24T07:04:07Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-24T07:04:07Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-24T07:04:07Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#786": {
@@ -6561,6 +8305,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-30T13:44:37Z",
         "body": "Code looks good. It works.\n\nMaybe ... consider cache usage because of using COUNT() on big segments could be slow.\nCan be added later in next PR.\n\nTY!"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T23:59:13Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T23:59:13Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T23:59:13Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -6713,6 +8489,48 @@
         "submitted_at": "2026-07-09T09:59:49Z",
         "body": "The code changes look good to me. Tested, works as expected. The menu item link is `mau.tc/support` and it redirects to `https://mautic.org/blog/urgent-call-for-community-support-to-secure-mautics-financial-future/`. 👍\n\nhttps://github.com/user-attachments/assets/c9720f85-d725-4385-ac8b-00d0e68fb9c6"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T14:01:17Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T14:01:18Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-23T14:01:18Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-25T14:32:41Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#783": {
@@ -6846,6 +8664,38 @@
         "submitted_at": "2026-06-22T12:26:14Z",
         "body": ""
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-22T12:53:57Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-22T12:53:57Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-22T12:53:57Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#782": {
@@ -6968,6 +8818,48 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-22T15:17:44Z",
         "body": "The pending count doesn't show in the campaign emails anymore:\n\n\n\n<img width=\"1716\" height=\"550\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/331d2e31-57af-4d3e-8b86-d639c8e0a720\" />\n\nBut it still does for segment emails:\n\n<img width=\"1717\" height=\"658\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/32d400a9-5e3c-4e2a-a8b6-240e9b65390b\" />\n\nWorks as described 👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-19T13:28:40Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-19T13:28:41Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-19T13:28:41Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-26T18:53:37Z",
+        "requested_reviewer": {
+          "login": "andersonjeccel"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -7192,6 +9084,38 @@
         "submitted_at": "2026-06-07T20:59:10Z",
         "body": "Looks good, approved. Thank you!"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-17T13:18:17Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-17T13:18:17Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-17T13:18:17Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#774": {
@@ -7335,6 +9259,48 @@
         "submitted_at": "2026-06-08T06:36:04Z",
         "body": "Thank you @andersonjeccel!"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-16T06:15:23Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-16T06:15:24Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-16T06:15:24Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-18T09:53:19Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#770": {
@@ -7458,6 +9424,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-17T12:11:07Z",
         "body": "The code looks good, works well 👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T22:38:29Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T22:38:29Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T22:38:29Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -7629,6 +9627,38 @@
         "submitted_at": "2026-07-03T18:14:36Z",
         "body": "Great!\ntested:\n\n- created field groups\n- aliases auto-gen/read-only\n- created contact/company fields\n- group order correct\n- non-empty group cannot be deleted (despite it'd be great to have a confirmation like \"do you wanna delete all associated fields?\")\n- empty group deleted\n\n<img width=\"1014\" height=\"556\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/77e33f46-1bf2-4481-9c4a-6f9254f1bcae\" />"
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T21:41:39Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T21:41:39Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-15T21:41:39Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#756": {
@@ -7745,6 +9775,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-02T17:14:14Z",
         "body": "Doing what you said in PR desc, it works"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-10T11:24:20Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-10T11:24:21Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-10T11:24:21Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -7880,6 +9942,38 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-02T17:30:38Z",
         "body": "Nice!"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-09T07:10:23Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-09T07:10:23Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-09T07:10:23Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -8033,6 +10127,48 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-16T08:25:37Z",
         "body": "Everything looks good to me 👍"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-08T01:02:55Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-08T01:02:56Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-06-08T01:02:56Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-26T16:48:51Z",
+        "requested_reviewer": {
+          "login": "andersonjeccel"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -8338,7 +10474,7 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-06-12T09:47:41Z",
-        "body": "## Pull request overview\n\nThis PR introduces “same role” scoped permissions (e.g., `view/edit/delete/publishsamerole`) so users can access content owned by users in the same role, without granting access to content owned by users in other roles.\n\n**Changes:**\n- Extends the core permission system to support `*samerole` permission levels and same-role ownership checks.\n- Updates multiple bundles’ controllers/menus to recognize the new `viewsamerole` capability and apply role-scoped listing filters.\n- Adds/updates automated tests and translations to cover/display the new permission options.\n\n### Reviewed changes\n\nCopilot reviewed 40 out of 40 changed files in this pull request and generated 4 comments.\n\n<details>\n<summary>Show a summary per file</summary>\n\n| File | Description |\r\n| ---- | ----------- |\r\n| plugins/MauticSocialBundle/Config/config.php | Adds `viewsamerole` to Tweets menu access. |\r\n| plugins/MauticFocusBundle/Entity/Focus.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| plugins/MauticFocusBundle/Config/config.php | Switches Focus menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/WebhookBundle/Config/config.php | Adds `viewsamerole` to Webhook menu access. |\r\n| app/bundles/UserBundle/Entity/UserRepository.php | Adds `findUserIdsByRole()` helper for role-scoped filtering. |\r\n| app/bundles/SmsBundle/Controller/SmsController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/SmsBundle/Config/config.php | Adds `viewsamerole` to SMS menu access. |\r\n| app/bundles/ReportBundle/Controller/ReportController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/PageBundle/Controller/PageController.php | Uses shared permission keys and role-based filtering; refactors permission checks. |\r\n| app/bundles/PageBundle/Config/config.php | Adds `viewsamerole` to Page menu access. |\r\n| app/bundles/NotificationBundle/Controller/NotificationController.php | Uses shared “standard permissions�� + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Controller/MobileNotificationController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Config/config.php | Adds `viewsamerole` to Notification menu access. |\r\n| app/bundles/LeadBundle/Tests/Security/LeadPermissionsFunctionalTest.php | Updates expectations to include new same-role permission checkboxes. |\r\n| app/bundles/LeadBundle/Security/Permissions/LeadPermissions.php | Adds `LISTS_VIEW_SAME_ROLE` constant. |\r\n| app/bundles/LeadBundle/Controller/ListController.php | Applies role-based filtering and passes same-role perm into entity access checks. |\r\n| app/bundles/LeadBundle/Controller/LeadController.php | Adds same-role handling for contact listing restrictions and constants. |\r\n| app/bundles/LeadBundle/Config/config.php | Adds `viewsamerole` to Contacts/Segments menu access. |\r\n| app/bundles/FormBundle/Controller/FormController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/FormBundle/Config/config.php | Adds `viewsamerole` to Forms menu access. |\r\n| app/bundles/EmailBundle/Controller/EmailController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/EmailBundle/Config/config.php | Adds `viewsamerole` to Emails menu access. |\r\n| app/bundles/DynamicContentBundle/Controller/DynamicContentController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/DynamicContentBundle/Config/config.php | Adds `viewsamerole` to Dynamic Content menu access. |\r\n| app/bundles/CoreBundle/Translations/en_US/messages.ini | Adds UI labels for same-role permissions. |\r\n| app/bundles/CoreBundle/Tests/Unit/Security/Permissions/CorePermissionsTest.php | Adds unit coverage for same-role access and permission analysis. |\r\n| app/bundles/CoreBundle/Security/Permissions/CorePermissions.php | Implements same-role resolution/checking in `hasEntityAccess()` and injects `UserRepository`. |\r\n| app/bundles/CoreBundle/Security/Permissions/AbstractPermissions.php | Adds `*samerole` levels, bits, form fields, and prerequisite analysis. |\r\n| app/bundles/CoreBundle/Model/AbstractCommonModel.php | Adds same-role support for Global Search entity restrictions. |\r\n| app/bundles/CoreBundle/Entity/CommonRepository.php | Improves filter column conversion, including nested filter structures. |\r\n| app/bundles/CoreBundle/Controller/CommonController.php | Introduces shared helpers for standard permission keys and role-based filters. |\r\n| app/bundles/CoreBundle/Controller/AbstractStandardFormController.php | Uses shared permission keys and role-based filtering; adjusts export permission check. |\r\n| app/bundles/CoreBundle/Config/config.php | Wires `UserRepository` into the `mautic.security` service. |\r\n| app/bundles/ChannelBundle/Entity/Message.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| app/bundles/ChannelBundle/Config/config.php | Adds `viewsamerole` to Messages menu access. |\r\n| app/bundles/CampaignBundle/Controller/CampaignController.php | Uses shared permission keys and standard permission handling for export. |\r\n| app/bundles/CampaignBundle/Config/config.php | Switches Campaign menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/AssetBundle/Tests/Controller/AssetControllerFunctionalTest.php | Adds functional coverage for viewing same-role-owned assets. |\r\n| app/bundles/AssetBundle/Controller/AssetController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/AssetBundle/Config/config.php | Adds `viewsamerole` to Assets menu access. |\n</details>\n\n\n\n\n\n\n\n---\n\n💡 <a href=\"/mautic/mautic/new/7.x?filename=.github/instructions/*.instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Add Copilot custom instructions</a> for smarter, more guided reviews. <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Learn how to get started</a>."
+        "body": "## Pull request overview\n\nThis PR introduces “same role” scoped permissions (e.g., `view/edit/delete/publishsamerole`) so users can access content owned by users in the same role, without granting access to content owned by users in other roles.\n\n**Changes:**\n- Extends the core permission system to support `*samerole` permission levels and same-role ownership checks.\n- Updates multiple bundles’ controllers/menus to recognize the new `viewsamerole` capability and apply role-scoped listing filters.\n- Adds/updates automated tests and translations to cover/display the new permission options.\n\n### Reviewed changes\n\nCopilot reviewed 40 out of 40 changed files in this pull request and generated 4 comments.\n\n<details>\n<summary>Show a summary per file</summary>\n\n| File | Description |\r\n| ---- | ----------- |\r\n| plugins/MauticSocialBundle/Config/config.php | Adds `viewsamerole` to Tweets menu access. |\r\n| plugins/MauticFocusBundle/Entity/Focus.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| plugins/MauticFocusBundle/Config/config.php | Switches Focus menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/WebhookBundle/Config/config.php | Adds `viewsamerole` to Webhook menu access. |\r\n| app/bundles/UserBundle/Entity/UserRepository.php | Adds `findUserIdsByRole()` helper for role-scoped filtering. |\r\n| app/bundles/SmsBundle/Controller/SmsController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/SmsBundle/Config/config.php | Adds `viewsamerole` to SMS menu access. |\r\n| app/bundles/ReportBundle/Controller/ReportController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/PageBundle/Controller/PageController.php | Uses shared permission keys and role-based filtering; refactors permission checks. |\r\n| app/bundles/PageBundle/Config/config.php | Adds `viewsamerole` to Page menu access. |\r\n| app/bundles/NotificationBundle/Controller/NotificationController.php | Uses shared “standard permissions��� + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Controller/MobileNotificationController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/NotificationBundle/Config/config.php | Adds `viewsamerole` to Notification menu access. |\r\n| app/bundles/LeadBundle/Tests/Security/LeadPermissionsFunctionalTest.php | Updates expectations to include new same-role permission checkboxes. |\r\n| app/bundles/LeadBundle/Security/Permissions/LeadPermissions.php | Adds `LISTS_VIEW_SAME_ROLE` constant. |\r\n| app/bundles/LeadBundle/Controller/ListController.php | Applies role-based filtering and passes same-role perm into entity access checks. |\r\n| app/bundles/LeadBundle/Controller/LeadController.php | Adds same-role handling for contact listing restrictions and constants. |\r\n| app/bundles/LeadBundle/Config/config.php | Adds `viewsamerole` to Contacts/Segments menu access. |\r\n| app/bundles/FormBundle/Controller/FormController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/FormBundle/Config/config.php | Adds `viewsamerole` to Forms menu access. |\r\n| app/bundles/EmailBundle/Controller/EmailController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/EmailBundle/Config/config.php | Adds `viewsamerole` to Emails menu access. |\r\n| app/bundles/DynamicContentBundle/Controller/DynamicContentController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/DynamicContentBundle/Config/config.php | Adds `viewsamerole` to Dynamic Content menu access. |\r\n| app/bundles/CoreBundle/Translations/en_US/messages.ini | Adds UI labels for same-role permissions. |\r\n| app/bundles/CoreBundle/Tests/Unit/Security/Permissions/CorePermissionsTest.php | Adds unit coverage for same-role access and permission analysis. |\r\n| app/bundles/CoreBundle/Security/Permissions/CorePermissions.php | Implements same-role resolution/checking in `hasEntityAccess()` and injects `UserRepository`. |\r\n| app/bundles/CoreBundle/Security/Permissions/AbstractPermissions.php | Adds `*samerole` levels, bits, form fields, and prerequisite analysis. |\r\n| app/bundles/CoreBundle/Model/AbstractCommonModel.php | Adds same-role support for Global Search entity restrictions. |\r\n| app/bundles/CoreBundle/Entity/CommonRepository.php | Improves filter column conversion, including nested filter structures. |\r\n| app/bundles/CoreBundle/Controller/CommonController.php | Introduces shared helpers for standard permission keys and role-based filters. |\r\n| app/bundles/CoreBundle/Controller/AbstractStandardFormController.php | Uses shared permission keys and role-based filtering; adjusts export permission check. |\r\n| app/bundles/CoreBundle/Config/config.php | Wires `UserRepository` into the `mautic.security` service. |\r\n| app/bundles/ChannelBundle/Entity/Message.php | Adds `ENTITY_NAME` constant (entity metadata). |\r\n| app/bundles/ChannelBundle/Config/config.php | Adds `viewsamerole` to Messages menu access. |\r\n| app/bundles/CampaignBundle/Controller/CampaignController.php | Uses shared permission keys and standard permission handling for export. |\r\n| app/bundles/CampaignBundle/Config/config.php | Switches Campaign menu access to viewown/viewsamerole/viewother. |\r\n| app/bundles/AssetBundle/Tests/Controller/AssetControllerFunctionalTest.php | Adds functional coverage for viewing same-role-owned assets. |\r\n| app/bundles/AssetBundle/Controller/AssetController.php | Uses shared “standard permissions” + role-based filters for listing/access. |\r\n| app/bundles/AssetBundle/Config/config.php | Adds `viewsamerole` to Assets menu access. |\n</details>\n\n\n\n\n\n\n\n---\n\n💡 <a href=\"/mautic/mautic/new/7.x?filename=.github/instructions/*.instructions.md\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Add Copilot custom instructions</a> for smarter, more guided reviews. <a href=\"https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot\" class=\"Link--inTextBlock\" target=\"_blank\" rel=\"noopener noreferrer\">Learn how to get started</a>."
       },
       {
         "user": {
@@ -8396,6 +10532,38 @@
         "submitted_at": "2026-07-08T12:02:17Z",
         "body": "One architectural concern worth discussing is that this approach uses roles for two different concepts: the user’s access level and the user’s team/group boundary.\n\nFor example, if Italy marketers and Italy managers need different permissions, they cannot both simply use a `Italy` role. The installation may need roles like `Germany Marketer`, `Germany Manager`, `Italy Marketer`, `Italy Manager`, etc.\n\nThat can become harder to manage as the number of countries, offices, brands, or teams grows. It also makes cases like users belonging to multiple teams or managers needing cross-team access more difficult to model - this approach is not possible with permissions.\n\nA separate team/group concept could keep these concerns apart: roles define what a user can do, while teams/groups define which records they can access.\n\nNot saying this blocks the PR, but it feels worth discussing so we are clear whether same-role permissions are the right direction here."
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-27T14:42:59Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-27T14:43:00Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-27T14:43:00Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#714": {
@@ -8443,7 +10611,59 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-05-18T11:06:19Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-05-18T11:06:19Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-05-18T11:06:20Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-05-31T07:11:40Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-10T10:45:37Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#712": {
     "docsUpdatedAt": "2026-06-27T08:19:29Z",
@@ -8490,7 +10710,39 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-05-15T15:48:42Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-05-15T15:48:43Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-05-15T15:48:43Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#709": {
     "docsUpdatedAt": "2026-07-03T09:40:53Z",
@@ -8734,6 +10986,48 @@
         "submitted_at": "2026-05-19T12:27:33Z",
         "body": "All the manual testing was successful 👍 "
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-05-12T13:33:16Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-05-12T13:33:17Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-05-12T13:33:17Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-05-26T11:31:14Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      }
     ]
   },
   "mautic/user-documentation#704": {
@@ -8963,6 +11257,78 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-02T17:19:48Z",
         "body": "Works now!"
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-01T07:00:48Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-01T07:00:49Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-05-01T07:00:49Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-05-15T13:13:23Z",
+        "requested_reviewer": {
+          "login": "shinde-rahul"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-05-15T13:13:23Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "core-team"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-05-26T11:14:09Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-05-26T11:14:10Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -9292,6 +11658,58 @@
         "submitted_at": "2026-06-22T00:45:19Z",
         "body": ""
       }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-04-21T09:34:57Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "core-team"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T08:00:35Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T08:00:35Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T08:00:35Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-10T10:43:05Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
     ]
   },
   "mautic/user-documentation#542": {
@@ -9315,7 +11733,39 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "tommairs"
+        },
+        "created_at": "2025-11-05T00:00:36Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "tommairs"
+        },
+        "created_at": "2025-11-05T00:00:37Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "tommairs"
+        },
+        "created_at": "2025-11-05T00:00:37Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#361": {
     "docsUpdatedAt": "2026-07-08T17:22:34Z",
@@ -9724,7 +12174,99 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2025-11-04T14:07:58Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2025-11-04T14:07:59Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2025-11-04T14:07:59Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-03-06T15:31:22Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-03-06T15:31:27Z",
+        "requested_reviewer": {
+          "login": "vukovicpredrag"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-03-08T07:40:50Z",
+        "requested_reviewer": {
+          "login": "RCheesley"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2026-03-11T11:41:34Z",
+        "requested_reviewer": {
+          "login": "Copilot"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T17:31:16Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-06-05T17:31:16Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#341": {
     "docsUpdatedAt": "2026-03-18T01:34:51Z",
@@ -9756,7 +12298,19 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2026-03-18T01:22:29Z",
+        "requested_reviewer": {
+          "login": "Copilot"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#279": {
     "docsUpdatedAt": "2026-03-05T11:10:34Z",
@@ -9788,7 +12342,8 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   },
   "mautic/user-documentation#246": {
     "docsUpdatedAt": "2026-02-02T23:43:19Z",
@@ -9890,7 +12445,49 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2024-03-07T11:43:02Z",
+        "requested_reviewer": {
+          "login": "jos0405"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2024-03-18T10:39:25Z",
+        "requested_reviewer": {
+          "login": "jos0405"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2024-03-18T10:39:30Z",
+        "requested_reviewer": {
+          "login": "fakela"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "RCheesley"
+        },
+        "created_at": "2024-03-18T10:39:30Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#138": {
     "docsUpdatedAt": "2026-03-19T10:41:32Z",
@@ -10024,6 +12621,38 @@
       }
     ],
     "rawCodeComments": [],
-    "rawCodeReviews": []
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "beetofly"
+        },
+        "created_at": "2023-03-22T10:11:23Z",
+        "requested_reviewer": {
+          "login": "RCheesley"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "beetofly"
+        },
+        "created_at": "2023-06-22T06:52:05Z",
+        "requested_reviewer": {
+          "login": "RCheesley"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-01-15T14:07:15Z",
+        "requested_reviewer": {
+          "login": "RCheesley"
+        },
+        "requested_team": null
+      }
+    ]
   }
 }
