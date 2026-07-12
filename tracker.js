@@ -1659,6 +1659,18 @@ function buildClock(pr) {
 	return { big: "—", sub: "housekeeping only" }
 }
 
+// A standalone PR (no linked code PR) that's open and not a draft has
+// nothing else gating it — your review is the entire blocker, so it reads
+// as an actual action (blue), not the muted "optional/already-done" gray
+// used when a linked code PR is still open and there's no rush yet. Used
+// both once triage is done (needs-operator-review) and, so a review never
+// waits on triage finishing, alongside the triage chips themselves.
+function reviewNowChip(pr) {
+	return !pr.appPRNumber && !pr.isDraft
+		? { cls: "act", text: "Review this docs PR" }
+		: { cls: "muted", text: "Review this docs PR" }
+}
+
 function chipsFor(pr) {
 	const chips = []
 	// Needs-rebase and stale are structural/status flags, not action nudges —
@@ -1693,23 +1705,22 @@ function chipsFor(pr) {
 			chips.push({ cls: "act", text: "Check the author’s response" })
 			break
 		case "needs-operator-review":
-			// A standalone PR (no linked code PR) that's open and not a draft
-			// has nothing else gating it — your review is the entire
-			// blocker, so it reads as an actual action (blue), not the muted
-			// "optional/already-done" gray used when a linked code PR is
-			// still open and there's no rush yet.
-			chips.push(
-				!pr.appPRNumber && !pr.isDraft
-					? { cls: "act", text: "Review this docs PR" }
-					: { cls: "muted", text: "Review this docs PR" },
-			)
+			chips.push(reviewNowChip(pr))
 			break
 		case "needs-label-and-milestone":
 			if (!pr.hasLabel) chips.push({ cls: "setup", text: `Add ${PENDING_LABEL} label` })
 			if (!pr.hasMilestone) chips.push({ cls: "setup", text: "Add milestone" })
+			// Review shouldn't wait on triage finishing — a maintainer can
+			// (and should) start reading the content the moment the PR
+			// shows up, in parallel with adding the label/milestone. Skipped
+			// when reviewPendingFlag already covers it below with the more
+			// specific "code PR merged" wording, so the row doesn't show two
+			// near-duplicate review chips.
+			if (!pr.reviewPendingFlag) chips.push(reviewNowChip(pr))
 			break
 		case "needs-milestone":
 			chips.push({ cls: "setup", text: "Add milestone" })
+			if (!pr.reviewPendingFlag) chips.push(reviewNowChip(pr))
 			break
 		case "blocked-no-code-pr":
 			// A qualifying approval settles it too, same as the code-author
@@ -2889,6 +2900,7 @@ ${filterBar}
         <h2 class="legend-h">7. Good to know</h2>
         <table>
           <tr><td>Review vs. the timeline</td><td>The remind/follow-up/escalate timeline no longer waits on you having formally reviewed the docs PR — it only needs the code PR to have merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" label shows up alongside whatever the timeline shows.</td></tr>
+          <tr><td>Review vs. triage</td><td>A brand-new PR still missing its label/milestone also gets a "Review this docs PR" label right away, alongside the setup chips — reading the content doesn't have to wait on triage being finished.</td></tr>
           <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — just shown as-is, it doesn't affect timing. <code>${CONTENT_APPROVED_LABEL}</code> — add it yourself after confirming a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
         </table>
       </section>
