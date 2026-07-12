@@ -1405,6 +1405,23 @@ function escapeHtml(text) {
 	return String(text).replace(/[&<>"']/g, (m) => map[m])
 }
 
+// Plain-text search index for the quick-search box — lets a maintainer find
+// a row by docs or code PR number, title, either author, or any chip text
+// (e.g. "escalate", "stale", "rebase") without needing to know which band
+// it landed in. Built from raw fields rather than the already-escaped chip
+// HTML so it isn't polluted by markup; escaped once, as a whole, when it's
+// written into the data-search attribute by the caller.
+function searchBlobFor(pr, chips) {
+	const parts = [pr.repoShort, `#${pr.number}`, pr.title, pr.docsAuthor]
+	if (pr.appPRNumber) parts.push(`#${pr.appPRNumber}`)
+	if (pr.appPRAuthor) parts.push(pr.appPRAuthor)
+	if (chips && chips.length) parts.push(...chips.map((c) => c.text))
+	return parts
+		.filter(Boolean)
+		.join(" ")
+		.toLowerCase()
+}
+
 function daysAgoText(date) {
 	if (!date) return "recently"
 	const days = Math.floor((Date.now() - date.getTime()) / 86400000)
@@ -1921,14 +1938,14 @@ function renderWhen(clock) {
 
 function renderNeedTodayRow(pr) {
 	const sev = severityFor(pr)
-	const chipsHtml = chipsFor(pr)
-		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
-		.join("")
+	const chips = chipsFor(pr)
+	const chipsHtml = chips.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`).join("")
 	const draftPill = pr.isDraft ? ' <span class="pill draft">Draft</span>' : ""
 	const key = cacheKey(pr.sourceRepo, pr.number)
 	const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
+	const search = escapeHtml(searchBlobFor(pr, chips))
 	return `
-      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}">
+      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}">
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
@@ -1948,8 +1965,9 @@ function renderWaitingRow(pr) {
 		: ""
 	const key = cacheKey(pr.sourceRepo, pr.number)
 	const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
+	const search = escapeHtml(searchBlobFor(pr, chips))
 	return `
-      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}">
+      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}">
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
@@ -1977,14 +1995,22 @@ function renderMonitoringRow(pr) {
 	// waiting on the author for something unrelated (community), still need
 	// a formal review, or just be stale, none of which the day-count above
 	// captures on its own.
-	const overlayChips = [staleChip(pr), remindedOpenChip(pr), ...approvalChips(pr)]
-		.filter(Boolean)
+	const overlayChipObjs = [staleChip(pr), remindedOpenChip(pr), ...approvalChips(pr)].filter(
+		Boolean,
+	)
+	const overlayChips = overlayChipObjs
 		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
 		.join("")
-	const reviewChip = pr.reviewPendingFlag
-		? `<span class="chip act">Review this docs PR — code PR merged</span>`
+	const reviewPendingChip = pr.reviewPendingFlag
+		? { cls: "act", text: "Review this docs PR — code PR merged" }
+		: null
+	const reviewChip = reviewPendingChip
+		? `<span class="chip ${reviewPendingChip.cls}">${reviewPendingChip.text}</span>`
 		: ""
-	return `<div class="mon-row" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${codePart} <span class="why">${dayText}</span>${reviewChip}${overlayChips}</div>`
+	const search = escapeHtml(
+		searchBlobFor(pr, [...overlayChipObjs, reviewPendingChip].filter(Boolean)),
+	)
+	return `<div class="mon-row" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-search="${search}"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${codePart} <span class="why">${dayText}</span>${reviewChip}${overlayChips}</div>`
 }
 
 function formatUpdated(date) {
@@ -2253,6 +2279,16 @@ function generateHTML(prData, { operatorUsername }) {
 				`<button class="ftab" data-f="pri" data-v="${v}" aria-pressed="false">${label} <span class="fc">${sevCounts[v]}</span></button>`,
 		),
 	].join("")
+	const searchBar = `
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input type="search" id="prSearch" class="search-input" placeholder="Search by PR #, title, author, or label text…" aria-label="Search pull requests by number, title, author, or label text" autocomplete="off" spellcheck="false">
+      <button type="button" id="prSearchClear" class="search-clear" aria-label="Clear search" hidden>✕</button>
+    </div>
+    <span class="search-hint">Press <kbd>/</kbd> anywhere to jump here</span>
+    <span class="search-summary" id="prSearchSummary" role="status" hidden></span>
+  </div>`
 	const filterBar = `
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span>${repoTabs}</div>
@@ -2304,6 +2340,7 @@ function generateHTML(prData, { operatorUsername }) {
       <h2>Waiting on others or for code PR to merge</h2><span class="count">${waiting.length}</span>
       <span class="chk-progress" data-state="zero">0/${waiting.length} checked</span>
       <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
+      <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${waiting.map(renderWaitingRow).join("")}
     </div>
@@ -2317,6 +2354,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Monitoring</h2><span class="count">${monitoring.length}</span>
       <span class="hint">healthy — collapsed by default</span>
+      <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
       <details class="mon">
@@ -2753,6 +2791,43 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:999px;padding:0 6px;color:var(--ink-2);
   }
   .switch-ctrl[aria-checked="true"] .fc{background:color-mix(in srgb, var(--accent) 22%, transparent)}
+
+  /* ---------- quick search ---------- */
+  .search-bar{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;
+  }
+  .search-input-wrap{position:relative;flex:1;min-width:220px;display:flex;align-items:center}
+  .search-icon{
+    position:absolute;left:12px;color:var(--ink-3);font-size:15px;pointer-events:none;line-height:1;
+  }
+  .search-input{
+    width:100%;font:inherit;font-size:13.5px;color:var(--ink);
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:9px 34px 9px 33px;box-shadow:var(--shadow);
+  }
+  .search-input::placeholder{color:var(--ink-3)}
+  .search-input:focus-visible{outline:2px solid var(--accent);outline-offset:-1px}
+  .search-input::-webkit-search-cancel-button{display:none}
+  .search-clear{
+    position:absolute;right:5px;border:none;background:none;color:var(--ink-3);
+    cursor:pointer;font-size:12px;padding:5px 7px;border-radius:6px;line-height:1;font-family:inherit;
+  }
+  .search-clear:hover{color:var(--ink);background:color-mix(in srgb, var(--ink) 8%, transparent)}
+  .search-clear:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .search-hint{font-size:11px;color:var(--ink-3);white-space:nowrap}
+  .search-hint kbd{
+    font-family:ui-monospace,monospace;font-size:10.5px;border:1px solid var(--ring);
+    border-radius:4px;padding:0 5px;background:color-mix(in srgb, var(--ink) 5%, transparent);
+  }
+  .search-summary{
+    flex-basis:100%;font-size:12px;color:var(--ink-3);
+  }
+  .search-summary.no-results{color:var(--critical);font-weight:600}
+  mark.search-hit{
+    background:color-mix(in srgb, var(--warning) 55%, transparent);color:inherit;
+    border-radius:2px;padding:0 1px;
+  }
+
   .row.hidden,.mon-row.hidden{display:none}
   .no-match{font-size:12px;color:var(--ink-3);display:none}
   section.all-hidden .no-match{display:inline}
@@ -2779,6 +2854,7 @@ function generateHTML(prData, { operatorUsername }) {
     .when .sub{margin-top:0}
     .meter{margin:0}
     .mon-row .why{margin-left:0;width:100%}
+    .search-hint{display:none}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -2821,6 +2897,7 @@ function generateHTML(prData, { operatorUsername }) {
       <div class="sub">already handled — nothing to do</div></div>
     </button>
   </div>
+${searchBar}
 ${filterBar}
   <details class="legend">
     <summary><span class="tw">▶</span> New here? How to read this board</summary>
@@ -2946,13 +3023,34 @@ ${monitoringSection}
     try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
   }
 
-  // ---- filter tabs (repo + priority) ----
-  const filterState = { repo: 'all', pri: 'all', hideChecked: false };
+  // ---- filter tabs (repo + priority + search) ----
+  const filterState = { repo: 'all', pri: 'all', hideChecked: false, search: '' };
   document.body.setAttribute('data-frepo', 'all');
   document.body.setAttribute('data-fpri', 'all');
 
+  // Wraps the first match of the query inside el's text in a mark tag, so a title
+  // hit is visible at a glance instead of a maintainer having to reread the
+  // whole row to see why it matched. Caches the untouched text on first run
+  // so repeated searches (and clearing) always restore from the original,
+  // never from a previously-marked-up version.
+  function highlightMatch(el, query){
+    if (!el) return;
+    if (el.dataset.orig === undefined) el.dataset.orig = el.textContent;
+    const original = el.dataset.orig;
+    if (!query) { el.textContent = original; return; }
+    const idx = original.toLowerCase().indexOf(query);
+    if (idx === -1) { el.textContent = original; return; }
+    el.textContent = '';
+    el.appendChild(document.createTextNode(original.slice(0, idx)));
+    const mark = document.createElement('mark');
+    mark.className = 'search-hit';
+    mark.textContent = original.slice(idx, idx + query.length);
+    el.appendChild(mark);
+    el.appendChild(document.createTextNode(original.slice(idx + query.length)));
+  }
+
   function applyFilters(){
-    const { repo, pri, hideChecked } = filterState;
+    const { repo, pri, hideChecked, search } = filterState;
     // A specific severity priority is meaningful only in "Need you today";
     // the CSS hides the Waiting/Monitoring bands whenever pri is a severity.
     // "stale" is different — it spans every band, so it filters rows within
@@ -2962,13 +3060,29 @@ ${monitoringSection}
       const okPri  = pri === 'all' ||
         (pri === 'stale' ? row.getAttribute('data-stale') === '1' : row.getAttribute('data-sev') === pri);
       const okChecked = !hideChecked || !row.classList.contains('checked');
-      row.classList.toggle('hidden', !(okRepo && okPri && okChecked));
+      const okSearch = !search || (row.getAttribute('data-search') || '').indexOf(search) !== -1;
+      row.classList.toggle('hidden', !(okRepo && okPri && okChecked && okSearch));
+      highlightMatch(row.querySelector('.title .desc'), search);
     });
     document.querySelectorAll('.mon-row').forEach(function(row){
       const okRepo = repo === 'all' || row.getAttribute('data-repo') === repo;
       const okPri = pri === 'all' || (pri === 'stale' && row.getAttribute('data-stale') === '1');
-      row.classList.toggle('hidden', !(okRepo && okPri));
+      const okSearch = !search || (row.getAttribute('data-search') || '').indexOf(search) !== -1;
+      row.classList.toggle('hidden', !(okRepo && okPri && okSearch));
     });
+    // A search hit tucked inside the collapsed Monitoring panel is invisible
+    // unless the panel is open — open it automatically so search always
+    // surfaces what it finds, the same way the summary tiles do (see the
+    // data-goto click handler below).
+    if (search) {
+      document.querySelectorAll('section[data-band] details.mon').forEach(function(d){
+        const anyVisible = Array.prototype.some.call(
+          d.querySelectorAll('.mon-row'),
+          function(r){ return !r.classList.contains('hidden'); },
+        );
+        if (anyVisible) d.open = true;
+      });
+    }
     // Recompute per-section visible counts and empty states.
     document.querySelectorAll('section[data-band]').forEach(function(sec){
       const rows = sec.querySelectorAll('.row, .mon-row');
@@ -2980,6 +3094,23 @@ ${monitoringSection}
         pri !== 'all' && pri !== 'stale' && pri !== 'act';
       sec.classList.toggle('all-hidden', vis === 0 && !hiddenByBand);
     });
+    const searchSummary = document.getElementById('prSearchSummary');
+    if (searchSummary) {
+      if (!search) {
+        searchSummary.hidden = true;
+      } else {
+        let total = 0;
+        document.querySelectorAll('.row, .mon-row').forEach(function(r){
+          if (!r.classList.contains('hidden')) total++;
+        });
+        searchSummary.hidden = false;
+        searchSummary.classList.toggle('no-results', total === 0);
+        const q = document.getElementById('prSearch').value.trim();
+        searchSummary.textContent = total === 0
+          ? 'No PRs match “' + q + '”'
+          : total + ' PR' + (total === 1 ? '' : 's') + ' match “' + q + '”';
+      }
+    }
     // Priority tab counts follow the repo selection — "3 triage" should mean
     // 3 in the repo you're looking at, not 3 across everything. These counts
     // ignore the *priority* filter itself (each tab shows what it would find
@@ -3028,6 +3159,50 @@ ${monitoringSection}
       applyFilters();
     });
   });
+
+  // ---- quick search ----
+  (function(){
+    const input = document.getElementById('prSearch');
+    const clearBtn = document.getElementById('prSearchClear');
+    if (!input) return;
+
+    function runSearch(){
+      const q = input.value.toLowerCase().trim();
+      filterState.search = q;
+      clearBtn.hidden = q === '';
+      applyFilters();
+    }
+
+    input.addEventListener('input', runSearch);
+    clearBtn.addEventListener('click', function(){
+      input.value = '';
+      runSearch();
+      input.focus();
+    });
+    input.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && input.value) {
+        e.preventDefault();
+        input.value = '';
+        runSearch();
+      }
+    });
+    // "/" to jump into search is a common list-page convention (GitHub,
+    // Gmail, Slack) — skipped while any other field already has focus (or
+    // mid-IME-composition) so it doesn't hijack normal typing. Registered
+    // on the capture phase and paired with select() below as a belt-and-
+    // braces guard against the "/" itself leaking into the input on the
+    // same keystroke that focuses it.
+    document.addEventListener('keydown', function(e){
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey || e.isComposing) return;
+      const ae = document.activeElement;
+      const editable = ae && (ae === input || ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' ||
+        ae.tagName === 'SELECT' || ae.isContentEditable);
+      if (editable) return;
+      e.preventDefault();
+      input.focus();
+      input.select();
+    }, true);
+  })();
 
   // ---- checklist (saved to this browser only, via localStorage) ----
   (function(){
