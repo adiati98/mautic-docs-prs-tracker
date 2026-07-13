@@ -3960,7 +3960,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   ${authorSection}
   <div class="section-head" id="section-escalated">
     <h2>Escalated to the Core Team</h2>
-    <p>Formally escalated for a Core Team opinion. They may not be able to vouch for the docs content, so these can still come back to the code PR author.</p>
+    <p>Formally escalated for a Core Team opinion and review.</p>
   </div>
   ${escalationSection}`
 
