@@ -62,6 +62,14 @@
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .gap-note{display:block;width:100%;margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .gap-note b{color:var(--ink)}
+  .gap-note.weekend{
+    color:var(--ink-2);
+    background:color-mix(in srgb, var(--accent) 8%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 22%, var(--ring));
+    border-radius:9px;padding:8px 12px;
+  }
   .theme-btn{
     border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
     border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
@@ -71,6 +79,16 @@
     border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
   }
   .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;align-self:center;
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:5px;text-decoration:none;line-height:0;
+  }
+  .icon-btn:hover{
+    text-decoration:none;color:var(--ink);
+    border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));
+  }
+  .icon-btn svg{display:block}
 
   .intro{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -78,10 +96,12 @@
   }
   .intro b{color:var(--ink)}
   .intro p{margin:0 0 8px}
-  .intro p:last-child,.intro ul:last-child{margin-bottom:0}
+  .intro p:last-child,.intro ul:last-child,.intro ol:last-child{margin-bottom:0}
   .intro .intro-lead{font-weight:600;color:var(--ink);margin:12px 0 4px}
-  .intro ul{margin:0 0 8px 18px}
-  .intro li{margin:2px 0}
+  .intro .intro-lead:first-child{margin-top:0}
+  .intro ul,.intro ol{margin:0 0 8px 20px}
+  .intro li{margin:3px 0}
+  .intro-sections li{margin:5px 0}
 
   .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
   .toc a{
@@ -97,7 +117,7 @@
 
   .author-group{margin-bottom:28px}
   .author-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
-  .author-head h2{font-size:16px;font-weight:650}
+  .author-head h3{font-size:16px;font-weight:650}
   .author-progress{font-size:12px;color:var(--ink-3)}
 
   table{
@@ -128,7 +148,14 @@
   }
   .skip-link:focus{top:8px}
 
-  .mark{display:inline-flex;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+  .marks{
+    display:inline-flex;flex-wrap:wrap;gap:5px;align-items:center;vertical-align:middle;
+  }
+  .mark{
+    display:inline-flex;align-items:center;vertical-align:middle;
+    padding:2px 8px;border:1px solid transparent;border-radius:6px;
+    font-size:11.5px;line-height:1.5;font-weight:600;white-space:nowrap;
+  }
   .mark.review{
     background:color-mix(in srgb, var(--accent) 11%, var(--surface));
     color:color-mix(in srgb, var(--accent) 78%, var(--ink));
@@ -138,6 +165,39 @@
     color:color-mix(in srgb, var(--manual) 72%, var(--ink));
   }
   .none{color:var(--ink-3)}
+
+  .section-head{margin:34px 0 14px}
+  .section-head h2{font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .section-head p{font-size:12.5px;color:var(--ink-3);margin-top:3px;max-width:64ch}
+
+  .coord-note{
+    font-size:12.5px;line-height:1.45;color:var(--ink-2);margin-bottom:12px;
+    padding:9px 12px;border-radius:9px;
+    background:color-mix(in srgb, var(--accent) 7%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 20%, var(--ring));
+  }
+  .coord-note b{color:var(--ink)}
+
+  .tag{
+    display:inline-flex;align-items:center;vertical-align:middle;
+    padding:2px 8px;border:1px solid transparent;border-radius:6px;
+    font-size:11.5px;line-height:1.5;font-weight:600;white-space:nowrap;
+  }
+  .tag.esc{
+    background:color-mix(in srgb, var(--accent) 13%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 80%, var(--ink));
+  }
+  .tag.stale{
+    background:color-mix(in srgb, #fab219 10%, var(--surface));
+    color:color-mix(in srgb, #fab219 55%, var(--ink));
+    border-color:color-mix(in srgb, #fab219 35%, transparent);
+    border-style:dashed;
+  }
+  .tag.back{
+    background:color-mix(in srgb, var(--ink) 9%, var(--surface));
+    color:var(--ink-2);border-color:var(--ring);
+  }
+  .ago{font-size:11px;color:var(--ink-3);white-space:nowrap}
 
   .empty{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -156,7 +216,9 @@
   .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
   .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
 
-  footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center}
+  footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.7}
+  footer a{color:var(--ink-2);font-weight:600}
+  footer a:hover{color:var(--accent)}
 
   @media (max-width:640px){
     table{display:block;border:none;border-radius:0;box-shadow:none;background:none}
@@ -188,77 +250,149 @@
 
   <div class="top">
     <h1>Docs PR Review Reminders</h1>
-    <span class="updated" data-updated-iso="2026-07-13T19:33:21.400Z">Updated Mon, Jul 13, 7:33 PM</span>
+    <span class="updated" data-updated-iso="2026-07-13T19:49:33.284Z">Updated Mon, Jul 13, 7:49 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
+  
 
   <div class="intro">
-    <p>
-      Docs PRs waiting on <b>your</b> review or response to a comment,
-      grouped by name — either your linked code PR has merged, or it's a
-      docs PR you opened yourself that's waiting on your reply.
-    </p>
+    <p class="intro-lead">You can find two sections on this page:</p>
+    <ol class="intro-sections">
+      <li><a href="#section-authors"><b>Code PR author reminders</b></a>: docs PRs waiting on a code PR author's review or reply, grouped by name.</li>
+      <li><a href="#section-escalated"><b>Escalated to the Core Team</b></a>: a shared queue of PRs formally sent to the Core Team for an opinion and review.</li>
+    </ol>
     <p class="intro-lead">Using this list:</p>
     <ul>
-      <li>Click your name below to jump straight to your section.</li>
-      <li>
-        Check a box to track your progress — it saves to <b>your own
-        browser</b> only. The reminder list updates when the tracker runs on
-        schedule.
-      </li>
+      <li>Use the links above to jump straight to a section — <b>Core Team</b>, section 2 is your queue.</li>
+      <li>Under <b>Code PR author reminders</b>, click your name to jump to your own items.</li>
+      <li>Check a box to track your progress — it saves to <b>your own browser</b> only. The list updates when the tracker runs on schedule.</li>
     </ul>
     <p class="intro-lead">To review a PR:</p>
-    <ul>
-      <li>Open its <b>Files changed</b> tab.</li>
-      <li>Click <b>Submit review</b> to approve it or request changes.</li>
-    </ul>
+    <ol>
+      <li>Open the PR's <b>Files changed</b> tab, then use <b>Review changes → Submit review</b> to approve it or request changes.</li>
+      <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines — then <b>Submit review</b> when you're done.</li>
+    </ol>
   </div>
   <main id="main-content">
 
-  <div class="toc"><a href="#author-andersonjeccel">@andersonjeccel <span class="tc">2</span></a><a href="#author-kuzmany">@kuzmany <span class="tc">1</span></a><a href="#author-patrykgruszka">@patrykgruszka <span class="tc">3</span></a><a href="#author-rohitpavaskar">@rohitpavaskar <span class="tc">3</span></a><a href="#author-shinde-rahul">@shinde-rahul <span class="tc">1</span></a></div>
+  <div class="section-head" id="section-authors">
+    <h2>Code PR author reminders</h2>
+    <p>Docs PRs waiting on a code PR author's review or reply, grouped by name.</p>
+  </div>
+  
+  <div class="toc"><a href="#author-andersonjeccel">@andersonjeccel <span class="tc">7</span></a><a href="#author-fakela">@fakela <span class="tc">1</span></a><a href="#author-joseph2001-braganza">@Joseph2001-braganza <span class="tc">1</span></a><a href="#author-kuzmany">@kuzmany <span class="tc">2</span></a><a href="#author-patrykgruszka">@patrykgruszka <span class="tc">3</span></a><a href="#author-rohitpavaskar">@rohitpavaskar <span class="tc">3</span></a><a href="#author-shinde-rahul">@shinde-rahul <span class="tc">1</span></a><a href="#author-tommairs">@tommairs <span class="tc">1</span></a></div>
 
   <section class="author-group" id="author-andersonjeccel">
     <div class="author-head">
-      <h2><a href="https://github.com/andersonjeccel" target="_blank">@andersonjeccel</a></h2>
-      <span class="author-progress">0/2 checked</span>
+      <h3><a href="https://github.com/andersonjeccel" target="_blank">@andersonjeccel</a></h3>
+      <span class="author-progress">0/7 checked</span>
     </div>
     <table>
       <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
+        <tr data-key="mautic/developer-documentation-new#250">
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #250: Navigating UI resources as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/250" target="_blank">developer-documentation #250</a> Navigating UI resources</td>
+          <td data-label="Code PR"><span class="none">No linked code PR</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag stale">Stale</span></span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#774">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #774: Fix contradictory note about duplicate Stage weights as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank">user-documentation #774</a> Fix contradictory note about duplicate Stage weights</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15404" target="_blank">mautic/mautic #15404</a></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from escopecz</span><span class="tag back">↩ Core team passed this back to you</span></span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#770">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #770: docs: Document Quick filters dropdown for Reports as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank">user-documentation #770</a> docs: Document Quick filters dropdown for Reports</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag esc">Needs your review — escalated to Core Team</span></span></td>
+        </tr>
         <tr data-key="mautic/user-documentation#712">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #712: EVERYTHING about UTM tags in Mautic as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank">user-documentation #712</a> EVERYTHING about UTM tags in Mautic</td>
           <td data-label="Code PR"><span class="none">No linked code PR</span></td>
-          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span></span></td>
+        </tr>
+        <tr data-key="mautic/developer-documentation-new#505">
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag esc">Needs your review — escalated to Core Team</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#750">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #750: Document Find and Replace bulk action for Contacts and Companies as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank">user-documentation #750</a> Document Find and Replace bulk action for Contacts and Companies</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16207" target="_blank">mautic/mautic #16207</a></td>
-          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span></span></td>
+        </tr>
+        <tr data-key="mautic/user-documentation#782">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #782: Document Email details stat cards and Pending card scope for Segment vs. triggered Emails as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/782" target="_blank">user-documentation #782</a> Document Email details stat cards and Pending card scope for Segment vs. triggered Emails</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16304" target="_blank">mautic/mautic #16304</a></td>
+          <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr></tbody>
     </table>
   </section>
-  <section class="author-group" id="author-kuzmany">
+  <section class="author-group" id="author-fakela">
     <div class="author-head">
-      <h2><a href="https://github.com/kuzmany" target="_blank">@kuzmany</a></h2>
+      <h3><a href="https://github.com/fakela" target="_blank">@fakela</a></h3>
       <span class="author-progress">0/1 checked</span>
     </div>
     <table>
       <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
       <tbody>
+        <tr data-key="mautic/user-documentation#279">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #279: add audit log in the list as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/279" target="_blank">user-documentation #279</a> add audit log in the list</td>
+          <td data-label="Code PR"><span class="none">No linked code PR</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag stale">Stale</span></span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-joseph2001-braganza">
+    <div class="author-head">
+      <h3><a href="https://github.com/Joseph2001-braganza" target="_blank">@Joseph2001-braganza</a></h3>
+      <span class="author-progress">0/1 checked</span>
+    </div>
+    <table>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/user-documentation#246">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #246: Add back the 2-&gt;3 upgrade docs as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/246" target="_blank">user-documentation #246</a> Add back the 2-&gt;3 upgrade docs</td>
+          <td data-label="Code PR"><span class="none">No linked code PR</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from RCheesley</span><span class="tag stale">Stale</span></span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <section class="author-group" id="author-kuzmany">
+    <div class="author-head">
+      <h3><a href="https://github.com/kuzmany" target="_blank">@kuzmany</a></h3>
+      <span class="author-progress">0/2 checked</span>
+    </div>
+    <table>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/developer-documentation-new#550">
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #550: docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank">developer-documentation #550</a> docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
+          <td data-label="Mark"><span class="marks"><span class="tag esc">Needs your review — escalated to Core Team</span></span></td>
+        </tr>
         <tr data-key="mautic/user-documentation#811">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #811: docs: Document A/B testing for Segment Emails as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/811" target="_blank">user-documentation #811</a> docs: Document A/B testing for Segment Emails</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15897" target="_blank">mautic/mautic #15897</a></td>
-          <td data-label="Mark"><span class="mark review">Need review</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr></tbody>
     </table>
   </section>
   <section class="author-group" id="author-patrykgruszka">
     <div class="author-head">
-      <h2><a href="https://github.com/patrykgruszka" target="_blank">@patrykgruszka</a></h2>
+      <h3><a href="https://github.com/patrykgruszka" target="_blank">@patrykgruszka</a></h3>
       <span class="author-progress">0/3 checked</span>
     </div>
     <table>
@@ -268,25 +402,25 @@
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #551: docs: Document entity token formatting with getFormattedTokens() method as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/551" target="_blank">developer-documentation #551</a> docs: Document entity token formatting with getFormattedTokens() method</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
-          <td data-label="Mark"><span class="mark review">Need review</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#805">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #805: docs: Document token category prefixes in Email builder as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/805" target="_blank">user-documentation #805</a> docs: Document token category prefixes in Email builder</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15855" target="_blank">mautic/mautic #15855</a></td>
-          <td data-label="Mark"><span class="mark review">Need review</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/developer-documentation-new#563">
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #563: docs: Document GrapesJS Builder asset build workflow as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/563" target="_blank">developer-documentation #563</a> docs: Document GrapesJS Builder asset build workflow</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16435" target="_blank">mautic/mautic #16435</a></td>
-          <td data-label="Mark"><span class="mark review">Need review</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr></tbody>
     </table>
   </section>
   <section class="author-group" id="author-rohitpavaskar">
     <div class="author-head">
-      <h2><a href="https://github.com/rohitpavaskar" target="_blank">@rohitpavaskar</a></h2>
+      <h3><a href="https://github.com/rohitpavaskar" target="_blank">@rohitpavaskar</a></h3>
       <span class="author-progress">0/3 checked</span>
     </div>
     <table>
@@ -296,25 +430,25 @@
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #709: Add documentation for mautic:campaigns:resume-stuck command as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/709" target="_blank">user-documentation #709</a> Add documentation for mautic:campaigns:resume-stuck command</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15310" target="_blank">mautic/mautic #15310</a></td>
-          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#714">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #714: Docs for https://github.com/mautic/mautic/pull/16123 as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/714" target="_blank">user-documentation #714</a> Docs for https://github.com/mautic/mautic/pull/16123</td>
           <td data-label="Code PR"><span class="none">No linked code PR</span></td>
-          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#783">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #783: Document Campaign event ID display in the Campaign Builder as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/783" target="_blank">user-documentation #783</a> Document Campaign event ID display in the Campaign Builder</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16103" target="_blank">mautic/mautic #16103</a></td>
-          <td data-label="Mark"><span class="mark respond">Response to comment from adiati98</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span></span></td>
         </tr></tbody>
     </table>
   </section>
   <section class="author-group" id="author-shinde-rahul">
     <div class="author-head">
-      <h2><a href="https://github.com/shinde-rahul" target="_blank">@shinde-rahul</a></h2>
+      <h3><a href="https://github.com/shinde-rahul" target="_blank">@shinde-rahul</a></h3>
       <span class="author-progress">0/1 checked</span>
     </div>
     <table>
@@ -324,12 +458,59 @@
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #779: Document Tag removal confirmation and expandable Tags tile on Contact detail page as done"></td>
           <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/779" target="_blank">user-documentation #779</a> Document Tag removal confirmation and expandable Tags tile on Contact detail page</td>
           <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15845" target="_blank">mautic/mautic #15845</a></td>
-          <td data-label="Mark"><span class="mark review">Need review</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr></tbody>
     </table>
   </section>
+  <section class="author-group" id="author-tommairs">
+    <div class="author-head">
+      <h3><a href="https://github.com/tommairs" target="_blank">@tommairs</a></h3>
+      <span class="author-progress">0/1 checked</span>
+    </div>
+    <table>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Mark</th></tr></thead>
+      <tbody>
+        <tr data-key="mautic/user-documentation#542">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #542: Update Stages.png image as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/542" target="_blank">user-documentation #542</a> Update Stages.png image</td>
+          <td data-label="Code PR"><span class="none">No linked code PR</span></td>
+          <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag stale">Stale</span></span></td>
+        </tr></tbody>
+    </table>
+  </section>
+  <div class="section-head" id="section-escalated">
+    <h2>Escalated to the Core Team</h2>
+    <p>Formally escalated for a Core Team opinion and review.</p>
+  </div>
+  
+    <div class="coord-note">🕒 As of the last update, these authors hadn't replied. If one has since, the PR will be removed from here on the next refresh — <b>open the PR before you review</b>, just in case.</div>
+    <table>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Escalated to</th></tr></thead>
+      <tbody>
+        <tr data-key="esc:mautic/developer-documentation-new#505">
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/505" target="_blank">developer-documentation #505</a> Document CSS and frontend asset build workflow</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16143" target="_blank">mautic/mautic #16143</a></td>
+          <td data-label="Escalated to"><span class="tag esc">escopecz</span> <span class="ago">escalated 3 days ago</span></td>
+        </tr>
+        <tr data-key="esc:mautic/developer-documentation-new#550">
+          <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #550: docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/550" target="_blank">developer-documentation #550</a> docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/15844" target="_blank">mautic/mautic #15844</a></td>
+          <td data-label="Escalated to"><span class="tag esc">escopecz</span> <span class="ago">escalated 2 days ago</span></td>
+        </tr>
+        <tr data-key="esc:mautic/user-documentation#770">
+          <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #770: docs: Document Quick filters dropdown for Reports as done"></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/770" target="_blank">user-documentation #770</a> docs: Document Quick filters dropdown for Reports</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16205" target="_blank">mautic/mautic #16205</a></td>
+          <td data-label="Escalated to"><span class="tag esc">escopecz</span> <span class="ago">escalated today</span></td>
+        </tr></tbody>
+    </table>
   </main>
-  <footer>Generated by <code>node tracker.js</code> · <span data-updated-iso="2026-07-13T19:33:21.400Z">Mon, Jul 13, 7:33 PM</span> · 10 PRs across 5 authors</footer>
+  <footer>
+    <div>Generated on <span data-updated-iso="2026-07-13T19:49:33.284Z">Mon, Jul 13, 7:49 PM</span> · 19 author reminders · 3 escalated</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+  </footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>

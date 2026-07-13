@@ -81,6 +81,14 @@
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .gap-note{display:block;width:100%;margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .gap-note b{color:var(--ink)}
+  .gap-note.weekend{
+    color:var(--ink-2);
+    background:color-mix(in srgb, var(--accent) 8%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 22%, var(--ring));
+    border-radius:9px;padding:8px 12px;
+  }
   .theme-btn{
     border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
     border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
@@ -90,6 +98,16 @@
     border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
   }
   .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;align-self:center;
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:5px;line-height:0;text-decoration:none;
+  }
+  .icon-btn:hover{
+    text-decoration:none;color:var(--ink);
+    border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));
+  }
+  .icon-btn svg{display:block}
 
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
   .tile{
@@ -371,17 +389,19 @@
   .empty p{color:var(--ink-3);font-size:13px}
   .empty .tail{margin-top:10px;font-size:12px;color:var(--ink-3)}
 
-  footer{margin-top:36px;text-align:center;font-size:12px;color:var(--ink-3)}
+  footer{margin-top:36px;text-align:center;font-size:12px;color:var(--ink-3);line-height:1.7}
   footer code{font-family:ui-monospace,monospace;font-size:11px}
+  footer a{color:var(--ink-2);font-weight:600}
+  footer a:hover{color:var(--accent)}
 
   /* ---------- filter tabs ---------- */
   .filters{
-    display:flex;flex-direction:column;gap:8px;margin-bottom:24px;
+    display:flex;flex-direction:column;gap:16px;margin-bottom:26px;
   }
-  .fbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .fbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .fbar-label{
     font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-    color:var(--ink-3);min-width:64px;
+    color:var(--ink-3);min-width:74px;margin-right:2px;
   }
   .ftab{
     font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
@@ -502,17 +522,19 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-07-13T19:33:20.958Z">Updated Mon, Jul 13, 7:33 PM</span>
+    <span class="updated" data-updated-iso="2026-07-13T19:49:33.229Z">Updated Mon, Jul 13, 7:49 PM</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
+  
 
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">20</div>
+      <div class="num">21</div>
       <div><div class="lbl">Need you today</div>
-      <div class="sub"><span class="dot critical"></span>4 overdue · <span class="dot serious"></span>2 follow-up</div></div>
+      <div class="sub"><span class="dot critical"></span>4 overdue · <span class="dot serious"></span>3 follow-up</div></div>
     </button>
     <button class="tile" data-goto="forward" type="button">
       <div class="num">35</div>
@@ -520,7 +542,7 @@
       <div class="sub">29 new · <span class="dot stale"></span>6 stale</div></div>
     </button>
     <button class="tile" data-goto="waiting" type="button">
-      <div class="num">29</div>
+      <div class="num">28</div>
       <div><div class="lbl">Waiting on others or for code PR to merge</div>
       <div class="sub">next follow-up due in 2 days</div></div>
     </button>
@@ -543,7 +565,7 @@
 
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">84</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">49</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">35</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">20</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">4</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">2</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">33</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">10</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">21</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">4</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">3</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">32</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">11</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">6</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
   <details class="legend">
@@ -644,8 +666,8 @@
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">20</span>
-      <span class="chk-progress" data-state="zero">0/20 checked</span>
+      <h2>Need you today</h2><span class="count">21</span>
+      <span class="chk-progress" data-state="zero">0/21 checked</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -720,6 +742,16 @@
         </div>
         <div class="when"><div class="days critical">Day 16</div><div class="sub">since your review</div></div>
       </article>
+      <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#774" data-search="user-documentation #774 fix contradictory note about duplicate stage weights promptless-for-oss #15404 andersonjeccel send a follow-up ↩ core team passed back to author adiati98 reviewed this">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #774: Fix contradictory note about duplicate Stage weights as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank" class="name">user-documentation #774</a> <span class="desc">Fix contradictory note about duplicate Stage weights</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15404" target="_blank">#15404</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · core team (<b>escopecz</b>) asked the author to review, no reply since</div>
+          <div class="chips"><span class="chip nudge2">Send a follow-up</span><span class="chip muted">↩ Core team passed back to author</span><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days serious">Day 20</div><div class="sub">since core team asked · keep reminding</div></div>
+      </article>
       <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#709" data-search="user-documentation #709 add documentation for mautic:campaigns:resume-stuck command rohitpavaskar #15310 rohitpavaskar needs rebase send a follow-up adiati98 reviewed this">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #709: Add documentation for mautic:campaigns:resume-stuck command as done"></div>
         <div class="edge"></div>
@@ -759,6 +791,16 @@
           <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 19 days ago</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#784" data-search="user-documentation #784 document support mautic navigation menu item and support_mautic_enabled option promptless-for-oss #16337 escopecz review this docs pr 👀 promptless-for-oss is waiting on escopecz">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #784: Document Support Mautic navigation menu item and support_mautic_enabled option as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/784" target="_blank" class="name">user-documentation #784</a> <span class="desc">Document Support Mautic navigation menu item and support_mautic_enabled option</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16337" target="_blank">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip manual">👀 promptless-for-oss is waiting on escopecz</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 20 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#594" data-search="developer-documentation #594 docs: document tableheader.html.twig helper and its new tooltip parameter promptless-for-oss #16517 adiux review this docs pr approved by adiux">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #594: docs: Document tableheader.html.twig helper and its new tooltip parameter as done"></div>
@@ -820,25 +862,15 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 13 days ago</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#297" data-search="developer-documentation #297 docs: clarify that value 0 is valid when setting contact fields via api promptless-for-oss #15900 turanalmammadov 👀 prithvi2206 commented — no reply yet ✅ escalated to mautic/core-team adiati98 reviewed this">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #297: docs: Clarify that value 0 is valid when setting contact fields via API as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/297" target="_blank" class="name">developer-documentation #297</a> <span class="desc">docs: Clarify that value 0 is valid when setting contact fields via API</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15900" target="_blank">#15900</a> <span class="pill open">Open</span> · author <b>turanalmammadov</b> · escalated to mautic/core-team 83 days ago, waiting for a reply</div>
-          <div class="chips"><span class="chip manual">👀 prithvi2206 commented — no reply yet</span><span class="chip muted">✅ Escalated to mautic/core-team</span><span class="chip muted">adiati98 reviewed this</span></div>
-        </div>
-        <div class="when"><div class="days">Day 83</div><div class="sub">waiting for a reply</div></div>
-      </article>
-      <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#564" data-search="developer-documentation #564 docs: port &quot;point actions&quot; rest api page to 7.2 promptless-for-oss remind docs pr author — no code pr linked adiati98 reviewed this">
+      <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#564" data-search="developer-documentation #564 docs: port &quot;point actions&quot; rest api page to 7.2 promptless-for-oss ask core team to review content adiati98 reviewed this">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #564: docs: Port &quot;Point Actions&quot; REST API page to 7.2 as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/564" target="_blank" class="name">developer-documentation #564</a> <span class="desc">docs: Port &quot;Point Actions&quot; REST API page to 7.2</span></div>
           <div class="meta">No linked code PR · docs author <b>promptless-for-oss</b> · you reviewed yesterday</div>
-          <div class="chips"><span class="chip manual">Remind docs PR author — no code PR linked</span><span class="chip muted">adiati98 reviewed this</span></div>
+          <div class="chips"><span class="chip manual">Ask Core Team to review content</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">remind the docs author</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">maintainer review</div></div>
       </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#550" data-search="developer-documentation #550 docs: document iplookuphelper::isrequesttrackable() and automatic bot detection promptless-for-oss #15844 kuzmany code pr milestone is 7.1 — docs targets 7.2, check destination branch ✅ escalated to escopecz adiati98 reviewed this">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #550: docs: Document IpLookupHelper::isRequestTrackable() and automatic bot detection as done"></div>
@@ -1216,8 +1248,8 @@
 
   <section class="band-secondary" data-band="waiting">
     <div class="sec-head">
-      <h2>Waiting on others or for code PR to merge</h2><span class="count">29</span>
-      <span class="chk-progress" data-state="zero">0/29 checked</span>
+      <h2>Waiting on others or for code PR to merge</h2><span class="count">28</span>
+      <span class="chk-progress" data-state="zero">0/28 checked</span>
       <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -1272,36 +1304,6 @@
         </div>
         <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#697" data-search="user-documentation #697 docs: document postgresql database support for mautic 7.x promptless-for-oss #15926 wieslawgolec ✅ escalated to mautic/core-team &amp;amp; escopecz adiati98 reviewed this">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #697: docs: Document PostgreSQL database support for Mautic 7.x as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/697" target="_blank" class="name">user-documentation #697</a> <span class="desc">docs: Document PostgreSQL database support for Mautic 7.x</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15926" target="_blank">#15926</a> <span class="pill open">Open</span> · author <b>wieslawgolec</b> · escalated to mautic/core-team &amp; escopecz 83 days ago, waiting for a reply</div>
-          <div class="chips"><span class="chip muted">✅ Escalated to mautic/core-team &amp; escopecz</span><span class="chip muted">adiati98 reviewed this</span></div>
-        </div>
-        <div class="when"><div class="days">Day 83</div><div class="sub">waiting for a reply</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#704" data-search="user-documentation #704 document dedicated notes permissions promptless-for-oss #16067 shinde-rahul ✅ escalated to mautic/core-team adiati98 reviewed this">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #704: Document dedicated Notes permissions as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/704" target="_blank" class="name">user-documentation #704</a> <span class="desc">Document dedicated Notes permissions</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · escalated to mautic/core-team 59 days ago, waiting for a reply</div>
-          <div class="chips"><span class="chip muted">✅ Escalated to mautic/core-team</span><span class="chip muted">adiati98 reviewed this</span></div>
-        </div>
-        <div class="when"><div class="days">Day 59</div><div class="sub">waiting for a reply</div></div>
-      </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#784" data-search="user-documentation #784 document support mautic navigation menu item and support_mautic_enabled option promptless-for-oss #16337 escopecz ✅ escalated to escopecz 👀 promptless-for-oss is waiting on escopecz">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #784: Document Support Mautic navigation menu item and support_mautic_enabled option as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/784" target="_blank" class="name">user-documentation #784</a> <span class="desc">Document Support Mautic navigation menu item and support_mautic_enabled option</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16337" target="_blank">#16337</a> <span class="pill open">Open</span> · author <b>escopecz</b> · escalated to escopecz 18 days ago, waiting for a reply</div>
-          <div class="chips"><span class="chip muted">✅ Escalated to escopecz</span><span class="chip manual">👀 promptless-for-oss is waiting on escopecz</span></div>
-        </div>
-        <div class="when"><div class="days">Day 18</div><div class="sub">waiting for a reply</div></div>
-      </article>
       <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#770" data-search="user-documentation #770 docs: document quick filters dropdown for reports promptless-for-oss #16205 andersonjeccel ✅ escalated to escopecz 👀 adiati98 is waiting on andersonjeccel adiati98 reviewed this">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #770: docs: Document Quick filters dropdown for Reports as done"></div>
         <div class="edge"></div>
@@ -1312,16 +1314,6 @@
         </div>
         <div class="when"><div class="days">Day 0</div><div class="sub">waiting for a reply</div></div>
       </article>
-      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#774" data-search="user-documentation #774 fix contradictory note about duplicate stage weights promptless-for-oss #15404 andersonjeccel ✅ escalated to escopecz 👀 adiati98 is waiting on andersonjeccel adiati98 reviewed this">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #774: Fix contradictory note about duplicate Stage weights as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/774" target="_blank" class="name">user-documentation #774</a> <span class="desc">Fix contradictory note about duplicate Stage weights</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15404" target="_blank">#15404</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · escalated to escopecz 25 days ago, waiting for a reply</div>
-          <div class="chips"><span class="chip muted">✅ Escalated to escopecz</span><span class="chip manual">👀 adiati98 is waiting on andersonjeccel</span><span class="chip muted">adiati98 reviewed this</span></div>
-        </div>
-        <div class="when"><div class="days">Day 25</div><div class="sub">waiting for a reply</div></div>
-      </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#505" data-search="developer-documentation #505 document css and frontend asset build workflow promptless-for-oss #16143 andersonjeccel ✅ escalated to escopecz 👀 adiati98 is waiting on andersonjeccel adiati98 reviewed this">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #505: Document CSS and frontend asset build workflow as done"></div>
         <div class="edge"></div>
@@ -1331,6 +1323,36 @@
           <div class="chips"><span class="chip muted">✅ Escalated to escopecz</span><span class="chip manual">👀 adiati98 is waiting on andersonjeccel</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
         <div class="when"><div class="days">Day 3</div><div class="sub">waiting for a reply</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#297" data-search="developer-documentation #297 docs: clarify that value 0 is valid when setting contact fields via api promptless-for-oss #15900 turanalmammadov 👀 prithvi2206 commented — no reply yet ✅ reminded code pr author adiati98 reviewed this">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #297: docs: Clarify that value 0 is valid when setting contact fields via API as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/297" target="_blank" class="name">developer-documentation #297</a> <span class="desc">docs: Clarify that value 0 is valid when setting contact fields via API</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15900" target="_blank">#15900</a> <span class="pill open">Open</span> · author <b>turanalmammadov</b> · code PR is still open</div>
+          <div class="chips"><span class="chip manual">👀 prithvi2206 commented — no reply yet</span><span class="chip muted">✅ Reminded code PR author</span><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#697" data-search="user-documentation #697 docs: document postgresql database support for mautic 7.x promptless-for-oss #15926 wieslawgolec ✅ reminded code pr author adiati98 reviewed this">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #697: docs: Document PostgreSQL database support for Mautic 7.x as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/697" target="_blank" class="name">user-documentation #697</a> <span class="desc">docs: Document PostgreSQL database support for Mautic 7.x</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15926" target="_blank">#15926</a> <span class="pill open">Open</span> · author <b>wieslawgolec</b> · code PR is still open</div>
+          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#704" data-search="user-documentation #704 document dedicated notes permissions promptless-for-oss #16067 shinde-rahul ✅ reminded code pr author adiati98 reviewed this">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #704: Document dedicated Notes permissions as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/704" target="_blank" class="name">user-documentation #704</a> <span class="desc">Document dedicated Notes permissions</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill open">Open</span> · author <b>shinde-rahul</b> · code PR is still open</div>
+          <div class="chips"><span class="chip muted">✅ Reminded code PR author</span><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#310" data-search="developer-documentation #310 docs: document postgresql database support for mautic 7.x promptless-for-oss #15926 wieslawgolec ✅ reminded code pr author adiati98 reviewed this">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #310: docs: Document PostgreSQL database support for Mautic 7.x as done"></div>
@@ -1516,7 +1538,10 @@
   </section>
 
   </main>
-  <footer>Generated by <code>node tracker.js</code> as <code>adiati98</code> · <span data-updated-iso="2026-07-13T19:33:20.958Z">Mon, Jul 13, 7:33 PM</span></footer>
+  <footer>
+    <div>Generated on <span data-updated-iso="2026-07-13T19:49:33.229Z">Mon, Jul 13, 7:49 PM</span> as <code>adiati98</code></div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+  </footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
