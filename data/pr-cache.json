@@ -5784,9 +5784,16 @@
     ]
   },
   "mautic/user-documentation#838": {
-    "docsUpdatedAt": "2026-07-13T11:16:30Z",
+    "docsUpdatedAt": "2026-07-13T20:11:10Z",
     "codeUpdatedAt": "2026-07-13T11:09:22Z",
     "rawDocsReviews": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "PENDING",
+        "body": ""
+      },
       {
         "user": {
           "login": "promptless-for-oss"
@@ -5810,6 +5817,22 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-13T11:09:09Z",
         "body": "great"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-13T19:54:20Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-13T20:06:20Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -5840,6 +5863,20 @@
         },
         "created_at": "2026-07-11T17:05:16Z",
         "body": "Thanks @adiati98 — you're right, the branch had picked up unrelated old commits. I've done a clean rebase onto the current `7.2` tip. The PR now contains only the two intended changes:\n\n- `docs/builders/email_landing_page.rst` — the new Typography blocks section\n- `docs/builders/images/editor_typography_blocks.png` — the sidebar screenshot\n\nNo other commits remain. Vale is clean on the changed section (the GrapesJS \"category\" wording is wrapped in `.. vale off`/`.. vale on` since it refers to the builder's UI categories, not the Mautic Category feature — consistent with the existing wrappers in this file).\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-13T19:57:05Z",
+        "body": "Thanks @adiati98 — done. I've replaced the Typography blocks sidebar screenshot (`docs/builders/images/editor_typography_blocks.png`) with the image you provided and pushed the update. The RST already references that path, so no prose changes were needed. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-13T20:11:10Z",
+        "body": "Thanks for the review, @adiati98 — I've pushed an update addressing all four comments:\n\n1. **Block list** — accepted your suggestion: bolded the labels (**Text**, **H1**–**H4**, **Subtitle**) and fixed the indentation.\n2. **Image directive** — accepted: corrected the indentation to 3 spaces and used the shorter alt text.\n3. **\"Previous location\" wording** — reworked to your framing: \"Since version 7.2, the Text block lives in the Typography category, but it works the same.\"\n4. **Theme-styling clarity** — applied your suggested text and resolved the flagged trailing clause. It now reads: \"…If your Theme defines its own typography tokens, the blocks use the Theme's styles instead of these defaults. Since each Theme can define its own tokens, the same block can render with different sizes, weights, or colors depending on which Theme you apply.\" I split the run-on into separate sentences so the last one states *why* the block can look different — different Themes define different tokens.\n\nOne thing to re-check: the wording in comment 4 is yours, just restructured into shorter sentences for clarity. Let me know if you'd prefer it kept as a single sentence.\n"
       }
     ],
     "rawCodeComments": [
