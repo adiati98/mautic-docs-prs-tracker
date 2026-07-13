@@ -1481,7 +1481,10 @@ async function main() {
 	generateHTML(prData, { operatorUsername: authenticatedUser })
 	console.log("📄 Report saved to: tracker-report.html")
 
-	generateReminderHTML(buildReminderGroups(prData), { now: new Date() })
+	generateReminderHTML(
+		{ groups: buildReminderGroups(prData), escalations: buildEscalationList(prData) },
+		{ now: new Date() },
+	)
 	console.log("📄 Reminders saved to: tracker-reminders.html")
 	console.log("Open it in your browser to view the dashboard\n")
 }
@@ -2399,6 +2402,32 @@ function buildReminderGroups(prData) {
 		})
 		return { author, items }
 	})
+}
+
+// Section 2 of the reminder page — a flat, dev-team-facing queue of every
+// docs PR that's been formally escalated to a devTeam target
+// (waiting-escalation-response) and not approved since. Unlike the per-author
+// reminders above this isn't grouped by person; it's a shared list the dev
+// team works through, each row naming who it was escalated to, oldest (most
+// overdue) first. A PR here can *also* still appear under its code author in
+// Section 1 — escalating asks the dev team to weigh in, but they often can't
+// vouch for whether the docs content is correct and may throw it back, so the
+// code author is deliberately kept on their own list too.
+function buildEscalationList(prData) {
+	return prData
+		.filter((pr) => pr.category === "waiting-escalation-response" && pr.escalationRequest)
+		.sort(
+			(a, b) => a.escalationRequest.date.getTime() - b.escalationRequest.date.getTime(),
+		)
+}
+
+// The linked code PR as a labelled link (naming its actual repo, which isn't
+// always mautic/mautic — Promptless-authored docs PRs often trace back to
+// api-library or other repos), or a plain "none" when there's no link.
+function codePRLink(pr) {
+	return pr.appPRNumber
+		? `<a href="${pr.appPRUrl}" target="_blank">${escapeHtml(pr.appPRRepo)} #${pr.appPRNumber}</a>`
+		: `<span class="none">No linked code PR</span>`
 }
 
 function generateHTML(prData, { operatorUsername }) {
@@ -3558,6 +3587,18 @@ ${monitoringSection}
 	fs.writeFileSync("tracker-report.html", html)
 }
 
+// Small status pills shown alongside a row's mark — "Escalated to core team"
+// (the dev team's been asked to weigh in, but it may still come back to the
+// code author, so it's flagged here rather than silently moved) and "Stale"
+// (30+ days quiet, so folks know it's been sitting). Shared by both sections.
+function rowTags(pr) {
+	let html = ""
+	if (pr.category === "waiting-escalation-response")
+		html += ` <span class="tag esc">Escalated to core team</span>`
+	if (pr.staleFlag) html += ` <span class="tag stale">Stale</span>`
+	return html
+}
+
 function renderAuthorGroup(group) {
 	const anchor = group.author.toLowerCase()
 	const rows = group.items
@@ -3567,23 +3608,20 @@ function renderAuthorGroup(group) {
 				mark.kind === "review"
 					? `<span class="mark review">Need review</span>`
 					: `<span class="mark respond">Response to comment from ${escapeHtml(mark.who)}</span>`
-			const codePRHtml = pr.appPRNumber
-				? `<a href="${pr.appPRUrl}" target="_blank">mautic/mautic #${pr.appPRNumber}</a>`
-				: `<span class="none">No linked code PR</span>`
 			const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 			return `
         <tr data-key="${escapeHtml(key)}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
           <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
-          <td data-label="Code PR">${codePRHtml}</td>
-          <td data-label="Mark">${markHtml}</td>
+          <td data-label="Code PR">${codePRLink(pr)}</td>
+          <td data-label="Mark">${markHtml}${rowTags(pr)}</td>
         </tr>`
 		})
 		.join("")
 	return `
   <section class="author-group" id="author-${escapeHtml(anchor)}">
     <div class="author-head">
-      <h2><a href="https://github.com/${escapeHtml(group.author)}" target="_blank">@${escapeHtml(group.author)}</a></h2>
+      <h3><a href="https://github.com/${escapeHtml(group.author)}" target="_blank">@${escapeHtml(group.author)}</a></h3>
       <span class="author-progress">0/${group.items.length} checked</span>
     </div>
     <table>
@@ -3593,11 +3631,33 @@ function renderAuthorGroup(group) {
   </section>`
 }
 
+// Section 2's flat escalation table — no per-person grouping, no checklist
+// (it's a shared dev-team queue, not a personal to-do), each row naming who
+// the PR was escalated to and how long ago.
+function renderEscalationSection(escalations) {
+	const rows = escalations
+		.map((pr) => {
+			const targets = pr.escalationRequest.targets.join(" & ")
+			return `
+        <tr>
+          <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${pr.staleFlag ? ` <span class="tag stale">Stale</span>` : ""}</td>
+          <td data-label="Code PR">${codePRLink(pr)}</td>
+          <td data-label="Escalated to"><span class="tag esc">${escapeHtml(targets)}</span> <span class="ago">escalated ${escapeHtml(daysAgoText(pr.escalationRequest.date))}</span></td>
+        </tr>`
+		})
+		.join("")
+	return `
+    <table>
+      <thead><tr><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Escalated to</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`
+}
+
 // A separate, self-contained page (mirrors generateHTML's structure but not
 // its markup) meant to be shared directly with code PR authors — a plain
 // per-person checklist of docs PRs waiting on them, with no internal
 // severity/escalation framing.
-function generateReminderHTML(groups, { now }) {
+function generateReminderHTML({ groups, escalations }, { now }) {
 	const totalItems = groups.reduce((sum, g) => sum + g.items.length, 0)
 	const tocHtml =
 		groups.length > 1
@@ -3609,10 +3669,25 @@ function generateReminderHTML(groups, { now }) {
 		)
 		.join("")}</div>`
 			: ""
-	const bodyHtml =
+	const authorSection =
 		groups.length === 0
-			? `<div class="empty">Nothing to remind anyone about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
-			: groups.map(renderAuthorGroup).join("")
+			? `<div class="empty">Nothing to remind any code author about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
+			: `${tocHtml}\n${groups.map(renderAuthorGroup).join("")}`
+	const escalationSection =
+		escalations.length === 0
+			? `<div class="empty">No docs PRs are currently escalated to the dev team.</div>`
+			: renderEscalationSection(escalations)
+	const bodyHtml = `
+  <div class="section-head" id="section-authors">
+    <h2>Code PR author reminders</h2>
+    <p>Docs PRs waiting on a code PR author's review or reply, grouped by name.</p>
+  </div>
+  ${authorSection}
+  <div class="section-head" id="section-escalated">
+    <h2>Escalated to the dev team</h2>
+    <p>Formally escalated for a dev-team opinion. They may not be able to vouch for the docs content, so these can still come back to the code PR author.</p>
+  </div>
+  ${escalationSection}`
 
 	const html = `<!DOCTYPE html>
 <html lang="en">
@@ -3713,7 +3788,7 @@ function generateReminderHTML(groups, { now }) {
 
   .author-group{margin-bottom:28px}
   .author-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
-  .author-head h2{font-size:16px;font-weight:650}
+  .author-head h3{font-size:16px;font-weight:650}
   .author-progress{font-size:12px;color:var(--ink-3)}
 
   table{
@@ -3754,6 +3829,21 @@ function generateReminderHTML(groups, { now }) {
     color:color-mix(in srgb, var(--manual) 72%, var(--ink));
   }
   .none{color:var(--ink-3)}
+
+  .section-head{margin:34px 0 14px}
+  .section-head h2{font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .section-head p{font-size:12.5px;color:var(--ink-3);margin-top:3px;max-width:64ch}
+
+  .tag{
+    display:inline-flex;align-items:center;vertical-align:middle;
+    padding:1px 7px;border-radius:6px;font-size:11px;font-weight:600;white-space:nowrap;
+  }
+  .tag.esc{
+    background:color-mix(in srgb, var(--accent) 13%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 80%, var(--ink));
+  }
+  .tag.stale{background:color-mix(in srgb, var(--ink) 9%, var(--surface));color:var(--ink-2)}
+  .ago{font-size:11px;color:var(--ink-3);white-space:nowrap}
 
   .empty{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -3811,9 +3901,10 @@ function generateReminderHTML(groups, { now }) {
 
   <div class="intro">
     <p>
-      Docs PRs waiting on <b>your</b> review or response to a comment,
-      grouped by name — either your linked code PR has merged, or it's a
-      docs PR you opened yourself that's waiting on your reply.
+      Two lists: <b>Code PR author reminders</b> — docs PRs waiting on a code
+      PR author's review or reply, grouped by name — and <b>Escalated to the
+      dev team</b>, a shared queue of PRs formally sent to the dev team for an
+      opinion.
     </p>
     <p class="intro-lead">Using this list:</p>
     <ul>
@@ -3831,10 +3922,9 @@ function generateReminderHTML(groups, { now }) {
     </ul>
   </div>
   <main id="main-content">
-${tocHtml}
 ${bodyHtml}
   </main>
-  <footer>Generated by <code>node tracker.js</code> · <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${totalItems} PR${totalItems === 1 ? "" : "s"} across ${groups.length} author${groups.length === 1 ? "" : "s"}</footer>
+  <footer>Generated by <code>node tracker.js</code> · <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${totalItems} author reminder${totalItems === 1 ? "" : "s"} · ${escalations.length} escalated</footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
