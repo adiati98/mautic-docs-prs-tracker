@@ -2268,23 +2268,31 @@ const EMPTY_LINES = [
 //    PR's own author instead, but only if someone's actually tagged them —
 //    a PR they've simply gone quiet on (nobody currently asking them
 //    anything) isn't their turn, it's just unattended.
+// Escalating to the dev team redirects who the *operator* is chasing, but it
+// doesn't erase the code author's own outstanding reply — they should still
+// see this on their list until they actually respond (devApproved/
+// approvedByNonOperator, which is what clears waiting-escalation-response in
+// the first place — see main()'s category logic).
 const REMINDER_ELIGIBLE_CATEGORIES = new Set([
 	"needs-remind-code-author",
 	"waiting-code-author-response",
 	"needs-followup",
 	"needs-escalate-core-team",
+	"waiting-escalation-response",
 ])
 
 // Whether there's a genuine, still-live reason to ping the code author: a
-// human (not Promptless) tagged them directly on the docs PR, and — this is
-// the part that matters — that tag is *more recent than the last approval*
+// human (not Promptless) tagged them directly on the docs PR — either with an
+// @-mention or GitHub's own "Request review" picker, which lives on the docs
+// PR exactly like a comment tag does (see computeReviewRequests) — and, this
+// is the part that matters, that tag is *more recent than the last approval*
 // (or there's no approval at all yet). An approval doesn't retroactively
 // erase an earlier tag that's still unanswered, but it does settle things
 // once nothing's tagged them since. Whichever happened last wins.
 function hasOutstandingDocsPing(pr) {
 	return (
 		pr.pingEverSent &&
-		pr.lastPingSource === "docs" &&
+		(pr.lastPingSource === "docs" || pr.lastPingSource === "review-request") &&
 		pr.lastPingActor !== PROMPTLESS &&
 		(!pr.lastApprovalDate || pr.lastPingDate > pr.lastApprovalDate)
 	)
@@ -2326,10 +2334,12 @@ function hasOutstandingDocsAuthorPing(pr) {
 function buildReminderGroups(prData) {
 	const groups = new Map()
 	for (const pr of prData) {
-		// A stale PR (30+ days of no activity anywhere) is a call for you or
-		// the team to make, not something to push onto an external
-		// contributor automatically.
-		if (pr.staleFlag) continue
+		// Staleness alone is no longer a reason to hide a PR here — the
+		// checks below (hasOutstandingDocsPing / hasOutstandingDocsAuthorPing)
+		// already require a specific, still-unanswered tag directed at
+		// remindLogin. When that tag exists, a PR going quiet for 30+ days is
+		// exactly the situation this page exists to surface, not a reason to
+		// suppress it.
 
 		let remindLogin
 		let mark
@@ -2351,9 +2361,12 @@ function buildReminderGroups(prData) {
 			// hasOutstandingDocsAuthorPing below): only include it once
 			// someone's actually tagged the author, same as before.
 			if (
-				!["blocked-no-code-pr", "needs-followup", "needs-escalate-core-team"].includes(
-					pr.category,
-				)
+				![
+					"blocked-no-code-pr",
+					"needs-followup",
+					"needs-escalate-core-team",
+					"waiting-escalation-response",
+				].includes(pr.category)
 			)
 				continue
 			if (!hasOutstandingDocsAuthorPing(pr)) continue
