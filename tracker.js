@@ -558,6 +558,8 @@ function computeConversationState({
 	operatorLogins,
 	appPRAuthor,
 	authorRequestPing,
+	escalationTargetLogins,
+	escalationDate,
 }) {
 	const allComments = [...docsComments, ...codeComments]
 	const allReviews = [...docsReviews, ...codeReviews]
@@ -588,11 +590,60 @@ function computeConversationState({
 			_pingSource: "review-request",
 		})
 	}
-	const lastPing = pings.reduce(
+
+	// Escalation hand-back: once a PR is escalated, a dev-team member (one of
+	// the configured ESCALATION_TARGETS logins) tagging the code author
+	// directly is them saying "author, please confirm this" — the ball goes
+	// back to the author. That tag is a reminder ping in its own right (they
+	// don't need a maintainer to relay it), and it's the *anchor*: it outranks
+	// any later maintainer nudge, so the follow-up clock measures how long the
+	// author has sat on the dev team's ask, not on a subsequent poke.
+	//
+	// Scoped to the *docs* PR's comments only: the escalation was a review
+	// request on the docs PR, so the hand-back ("author, please check this docs
+	// change") lands there too. A dev-team member tagging the same author over
+	// on the *code* PR is ordinary code-review chatter, not a docs hand-back.
+	// Also only matched on listed dev-team logins — a team-only escalation
+	// (mautic/core-team) can't be attributed to an individual commenter without
+	// membership data, so those stay escalated (waiting-escalation-response).
+	const handbackComments =
+		appPRAuthor && escalationDate && escalationTargetLogins && escalationTargetLogins.size
+			? taggedDocsComments.filter(
+					(c) =>
+						escalationTargetLogins.has(c.user.login.toLowerCase()) &&
+						new Date(c.created_at) >= escalationDate &&
+						mentions(c.body, appPRAuthor),
+				)
+			: []
+	const handbackComment = handbackComments.reduce(
+		(best, c) =>
+			!best || new Date(c.created_at) < new Date(best.created_at) ? c : best,
+		null,
+	)
+	const handbackPing = handbackComment
+		? {
+				date: new Date(handbackComment.created_at),
+				actor: handbackComment.user.login,
+				source: handbackComment._pingSource,
+			}
+		: null
+
+	// Normally the most recent ping is the live one. In a hand-back, the dev
+	// team's tag is the anchor regardless of any later maintainer nudge, so it
+	// overrides — driving the mark, the meta line, and the follow-up clock off
+	// who really asked (the core team) and when.
+	let lastPing = pings.reduce(
 		(best, c) =>
 			!best || new Date(c.created_at) > new Date(best.created_at) ? c : best,
 		null,
 	)
+	if (handbackPing) {
+		lastPing = {
+			user: { login: handbackPing.actor },
+			created_at: handbackPing.date.toISOString(),
+			_pingSource: handbackPing.source,
+		}
+	}
 	const lastPingDate = lastPing ? new Date(lastPing.created_at) : null
 	const lastPingActor = lastPing ? lastPing.user.login : null
 	const lastPingSource = lastPing ? lastPing._pingSource : null
@@ -620,6 +671,22 @@ function computeConversationState({
 			])
 		: null
 
+	// Same, but the *docs* PR only. Used to decide whether the author has
+	// actually engaged with the docs — e.g. to clear an escalation, where the
+	// core team is only a fallback for author silence. Activity on the code PR
+	// is the author's own code work, not a response to the docs review, so it's
+	// deliberately excluded (same reasoning as the docs-scoped hand-back above).
+	const lastAuthorDocsEventDate = appPRAuthor
+		? latestDate([
+				...docsComments
+					.filter((c) => c.user.login === appPRAuthor)
+					.map((c) => new Date(c.created_at)),
+				...docsReviews
+					.filter((r) => r.user.login === appPRAuthor)
+					.map((r) => new Date(r.submitted_at)),
+			])
+		: null
+
 	return {
 		lastPingDate,
 		lastPingActor,
@@ -627,6 +694,8 @@ function computeConversationState({
 		lastPingByOperator,
 		lastOperatorTouchDate,
 		lastAuthorEventDate,
+		lastAuthorDocsEventDate,
+		handbackPing,
 	}
 }
 
@@ -1142,6 +1211,8 @@ async function main() {
 			lastPingByOperator,
 			lastOperatorTouchDate,
 			lastAuthorEventDate,
+			lastAuthorDocsEventDate,
+			handbackPing,
 		} = computeConversationState({
 			docsComments: pingEligibleDocsComments,
 			docsReviews,
@@ -1150,7 +1221,14 @@ async function main() {
 			operatorLogins,
 			appPRAuthor,
 			authorRequestPing,
+			escalationTargetLogins: new Set(ESCALATION_TARGETS.logins),
+			escalationDate: escalationRequest ? escalationRequest.date : null,
 		})
+		// The dev team explicitly handed the PR back to the code author (see
+		// computeConversationState) — it's the author's turn now, not the dev
+		// team's, so it leaves the escalation-waiting state and rejoins the
+		// author remind/follow-up flow (but never re-escalates — §5b).
+		const handedBack = handbackPing !== null
 		const pingEverSent = lastPingDate !== null
 		const daysSincePing = lastPingDate
 			? Math.floor((Date.now() - lastPingDate.getTime()) / 86400000)
@@ -1273,19 +1351,57 @@ async function main() {
 		let category
 		if (codeClosed) {
 			category = "needs-close-docs-pr"
-		} else if (escalationRequest && !devApproved && !approvedByNonOperator) {
+		} else if (
+			escalationRequest &&
+			(!appPRNumber || codeMerged) &&
+			!devApproved &&
+			!approvedByNonOperator
+		) {
+			// Only treat an escalation as "live" once the code PR has merged (or
+			// there's no code PR at all). Escalating while the code PR is still
+			// open is an old-workflow artifact — the docs can't be finalised until
+			// the code lands — so such a PR waits for the merge (falls through to
+			// waiting-code-pr-merge) instead of showing up in the escalation queue
+			// or the author's reminder list.
+			//
 			// An explicit escalation is a deliberate operator action — it wins
 			// over whatever the automatic day-count clock below would otherwise
 			// say, even if it fires before the usual ESCALATE_DAYS threshold. An
 			// approval (checked first, same as the code-author clock) still
-			// settles everything regardless. Unlike the code-author ping clock,
-			// a single reply doesn't clear this — a comment isn't necessarily a
-			// resolution, so the badge persists until someone actually approves
-			// (or the code PR closes, checked above). Whatever back-and-forth
-			// happens in the meantime is narrated separately by the community-
-			// thread chip (computeCommunityThread), which runs regardless of
-			// category.
-			category = "waiting-escalation-response"
+			// settles everything regardless.
+			//
+			// The escalation is chasing exactly one thing: a response from the
+			// author. The core team is only a fallback for author silence, so the
+			// moment the author engages — dev team weighed in or not — it's no
+			// longer the core team's problem: hand it to the maintainer to check.
+			// This is what frees the core team (the reminder page's escalation
+			// list reads straight off this category, so the row drops out of it).
+			// Anchored on the latest ask to the author (a hand-back tag or a ping,
+			// else the escalation itself), so a reply predating that doesn't count.
+			const escalationAnchor = lastPingDate || escalationRequest.date
+			if (lastAuthorDocsEventDate && lastAuthorDocsEventDate > escalationAnchor) {
+				if (lastOperatorTouchDate && lastOperatorTouchDate > lastAuthorDocsEventDate) {
+					category =
+						daysSinceOperatorTouch >= FOLLOWUP_DAYS
+							? "needs-remind-code-author"
+							: "monitoring"
+				} else {
+					category = "needs-check-author-response"
+				}
+			} else if (!handedBack) {
+				// Author still silent and the dev team hasn't handed it back —
+				// genuinely still waiting on the dev team. Unlike the code-author
+				// ping clock, a dev-team comment alone doesn't clear this; it
+				// persists until an approval, the code PR closing, a hand-back, or
+				// the author replying (all handled above/around here).
+				category = "waiting-escalation-response"
+			} else if (daysSincePing >= FOLLOWUP_DAYS) {
+				// Handed back, author still hasn't answered — keep reminding, but
+				// never re-escalate (it just came from the core team), until stale.
+				category = "needs-followup"
+			} else {
+				category = "waiting-code-author-response"
+			}
 		} else if (operatorReviewDone && !appPRNumber) {
 			// A standalone docs PR has no linked code PR to wait on, so unlike
 			// the code-author clock below, your own review is itself the ask
@@ -1299,6 +1415,14 @@ async function main() {
 			// branch target is worth flagging regardless of content approval.
 			if (hasQualifyingApproval && !needsRebaseFlag) {
 				category = "monitoring"
+			} else if (pr.user.login === PROMPTLESS) {
+				// Promptless authored this and there's no code PR — no human to
+				// remind, chase, or check a response from. It's purely a maintainer
+				// review/merge call, so hold it at blocked-no-code-pr (whose chip
+				// offers the one sensible outward step: ask the Core Team to sign
+				// off on the generated content). It never advances into the
+				// remind/follow-up/escalate-the-author clock below.
+				category = "blocked-no-code-pr"
 			} else if (
 				docsAuthorLastEventDate &&
 				lastOperatorTouchDate &&
@@ -1428,6 +1552,7 @@ async function main() {
 			lastPingSource,
 			lastPingByOperator,
 			escalationRequest,
+			handedBack,
 			daysSincePing,
 			lastOperatorTouchDate,
 			daysSinceOperatorTouch,
@@ -1481,7 +1606,10 @@ async function main() {
 	generateHTML(prData, { operatorUsername: authenticatedUser })
 	console.log("📄 Report saved to: tracker-report.html")
 
-	generateReminderHTML(buildReminderGroups(prData), { now: new Date() })
+	generateReminderHTML(
+		{ groups: buildReminderGroups(prData), escalations: buildEscalationList(prData) },
+		{ now: new Date() },
+	)
 	console.log("📄 Reminders saved to: tracker-reminders.html")
 	console.log("Open it in your browser to view the dashboard\n")
 }
@@ -1719,6 +1847,10 @@ function metaLine(pr) {
 			if (!pr.appPRNumber) {
 				parts.push(`docs author <b>${escapeHtml(pr.docsAuthor)}</b>`)
 				parts.push(`no reply since your review ${daysAgoText(pr.lastOperatorTouchDate)}`)
+			} else if (pr.handedBack) {
+				parts.push(
+					`core team (<b>${escapeHtml(pr.lastPingActor)}</b>) asked the author to review, no reply since`,
+				)
 			} else {
 				parts.push(
 					pr.pingEverSent && !pr.lastPingByOperator
@@ -1758,9 +1890,11 @@ function metaLine(pr) {
 			break
 		case "waiting-code-author-response":
 			parts.push(
-				pr.pingEverSent && !pr.lastPingByOperator
-					? `${escapeHtml(pr.lastPingActor)} reminded the author, waiting for a reply`
-					: "reminder sent, waiting for a reply",
+				pr.handedBack
+					? `core team (<b>${escapeHtml(pr.lastPingActor)}</b>) asked the author, waiting for a reply`
+					: pr.pingEverSent && !pr.lastPingByOperator
+						? `${escapeHtml(pr.lastPingActor)} reminded the author, waiting for a reply`
+						: "reminder sent, waiting for a reply",
 			)
 			break
 		case "waiting-escalation-response":
@@ -1801,6 +1935,17 @@ function buildClock(pr) {
 			}
 		case "needs-followup": {
 			const days = clockDaysSince(pr)
+			// A handed-back PR has already been to the core team, so there's no
+			// "escalate at 14" to count toward — just keep reminding the author
+			// until it goes stale. No meter, and the anchor is the core team's
+			// ask, not a reminder.
+			if (pr.handedBack) {
+				return {
+					big: `Day ${days}`,
+					bigClass: "serious",
+					sub: "since core team asked · keep reminding",
+				}
+			}
 			const pct = Math.min(100, Math.round((days / ESCALATE_DAYS) * 100))
 			return {
 				big: `Day ${days}`,
@@ -1825,7 +1970,10 @@ function buildClock(pr) {
 		case "needs-milestone":
 			return { big: "New", sub: "needs triage" }
 		case "blocked-no-code-pr":
-			return { big: "—", sub: "remind the docs author" }
+			return {
+				big: "—",
+				sub: pr.docsAuthor === PROMPTLESS ? "maintainer review" : "remind the docs author",
+			}
 		case "waiting-code-author-response": {
 			const remaining = FOLLOWUP_DAYS - pr.daysSincePing
 			const sub = remaining <= 1 ? "follow up tomorrow" : `follow up at ${FOLLOWUP_DAYS}`
@@ -1934,7 +2082,14 @@ function chipsFor(pr) {
 			// itself being wrong is a reason to keep nagging regardless of
 			// content approval.
 			if (!pr.staleFlag && (!pr.hasQualifyingApproval || pr.needsRebaseFlag)) {
-				chips.push({ cls: "manual", text: "Remind docs PR author — no code PR linked" })
+				chips.push(
+					pr.docsAuthor === PROMPTLESS
+						? // Promptless is a bot — no author to remind. Maintainers
+							// review these; the only outward ask is the Core Team
+							// vouching for the generated content.
+							{ cls: "manual", text: "Ask Core Team to review content" }
+						: { cls: "manual", text: "Remind docs PR author — no code PR linked" },
+				)
 			}
 			break
 		case "needs-close-docs-pr":
@@ -1951,6 +2106,8 @@ function chipsFor(pr) {
 			text: `✅ Escalated to ${escapeHtml(pr.escalationRequest.targets.join(" & "))}`,
 		})
 	}
+	const handback = handbackChip(pr)
+	if (handback) chips.push(handback)
 
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
@@ -2123,6 +2280,17 @@ function remindedOpenChip(pr) {
 	return null
 }
 
+// Context chip for a PR the dev team handed back to its author (see the
+// category logic in main()). It replaces the "✅ Escalated to X" chip once
+// the ball has returned — the escalation happened, but the current fact is
+// that it's now on the author, so the operator sees the history without it
+// reading as "still with the dev team."
+function handbackChip(pr) {
+	return pr.handedBack
+		? { cls: "muted", text: "↩ Core team passed back to author" }
+		: null
+}
+
 function waitingChipsFor(pr) {
 	const chips = []
 	const stale = staleChip(pr)
@@ -2135,6 +2303,8 @@ function waitingChipsFor(pr) {
 			text: `✅ Escalated to ${escapeHtml(pr.escalationRequest.targets.join(" & "))}`,
 		})
 	}
+	const handback = handbackChip(pr)
+	if (handback) chips.push(handback)
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
 	if (pr.reviewPendingFlag) {
@@ -2244,6 +2414,56 @@ function formatUpdated(date) {
 	})
 }
 
+// Mirrors the CI cron in .github/workflows/update-tracker.yml: hourly Mon-Fri
+// 08:00-20:00 UTC, plus a single Sunday 23:00 UTC resync — nothing else on the
+// weekend. Kept in sync with that file by hand (there's no way to read the cron
+// at runtime). Used to tell a viewer when the next refresh is due, so a page
+// that's hours old over a weekend reads as "expected" rather than broken.
+function isScheduledRunHourUTC(d) {
+	const day = d.getUTCDay() // 0 = Sun … 6 = Sat
+	const hour = d.getUTCHours()
+	if (day >= 1 && day <= 5) return hour >= 8 && hour <= 20
+	if (day === 0) return hour === 23
+	return false
+}
+
+function nextScheduledRun(now) {
+	const d = new Date(now)
+	d.setUTCMinutes(0, 0, 0)
+	d.setUTCHours(d.getUTCHours() + 1) // the current hour already ran
+	for (let i = 0; i < 24 * 5; i++) {
+		if (isScheduledRunHourUTC(d)) return new Date(d)
+		d.setUTCHours(d.getUTCHours() + 1)
+	}
+	return null
+}
+
+// A heads-up about the next refresh, but only when it's more than ~2h out —
+// i.e. not the normal hourly weekday cadence, which needs no explanation. A gap
+// longer than a day means the weekend lull (the tracker barely runs Sat/Sun),
+// which gets its own "back to hourly Monday" framing. Returns the next run's
+// ISO (rendered to the viewer's local time client-side) or null.
+function nextUpdateNotice(now) {
+	const next = nextScheduledRun(now)
+	if (!next) return null
+	const gapHours = (next.getTime() - now.getTime()) / 3600000
+	if (gapHours <= 2) return null
+	return { iso: next.toISOString(), weekend: gapHours > 24 }
+}
+
+// The notice as a ready-to-drop-in HTML string (or "" when none). The time span
+// carries data-updated-iso so the page's existing local-time script formats it.
+function nextUpdateNoticeHtml(now) {
+	const notice = nextUpdateNotice(now)
+	if (!notice) return ""
+	const cls = notice.weekend ? "gap-note weekend" : "gap-note"
+	const lead = notice.weekend
+		? "⏸ The tracker barely runs on weekends — next update"
+		: "Next update"
+	const tail = notice.weekend ? ", then hourly again on Monday" : ""
+	return `<span class="${cls}">${lead} <b><span data-updated-iso="${notice.iso}">…</span></b>${tail}</span>`
+}
+
 const EMPTY_LINES = [
 	"Every PR is either waiting on someone else or quietly behaving.",
 	"Inbox zero, docs edition.",
@@ -2268,23 +2488,31 @@ const EMPTY_LINES = [
 //    PR's own author instead, but only if someone's actually tagged them —
 //    a PR they've simply gone quiet on (nobody currently asking them
 //    anything) isn't their turn, it's just unattended.
+// Escalating to the dev team redirects who the *operator* is chasing, but it
+// doesn't erase the code author's own outstanding reply — they should still
+// see this on their list until they actually respond (devApproved/
+// approvedByNonOperator, which is what clears waiting-escalation-response in
+// the first place — see main()'s category logic).
 const REMINDER_ELIGIBLE_CATEGORIES = new Set([
 	"needs-remind-code-author",
 	"waiting-code-author-response",
 	"needs-followup",
 	"needs-escalate-core-team",
+	"waiting-escalation-response",
 ])
 
 // Whether there's a genuine, still-live reason to ping the code author: a
-// human (not Promptless) tagged them directly on the docs PR, and — this is
-// the part that matters — that tag is *more recent than the last approval*
+// human (not Promptless) tagged them directly on the docs PR — either with an
+// @-mention or GitHub's own "Request review" picker, which lives on the docs
+// PR exactly like a comment tag does (see computeReviewRequests) — and, this
+// is the part that matters, that tag is *more recent than the last approval*
 // (or there's no approval at all yet). An approval doesn't retroactively
 // erase an earlier tag that's still unanswered, but it does settle things
 // once nothing's tagged them since. Whichever happened last wins.
 function hasOutstandingDocsPing(pr) {
 	return (
 		pr.pingEverSent &&
-		pr.lastPingSource === "docs" &&
+		(pr.lastPingSource === "docs" || pr.lastPingSource === "review-request") &&
 		pr.lastPingActor !== PROMPTLESS &&
 		(!pr.lastApprovalDate || pr.lastPingDate > pr.lastApprovalDate)
 	)
@@ -2296,6 +2524,14 @@ function hasOutstandingDocsPing(pr) {
 // the latest approval) reads as "come look," not "reply to this."
 function reminderMark(pr) {
 	if (hasOutstandingDocsPing(pr)) {
+		// A direct "Request review" on GitHub reads as "please review", not a
+		// comment to reply to — so it shows as Need review even though it's a
+		// live, outstanding request. (A code-PR comment ping also renders as
+		// Need review, via the fall-through below, so a review request is never
+		// downgraded to "reply to a comment" by one.)
+		if (pr.lastPingSource === "review-request") {
+			return { kind: "review", sortDate: pr.lastPingDate }
+		}
 		return { kind: "respond", who: pr.lastPingActor, sortDate: pr.lastPingDate }
 	}
 	return {
@@ -2310,11 +2546,19 @@ function reminderMark(pr) {
 // trigger to come review the docs, but a standalone docs PR has no such
 // automatic moment, so this branch only ever includes a PR when someone's
 // actually tagged its author and that tag is still live.
+//
+// A tag is only still live if the author hasn't already answered it: once
+// they've posted anything on the PR *after* being tagged, the ball is back
+// in the maintainers' court, so it's no longer their turn to be reminded —
+// even if that reply never @-mentions whoever tagged them (a plain reply, or
+// GitHub's "I'm away" auto-response, still counts as them having engaged).
 function hasOutstandingDocsAuthorPing(pr) {
 	return (
 		pr.docsAuthorPingDate !== null &&
 		pr.docsAuthorPingActor !== PROMPTLESS &&
-		(!pr.lastApprovalDate || pr.docsAuthorPingDate > pr.lastApprovalDate)
+		(!pr.lastApprovalDate || pr.docsAuthorPingDate > pr.lastApprovalDate) &&
+		(!pr.docsAuthorLastEventDate ||
+			pr.docsAuthorLastEventDate <= pr.docsAuthorPingDate)
 	)
 }
 
@@ -2326,10 +2570,12 @@ function hasOutstandingDocsAuthorPing(pr) {
 function buildReminderGroups(prData) {
 	const groups = new Map()
 	for (const pr of prData) {
-		// A stale PR (30+ days of no activity anywhere) is a call for you or
-		// the team to make, not something to push onto an external
-		// contributor automatically.
-		if (pr.staleFlag) continue
+		// Staleness alone is no longer a reason to hide a PR here — the
+		// checks below (hasOutstandingDocsPing / hasOutstandingDocsAuthorPing)
+		// already require a specific, still-unanswered tag directed at
+		// remindLogin. When that tag exists, a PR going quiet for 30+ days is
+		// exactly the situation this page exists to surface, not a reason to
+		// suppress it.
 
 		let remindLogin
 		let mark
@@ -2351,9 +2597,12 @@ function buildReminderGroups(prData) {
 			// hasOutstandingDocsAuthorPing below): only include it once
 			// someone's actually tagged the author, same as before.
 			if (
-				!["blocked-no-code-pr", "needs-followup", "needs-escalate-core-team"].includes(
-					pr.category,
-				)
+				![
+					"blocked-no-code-pr",
+					"needs-followup",
+					"needs-escalate-core-team",
+					"waiting-escalation-response",
+				].includes(pr.category)
 			)
 				continue
 			if (!hasOutstandingDocsAuthorPing(pr)) continue
@@ -2378,6 +2627,32 @@ function buildReminderGroups(prData) {
 		})
 		return { author, items }
 	})
+}
+
+// Section 2 of the reminder page — a flat, dev-team-facing queue of every
+// docs PR that's been formally escalated to a devTeam target
+// (waiting-escalation-response) and not approved since. Unlike the per-author
+// reminders above this isn't grouped by person; it's a shared list the dev
+// team works through, each row naming who it was escalated to, oldest (most
+// overdue) first. A PR here can *also* still appear under its code author in
+// Section 1 — escalating asks the dev team to weigh in, but they often can't
+// vouch for whether the docs content is correct and may throw it back, so the
+// code author is deliberately kept on their own list too.
+function buildEscalationList(prData) {
+	return prData
+		.filter((pr) => pr.category === "waiting-escalation-response" && pr.escalationRequest)
+		.sort(
+			(a, b) => a.escalationRequest.date.getTime() - b.escalationRequest.date.getTime(),
+		)
+}
+
+// The linked code PR as a labelled link (naming its actual repo, which isn't
+// always mautic/mautic — Promptless-authored docs PRs often trace back to
+// api-library or other repos), or a plain "none" when there's no link.
+function codePRLink(pr) {
+	return pr.appPRNumber
+		? `<a href="${pr.appPRUrl}" target="_blank">${escapeHtml(pr.appPRRepo)} #${pr.appPRNumber}</a>`
+		: `<span class="none">No linked code PR</span>`
 }
 
 function generateHTML(prData, { operatorUsername }) {
@@ -2683,6 +2958,14 @@ function generateHTML(prData, { operatorUsername }) {
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .gap-note{display:block;width:100%;margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .gap-note b{color:var(--ink)}
+  .gap-note.weekend{
+    color:var(--ink-2);
+    background:color-mix(in srgb, var(--accent) 8%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 22%, var(--ring));
+    border-radius:9px;padding:8px 12px;
+  }
   .theme-btn{
     border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
     border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
@@ -2692,6 +2975,16 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
   }
   .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;align-self:center;
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:5px;line-height:0;text-decoration:none;
+  }
+  .icon-btn:hover{
+    text-decoration:none;color:var(--ink);
+    border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));
+  }
+  .icon-btn svg{display:block}
 
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
   .tile{
@@ -2973,17 +3266,19 @@ function generateHTML(prData, { operatorUsername }) {
   .empty p{color:var(--ink-3);font-size:13px}
   .empty .tail{margin-top:10px;font-size:12px;color:var(--ink-3)}
 
-  footer{margin-top:36px;text-align:center;font-size:12px;color:var(--ink-3)}
+  footer{margin-top:36px;text-align:center;font-size:12px;color:var(--ink-3);line-height:1.7}
   footer code{font-family:ui-monospace,monospace;font-size:11px}
+  footer a{color:var(--ink-2);font-weight:600}
+  footer a:hover{color:var(--accent)}
 
   /* ---------- filter tabs ---------- */
   .filters{
-    display:flex;flex-direction:column;gap:8px;margin-bottom:24px;
+    display:flex;flex-direction:column;gap:16px;margin-bottom:26px;
   }
-  .fbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .fbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .fbar-label{
     font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-    color:var(--ink-3);min-width:64px;
+    color:var(--ink-3);min-width:74px;margin-right:2px;
   }
   .ftab{
     font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
@@ -3107,7 +3402,9 @@ function generateHTML(prData, { operatorUsername }) {
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
+  ${nextUpdateNoticeHtml(now)}
 
   <main id="main-content">
   <div class="stats">
@@ -3234,7 +3531,10 @@ ${bringForwardSection}
 ${waitingSection}
 ${monitoringSection}
   </main>
-  <footer>Generated by <code>node tracker.js</code> as <code>${escapeHtml(operatorUsername)}</code> · <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span></footer>
+  <footer>
+    <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> as <code>${escapeHtml(operatorUsername)}</code></div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+  </footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
@@ -3537,32 +3837,54 @@ ${monitoringSection}
 	fs.writeFileSync("tracker-report.html", html)
 }
 
+// Small status pills shown alongside a row's mark — "Escalated to core team"
+// (the dev team's been asked to weigh in, but it may still come back to the
+// code author, so it's flagged here rather than silently moved) and "Stale"
+// (30+ days quiet, so folks know it's been sitting). Shared by both sections.
+function rowTags(pr) {
+	// No leading spaces — the .marks wrapper lays these out with flex gap, so
+	// they get even spacing whether inline or wrapped onto their own lines.
+	let html = ""
+	if (pr.handedBack)
+		html += `<span class="tag back">↩ Core team passed this back to you</span>`
+	else if (pr.category === "waiting-escalation-response")
+		html += `<span class="tag esc">Needs your review — escalated to Core Team</span>`
+	if (pr.staleFlag) html += `<span class="tag stale">Stale</span>`
+	return html
+}
+
 function renderAuthorGroup(group) {
 	const anchor = group.author.toLowerCase()
 	const rows = group.items
 		.map(({ pr, mark }) => {
 			const key = cacheKey(pr.sourceRepo, pr.number)
-			const markHtml =
-				mark.kind === "review"
+			// The generic "Need review" mark is redundant once the escalation tag
+			// (rowTags, below) already says "Needs your review — escalated to
+			// Core Team" — that's a stronger, more specific version of the same
+			// ask, so showing both just repeats it. A "respond" mark stays: it
+			// points at a specific outstanding comment, which the escalation tag
+			// doesn't cover.
+			const suppressReviewMark =
+				mark.kind === "review" && pr.category === "waiting-escalation-response"
+			const markHtml = suppressReviewMark
+				? ""
+				: mark.kind === "review"
 					? `<span class="mark review">Need review</span>`
 					: `<span class="mark respond">Response to comment from ${escapeHtml(mark.who)}</span>`
-			const codePRHtml = pr.appPRNumber
-				? `<a href="${pr.appPRUrl}" target="_blank">mautic/mautic #${pr.appPRNumber}</a>`
-				: `<span class="none">No linked code PR</span>`
 			const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 			return `
         <tr data-key="${escapeHtml(key)}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
           <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
-          <td data-label="Code PR">${codePRHtml}</td>
-          <td data-label="Mark">${markHtml}</td>
+          <td data-label="Code PR">${codePRLink(pr)}</td>
+          <td data-label="Mark"><span class="marks">${markHtml}${rowTags(pr)}</span></td>
         </tr>`
 		})
 		.join("")
 	return `
   <section class="author-group" id="author-${escapeHtml(anchor)}">
     <div class="author-head">
-      <h2><a href="https://github.com/${escapeHtml(group.author)}" target="_blank">@${escapeHtml(group.author)}</a></h2>
+      <h3><a href="https://github.com/${escapeHtml(group.author)}" target="_blank">@${escapeHtml(group.author)}</a></h3>
       <span class="author-progress">0/${group.items.length} checked</span>
     </div>
     <table>
@@ -3572,11 +3894,45 @@ function renderAuthorGroup(group) {
   </section>`
 }
 
+// Section 2's flat escalation table — no per-person grouping, no checklist
+// (it's a shared dev-team queue, not a personal to-do), each row naming who
+// the PR was escalated to and how long ago.
+function renderEscalationSection(escalations) {
+	const rows = escalations
+		.map((pr) => {
+			const targets = pr.escalationRequest.targets.join(" & ")
+			// Own key namespace ("esc:") so ticking a PR off here is independent
+			// of the same PR's checkbox in a code author's own reminder list —
+			// two different lists, two different jobs.
+			const key = `esc:${cacheKey(pr.sourceRepo, pr.number)}`
+			const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
+			return `
+        <tr data-key="${escapeHtml(key)}">
+          <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
+          <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${pr.staleFlag ? ` <span class="tag stale">Stale</span>` : ""}</td>
+          <td data-label="Code PR">${codePRLink(pr)}</td>
+          <td data-label="Escalated to"><span class="tag esc">${escapeHtml(targets)}</span> <span class="ago">escalated ${escapeHtml(daysAgoText(pr.escalationRequest.date))}</span></td>
+        </tr>`
+		})
+		.join("")
+	// The core team only exists here as a fallback for author silence — so the
+	// instant the author replies, the PR leaves this list on its own (see the
+	// category logic in main()). But the list refreshes on a schedule, not
+	// live, so an author reply in the last hour may not have landed here yet;
+	// this reminds the dev team to glance at the PR before diving in.
+	return `
+    <div class="coord-note">🕒 As of the last update, these authors hadn't replied. If one has since, the PR will be removed from here on the next refresh — <b>open the PR before you review</b>, just in case.</div>
+    <table>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Escalated to</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`
+}
+
 // A separate, self-contained page (mirrors generateHTML's structure but not
 // its markup) meant to be shared directly with code PR authors — a plain
 // per-person checklist of docs PRs waiting on them, with no internal
 // severity/escalation framing.
-function generateReminderHTML(groups, { now }) {
+function generateReminderHTML({ groups, escalations }, { now }) {
 	const totalItems = groups.reduce((sum, g) => sum + g.items.length, 0)
 	const tocHtml =
 		groups.length > 1
@@ -3588,10 +3944,25 @@ function generateReminderHTML(groups, { now }) {
 		)
 		.join("")}</div>`
 			: ""
-	const bodyHtml =
+	const authorSection =
 		groups.length === 0
-			? `<div class="empty">Nothing to remind anyone about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
-			: groups.map(renderAuthorGroup).join("")
+			? `<div class="empty">Nothing to remind any code author about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
+			: `${tocHtml}\n${groups.map(renderAuthorGroup).join("")}`
+	const escalationSection =
+		escalations.length === 0
+			? `<div class="empty">No docs PRs are currently escalated to the Core Team.</div>`
+			: renderEscalationSection(escalations)
+	const bodyHtml = `
+  <div class="section-head" id="section-authors">
+    <h2>Code PR author reminders</h2>
+    <p>Docs PRs waiting on a code PR author's review or reply, grouped by name.</p>
+  </div>
+  ${authorSection}
+  <div class="section-head" id="section-escalated">
+    <h2>Escalated to the Core Team</h2>
+    <p>Formally escalated for a Core Team opinion and review.</p>
+  </div>
+  ${escalationSection}`
 
 	const html = `<!DOCTYPE html>
 <html lang="en">
@@ -3657,6 +4028,14 @@ function generateReminderHTML(groups, { now }) {
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .gap-note{display:block;width:100%;margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .gap-note b{color:var(--ink)}
+  .gap-note.weekend{
+    color:var(--ink-2);
+    background:color-mix(in srgb, var(--accent) 8%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 22%, var(--ring));
+    border-radius:9px;padding:8px 12px;
+  }
   .theme-btn{
     border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
     border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
@@ -3666,6 +4045,16 @@ function generateReminderHTML(groups, { now }) {
     border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
   }
   .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;align-self:center;
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:5px;text-decoration:none;line-height:0;
+  }
+  .icon-btn:hover{
+    text-decoration:none;color:var(--ink);
+    border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));
+  }
+  .icon-btn svg{display:block}
 
   .intro{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -3673,10 +4062,12 @@ function generateReminderHTML(groups, { now }) {
   }
   .intro b{color:var(--ink)}
   .intro p{margin:0 0 8px}
-  .intro p:last-child,.intro ul:last-child{margin-bottom:0}
+  .intro p:last-child,.intro ul:last-child,.intro ol:last-child{margin-bottom:0}
   .intro .intro-lead{font-weight:600;color:var(--ink);margin:12px 0 4px}
-  .intro ul{margin:0 0 8px 18px}
-  .intro li{margin:2px 0}
+  .intro .intro-lead:first-child{margin-top:0}
+  .intro ul,.intro ol{margin:0 0 8px 20px}
+  .intro li{margin:3px 0}
+  .intro-sections li{margin:5px 0}
 
   .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
   .toc a{
@@ -3692,7 +4083,7 @@ function generateReminderHTML(groups, { now }) {
 
   .author-group{margin-bottom:28px}
   .author-head{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
-  .author-head h2{font-size:16px;font-weight:650}
+  .author-head h3{font-size:16px;font-weight:650}
   .author-progress{font-size:12px;color:var(--ink-3)}
 
   table{
@@ -3723,7 +4114,14 @@ function generateReminderHTML(groups, { now }) {
   }
   .skip-link:focus{top:8px}
 
-  .mark{display:inline-flex;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;white-space:nowrap}
+  .marks{
+    display:inline-flex;flex-wrap:wrap;gap:5px;align-items:center;vertical-align:middle;
+  }
+  .mark{
+    display:inline-flex;align-items:center;vertical-align:middle;
+    padding:2px 8px;border:1px solid transparent;border-radius:6px;
+    font-size:11.5px;line-height:1.5;font-weight:600;white-space:nowrap;
+  }
   .mark.review{
     background:color-mix(in srgb, var(--accent) 11%, var(--surface));
     color:color-mix(in srgb, var(--accent) 78%, var(--ink));
@@ -3733,6 +4131,39 @@ function generateReminderHTML(groups, { now }) {
     color:color-mix(in srgb, var(--manual) 72%, var(--ink));
   }
   .none{color:var(--ink-3)}
+
+  .section-head{margin:34px 0 14px}
+  .section-head h2{font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .section-head p{font-size:12.5px;color:var(--ink-3);margin-top:3px;max-width:64ch}
+
+  .coord-note{
+    font-size:12.5px;line-height:1.45;color:var(--ink-2);margin-bottom:12px;
+    padding:9px 12px;border-radius:9px;
+    background:color-mix(in srgb, var(--accent) 7%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 20%, var(--ring));
+  }
+  .coord-note b{color:var(--ink)}
+
+  .tag{
+    display:inline-flex;align-items:center;vertical-align:middle;
+    padding:2px 8px;border:1px solid transparent;border-radius:6px;
+    font-size:11.5px;line-height:1.5;font-weight:600;white-space:nowrap;
+  }
+  .tag.esc{
+    background:color-mix(in srgb, var(--accent) 13%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 80%, var(--ink));
+  }
+  .tag.stale{
+    background:color-mix(in srgb, #fab219 10%, var(--surface));
+    color:color-mix(in srgb, #fab219 55%, var(--ink));
+    border-color:color-mix(in srgb, #fab219 35%, transparent);
+    border-style:dashed;
+  }
+  .tag.back{
+    background:color-mix(in srgb, var(--ink) 9%, var(--surface));
+    color:var(--ink-2);border-color:var(--ring);
+  }
+  .ago{font-size:11px;color:var(--ink-3);white-space:nowrap}
 
   .empty{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
@@ -3751,7 +4182,9 @@ function generateReminderHTML(groups, { now }) {
   .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
   .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
 
-  footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center}
+  footer{margin-top:32px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.7}
+  footer a{color:var(--ink-2);font-weight:600}
+  footer a:hover{color:var(--accent)}
 
   @media (max-width:640px){
     table{display:block;border:none;border-radius:0;box-shadow:none;background:none}
@@ -3786,34 +4219,35 @@ function generateReminderHTML(groups, { now }) {
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
+  ${nextUpdateNoticeHtml(now)}
 
   <div class="intro">
-    <p>
-      Docs PRs waiting on <b>your</b> review or response to a comment,
-      grouped by name — either your linked code PR has merged, or it's a
-      docs PR you opened yourself that's waiting on your reply.
-    </p>
+    <p class="intro-lead">You can find two sections on this page:</p>
+    <ol class="intro-sections">
+      <li><a href="#section-authors"><b>Code PR author reminders</b></a>: docs PRs waiting on a code PR author's review or reply, grouped by name.</li>
+      <li><a href="#section-escalated"><b>Escalated to the Core Team</b></a>: a shared queue of PRs formally sent to the Core Team for an opinion and review.</li>
+    </ol>
     <p class="intro-lead">Using this list:</p>
     <ul>
-      <li>Click your name below to jump straight to your section.</li>
-      <li>
-        Check a box to track your progress — it saves to <b>your own
-        browser</b> only. The reminder list updates when the tracker runs on
-        schedule.
-      </li>
+      <li>Use the links above to jump straight to a section — <b>Core Team</b>, section 2 is your queue.</li>
+      <li>Under <b>Code PR author reminders</b>, click your name to jump to your own items.</li>
+      <li>Check a box to track your progress — it saves to <b>your own browser</b> only. The list updates when the tracker runs on schedule.</li>
     </ul>
     <p class="intro-lead">To review a PR:</p>
-    <ul>
-      <li>Open its <b>Files changed</b> tab.</li>
-      <li>Click <b>Submit review</b> to approve it or request changes.</li>
-    </ul>
+    <ol>
+      <li>Open the PR's <b>Files changed</b> tab, then use <b>Review changes → Submit review</b> to approve it or request changes.</li>
+      <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines — then <b>Submit review</b> when you're done.</li>
+    </ol>
   </div>
   <main id="main-content">
-${tocHtml}
 ${bodyHtml}
   </main>
-  <footer>Generated by <code>node tracker.js</code> · <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${totalItems} PR${totalItems === 1 ? "" : "s"} across ${groups.length} author${groups.length === 1 ? "" : "s"}</footer>
+  <footer>
+    <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${totalItems} author reminder${totalItems === 1 ? "" : "s"} · ${escalations.length} escalated</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+  </footer>
 </div>
 
 <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
