@@ -2318,11 +2318,19 @@ function reminderMark(pr) {
 // trigger to come review the docs, but a standalone docs PR has no such
 // automatic moment, so this branch only ever includes a PR when someone's
 // actually tagged its author and that tag is still live.
+//
+// A tag is only still live if the author hasn't already answered it: once
+// they've posted anything on the PR *after* being tagged, the ball is back
+// in the maintainers' court, so it's no longer their turn to be reminded —
+// even if that reply never @-mentions whoever tagged them (a plain reply, or
+// GitHub's "I'm away" auto-response, still counts as them having engaged).
 function hasOutstandingDocsAuthorPing(pr) {
 	return (
 		pr.docsAuthorPingDate !== null &&
 		pr.docsAuthorPingActor !== PROMPTLESS &&
-		(!pr.lastApprovalDate || pr.docsAuthorPingDate > pr.lastApprovalDate)
+		(!pr.lastApprovalDate || pr.docsAuthorPingDate > pr.lastApprovalDate) &&
+		(!pr.docsAuthorLastEventDate ||
+			pr.docsAuthorLastEventDate <= pr.docsAuthorPingDate)
 	)
 }
 
