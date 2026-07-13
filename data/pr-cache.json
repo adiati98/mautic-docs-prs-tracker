@@ -5119,7 +5119,7 @@
   },
   "mautic/developer-documentation-new#310": {
     "docsUpdatedAt": "2026-06-09T08:32:08Z",
-    "codeUpdatedAt": "2026-07-09T15:04:34Z",
+    "codeUpdatedAt": "2026-07-13T00:42:40Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5414,7 +5414,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-09T15:04:34Z",
+        "created_at": "2026-07-13T00:42:40Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [32 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n"
       }
     ],
@@ -6168,7 +6168,7 @@
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
-    "codeUpdatedAt": "2026-07-10T15:07:08Z",
+    "codeUpdatedAt": "2026-07-13T08:56:08Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -6214,7 +6214,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-10T09:25:32Z",
+        "created_at": "2026-07-13T07:57:21Z",
         "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Reliability Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) (required ≥ A)  \n  \n<!-- sqra:qg_revision=c03e154134dabd30f60b6f3019f911c9286165f0476595d0d5eddd0b58269ea2 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479)\n\n##   \n💡 **Need a hand with PR review?** Try [Gitar by Sonar](https://gitar.ai/?utm_source=sonarqube-cloud&utm_medium=in-product&utm_campaign=gitar-crosssell-q3-2026&utm_content=pr-deco)!\n\n"
       }
     ],
@@ -6969,7 +6969,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#807": {
-    "docsUpdatedAt": "2026-07-12T07:52:12Z",
+    "docsUpdatedAt": "2026-07-13T08:21:46Z",
     "codeUpdatedAt": "2026-06-27T12:20:47Z",
     "rawDocsReviews": [
       {
@@ -7025,6 +7025,13 @@
         },
         "created_at": "2026-07-12T07:43:53Z",
         "body": "/aside \r\n\r\n@escopecz, I have a question. I wanted to add screenshots here, but I got this warning of I need to enable the GrapeJS builder plugin first. How to actually enable the GrapeJS and use the Builder?\r\n\r\nHere's what I did:\r\n\r\n1. I confirmed that GrapeJS is enabled from **Settings > Plugins**.\r\n\r\n  <img width=\"1183\" height=\"618\" alt=\"Screenshot 2026-07-12 092827\" src=\"https://github.com/user-attachments/assets/49e314d3-2b93-4708-bd95-3ea8d802f94c\" />\r\n\r\n2. I created a new Landing Page, selected a theme, and click 'Builder'.\r\n3. It shown this pop message:\r\n\r\n  <img width=\"960\" height=\"368\" alt=\"Screenshot 2026-07-12 092925\" src=\"https://github.com/user-attachments/assets/0bd5ff9b-a61f-49c3-91bb-c4c3fd503c98\" />\r\n  \r\n\r\n\r\n"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-07-13T08:21:46Z",
+        "body": "From what I understand from the code this alert appears only if the GrapesJS JS assets aren't loaded. There was a recent change that the production GrapesJS assets are built during the `composer install` command and aren't directly stored in Git. Try to run that to generate the prod assets."
       }
     ],
     "rawCodeComments": [
@@ -7442,7 +7449,7 @@
     ]
   },
   "mautic/user-documentation#802": {
-    "docsUpdatedAt": "2026-07-12T18:34:40Z",
+    "docsUpdatedAt": "2026-07-13T08:14:32Z",
     "codeUpdatedAt": "2026-06-27T09:31:22Z",
     "rawDocsReviews": [
       {
@@ -7460,6 +7467,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-12T18:27:16Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-13T08:14:32Z",
+        "body": "Why not 👍 "
       }
     ],
     "rawDocsComments": [
@@ -7837,7 +7852,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#796": {
-    "docsUpdatedAt": "2026-07-11T08:26:40Z",
+    "docsUpdatedAt": "2026-07-13T08:30:34Z",
     "codeUpdatedAt": "2026-06-27T12:26:39Z",
     "rawDocsReviews": [
       {
@@ -7871,6 +7886,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-06-27T12:35:18Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-13T08:30:34Z",
+        "body": "👍 "
       }
     ],
     "rawDocsComments": [
@@ -11334,7 +11357,7 @@
   },
   "mautic/user-documentation#697": {
     "docsUpdatedAt": "2026-06-26T05:52:04Z",
-    "codeUpdatedAt": "2026-07-09T15:04:34Z",
+    "codeUpdatedAt": "2026-07-13T00:42:40Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11589,7 +11612,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-09T15:04:34Z",
+        "created_at": "2026-07-13T00:42:40Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [32 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n"
       }
     ],
