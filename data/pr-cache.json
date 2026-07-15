@@ -11760,5 +11760,134 @@
       }
     ],
     "rawReviewRequests": []
+  },
+  "mautic/user-documentation#848": {
+    "docsUpdatedAt": "2026-07-15T18:58:20Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
+  },
+  "mautic/user-documentation#847": {
+    "docsUpdatedAt": "2026-07-15T18:54:48Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:54:48Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:54:48Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/user-documentation#846": {
+    "docsUpdatedAt": "2026-07-15T18:51:34Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:51:34Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:51:34Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/user-documentation#845": {
+    "docsUpdatedAt": "2026-07-15T18:47:18Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:47:18Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:47:18Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/user-documentation#844": {
+    "docsUpdatedAt": "2026-07-15T18:43:16Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:43:16Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-15T18:43:16Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   }
 }
