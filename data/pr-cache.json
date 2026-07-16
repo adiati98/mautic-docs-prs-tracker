@@ -3870,7 +3870,7 @@
   },
   "mautic/developer-documentation-new#516": {
     "docsUpdatedAt": "2026-07-08T18:25:11Z",
-    "codeUpdatedAt": "2026-07-16T04:50:17Z",
+    "codeUpdatedAt": "2026-07-16T09:33:28Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8943,7 +8943,7 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-16T08:08:16Z",
+    "docsUpdatedAt": "2026-07-16T09:14:58Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
       {
@@ -9966,7 +9966,7 @@
   },
   "mautic/user-documentation#704": {
     "docsUpdatedAt": "2026-07-12T10:16:35Z",
-    "codeUpdatedAt": "2026-07-16T04:50:17Z",
+    "codeUpdatedAt": "2026-07-16T09:33:28Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11703,7 +11703,7 @@
   },
   "mautic/developer-documentation-new#595": {
     "docsUpdatedAt": "2026-07-15T12:23:29Z",
-    "codeUpdatedAt": "2026-07-16T07:56:39Z",
+    "codeUpdatedAt": "2026-07-16T09:41:36Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11721,7 +11721,7 @@
           "login": "codecov[bot]"
         },
         "created_at": "2026-07-15T10:07:24Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `98.05195%` with `3 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 70.97%. Comparing base ([`bd1dd1d`](https://app.codecov.io/gh/mautic/mautic/commit/bd1dd1d54a223342c86d77fd662298108d3d191a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`f10be04`](https://app.codecov.io/gh/mautic/mautic/commit/f10be04e6cee88ddfd017d4d0ac78c986c29bc23?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 9 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...le/Segment/Decorator/ParseDateFilterValueTrait.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FSegment%2FDecorator%2FParseDateFilterValueTrait.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9TZWdtZW50L0RlY29yYXRvci9QYXJzZURhdGVGaWx0ZXJWYWx1ZVRyYWl0LnBocA==) | 81.25% | [3 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16574/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16574      +/-   ##\n============================================\n+ Coverage     70.96%   70.97%   +0.01%     \n- Complexity    38269    38298      +29     \n============================================\n  Files          2480     2482       +2     \n  Lines        144172   144181       +9     \n============================================\n+ Hits         102308   102332      +24     \n+ Misses        41864    41849      -15     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/CoreBundle/Form/Type/DateSpanType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FForm%2FType%2FDateSpanType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9Gb3JtL1R5cGUvRGF0ZVNwYW5UeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [...pp/bundles/LeadBundle/Event/TypeOperatorsEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEvent%2FTypeOperatorsEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudC9UeXBlT3BlcmF0b3JzRXZlbnQucGhw) | `100.00% <100.00%> (ø)` | |\n| [...dBundle/EventListener/FilterOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FFilterOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0ZpbHRlck9wZXJhdG9yU3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...e/EventListener/SegmentOperatorQuerySubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FSegmentOperatorQuerySubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1NlZ21lbnRPcGVyYXRvclF1ZXJ5U3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...eadBundle/EventListener/TypeOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FTypeOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1R5cGVPcGVyYXRvclN1YnNjcmliZXIucGhw) | `97.17% <100.00%> (+0.20%)` | :arrow_up: |\n| [...le/Form/DataTransformer/FieldFilterTransformer.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FDataTransformer%2FFieldFilterTransformer.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL0RhdGFUcmFuc2Zvcm1lci9GaWVsZEZpbHRlclRyYW5zZm9ybWVyLnBocA==) | `96.77% <100.00%> (+0.34%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/FilterType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FFilterType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvRmlsdGVyVHlwZS5waHA=) | `93.67% <100.00%> (+0.08%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/ListType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FListType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvTGlzdFR5cGUucGhw) | `100.00% <100.00%> (ø)` | |\n| [...ndles/LeadBundle/Provider/TypeOperatorProvider.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FProvider%2FTypeOperatorProvider.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Qcm92aWRlci9UeXBlT3BlcmF0b3JQcm92aWRlci5waHA=) | `97.14% <100.00%> (+0.47%)` | :arrow_up: |\n| [...les/LeadBundle/Segment/Decorator/BaseDecorator.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FSegment%2FDecorator%2FBaseDecorator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9TZWdtZW50L0RlY29yYXRvci9CYXNlRGVjb3JhdG9yLnBocA==) | `96.49% <100.00%> (+0.12%)` | :arrow_up: |\n| ... and [9 more](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | |\n\n... and [2 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16574/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 70.97%. Comparing base ([`bd1dd1d`](https://app.codecov.io/gh/mautic/mautic/commit/bd1dd1d54a223342c86d77fd662298108d3d191a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`ca04418`](https://app.codecov.io/gh/mautic/mautic/commit/ca044185e2cd0df07119b867fd58185863bfcae7?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 21 commits behind head on 7.x.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16574/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16574      +/-   ##\n============================================\n+ Coverage     70.96%   70.97%   +0.01%     \n- Complexity    38269    38299      +30     \n============================================\n  Files          2480     2482       +2     \n  Lines        144172   144169       -3     \n============================================\n+ Hits         102308   102328      +20     \n+ Misses        41864    41841      -23     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/CoreBundle/Form/Type/DateSpanType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FForm%2FType%2FDateSpanType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9Gb3JtL1R5cGUvRGF0ZVNwYW5UeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [...pp/bundles/LeadBundle/Event/TypeOperatorsEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEvent%2FTypeOperatorsEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudC9UeXBlT3BlcmF0b3JzRXZlbnQucGhw) | `100.00% <100.00%> (ø)` | |\n| [...dBundle/EventListener/FilterOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FFilterOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0ZpbHRlck9wZXJhdG9yU3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...e/EventListener/SegmentOperatorQuerySubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FSegmentOperatorQuerySubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1NlZ21lbnRPcGVyYXRvclF1ZXJ5U3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...eadBundle/EventListener/TypeOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FTypeOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1R5cGVPcGVyYXRvclN1YnNjcmliZXIucGhw) | `97.17% <100.00%> (+0.20%)` | :arrow_up: |\n| [...le/Form/DataTransformer/FieldFilterTransformer.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FDataTransformer%2FFieldFilterTransformer.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL0RhdGFUcmFuc2Zvcm1lci9GaWVsZEZpbHRlclRyYW5zZm9ybWVyLnBocA==) | `96.77% <100.00%> (+0.34%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/FilterType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FFilterType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvRmlsdGVyVHlwZS5waHA=) | `93.67% <100.00%> (+0.08%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/ListType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FListType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvTGlzdFR5cGUucGhw) | `100.00% <100.00%> (ø)` | |\n| [...ndles/LeadBundle/Provider/TypeOperatorProvider.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FProvider%2FTypeOperatorProvider.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Qcm92aWRlci9UeXBlT3BlcmF0b3JQcm92aWRlci5waHA=) | `97.14% <100.00%> (+0.47%)` | :arrow_up: |\n| [...les/LeadBundle/Segment/Decorator/BaseDecorator.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FSegment%2FDecorator%2FBaseDecorator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9TZWdtZW50L0RlY29yYXRvci9CYXNlRGVjb3JhdG9yLnBocA==) | `96.49% <100.00%> (+0.12%)` | :arrow_up: |\n| ... and [9 more](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | |\n\n... and [58 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16574/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       },
       {
         "user": {
@@ -11768,13 +11768,37 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-16T07:52:31Z",
         "body": "👍 "
+      },
+      {
+        "user": {
+          "login": "kuzmany"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-16T09:04:57Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "kuzmany"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-16T09:05:58Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "fedys"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-16T09:20:22Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
   },
   "mautic/user-documentation#843": {
     "docsUpdatedAt": "2026-07-15T12:23:23Z",
-    "codeUpdatedAt": "2026-07-16T07:56:39Z",
+    "codeUpdatedAt": "2026-07-16T09:41:36Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11792,7 +11816,7 @@
           "login": "codecov[bot]"
         },
         "created_at": "2026-07-15T10:07:24Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `98.05195%` with `3 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 70.97%. Comparing base ([`bd1dd1d`](https://app.codecov.io/gh/mautic/mautic/commit/bd1dd1d54a223342c86d77fd662298108d3d191a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`f10be04`](https://app.codecov.io/gh/mautic/mautic/commit/f10be04e6cee88ddfd017d4d0ac78c986c29bc23?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 9 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...le/Segment/Decorator/ParseDateFilterValueTrait.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FSegment%2FDecorator%2FParseDateFilterValueTrait.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9TZWdtZW50L0RlY29yYXRvci9QYXJzZURhdGVGaWx0ZXJWYWx1ZVRyYWl0LnBocA==) | 81.25% | [3 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16574/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16574      +/-   ##\n============================================\n+ Coverage     70.96%   70.97%   +0.01%     \n- Complexity    38269    38298      +29     \n============================================\n  Files          2480     2482       +2     \n  Lines        144172   144181       +9     \n============================================\n+ Hits         102308   102332      +24     \n+ Misses        41864    41849      -15     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/CoreBundle/Form/Type/DateSpanType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FForm%2FType%2FDateSpanType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9Gb3JtL1R5cGUvRGF0ZVNwYW5UeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [...pp/bundles/LeadBundle/Event/TypeOperatorsEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEvent%2FTypeOperatorsEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudC9UeXBlT3BlcmF0b3JzRXZlbnQucGhw) | `100.00% <100.00%> (ø)` | |\n| [...dBundle/EventListener/FilterOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FFilterOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0ZpbHRlck9wZXJhdG9yU3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...e/EventListener/SegmentOperatorQuerySubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FSegmentOperatorQuerySubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1NlZ21lbnRPcGVyYXRvclF1ZXJ5U3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...eadBundle/EventListener/TypeOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FTypeOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1R5cGVPcGVyYXRvclN1YnNjcmliZXIucGhw) | `97.17% <100.00%> (+0.20%)` | :arrow_up: |\n| [...le/Form/DataTransformer/FieldFilterTransformer.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FDataTransformer%2FFieldFilterTransformer.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL0RhdGFUcmFuc2Zvcm1lci9GaWVsZEZpbHRlclRyYW5zZm9ybWVyLnBocA==) | `96.77% <100.00%> (+0.34%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/FilterType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FFilterType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvRmlsdGVyVHlwZS5waHA=) | `93.67% <100.00%> (+0.08%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/ListType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FListType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvTGlzdFR5cGUucGhw) | `100.00% <100.00%> (ø)` | |\n| [...ndles/LeadBundle/Provider/TypeOperatorProvider.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FProvider%2FTypeOperatorProvider.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Qcm92aWRlci9UeXBlT3BlcmF0b3JQcm92aWRlci5waHA=) | `97.14% <100.00%> (+0.47%)` | :arrow_up: |\n| [...les/LeadBundle/Segment/Decorator/BaseDecorator.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FSegment%2FDecorator%2FBaseDecorator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9TZWdtZW50L0RlY29yYXRvci9CYXNlRGVjb3JhdG9yLnBocA==) | `96.49% <100.00%> (+0.12%)` | :arrow_up: |\n| ... and [9 more](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | |\n\n... and [2 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16574/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 70.97%. Comparing base ([`bd1dd1d`](https://app.codecov.io/gh/mautic/mautic/commit/bd1dd1d54a223342c86d77fd662298108d3d191a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`ca04418`](https://app.codecov.io/gh/mautic/mautic/commit/ca044185e2cd0df07119b867fd58185863bfcae7?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 21 commits behind head on 7.x.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16574/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16574      +/-   ##\n============================================\n+ Coverage     70.96%   70.97%   +0.01%     \n- Complexity    38269    38299      +30     \n============================================\n  Files          2480     2482       +2     \n  Lines        144172   144169       -3     \n============================================\n+ Hits         102308   102328      +20     \n+ Misses        41864    41841      -23     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16574?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/CoreBundle/Form/Type/DateSpanType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FForm%2FType%2FDateSpanType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9Gb3JtL1R5cGUvRGF0ZVNwYW5UeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [...pp/bundles/LeadBundle/Event/TypeOperatorsEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEvent%2FTypeOperatorsEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudC9UeXBlT3BlcmF0b3JzRXZlbnQucGhw) | `100.00% <100.00%> (ø)` | |\n| [...dBundle/EventListener/FilterOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FFilterOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0ZpbHRlck9wZXJhdG9yU3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...e/EventListener/SegmentOperatorQuerySubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FSegmentOperatorQuerySubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1NlZ21lbnRPcGVyYXRvclF1ZXJ5U3Vic2NyaWJlci5waHA=) | `100.00% <100.00%> (ø)` | |\n| [...eadBundle/EventListener/TypeOperatorSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FTypeOperatorSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL1R5cGVPcGVyYXRvclN1YnNjcmliZXIucGhw) | `97.17% <100.00%> (+0.20%)` | :arrow_up: |\n| [...le/Form/DataTransformer/FieldFilterTransformer.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FDataTransformer%2FFieldFilterTransformer.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL0RhdGFUcmFuc2Zvcm1lci9GaWVsZEZpbHRlclRyYW5zZm9ybWVyLnBocA==) | `96.77% <100.00%> (+0.34%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/FilterType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FFilterType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvRmlsdGVyVHlwZS5waHA=) | `93.67% <100.00%> (+0.08%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Form/Type/ListType.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FForm%2FType%2FListType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Gb3JtL1R5cGUvTGlzdFR5cGUucGhw) | `100.00% <100.00%> (ø)` | |\n| [...ndles/LeadBundle/Provider/TypeOperatorProvider.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FProvider%2FTypeOperatorProvider.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9Qcm92aWRlci9UeXBlT3BlcmF0b3JQcm92aWRlci5waHA=) | `97.14% <100.00%> (+0.47%)` | :arrow_up: |\n| [...les/LeadBundle/Segment/Decorator/BaseDecorator.php](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FSegment%2FDecorator%2FBaseDecorator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9TZWdtZW50L0RlY29yYXRvci9CYXNlRGVjb3JhdG9yLnBocA==) | `96.49% <100.00%> (+0.12%)` | :arrow_up: |\n| ... and [9 more](https://app.codecov.io/gh/mautic/mautic/pull/16574?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | |\n\n... and [58 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16574/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       },
       {
         "user": {
@@ -11839,6 +11863,30 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-16T07:52:31Z",
         "body": "👍 "
+      },
+      {
+        "user": {
+          "login": "kuzmany"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-16T09:04:57Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "kuzmany"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-16T09:05:58Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "fedys"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-16T09:20:22Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
@@ -11965,6 +12013,66 @@
           "login": "adiati98"
         },
         "created_at": "2026-07-15T18:43:16Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/developer-documentation-new#597": {
+    "docsUpdatedAt": "2026-07-16T09:41:53Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-16T09:41:52Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-16T09:41:53Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/developer-documentation-new#596": {
+    "docsUpdatedAt": "2026-07-16T09:35:21Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-16T09:34:52Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-16T09:34:52Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
         },
