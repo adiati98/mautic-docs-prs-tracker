@@ -762,7 +762,7 @@
     ]
   },
   "mautic/developer-documentation-new#582": {
-    "docsUpdatedAt": "2026-07-17T08:47:57Z",
+    "docsUpdatedAt": "2026-07-17T08:50:45Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -797,6 +797,13 @@
         },
         "created_at": "2026-07-17T08:43:09Z",
         "body": "Thanks for the review, @adiati98! I've addressed the `Google.Passive` warning.\n\nIn `docs/plugin_services/parameters.rst`, the flagged phrase \"to confirm whether a parameter **is set**\" was rewritten in active voice — `has()` now reads \"to **confirm whether a parameter exists**\".\n\nVale is clean on the changed lines. The update is pushed to this PR.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-17T08:50:45Z",
+        "body": "Done, @adiati98 — I removed the placeholder note admonition (and its now-unneeded `.. vale off` / `.. vale on` wrappers) from `docs/plugin_services/parameters.rst`. The page now goes straight from the title into the `CoreParametersHelper` content.\n\nVale is clean on the changed content. The update is pushed to this PR.\n"
       }
     ],
     "rawCodeComments": [],
@@ -4139,7 +4146,7 @@
     ]
   },
   "mautic/developer-documentation-new#505": {
-    "docsUpdatedAt": "2026-07-15T12:24:05Z",
+    "docsUpdatedAt": "2026-07-17T09:20:25Z",
     "codeUpdatedAt": "2026-06-26T04:37:49Z",
     "rawDocsReviews": [
       {
@@ -4229,6 +4236,22 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-15T12:24:05Z",
         "body": "OK"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-17T08:50:10Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-17T09:20:25Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -4322,6 +4345,13 @@
         },
         "created_at": "2026-07-10T08:40:01Z",
         "body": "/aside\r\n\r\nCan you please review the content here, @andersonjeccel? TIA! ✨"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-17T09:10:51Z",
+        "body": "Thanks, @adiati98 — addressed the `Mautic.FeatureList` warning in `docs/development-environment/building_assets.rst`.\n\nIn this context \"assets\" refers to the compiled frontend build artifacts (CSS/JS via the Sass bundle and Asset Mapper), not the Mautic **Asset** content feature, so capitalizing to \"Assets\" would be incorrect. I suppressed the false positive instead. Vale now reports clean (0/0/0) and the update is pushed to this PR.\n"
       }
     ],
     "rawCodeComments": [
@@ -11761,7 +11791,7 @@
     ]
   },
   "mautic/developer-documentation-new#595": {
-    "docsUpdatedAt": "2026-07-15T12:23:29Z",
+    "docsUpdatedAt": "2026-07-17T08:50:54Z",
     "codeUpdatedAt": "2026-07-16T09:41:36Z",
     "rawDocsReviews": [
       {
