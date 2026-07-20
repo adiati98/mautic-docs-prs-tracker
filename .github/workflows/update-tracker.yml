@@ -10,11 +10,13 @@ on:
     # (e.g. 8:00 UTC = 9:00 BST). Accepted tradeoff for an internal tool.
     - cron: "0,30 8-19 * * 1-5"
     - cron: "0 20 * * 1-5"
-    # Weekend: two check-ins total across Sat-Sun, not two per day - a
-    # Saturday morning pass, then the existing Sunday-night full resync.
-    - cron: "0 9 * * 6"
-    # Weekly full resync - Sunday 8pm UK/GMT time.
-    - cron: "0 20 * * 0"
+    # Weekend: two incremental check-ins each day (Sat and Sun), 9am and
+    # 8pm UK/GMT - same cadence both days.
+    - cron: "0 9 * * 6,0"
+    - cron: "0 20 * * 6,0"
+    # Weekly full resync - Sunday 11pm UK/GMT time, its own separate slot
+    # rather than reusing Sunday's 8pm incremental run above.
+    - cron: "0 23 * * 0"
   workflow_dispatch:
     inputs:
       fresh:
@@ -53,7 +55,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TRACKER_PAT }}
         run: |
-          if [ "${{ github.event.schedule }}" = "0 20 * * 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
+          if [ "${{ github.event.schedule }}" = "0 23 * * 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
             echo "Running full fresh fetch..."
             node tracker.js --fresh
           else
