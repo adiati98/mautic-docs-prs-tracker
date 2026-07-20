@@ -349,15 +349,18 @@ commits the updated report + cache back to the repo, and publishes both
 `tracker-report.html` (as the Pages site's `index.html`) and
 `tracker-reminders.html` to GitHub Pages, each also kept under their own
 filename in the deployment so the pages' cross-links to each other work the
-same whether you're viewing them locally or on Pages. Two schedules:
+same whether you're viewing them locally or on Pages. Four schedules:
 
-- **Every hour, 8am–8pm UK time, Mon–Fri** — incremental (`node tracker.js`,
-  cache-assisted). Anchored to GMT; GitHub Actions cron has no DST support,
-  so during BST (late Mar–late Oct) these land about an hour later by the UK
-  clock. Accepted tradeoff for an internal tool.
-- **Sunday 11pm UK/GMT** — the only run that day, a full fresh fetch
+- **Every half hour, 8am–8pm UK time, Mon–Fri** — incremental (`node
+  tracker.js`, cache-assisted). Anchored to GMT; GitHub Actions cron has no
+  DST support, so during BST (late Mar–late Oct) these land about an hour
+  later by the UK clock. Accepted tradeoff for an internal tool.
+- **Saturday 9am UK/GMT** — a single weekend check-in, also incremental.
+- **Sunday 8pm UK/GMT** — the other weekend run, a full fresh fetch
   (`node tracker.js --fresh`), ignoring the cache to correct any drift.
-  Nothing runs on Saturday.
+
+Two runs total across the weekend (Saturday morning, Sunday evening) —
+otherwise the tracker is quiet Sat/Sun.
 
 You can also trigger it manually from the Actions tab (`workflow_dispatch`),
 optionally forcing a fresh fetch via the "Force a full fresh fetch" input.
