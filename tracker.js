@@ -2553,35 +2553,46 @@ function formatUpdated(date) {
 	})
 }
 
-// Mirrors the CI cron in .github/workflows/update-tracker.yml: hourly Mon-Fri
-// 08:00-20:00 UTC, plus a single Sunday 23:00 UTC resync — nothing else on the
-// weekend. Kept in sync with that file by hand (there's no way to read the cron
-// at runtime). Used to tell a viewer when the next refresh is due, so a page
-// that's hours old over a weekend reads as "expected" rather than broken.
-function isScheduledRunHourUTC(d) {
+// Mirrors the CI cron in .github/workflows/update-tracker.yml: every half
+// hour Mon-Fri 08:00-20:00 UTC, a Saturday 09:00 UTC check-in, and a Sunday
+// 20:00 UTC full resync — nothing else on the weekend. Kept in sync with
+// that file by hand (there's no way to read the cron at runtime). Used to
+// tell a viewer when the next refresh is due, so a page that's hours old
+// over a weekend reads as "expected" rather than broken.
+function isScheduledRunUTC(d) {
 	const day = d.getUTCDay() // 0 = Sun … 6 = Sat
 	const hour = d.getUTCHours()
-	if (day >= 1 && day <= 5) return hour >= 8 && hour <= 20
-	if (day === 0) return hour === 23
+	const minute = d.getUTCMinutes()
+	if (day >= 1 && day <= 5) {
+		if (minute !== 0 && minute !== 30) return false
+		if (hour === 20) return minute === 0 // window closes exactly at 8pm
+		return hour >= 8 && hour <= 19
+	}
+	if (day === 6) return hour === 9 && minute === 0
+	if (day === 0) return hour === 20 && minute === 0
 	return false
 }
 
 function nextScheduledRun(now) {
 	const d = new Date(now)
-	d.setUTCMinutes(0, 0, 0)
-	d.setUTCHours(d.getUTCHours() + 1) // the current hour already ran
-	for (let i = 0; i < 24 * 5; i++) {
-		if (isScheduledRunHourUTC(d)) return new Date(d)
-		d.setUTCHours(d.getUTCHours() + 1)
+	d.setUTCSeconds(0, 0)
+	// Round up to the next half-hour mark — the one we're currently in, even
+	// if it matches, already ran (Date's setters normalize the 60 overflow
+	// into the next hour, so this works right across the hour boundary too).
+	d.setUTCMinutes(d.getUTCMinutes() < 30 ? 30 : 60)
+	for (let i = 0; i < 48 * 8; i++) {
+		if (isScheduledRunUTC(d)) return new Date(d)
+		d.setUTCMinutes(d.getUTCMinutes() + 30)
 	}
 	return null
 }
 
 // A heads-up about the next refresh, but only when it's more than ~2h out —
-// i.e. not the normal hourly weekday cadence, which needs no explanation. A gap
-// longer than a day means the weekend lull (the tracker barely runs Sat/Sun),
-// which gets its own "back to hourly Monday" framing. Returns the next run's
-// ISO (rendered to the viewer's local time client-side) or null.
+// i.e. not the normal half-hourly weekday cadence, which needs no
+// explanation. A gap longer than a day means the weekend lull (the tracker
+// barely runs Sat/Sun), which gets its own "back to normal Monday" framing.
+// Returns the next run's ISO (rendered to the viewer's local time
+// client-side) or null.
 function nextUpdateNotice(now) {
 	const next = nextScheduledRun(now)
 	if (!next) return null
@@ -2599,7 +2610,7 @@ function nextUpdateNoticeHtml(now) {
 	const lead = notice.weekend
 		? "⏸ The tracker barely runs on weekends — next update"
 		: "Next update"
-	const tail = notice.weekend ? ", then hourly again on Monday" : ""
+	const tail = notice.weekend ? ", then every half hour again on Monday" : ""
 	return `<span class="${cls}">${lead} <b><span data-updated-iso="${notice.iso}">…</span></b>${tail}</span>`
 }
 

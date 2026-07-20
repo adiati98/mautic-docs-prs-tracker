@@ -13,8 +13,8 @@ on:
     # Weekend: two check-ins total across Sat-Sun, not two per day - a
     # Saturday morning pass, then the existing Sunday-night full resync.
     - cron: "0 9 * * 6"
-    # Weekly full resync - Sunday 11pm UK/GMT time.
-    - cron: "0 23 * * 0"
+    # Weekly full resync - Sunday 8pm UK/GMT time.
+    - cron: "0 20 * * 0"
   workflow_dispatch:
     inputs:
       fresh:
@@ -53,7 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TRACKER_PAT }}
         run: |
-          if [ "${{ github.event.schedule }}" = "0 23 * * 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
+          if [ "${{ github.event.schedule }}" = "0 20 * * 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
             echo "Running full fresh fetch..."
             node tracker.js --fresh
           else
