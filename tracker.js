@@ -1105,58 +1105,58 @@ async function main() {
 			computeOperatorReviewDate(docsReviews, docsComments, operatorLogins)
 		const operatorReviewDone = operatorReviewDate !== null
 
-		const devApproved = appPRAuthor
-			? docsReviews.some(
-					(r) => r.user.login === appPRAuthor && r.state === "APPROVED",
-				)
-			: false
-		const nonOperatorApprovals = docsReviews.filter(
-			(r) =>
-				r.state === "APPROVED" && !operatorLogins.has(r.user.login.toLowerCase()),
-		)
 		// GitHub auto-dismisses an APPROVED review the moment new commits
 		// land — even a push that only addresses feedback unrelated to what
-		// the approver actually signed off on — and every downstream
-		// approval fact (finalReviewActionable, the escalation-clock
-		// shortcut, the "Approved by X" chip) disappears along with it. The
-		// content-approved label is how an operator manually restores that
-		// fact once they've confirmed the dismissal was spurious: a
-		// deliberate human call, not something inferred from the API. Login
-		// attribution reuses whichever non-author human reviews now show up
-		// as DISMISSED — the state GitHub's stale-approval auto-dismissal
-		// always leaves behind (a CHANGES_REQUESTED review is never
-		// auto-dismissed this way) — so no extra API call is needed to name
-		// them.
-		const dismissedApproverLogins = [
-			...new Set(
-				docsReviews
-					.filter((r) => r.state === "DISMISSED" && r.user.login !== pr.user.login)
-					.map((r) => r.user.login),
-			),
-		]
-		const contentApprovedByLabel =
-			hasContentApprovedLabel && dismissedApproverLogins.length > 0
-		const approvedByNonOperator = nonOperatorApprovals.length > 0 || contentApprovedByLabel
-		// Any unrevoked approval that isn't the PR author approving their own
-		// work — GitHub blocks self-approval for everyone except one admin
-		// exception, so in practice this exclusion only ever catches that one
-		// case. Broader than nonOperatorApprovals above: this is what lets an
-		// *operator's* approval count too, which matters for the standalone-PR
-		// "ready" logic below (nonOperatorApprovals stays as-is for the
-		// linked-PR flows that already relied on excluding operators).
-		const qualifyingApprovals = docsReviews.filter(
-			(r) => r.state === "APPROVED" && r.user.login !== pr.user.login,
+		// the approver actually signed off on — flipping its state to
+		// DISMISSED. A CHANGES_REQUESTED review is never auto-dismissed this
+		// way, so among reviews from someone other than the docs PR's own
+		// author, DISMISSED is taken to mean "was approved, then the approval
+		// got knocked loose by a later push" — the underlying approval fact
+		// (finalReviewActionable, the escalation-clock shortcut, the
+		// "Approved by X" chip) stays intact rather than disappearing,
+		// trusting that a maintainer would have said something if the new
+		// commits actually invalidated the review (noteSinceApprovalFlag
+		// below is the net that catches that). The content-approved label is
+		// no longer required to unlock this — see needsContentApprovedLabelFlag,
+		// which turns it into a reminder instead of a gate.
+		const isApprovalLike = (r) => r.state === "APPROVED" || r.state === "DISMISSED"
+		const devApproved = appPRAuthor
+			? docsReviews.some((r) => r.user.login === appPRAuthor && isApprovalLike(r))
+			: false
+		const nonOperatorApprovals = docsReviews.filter(
+			(r) => isApprovalLike(r) && !operatorLogins.has(r.user.login.toLowerCase()),
 		)
-		const hasQualifyingApproval = qualifyingApprovals.length > 0 || contentApprovedByLabel
+		const approvedByNonOperator = nonOperatorApprovals.length > 0
+		// Any unrevoked-or-dismissed approval that isn't the PR author
+		// approving their own work — GitHub blocks self-approval for everyone
+		// except one admin exception, so in practice this exclusion only ever
+		// catches that one case. Broader than nonOperatorApprovals above: this
+		// is what lets an *operator's* approval count too, which matters for
+		// the standalone-PR "ready" logic below (nonOperatorApprovals stays
+		// as-is for the linked-PR flows that already relied on excluding
+		// operators).
+		const qualifyingApprovals = docsReviews.filter(
+			(r) => isApprovalLike(r) && r.user.login !== pr.user.login,
+		)
+		const hasQualifyingApproval = qualifyingApprovals.length > 0
 		const operatorApproved = qualifyingApprovals.some((r) =>
 			operatorLogins.has(r.user.login.toLowerCase()),
 		)
 		// Unique approver logins in order — shown as a fact ("Approved by X")
-		// in any band, regardless of category. Deliberately live-only (unlike
-		// hasQualifyingApproval above): a label-preserved approval gets its
-		// own, differently-worded chip (see approvalChips) so the row is
-		// honest about GitHub no longer showing this as a formal approval.
+		// in any band, regardless of category, and regardless of whether
+		// GitHub currently shows it as a live approval or a dismissed one.
 		const approverLogins = [...new Set(qualifyingApprovals.map((r) => r.user.login))]
+		// Logins whose qualifying approval is currently DISMISSED on GitHub —
+		// named on the "Add content-approved label" reminder chip (see
+		// approvalChips) so a maintainer knows who to credit when they add the
+		// label to make GitHub's own state agree with the tracker's.
+		const dismissedApproverLogins = [
+			...new Set(
+				qualifyingApprovals.filter((r) => r.state === "DISMISSED").map((r) => r.user.login),
+			),
+		]
+		const needsContentApprovedLabelFlag =
+			dismissedApproverLogins.length > 0 && !hasContentApprovedLabel
 		// Most recent qualifying approval on the docs PR. Read by the reminder
 		// report (buildReminderGroups) to compare against the last ping —
 		// whichever happened more recently decides if the approval or an
@@ -1520,7 +1520,7 @@ async function main() {
 			hasLabel,
 			hasBackportLabel,
 			hasContentApprovedLabel,
-			contentApprovedByLabel,
+			needsContentApprovedLabelFlag,
 			dismissedApproverLogins,
 			hasMilestone,
 			milestoneTitle,
@@ -1726,6 +1726,38 @@ function searchBlobFor(pr, chips) {
 		.filter(Boolean)
 		.join(" ")
 		.toLowerCase()
+}
+
+// A compact fingerprint of everything that decides what a row's chips/marks
+// say — read by the client-side checklist so a checked-off row resets itself
+// once the underlying situation has actually moved on (e.g. the milestone got
+// added, or the review got done) rather than staying struck through forever
+// just because the PR key is still on the report. Built from the same `pr`
+// fields regardless of which page renders it (tracker-report.html vs.
+// tracker-reminders.html), so checking a row on one page doesn't spuriously
+// reset it on the other when nothing about the PR has actually changed.
+function statusSignature(pr) {
+	return JSON.stringify([
+		pr.category,
+		pr.finalReviewActionable,
+		pr.standaloneOperatorReady,
+		pr.removeLabelFlag,
+		pr.backportLabelFlag,
+		pr.needsRebaseFlag,
+		pr.rebaseWinsOverBackport,
+		pr.reviewPendingFlag,
+		pr.staleFlag,
+		pr.handedBack,
+		pr.remindedWhileOpen,
+		pr.approverLogins,
+		pr.needsContentApprovedLabelFlag,
+		pr.community.lit ? pr.community.waitingOnKind : null,
+		pr.codeMilestoneAdvisoryFlag,
+		pr.hasLabel,
+		pr.hasMilestone,
+		pr.codeMerged,
+		pr.codeClosed,
+	])
 }
 
 function daysAgoText(date) {
@@ -2145,19 +2177,21 @@ function chipsFor(pr) {
 // approved yet; once an approval lands (see approvalChips below), that's the
 // more important fact, so this one steps aside rather than doubling up.
 function reviewInProgressChip(pr) {
-	if (!pr.operatorReviewDone || pr.hasQualifyingApproval || pr.contentApprovedByLabel) {
+	if (!pr.operatorReviewDone || pr.hasQualifyingApproval) {
 		return null
 	}
 	return { cls: "muted", text: `${escapeHtml(pr.operatorReviewActor)} reviewed this` }
 }
 
 // "Approved by X" is a fact worth showing on any row, in any band, the
-// moment a qualifying approval exists — regardless of category. When that
-// approval is the operator's own on a standalone PR, there's nothing left
-// to review, so the two facts (approved, ready) collapse into one chip
-// instead of "Approved by X" plus a separate "Final review, then merge".
-// A comment or review landing after the approval gets its own chip rather
-// than silently trusting the approval as the last word.
+// moment a qualifying approval exists — regardless of category, and
+// regardless of whether GitHub still shows it as live or has since
+// dismissed it (see isApprovalLike above). When that approval is the
+// operator's own on a standalone PR, there's nothing left to review, so the
+// two facts (approved, ready) collapse into one chip instead of "Approved by
+// X" plus a separate "Final review, then merge". A comment or review landing
+// after the approval gets its own chip rather than silently trusting the
+// approval as the last word.
 function approvalChips(pr) {
 	const chips = []
 	if (pr.approverLogins.length > 0) {
@@ -2168,15 +2202,15 @@ function approvalChips(pr) {
 				: { cls: "finish", text: `Approved by ${names}` },
 		)
 	}
-	// GitHub dismissed the actual review (new commits landed), but the
-	// content-approved label says an operator manually confirmed the
-	// dismissal didn't undo the approval — named separately from the chip
-	// above so the row stays honest that this isn't a live GitHub approval.
-	if (pr.contentApprovedByLabel) {
+	// The approval fact above no longer waits on this label — it's just a
+	// nudge to make GitHub's own state agree with it: add the label so the
+	// dismissal (new commits landed since the approval) reads as confirmed
+	// rather than silently carried over.
+	if (pr.needsContentApprovedLabelFlag) {
 		const names = pr.dismissedApproverLogins.map(escapeHtml).join(", ")
 		chips.push({
-			cls: "finish",
-			text: `Content approved by ${names} — review dismissed`,
+			cls: "setup",
+			text: `Add ${CONTENT_APPROVED_LABEL} label — ${names}’s review was dismissed`,
 		})
 	}
 	if (pr.noteSinceApprovalFlag) {
@@ -2280,13 +2314,27 @@ function remindedOpenChip(pr) {
 	return null
 }
 
+// Whether a hand-back is still the live state, i.e. the author hasn't yet
+// acted on it — the moment they reply or get approved, main()'s category
+// logic moves the row out of these two categories (into
+// needs-check-author-response, monitoring, or wherever the approval lands
+// it), and any "core team passed this back" messaging should retire along
+// with it rather than linger as stale history once the ball has moved
+// again.
+function isHandbackLive(pr) {
+	return (
+		pr.handedBack &&
+		(pr.category === "waiting-code-author-response" || pr.category === "needs-followup")
+	)
+}
+
 // Context chip for a PR the dev team handed back to its author (see the
 // category logic in main()). It replaces the "✅ Escalated to X" chip once
 // the ball has returned — the escalation happened, but the current fact is
 // that it's now on the author, so the operator sees the history without it
 // reading as "still with the dev team."
 function handbackChip(pr) {
-	return pr.handedBack
+	return isHandbackLive(pr)
 		? { cls: "muted", text: "↩ Core team passed back to author" }
 		: null
 }
@@ -2335,8 +2383,9 @@ function renderNeedTodayRow(pr) {
 	const key = cacheKey(pr.sourceRepo, pr.number)
 	const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 	const search = escapeHtml(searchBlobFor(pr, chips))
+	const status = escapeHtml(statusSignature(pr))
 	return `
-      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}">
+      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}" data-status="${status}">
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
@@ -2357,8 +2406,9 @@ function renderWaitingRow(pr) {
 	const key = cacheKey(pr.sourceRepo, pr.number)
 	const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 	const search = escapeHtml(searchBlobFor(pr, chips))
+	const status = escapeHtml(statusSignature(pr))
 	return `
-      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}">
+      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}" data-status="${status}">
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
@@ -2958,7 +3008,7 @@ function generateHTML(prData, { operatorUsername }) {
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
-  .gap-note{display:block;width:100%;margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .gap-note{display:block;width:100%;margin:10px 0 16px;font-size:12.5px;color:var(--ink-3)}
   .gap-note b{color:var(--ink)}
   .gap-note.weekend{
     color:var(--ink-2);
@@ -3464,7 +3514,7 @@ ${filterBar}
       <section>
         <h2 class="legend-h">3. Reading a row</h2>
         <table>
-          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → grey triage → green approved/ready to merge.</td></tr>
+          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → dark grey triage (needs your review) → green approved/ready to merge. A plain <b>pale</b> edge (no colour) means the row is in Waiting — nothing to do right now, it's on someone else — regardless of whether the code PR is a draft, open, or merged.</td></tr>
           <tr><td><span class="pill open">Open</span></td><td>A <b>badge</b> — a fact about the code PR: Draft / Open / Merged / Closed.</td></tr>
           <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>label</b> — an action for you. Colour = the type of task (see below).</td></tr>
         </table>
@@ -3490,7 +3540,7 @@ ${filterBar}
         <table>
           <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown if someone outside the review team is waiting on the <b>code author</b> — checked separately, so a later unrelated reply to someone else can't hide it. Once the PR is approved, only what's been said since that approval counts — earlier comments don't. Otherwise, it's just there so you can keep an eye on it. Includes Promptless when it @-mentions a reviewer outside your team for feedback.</td></tr>
           <tr><td>Approvals</td><td>"Approved by X" is a label shown wherever there's an active approval — whether that's you, a teammate, or someone else (the one exception: a PR author can't approve their own PR, except for one admin account GitHub allows this for). "Final review, then merge" only appears once the code PR has merged. For a standalone PR with no code PR to wait on, your own approval combines both into one label: "Approved by X — ready to merge". Anything added after the approval gets its own "Note since approval" label.</td></tr>
-          <tr><td>Content-approved label</td><td>GitHub automatically removes an approval the moment new commits land — even if the push only addresses unrelated feedback. When that happens, the "Approved by X" label and everything it unlocked (final review, the escalation shortcut) disappear too. If you've checked and the new commits didn't actually change what was approved, add the <code>${CONTENT_APPROVED_LABEL}</code> label yourself: the row gets a separate "Content approved by X — review dismissed" label, naming the reviewer, and everything behaves as if the approval were still standing.</td></tr>
+          <tr><td>Content-approved label</td><td>GitHub automatically dismisses an approval the moment new commits land — even if the push only addresses unrelated feedback. The tracker keeps trusting the approval anyway ("Approved by X" and everything it unlocks stay put), but flags it with an "Add ${CONTENT_APPROVED_LABEL} label" reminder so you can go confirm on GitHub that the new commits didn't actually change what was approved. Add the <code>${CONTENT_APPROVED_LABEL}</code> label there and the reminder clears.</td></tr>
         </table>
       </section>
 
@@ -3510,7 +3560,7 @@ ${filterBar}
         <table>
           <tr><td>Review vs. the timeline</td><td>The remind/follow-up/escalate timeline no longer waits on you having formally reviewed the docs PR — it only needs the code PR to have merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" label shows up alongside whatever the timeline shows.</td></tr>
           <tr><td>Review vs. triage</td><td>A brand-new PR still missing its label/milestone also gets a "Review this docs PR" label right away, alongside the setup chips — reading the content doesn't have to wait on triage being finished.</td></tr>
-          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — just shown as-is, it doesn't affect timing. <code>${CONTENT_APPROVED_LABEL}</code> — add it yourself after confirming a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
+          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — just shown as-is, it doesn't affect timing. <code>${CONTENT_APPROVED_LABEL}</code> — clears the "Add content-approved label" reminder once you've confirmed a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
         </table>
       </section>
 
@@ -3767,14 +3817,21 @@ ${monitoringSection}
     }
 
     var validKeys = {};
+    var changed = false;
     document.querySelectorAll('.row[data-key]').forEach(function(row){
       var key = row.getAttribute('data-key');
       validKeys[key] = true;
       var cb = row.querySelector('.chk input[type=checkbox]');
       if (!cb) return;
-      if (state[key]) { cb.checked = true; row.classList.add('checked'); }
+      // Checked state carries a fingerprint of the row's status at the time
+      // it was checked (data-status) - if that's changed since (a milestone
+      // got added, a review got done, etc.), the old check no longer applies
+      // to today's situation, so it resets instead of staying struck through.
+      var status = row.getAttribute('data-status') || '1';
+      if (state[key] && state[key] === status) { cb.checked = true; row.classList.add('checked'); }
+      else if (state[key]) { delete state[key]; changed = true; }
       cb.addEventListener('change', function(){
-        if (cb.checked) { state[key] = true; row.classList.add('checked'); }
+        if (cb.checked) { state[key] = status; row.classList.add('checked'); }
         else { delete state[key]; row.classList.remove('checked'); }
         localStorage.setItem(STORE_KEY, JSON.stringify(state));
         updateHideCheckedCount();
@@ -3784,7 +3841,6 @@ ${monitoringSection}
     });
     // Drop saved keys for rows no longer listed (already resolved) so
     // localStorage doesn't grow forever with stale entries.
-    var changed = false;
     Object.keys(state).forEach(function(k){
       if (!validKeys[k]) { delete state[k]; changed = true; }
     });
@@ -3845,7 +3901,7 @@ function rowTags(pr) {
 	// No leading spaces — the .marks wrapper lays these out with flex gap, so
 	// they get even spacing whether inline or wrapped onto their own lines.
 	let html = ""
-	if (pr.handedBack)
+	if (isHandbackLive(pr))
 		html += `<span class="tag back">↩ Core team passed this back to you</span>`
 	else if (pr.category === "waiting-escalation-response")
 		html += `<span class="tag esc">Needs your review — escalated to Core Team</span>`
@@ -3872,8 +3928,9 @@ function renderAuthorGroup(group) {
 					? `<span class="mark review">Need review</span>`
 					: `<span class="mark respond">Response to comment from ${escapeHtml(mark.who)}</span>`
 			const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
+			const status = escapeHtml(statusSignature(pr))
 			return `
-        <tr data-key="${escapeHtml(key)}">
+        <tr data-key="${escapeHtml(key)}" data-status="${status}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
           <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
           <td data-label="Code PR">${codePRLink(pr)}</td>
@@ -3906,8 +3963,9 @@ function renderEscalationSection(escalations) {
 			// two different lists, two different jobs.
 			const key = `esc:${cacheKey(pr.sourceRepo, pr.number)}`
 			const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
+			const status = escapeHtml(statusSignature(pr))
 			return `
-        <tr data-key="${escapeHtml(key)}">
+        <tr data-key="${escapeHtml(key)}" data-status="${status}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
           <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${pr.staleFlag ? ` <span class="tag stale">Stale</span>` : ""}</td>
           <td data-label="Code PR">${codePRLink(pr)}</td>
@@ -4028,7 +4086,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
   .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
-  .gap-note{display:block;width:100%;margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+  .gap-note{display:block;width:100%;margin:10px 0 16px;font-size:12.5px;color:var(--ink-3)}
   .gap-note b{color:var(--ink)}
   .gap-note.weekend{
     color:var(--ink-2);
@@ -4286,13 +4344,20 @@ ${bodyHtml}
     }
 
     var validKeys = {};
+    var changed = false;
     document.querySelectorAll('tr[data-key]').forEach(function(row){
       var key = row.getAttribute('data-key');
       validKeys[key] = true;
       var cb = row.querySelector('input[type=checkbox]');
-      if (state[key]) { cb.checked = true; row.classList.add('checked'); }
+      // Checked state carries a fingerprint of the row's status at the time
+      // it was checked (data-status) - if that's changed since (they replied,
+      // got approved, etc.), the old check no longer applies to today's
+      // situation, so it resets instead of staying struck through.
+      var status = row.getAttribute('data-status') || '1';
+      if (state[key] && state[key] === status) { cb.checked = true; row.classList.add('checked'); }
+      else if (state[key]) { delete state[key]; changed = true; }
       cb.addEventListener('change', function(){
-        if (cb.checked) state[key] = true; else delete state[key];
+        if (cb.checked) state[key] = status; else delete state[key];
         localStorage.setItem(STORE_KEY, JSON.stringify(state));
         row.classList.toggle('checked', cb.checked);
         updateProgress(row.closest('.author-group'));
@@ -4300,7 +4365,6 @@ ${bodyHtml}
     });
     // Drop saved keys for items no longer listed (already resolved) so
     // localStorage doesn't grow forever with stale entries.
-    var changed = false;
     Object.keys(state).forEach(function(k){
       if (!validKeys[k]) { delete state[k]; changed = true; }
     });
