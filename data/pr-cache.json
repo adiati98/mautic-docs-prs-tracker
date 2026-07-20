@@ -5475,7 +5475,7 @@
   },
   "mautic/user-documentation#854": {
     "docsUpdatedAt": "2026-07-17T11:12:38Z",
-    "codeUpdatedAt": "2026-07-20T11:59:41Z",
+    "codeUpdatedAt": "2026-07-20T14:43:55Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5534,6 +5534,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-20T11:57:50Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "MadlenF"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-20T14:43:55Z",
+        "body": "Works as expected 👍 "
       }
     ],
     "rawReviewRequests": []
@@ -6387,7 +6395,7 @@
   },
   "mautic/user-documentation#837": {
     "docsUpdatedAt": "2026-07-10T19:03:25Z",
-    "codeUpdatedAt": "2026-07-20T11:20:39Z",
+    "codeUpdatedAt": "2026-07-20T14:24:33Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -6453,6 +6461,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-16T13:58:49Z",
         "body": "Good improvement, saving email with default template is hard rn. Have a look at the two findings."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-20T14:24:33Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
