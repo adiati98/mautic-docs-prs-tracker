@@ -522,7 +522,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-07-20T18:36:13.071Z">Updated Mon, Jul 20, 6:36 PM</span>
+    <span class="updated" data-updated-iso="2026-07-20T19:31:33.900Z">Updated Mon, Jul 20, 7:31 PM</span>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
@@ -532,17 +532,17 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">22</div>
+      <div class="num">20</div>
       <div><div class="lbl">Need you today</div>
       <div class="sub"><span class="dot critical"></span>1 overdue · <span class="dot serious"></span>4 follow-up</div></div>
     </button>
     <button class="tile" data-goto="forward" type="button">
       <div class="num">48</div>
       <div><div class="lbl">Bring it forward</div>
-      <div class="sub">32 new · 11 to review · <span class="dot stale"></span>5 stale</div></div>
+      <div class="sub">28 new · 15 to review · <span class="dot stale"></span>5 stale</div></div>
     </button>
     <button class="tile" data-goto="waiting" type="button">
-      <div class="num">20</div>
+      <div class="num">22</div>
       <div><div class="lbl">Waiting on others or for code PR to merge</div>
       <div class="sub">next follow-up due in 2 days</div></div>
     </button>
@@ -565,7 +565,7 @@
 
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">90</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">48</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">42</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">22</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">4</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">46</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">3</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">5</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">20</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">4</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">40</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">3</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">5</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
   <details class="legend">
@@ -666,22 +666,12 @@
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">22</span>
-      <span class="chk-progress" data-state="zero">0/22 checked</span>
+      <h2>Need you today</h2><span class="count">20</span>
+      <span class="chk-progress" data-state="zero">0/20 checked</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#704" data-search="user-documentation #704 document dedicated notes permissions promptless-for-oss #16067 shinde-rahul approved by escopecz note since approval — take a look final review, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,false,false,false,false,[&quot;escopecz&quot;],false,null,false,false,true,true,false,true,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #704: Document dedicated Notes permissions as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/704" target="_blank" class="name">user-documentation #704</a> <span class="desc">Document dedicated Notes permissions</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b></div>
-          <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip act">Note since approval — take a look</span><span class="chip finish">Final review, then merge</span></div>
-        </div>
-        <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
-      </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#774" data-search="user-documentation #774 fix contradictory note about duplicate stage weights promptless-for-oss #15404 andersonjeccel approved by andersonjeccel note since approval — take a look final review, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,false,false,true,false,[&quot;andersonjeccel&quot;],false,null,false,false,true,true,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #774: Fix contradictory note about duplicate Stage weights as done"></div>
         <div class="edge"></div>
@@ -719,6 +709,16 @@
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/750" target="_blank" class="name">user-documentation #750</a> <span class="desc">Document Find and Replace bulk action for Contacts and Companies</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16207" target="_blank">#16207</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b></div>
           <div class="chips"><span class="chip finish">Approved by andersonjeccel</span><span class="chip act">Note since approval — take a look</span><span class="chip finish">Final review, then merge</span></div>
+        </div>
+        <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#704" data-search="user-documentation #704 document dedicated notes permissions promptless-for-oss #16067 shinde-rahul approved by escopecz note since approval — take a look final review, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,false,false,false,false,[&quot;escopecz&quot;],false,null,false,false,true,true,false,true,true]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #704: Document dedicated Notes permissions as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/704" target="_blank" class="name">user-documentation #704</a> <span class="desc">Document dedicated Notes permissions</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b></div>
+          <div class="chips"><span class="chip finish">Approved by escopecz</span><span class="chip act">Note since approval — take a look</span><span class="chip finish">Final review, then merge</span></div>
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
@@ -792,55 +792,45 @@
         </div>
         <div class="when"><div class="days serious">Day 10</div><div class="sub">since reminder · escalate at 14</div><div class="meter late"><i style="width:71%"></i></div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#516" data-search="developer-documentation #516 document notes api permissions and endpoints promptless-for-oss #16067 shinde-rahul ask code pr author to review content — code pr merged adiati98 reviewed this remove pending-pr-merge label" data-status="[&quot;needs-remind-code-author&quot;,false,false,true,false,false,false,false,false,false,false,[],false,null,false,true,true,true,false,true,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #516: Document Notes API permissions and endpoints as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/516" target="_blank" class="name">developer-documentation #516</a> <span class="desc">Document Notes API permissions and endpoints</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b> · you reviewed 47 days ago</div>
-          <div class="chips"><span class="chip nudge1">Ask code PR author to review content — code PR merged</span><span class="chip muted">adiati98 reviewed this</span><span class="chip finish">Remove pending-pr-merge label</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">no reminder sent yet</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#855" data-search="user-documentation #855 docs: document &#039;notify admins about contact exports&#039; configuration setting promptless-for-oss #16095 shinde-rahul add milestone ask code pr author to review content — code pr merged review this docs pr — code pr merged" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,false,true,false,false,false]">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#855" data-search="user-documentation #855 docs: document &#039;notify admins about contact exports&#039; configuration setting promptless-for-oss #16095 shinde-rahul review this docs pr — code pr merged" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,true,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #855: docs: Document &#039;Notify admins about contact exports&#039; configuration setting as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/855" target="_blank" class="name">user-documentation #855</a> <span class="desc">docs: Document &#039;Notify admins about contact exports&#039; configuration setting</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16095" target="_blank">#16095</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b></div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span><span class="chip act">Review this docs PR — code PR merged</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16095" target="_blank">#16095</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b> · reminder sent, waiting for a reply</div>
+          <div class="chips"><span class="chip act">Review this docs PR — code PR merged</span></div>
         </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#853" data-search="user-documentation #853 docs: document reply-to resolution hierarchy for queued email sends promptless-for-oss #15945 shinde-rahul add milestone ask code pr author to review content — code pr merged review this docs pr — code pr merged" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,false,true,false,false,false]">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#853" data-search="user-documentation #853 docs: document reply-to resolution hierarchy for queued email sends promptless-for-oss #15945 shinde-rahul review this docs pr — code pr merged" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,true,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #853: docs: Document Reply-To resolution hierarchy for queued Email sends as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/853" target="_blank" class="name">user-documentation #853</a> <span class="desc">docs: Document Reply-To resolution hierarchy for queued Email sends</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15945" target="_blank">#15945</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b></div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span><span class="chip act">Review this docs PR — code PR merged</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15945" target="_blank">#15945</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b> · reminder sent, waiting for a reply</div>
+          <div class="chips"><span class="chip act">Review this docs PR — code PR merged</span></div>
         </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#852" data-search="user-documentation #852 docs: document contact and owner field tokens in email link urls promptless-for-oss #15924 shinde-rahul add milestone ask code pr author to review content — code pr merged review this docs pr — code pr merged" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,false,true,false,false,false]">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#852" data-search="user-documentation #852 docs: document contact and owner field tokens in email link urls promptless-for-oss #15924 shinde-rahul review this docs pr — code pr merged" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,true,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #852: docs: Document Contact and Owner field tokens in Email link URLs as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/852" target="_blank" class="name">user-documentation #852</a> <span class="desc">docs: Document Contact and Owner field tokens in Email link URLs</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15924" target="_blank">#15924</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b></div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span><span class="chip act">Review this docs PR — code PR merged</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15924" target="_blank">#15924</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b> · reminder sent, waiting for a reply</div>
+          <div class="chips"><span class="chip act">Review this docs PR — code PR merged</span></div>
         </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#851" data-search="user-documentation #851 docs: document preference center segment ordering by public name promptless-for-oss #15850 shinde-rahul add milestone ask code pr author to review content — code pr merged review this docs pr — code pr merged" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,false,true,false,false,false]">
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#851" data-search="user-documentation #851 docs: document preference center segment ordering by public name promptless-for-oss #15850 shinde-rahul review this docs pr — code pr merged" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,true,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #851: docs: Document Preference Center Segment ordering by Public name as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/851" target="_blank" class="name">user-documentation #851</a> <span class="desc">docs: Document Preference Center Segment ordering by Public name</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15850" target="_blank">#15850</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b></div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span><span class="chip act">Review this docs PR — code PR merged</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15850" target="_blank">#15850</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b> · reminder sent, waiting for a reply</div>
+          <div class="chips"><span class="chip act">Review this docs PR — code PR merged</span></div>
         </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#841" data-search="user-documentation #841 cherry pick: &quot;docs for https://github.com/mautic/mautic/pull/16123&quot; to 7.2 adiati98 review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,true,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #841: Cherry pick: &quot;Docs for https://github.com/mautic/mautic/pull/16123&quot; to 7.2 as done"></div>
@@ -881,16 +871,6 @@
           <div class="chips"><span class="chip manual">Remind docs PR author — no code PR linked</span><span class="chip muted">adiati98 reviewed this</span><span class="chip setup">Add needs-backport label</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">remind the docs author</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#849" data-search="user-documentation #849 docs: document the stage merge feature promptless-for-oss #15399 andersonjeccel add milestone ask code pr author to review content — code pr merged adiati98 reviewed this" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,true,false,true,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #849: docs: Document the Stage merge feature as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/849" target="_blank" class="name">user-documentation #849</a> <span class="desc">docs: Document the Stage merge feature</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15399" target="_blank">#15399</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b></div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span><span class="chip muted">adiati98 reviewed this</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
     </div>
   </section>
@@ -1183,46 +1163,6 @@
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#856" data-search="user-documentation #856 docs: update asset url label and copy-link control in &#039;viewing an asset&#039; promptless-for-oss #16605 adiux add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #856: docs: Update Asset URL label and copy-link control in &#039;Viewing an Asset&#039; as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/856" target="_blank" class="name">user-documentation #856</a> <span class="desc">docs: Update Asset URL label and copy-link control in &#039;Viewing an Asset&#039;</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16605" target="_blank">#16605</a> <span class="pill open">Open</span> · author <b>adiux</b></div>
-          <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#854" data-search="user-documentation #854 docs: document visits specific url point action options and cumulative time behavior promptless-for-oss #16606 hluchas add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #854: docs: Document Visits specific URL Point Action options and cumulative time behavior as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/854" target="_blank" class="name">user-documentation #854</a> <span class="desc">docs: Document Visits specific URL Point Action options and cumulative time behavior</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16606" target="_blank">#16606</a> <span class="pill open">Open</span> · author <b>hluchas</b></div>
-          <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#850" data-search="user-documentation #850 docs: document &#039;segments used&#039; section on segment email detail page promptless-for-oss #16593 andersonjeccel add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #850: docs: Document &#039;Segments used&#039; section on Segment Email detail page as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/850" target="_blank" class="name">user-documentation #850</a> <span class="desc">docs: Document &#039;Segments used&#039; section on Segment Email detail page</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16593" target="_blank">#16593</a> <span class="pill open">Open</span> · author <b>andersonjeccel</b></div>
-          <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#843" data-search="user-documentation #843 docs: document &quot;in the last&quot; and &quot;in the next&quot; segment date operators promptless-for-oss #16574 fedys add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #843: docs: Document &quot;In the last&quot; and &quot;In the next&quot; Segment date operators as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/843" target="_blank" class="name">user-documentation #843</a> <span class="desc">docs: Document &quot;In the last&quot; and &quot;In the next&quot; Segment date operators</span> <span class="pill draft">Draft</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16574" target="_blank">#16574</a> <span class="pill open">Open</span> · author <b>fedys</b></div>
-          <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
-      </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#752" data-search="user-documentation #752 document campaign condition event details in contact history promptless-for-oss #15664 adiux review this docs pr ✅ reminded code pr author approved by adiux" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,true,[&quot;adiux&quot;],false,null,false,true,true,false,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #752: Document Campaign condition event details in Contact history as done"></div>
         <div class="edge"></div>
@@ -1292,6 +1232,46 @@
           <div class="chips"><span class="chip muted">Review this docs PR</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 11 days ago</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#856" data-search="user-documentation #856 docs: update asset url label and copy-link control in &#039;viewing an asset&#039; promptless-for-oss #16605 adiux review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #856: docs: Update Asset URL label and copy-link control in &#039;Viewing an Asset&#039; as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/856" target="_blank" class="name">user-documentation #856</a> <span class="desc">docs: Update Asset URL label and copy-link control in &#039;Viewing an Asset&#039;</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16605" target="_blank">#16605</a> <span class="pill open">Open</span> · author <b>adiux</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 3 days ago</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#854" data-search="user-documentation #854 docs: document visits specific url point action options and cumulative time behavior promptless-for-oss #16606 hluchas review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #854: docs: Document Visits specific URL Point Action options and cumulative time behavior as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/854" target="_blank" class="name">user-documentation #854</a> <span class="desc">docs: Document Visits specific URL Point Action options and cumulative time behavior</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16606" target="_blank">#16606</a> <span class="pill open">Open</span> · author <b>hluchas</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 3 days ago</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#850" data-search="user-documentation #850 docs: document &#039;segments used&#039; section on segment email detail page promptless-for-oss #16593 andersonjeccel review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #850: docs: Document &#039;Segments used&#039; section on Segment Email detail page as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/850" target="_blank" class="name">user-documentation #850</a> <span class="desc">docs: Document &#039;Segments used&#039; section on Segment Email detail page</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16593" target="_blank">#16593</a> <span class="pill open">Open</span> · author <b>andersonjeccel</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 4 days ago</div></div>
+      </article>
+      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#843" data-search="user-documentation #843 docs: document &quot;in the last&quot; and &quot;in the next&quot; segment date operators promptless-for-oss #16574 fedys review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #843: docs: Document &quot;In the last&quot; and &quot;In the next&quot; Segment date operators as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/843" target="_blank" class="name">user-documentation #843</a> <span class="desc">docs: Document &quot;In the last&quot; and &quot;In the next&quot; Segment date operators</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16574" target="_blank">#16574</a> <span class="pill open">Open</span> · author <b>fedys</b> · milestone <b>Mautic 7.2</b></div>
+          <div class="chips"><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 5 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#837" data-search="user-documentation #837 docs: update email link validation note for allowed schemes and anchor links promptless-for-oss #16508 jonasludwig1998 review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #837: docs: Update Email link validation note for allowed schemes and anchor links as done"></div>
@@ -1388,8 +1368,8 @@
 
   <section class="band-secondary" data-band="waiting">
     <div class="sec-head">
-      <h2>Waiting on others or for code PR to merge</h2><span class="count">20</span>
-      <span class="chk-progress" data-state="zero">0/20 checked</span>
+      <h2>Waiting on others or for code PR to merge</h2><span class="count">22</span>
+      <span class="chk-progress" data-state="zero">0/22 checked</span>
       <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -1403,6 +1383,26 @@
           <div class="chips"><span class="chip muted">↩ Core team passed back to author</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
         <div class="when"><div class="days">Day 5</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:71%"></i></div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#516" data-search="developer-documentation #516 document notes api permissions and endpoints promptless-for-oss #16067 shinde-rahul adiati98 reviewed this" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,true,true,false,true,true]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #516: Document Notes API permissions and endpoints as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/516" target="_blank" class="name">developer-documentation #516</a> <span class="desc">Document Notes API permissions and endpoints</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16067" target="_blank">#16067</a> <span class="pill merged">Merged</span> · author <b>shinde-rahul</b> · reminder sent, waiting for a reply</div>
+          <div class="chips"><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
+      </article>
+      <article class="row" data-sev="none" data-repo="user-documentation" data-stale="0" data-key="mautic/user-documentation#849" data-search="user-documentation #849 docs: document the stage merge feature promptless-for-oss #15399 andersonjeccel adiati98 reviewed this" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,true,true,false,true,true]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #849: docs: Document the Stage merge feature as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/849" target="_blank" class="name">user-documentation #849</a> <span class="desc">docs: Document the Stage merge feature</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15399" target="_blank">#15399</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminder sent, waiting for a reply</div>
+          <div class="chips"><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
       <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#297" data-search="developer-documentation #297 docs: clarify that value 0 is valid when setting contact fields via api promptless-for-oss #15900 turanalmammadov 👀 prithvi2206 commented — no reply yet ✅ reminded code pr author adiati98 reviewed this" data-status="[&quot;waiting-code-pr-merge&quot;,false,false,false,false,false,false,false,false,false,true,[],false,&quot;untagged&quot;,false,true,true,false,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #297: docs: Clarify that value 0 is valid when setting contact fields via API as done"></div>
@@ -1599,7 +1599,7 @@
 
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-07-20T18:36:13.071Z">Mon, Jul 20, 6:36 PM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-07-20T19:31:33.900Z">Mon, Jul 20, 7:31 PM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
