@@ -1690,29 +1690,45 @@ function isUrgentTriageRow(pr) {
 	)
 }
 
+// A docs PR still waiting on your review, but its linked code PR hasn't
+// merged yet — there's no release deadline pushing this one, so unlike
+// isUrgentTriageRow above it stays out of Need-today regardless of draft
+// status. Matches the same "no rush yet" boundary categorySeverity already
+// draws for this category's edge color (muted triage grey vs. blue act): a
+// linked PR whose code is still open never gets the blue "act" treatment
+// there either. (needs-operator-review is only ever assigned once the
+// appPRNumber-and-codeMerged branch has already failed, so appPRNumber here
+// implies the code PR is still open — no separate !codeMerged check needed.)
+function isPendingCodeReviewRow(pr) {
+	return pr.category === "needs-operator-review" && Boolean(pr.appPRNumber)
+}
+
 // Bring it forward: not urgent, but worth surfacing on your own schedule
 // rather than buried in — or missing entirely from — the urgent list. Carved
 // out of what would otherwise be Need-today (never out of Waiting or
 // Monitoring, which stay as they are): brand-new PRs still needing their
-// first label/milestone (unless isUrgentTriageRow says otherwise), approvals
-// that are cleanly ready to merge, and anything stale. Stale wins over
-// "clean approved" by construction — a stale row's chip list always
-// includes the stale badge, so it can never pass the all-finish/backport
-// check above.
+// first label/milestone (unless isUrgentTriageRow says otherwise), a review
+// that's on hold for a code PR that hasn't merged yet, approvals that are
+// cleanly ready to merge, and anything stale. Stale wins over "clean
+// approved" by construction — a stale row's chip list always includes the
+// stale badge, so it can never pass the all-finish/backport check above.
 function isBringForwardRow(pr) {
 	return (
 		((pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") &&
 			!isUrgentTriageRow(pr)) ||
+		isPendingCodeReviewRow(pr) ||
 		pr.staleFlag ||
 		isCleanApprovedRow(pr)
 	)
 }
 
-// Which of the three Bring-it-forward groups a row belongs to, in the order
-// they're listed: new PRs to triage, then clean approvals, then stale.
+// Which of the four Bring-it-forward groups a row belongs to, in the order
+// they're listed: new PRs to triage, then reviews on hold for their code PR,
+// then clean approvals, then stale.
 function bringForwardRank(pr) {
 	if (pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") return 0
 	if (pr.staleFlag) return 2
+	if (isPendingCodeReviewRow(pr)) return 0.5
 	return 1
 }
 
@@ -1774,6 +1790,8 @@ function statusSignature(pr) {
 		pr.hasMilestone,
 		pr.codeMerged,
 		pr.codeClosed,
+		pr.operatorReviewDone,
+		pr.pingEverSent,
 	])
 }
 
@@ -1854,7 +1872,9 @@ function severityFor(pr) {
 // it forward entirely. The two triage categories usually go with them too,
 // except when isUrgentTriageRow pulled one into Need-today for having a
 // merged code PR; those fall through to the default rank at the bottom,
-// since nothing here names them specifically.
+// since nothing here names them specifically. Likewise, needs-operator-review
+// only reaches here when it's a standalone PR (isPendingCodeReviewRow already
+// sent every linked-but-still-open one to Bring it forward) — draft or not.
 function sortRank(pr) {
 	// A finalReviewActionable row still in Need-today is the messy kind —
 	// approved and ready, but with something else attached (a rebase flag, a
@@ -1868,10 +1888,10 @@ function sortRank(pr) {
 	if (pr.community.lit && pr.community.waitingOnKind === "operator") return 3.5
 	if (pr.category === "needs-remind-code-author") return 4
 	// "You still need to review this" — whether that's because the code PR
-	// merged and nobody's looked (reviewPendingFlag) or it's a standalone PR
-	// with nothing else gating it (the blue chip case, see categorySeverity)
-	// — ranks above the muted/gray needs-operator-review tier it'd otherwise
-	// share with linked-but-still-open PRs, which aren't as pressing.
+	// merged and nobody's looked (reviewPendingFlag) or it's a standalone,
+	// non-draft PR with nothing else gating it (the blue chip case, see
+	// categorySeverity) — ranks above the muted/gray tier a standalone draft
+	// still in needs-operator-review falls to just below.
 	if (pr.reviewPendingFlag || (pr.category === "needs-operator-review" && !pr.appPRNumber && !pr.isDraft))
 		return 6
 	if (pr.category === "needs-operator-review" || pr.category === "needs-check-author-response")
@@ -1888,9 +1908,32 @@ function codePRClause(pr) {
 	return `Code PR <a href="${pr.appPRUrl}" target="_blank">#${pr.appPRNumber}</a> <span class="pill ${pillCls}">${pillText}</span>`
 }
 
+// Whether the switch below already names the docs PR's own author for this
+// category — so the fallback in metaLine doesn't repeat it. Every other
+// category either has no reason to name them (a linked PR's own appPRAuthor
+// is the relevant human there) or the docs PR's author is Promptless anyway,
+// which the fallback already excludes on its own.
+function docsAuthorShownInline(pr) {
+	return (
+		pr.category === "blocked-no-code-pr" ||
+		(!pr.appPRNumber &&
+			["needs-escalate-core-team", "needs-followup", "needs-check-author-response"].includes(
+				pr.category,
+			))
+	)
+}
+
 function metaLine(pr) {
 	const parts = [codePRClause(pr)]
 	if (pr.appPRAuthor) parts.push(`author <b>${escapeHtml(pr.appPRAuthor)}</b>`)
+	// A human opened this docs PR directly (a cherry-pick, a manual fix,
+	// anything not machine-generated by Promptless) — name them so the row
+	// doesn't read as anonymous just because it has no linked code PR author
+	// to show instead. Skipped when the category's own switch case below
+	// already names them, so the row doesn't repeat itself.
+	if (pr.docsAuthor !== PROMPTLESS && !docsAuthorShownInline(pr)) {
+		parts.push(`docs author <b>${escapeHtml(pr.docsAuthor)}</b>`)
+	}
 
 	switch (pr.category) {
 		case "needs-close-docs-pr":
@@ -2079,6 +2122,22 @@ function reviewNowChip(pr) {
 		: { cls: "muted", text: "Review this docs PR" }
 }
 
+// The red first-touch nudge — shared by needs-remind-code-author (the
+// category built entirely around this ask) and the two triage categories
+// below, whose "add milestone/label" chips otherwise take priority even
+// when the code PR is also sitting there un-pinged (see isUrgentTriageRow).
+// Same chip either way, so a maintainer landing on a merged-but-untriaged
+// docs PR isn't missing that nobody's said anything to the code author yet.
+function remindCodeAuthorChip(pr) {
+	if (pr.staleFlag) return null
+	return {
+		cls: "nudge1",
+		text: pr.pingEverSent
+			? "Remind the code author again — quiet"
+			: "Ask code PR author to review content — code PR merged",
+	}
+}
+
 function chipsFor(pr) {
 	const chips = []
 	// Needs-rebase and stale are structural/status flags, not action nudges —
@@ -2099,16 +2158,11 @@ function chipsFor(pr) {
 		case "needs-followup":
 			if (!pr.staleFlag) chips.push({ cls: "nudge2", text: "Send a follow-up" })
 			break
-		case "needs-remind-code-author":
-			if (!pr.staleFlag) {
-				chips.push({
-					cls: "nudge1",
-					text: pr.pingEverSent
-						? "Remind the code author again — quiet"
-						: "Remind code PR author — code PR merged",
-				})
-			}
+		case "needs-remind-code-author": {
+			const remind = remindCodeAuthorChip(pr)
+			if (remind) chips.push(remind)
 			break
+		}
 		case "needs-check-author-response":
 			chips.push({ cls: "act", text: "Check the author’s response" })
 			break
@@ -2122,13 +2176,26 @@ function chipsFor(pr) {
 			// (and should) start reading the content the moment the PR
 			// shows up, in parallel with adding the label/milestone. Skipped
 			// when reviewPendingFlag already covers it below with the more
-			// specific "code PR merged" wording, so the row doesn't show two
-			// near-duplicate review chips.
-			if (!pr.reviewPendingFlag) chips.push(reviewNowChip(pr))
+			// specific "code PR merged" wording, or when a maintainer has
+			// already reviewed — asking again would just be noise.
+			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
+			// The code PR merged and landed this row in Need-today (see
+			// isUrgentTriageRow) purely for missing triage — but if on top of
+			// that nobody's ever pinged the code author either, that's worth
+			// surfacing too rather than waiting for the milestone to get
+			// added before the remind chain even starts.
+			if (pr.appPRNumber && pr.codeMerged && !pr.pingEverSent) {
+				const remind = remindCodeAuthorChip(pr)
+				if (remind) chips.push(remind)
+			}
 			break
 		case "needs-milestone":
 			chips.push({ cls: "setup", text: "Add milestone" })
-			if (!pr.reviewPendingFlag) chips.push(reviewNowChip(pr))
+			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
+			if (pr.appPRNumber && pr.codeMerged && !pr.pingEverSent) {
+				const remind = remindCodeAuthorChip(pr)
+				if (remind) chips.push(remind)
+			}
 			break
 		case "blocked-no-code-pr":
 			// A qualifying approval settles it too, same as the code-author
@@ -2815,10 +2882,12 @@ function generateHTML(prData, { operatorUsername }) {
 	const newTriageCount = bringForward.filter(
 		(p) => p.category === "needs-label-and-milestone" || p.category === "needs-milestone",
 	).length
+	const pendingReviewCount = bringForward.filter((p) => isPendingCodeReviewRow(p)).length
 	const readyCount = bringForward.filter((p) => isCleanApprovedRow(p)).length
 	const bringForwardStaleCount = bringForward.filter((p) => p.staleFlag).length
 	const bringForwardBits = []
 	if (newTriageCount > 0) bringForwardBits.push(`${newTriageCount} new`)
+	if (pendingReviewCount > 0) bringForwardBits.push(`${pendingReviewCount} to review`)
 	if (readyCount > 0) bringForwardBits.push(`${readyCount} ready to merge`)
 	if (bringForwardStaleCount > 0)
 		bringForwardBits.push(`<span class="dot stale"></span>${bringForwardStaleCount} stale`)
