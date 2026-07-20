@@ -1674,18 +1674,35 @@ function isCleanApprovedRow(pr) {
 	return chipsFor(pr).every((c) => c.cls === "finish" || c.cls === "backport")
 }
 
+// A brand-new PR still missing its label/milestone — ordinarily not urgent
+// (see isBringForwardRow below), *unless* its linked code PR has already
+// merged. Once the code is out, the docs PR shouldn't linger in triage on
+// its own schedule — someone needs to add the milestone and get eyes on the
+// content promptly so the docs can follow the release closely, so this pulls
+// it into Need-today instead. A standalone PR (no linked code PR) or one
+// whose code PR is still open has no such deadline pressure and stays
+// untouched by this.
+function isUrgentTriageRow(pr) {
+	return (
+		(pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") &&
+		pr.appPRNumber &&
+		pr.codeMerged
+	)
+}
+
 // Bring it forward: not urgent, but worth surfacing on your own schedule
 // rather than buried in — or missing entirely from — the urgent list. Carved
 // out of what would otherwise be Need-today (never out of Waiting or
 // Monitoring, which stay as they are): brand-new PRs still needing their
-// first label/milestone, approvals that are cleanly ready to merge, and
-// anything stale. Stale wins over "clean approved" by construction — a
-// stale row's chip list always includes the stale badge, so it can never
-// pass the all-finish/backport check above.
+// first label/milestone (unless isUrgentTriageRow says otherwise), approvals
+// that are cleanly ready to merge, and anything stale. Stale wins over
+// "clean approved" by construction — a stale row's chip list always
+// includes the stale badge, so it can never pass the all-finish/backport
+// check above.
 function isBringForwardRow(pr) {
 	return (
-		pr.category === "needs-label-and-milestone" ||
-		pr.category === "needs-milestone" ||
+		((pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") &&
+			!isUrgentTriageRow(pr)) ||
 		pr.staleFlag ||
 		isCleanApprovedRow(pr)
 	)
@@ -1790,9 +1807,11 @@ function categorySeverity(pr) {
 			return "serious"
 		case "needs-remind-code-author":
 		case "needs-check-author-response":
-		// New PRs still needing a label/milestone always land in Bring it
-		// forward now (see isBringForwardRow), never Need-today — but
-		// something genuinely needs doing, so it's "act", not "triage".
+		// New PRs still needing a label/milestone land in Bring it forward
+		// (see isBringForwardRow) — unless their code PR has already merged
+		// (isUrgentTriageRow), in which case they're here in Need-today
+		// instead. Either way something genuinely needs doing, so it's "act",
+		// not "triage".
 		case "needs-label-and-milestone":
 		case "needs-milestone":
 			return "act"
@@ -1831,8 +1850,11 @@ function severityFor(pr) {
 }
 
 // Only ever called on rows that already passed !isBringForwardRow, so
-// staleFlag, the two triage categories, and a clean approval never reach
-// here — they've moved to Bring it forward entirely.
+// staleFlag and a clean approval never reach here — they've moved to Bring
+// it forward entirely. The two triage categories usually go with them too,
+// except when isUrgentTriageRow pulled one into Need-today for having a
+// merged code PR; those fall through to the default rank at the bottom,
+// since nothing here names them specifically.
 function sortRank(pr) {
 	// A finalReviewActionable row still in Need-today is the messy kind —
 	// approved and ready, but with something else attached (a rebase flag, a
