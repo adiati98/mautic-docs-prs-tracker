@@ -287,7 +287,7 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#592": {
-    "docsUpdatedAt": "2026-07-10T10:11:18Z",
+    "docsUpdatedAt": "2026-07-22T05:44:56Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -313,9 +313,33 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-10T10:11:20Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-22T05:19:48Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-22T05:39:30Z",
+        "body": ""
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T05:35:12Z",
+        "body": "Thanks for the review, @adiati98 — all four comments have been addressed in this PR:\n\n1. **Active voice** — the terminology note now reads in active voice.\n2. **Removed the `.. vale off`/`.. vale on` wrapper** around that note. To keep Vale clean without the suppression, \"leads\" is now formatted as inline code, which satisfies the `Mautic.FeatureList` rule.\n3. **Wrapped the \"Reading and setting the tracked Contact\" heading** in `.. vale off`/`.. vale on` (applied verbatim).\n4. **Added \"The\"** before `mautic_session_id` in the cookie paragraph (applied verbatim).\n\nVale passes on `docs/plugin_extensions/manipulating_contacts.rst`. Ready for another look."
+      }
+    ],
     "rawCodeComments": [],
     "rawCodeReviews": [],
     "rawReviewRequests": [
@@ -352,7 +376,7 @@
     ]
   },
   "mautic/developer-documentation-new#591": {
-    "docsUpdatedAt": "2026-07-10T10:02:12Z",
+    "docsUpdatedAt": "2026-07-22T05:52:18Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -370,9 +394,25 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-10T10:02:13Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-22T05:42:29Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T05:52:18Z",
+        "body": "Thanks for the review, @adiati98 — all four comments have been addressed in this PR:\n\n1. **Removed the note** — deleted the placeholder note block and its wrapping `.. vale off`/`.. vale on` directives.\n2. **Comma fix** — applied verbatim (\"In your own bundle, you also need to…\").\n3. **Active voice** — the passive \"it's used\" now reads \"…because Mautic uses it in a database query to decide which payloads to include in the POST.\"\n4. **Wrapped the \"Receiving Webhook payloads\" heading** in `.. vale off`/`.. vale on` (applied verbatim).\n\nVale passes cleanly on `docs/plugin_extensions/webhooks.rst`. Ready for another look."
+      }
+    ],
     "rawCodeComments": [],
     "rawCodeReviews": [],
     "rawReviewRequests": [
@@ -409,7 +449,7 @@
     ]
   },
   "mautic/developer-documentation-new#590": {
-    "docsUpdatedAt": "2026-07-10T10:00:26Z",
+    "docsUpdatedAt": "2026-07-22T06:13:14Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -427,9 +467,25 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-10T10:00:27Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-22T05:54:23Z",
+        "body": "@promptless-for-oss please address the suggestions.\n\nPlease check for any passive voice in this PR and turn them into active voice."
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T06:13:13Z",
+        "body": "Thanks for the thorough review, @adiati98 — all of your comments have been addressed on the branch:\n\n- Removed the legacy update-notice note and wrapped the `AbstractIntegration` framework-pointer note in `.. vale off`/`.. vale on`.\n- Converted the flagged passive-voice sentences to active voice, and swept the rest of the PR for passive voice as you asked (including the `isConfigured` and `encode_parameters` table rows).\n- Applied both suggestion blocks verbatim (single quotes on `getClientIdKey`/`getClientSecretKey`).\n- Fixed the `128x128 px` spacing, capitalized `Form` for feature consistency, and changed `that is` → `that's`.\n- Added `PNG` to the Vale vocabulary (`accept.txt`).\n\nVale now passes with no errors or warnings. Two remaining Vale *suggestions* are intentional: 'is displayed' is kept exactly as your suggestion block worded it, and \"they **form** the POST body\" is a false positive since 'form' there is a verb.\n\nReady for another look."
+      }
+    ],
     "rawCodeComments": [],
     "rawCodeReviews": [],
     "rawReviewRequests": [
@@ -6469,39 +6525,9 @@
     ],
     "rawReviewRequests": []
   },
-  "mautic/user-documentation#841": {
-    "docsUpdatedAt": "2026-07-14T09:11:23Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-14T08:10:14Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-14T08:10:14Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ]
-  },
   "mautic/user-documentation#837": {
-    "docsUpdatedAt": "2026-07-10T19:03:25Z",
-    "codeUpdatedAt": "2026-07-21T12:15:30Z",
+    "docsUpdatedAt": "2026-07-22T07:01:23Z",
+    "codeUpdatedAt": "2026-07-22T06:39:46Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -6510,9 +6536,39 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-10T10:13:04Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-22T06:38:25Z",
+        "body": ""
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T06:46:15Z",
+        "body": "Thanks, @adiati98 — your suggestion has been applied verbatim to the 'Link validation' note in `docs/channels/emails.rst`: \"checks every link\" → \"validates every link\" and \"`href` is malformed\" → \"`href` uses an invalid format\", with no other changes. Vale passes cleanly. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "JonasLudwig1998"
+        },
+        "created_at": "2026-07-22T06:49:16Z",
+        "body": "Why not list all valid schemes from the PR in your docu?"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T07:01:23Z",
+        "body": "Good catch, @JonasLudwig1998 — done. The 'Link validation' note now lists the complete set of accepted URL schemes (`http`, `https`, `ftp`, `ftps`, `mailto`, `tel`, and `sms`) instead of the earlier open-ended \"such as\" phrasing that only gave examples and left out `ftp`, `ftps`, and `sms`. It also now clarifies that `http`/`https`/`ftp`/`ftps` links must be structurally valid URLs while `mailto`/`tel`/`sms` need only the scheme, and it keeps the guidance on anchor links (`#`) and Mautic tokens. Pushed to the branch — ready for another look."
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -6539,8 +6595,15 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-21T12:15:30Z",
+        "created_at": "2026-07-22T05:06:22Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16508) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16508&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16508&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16508&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16508&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16508&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16508)\n\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-22T06:39:46Z",
+        "body": "Hi @JonasLudwig1998,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/16508#issuecomment-4934286126"
       }
     ],
     "rawCodeReviews": [
@@ -6575,9 +6638,48 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-20T14:24:33Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-22T05:06:08Z",
+        "body": ""
       }
     ],
-    "rawReviewRequests": []
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T05:27:21Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T05:27:21Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T05:27:21Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
   },
   "mautic/user-documentation#836": {
     "docsUpdatedAt": "2026-07-12T08:41:51Z",
@@ -6787,7 +6889,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#811": {
-    "docsUpdatedAt": "2026-07-14T13:19:14Z",
+    "docsUpdatedAt": "2026-07-22T06:11:43Z",
     "codeUpdatedAt": "2026-06-29T14:40:12Z",
     "rawDocsReviews": [
       {
@@ -6892,7 +6994,7 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-06-29T14:02:51Z",
-        "body": "Thanks @adiati98 — converted the variant-management bullets in the \"Managing variants\" section into a numbered (`#.`) list so they read as step-by-step instructions, consistent with the other ordered lists in the section. Pushed to the branch; Vale is clean on the edited lines.\n"
+        "body": "Thanks @adiati98 ��� converted the variant-management bullets in the \"Managing variants\" section into a numbered (`#.`) list so they read as step-by-step instructions, consistent with the other ordered lists in the section. Pushed to the branch; Vale is clean on the edited lines.\n"
       },
       {
         "user": {
@@ -10675,7 +10777,7 @@
     ]
   },
   "mautic/user-documentation#709": {
-    "docsUpdatedAt": "2026-07-03T09:40:53Z",
+    "docsUpdatedAt": "2026-07-22T06:40:12Z",
     "codeUpdatedAt": "2026-05-19T13:15:32Z",
     "rawDocsReviews": [
       {
@@ -10764,6 +10866,13 @@
         },
         "created_at": "2026-07-03T09:40:53Z",
         "body": "Hi @rohitpavaskar,\r\n\r\nCan you please rebase this to 7.2? TIA! ✨"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-22T06:23:40Z",
+        "body": "> > ommand to run periodically as a cron j\r\n> \r\n> Yes, This needs to be set as cron job but separate job for each campaign.\r\n\r\nHey @rohitpavaskar,\r\n\r\nCan you please confirm if you'd like to update this PR with the above info? If so, we're holding the review for this PR.\r\n\r\nAlso, can you please rebase this PR to branch 7.2? Thanks! "
       }
     ],
     "rawCodeComments": [
