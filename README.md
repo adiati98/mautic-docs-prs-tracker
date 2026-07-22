@@ -351,15 +351,19 @@ commits the updated report + cache back to the repo, and publishes both
 filename in the deployment so the pages' cross-links to each other work the
 same whether you're viewing them locally or on Pages. Three schedules:
 
-- **Every half hour, 8am–8pm UK time, Mon–Fri** — incremental (`node
-  tracker.js`, cache-assisted). Anchored to GMT; GitHub Actions cron has no
-  DST support, so during BST (late Mar–late Oct) these land about an hour
-  later by the UK clock. Accepted tradeoff for an internal tool.
-- **9am and 8pm UK/GMT on both Saturday and Sunday** — two incremental
-  check-ins each day, same cadence on both weekend days.
-- **Sunday 11pm UK/GMT** — a third, extra run on Sundays specifically for
-  the weekly full resync (`node tracker.js --fresh`), ignoring the cache to
-  correct any drift. Every other run (weekday or weekend) is incremental.
+- **Every half hour, 9am–9pm Central European time, Mon–Fri** — incremental
+  (`node tracker.js`, cache-assisted). GitHub Actions cron has no DST
+  support, so each rule is duplicated for CEST and CET (switched via the
+  month field) to keep the same local wall-clock hour year-round. This only
+  leaves drift during the DST transition weeks themselves (late Mar / late
+  Oct), rather than for half the year. Accepted tradeoff for an internal
+  tool.
+- **10am and 9pm Central European time on both Saturday and Sunday** — two
+  incremental check-ins each day, same cadence on both weekend days.
+- **Midnight Monday Central European time** — a third, extra run
+  specifically for the weekly full resync (`node tracker.js --fresh`),
+  ignoring the cache to correct any drift. Every other run (weekday or
+  weekend) is incremental.
 
 You can also trigger it manually from the Actions tab (`workflow_dispatch`),
 optionally forcing a fresh fetch via the "Force a full fresh fetch" input.
