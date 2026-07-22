@@ -2810,7 +2810,7 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#551": {
-    "docsUpdatedAt": "2026-07-22T14:11:45Z",
+    "docsUpdatedAt": "2026-07-22T14:43:58Z",
     "codeUpdatedAt": "2026-06-27T10:46:56Z",
     "rawDocsReviews": [
       {
@@ -2874,6 +2874,13 @@
         },
         "created_at": "2026-06-27T11:08:52Z",
         "body": "@adiati98 Done — thanks for the careful review.\n\n- **Clean rebase to `7.2`:** the branch is now a single clean commit (`831fc1b`) on top of the current `7.2` tip, with all the unrelated/old commits dropped. Net diff is just `docs/plugin_extensions/emails.rst`.\n- **Review suggestions applied (all rounds):**\n  - Mautic feature-name capitalization (`Pages` → `Landing Pages`, `Page` → `Landing Page`, `form` → `Form`, `contact` → `Contact`) where they refer to Mautic features.\n  - Wrapped the `Formatting tokens with getFormattedTokens()` heading, the sort-order intro, and the literal example labels in `.. vale off` / `.. vale on`.\n  - Removed first-person pronouns from the token example text and fixed the colon casing.\n  - Applied your suggested wording for the `a:` link-token prefix explanation.\n  - Applied the suggested sort-order list verbatim.\n  - Moved the `.. vale on` statement so both token-sorting sentences fall inside the vale-off block.\n\nVale now reports **0 errors and 0 warnings** on the changed file, and the PR is mergeable against `7.2`. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-22T14:43:58Z",
+        "body": "Thanks for the thorough review, @patrykgruszka — all three points are addressed and verified against the source PR (mautic/mautic#15855):\n\n1. **Restored the `'alias'` value column** in the migration `getFormattedTokens()` example, so upgraded code preserves the same token keys (`{contactfield=email}`) instead of silently switching to the `'id'` default.\n2. **Switched the `linkWithId()` examples to `mautic.page.token.pagelink`** (\"Page link\"), the key Mautic core actually uses — so the label, key, and result comment now agree.\n3. **Reduced the \"Token sorting\" subsection** to a concise, non-exhaustive summary (Contact, Company, Owner, …, with custom tokens in an 'Other' group) that points readers to the `TokenSorter` class constants for the exact order, rather than duplicating a maintenance-prone inventory.\n\nVale passes with 0 errors and 0 warnings. PR #551 is updated and ready for another look."
       }
     ],
     "rawCodeComments": [
