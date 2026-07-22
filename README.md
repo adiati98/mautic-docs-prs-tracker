@@ -4,6 +4,11 @@ A local JavaScript app that tracks open Mautic docs PRs against their linked
 code PRs, and tells you — every time you run it — what needs your attention
 today.
 
+**👀 Just here to review docs PRs?** You don't need to set anything up —
+jump straight to [Using the tracker](#using-the-tracker-no-setup-needed).
+**🛠 Setting it up or maintaining it?** Keep reading, or jump to
+[Setup](#setup-1-minute).
+
 ## What It Does
 
 `tracker.js`:
@@ -20,6 +25,93 @@ today.
 
 This tool is **strictly read-only** — it never comments, labels, or merges
 anything on GitHub. It only tells you what to do next.
+
+## Using the tracker (no setup needed)
+
+Open the published dashboard (`tracker-report.html`) in your browser — ask
+whoever maintains this repo for the link if you don't have it. Nothing below
+requires installing anything or running a command; this section is written
+for anyone reviewing docs PRs, not just for developers.
+
+### The four groups
+
+Every open docs PR sits in exactly one of four groups, answering one
+question: **whose turn is it?**
+
+1. **Need you today** — something only you can do right now.
+2. **Bring it forward** — not urgent, but worth doing when you get a chance.
+3. **Waiting on others or for code PR to merge** — you've done your part;
+   someone or something else needs to move next.
+4. **Monitoring** — a normal back-and-forth is happening; nothing to do
+   unless it goes quiet.
+
+### Reading a row
+
+| What you see | What it means |
+| --- | --- |
+| A colored bar on the left edge | How urgent: red = overdue, orange = due soon, blue = something to do, dark grey = needs your review, green = approved/ready. A pale, colorless edge means "nothing to do right now — it's on someone else." |
+| A plain grey badge (e.g. **Open**, **Draft**, **Merged**, **Closed**) | A fact about the code PR. Not something to act on. |
+| A colored chip with text (e.g. **Review this docs PR**) | An action for you to take. The color groups similar actions together (see the in-page legend for the full color key). |
+
+### Priority tabs, in plain words
+
+| Tab | What it means |
+| --- | --- |
+| **Critical** | You reminded the code author 14+ days ago and it's still silent — time to escalate. |
+| **Serious** | 7–13 days of silence since a reminder, or someone's waiting directly on your reply — send a follow-up. |
+| **Act** | Something needs doing: review, remind, merge, add a label, etc. |
+| **Triage** | A draft PR waiting on its code PR, or a standalone PR waiting on its own author. |
+| **Stale** | Nothing has happened here in 30+ days, regardless of what else is going on with the PR. |
+
+### Common scenarios
+
+**A new docs PR shows up, linked to a code PR that's still open**
+1. It opens, not yet labeled or milestoned.
+   → Chips: **Add pending-pr-merge label**, **Add milestone** — in Bring it
+   forward, nothing urgent yet.
+2. Once labeled and milestoned, it just waits on the code PR.
+   → Chip: **Review this docs PR** (quiet — you can read it early if you
+   like, but there's no rush).
+
+**The code PR merges and nobody's said anything to its author yet**
+1. → Chip: **Remind code PR author — code PR merged** (or **Ask to review
+   content**, if a bot opened the docs PR).
+2. Someone tags the author. The row moves to **Waiting on others**.
+3. 7 days pass, still no reply → chip: **Send a follow-up**.
+4. 14 days pass, still no reply → chip: **Escalate to core team**.
+5. The author finally replies → chip: **Check the author's response**.
+6. You reply back → the row settles into **Monitoring** — nothing more to
+   do unless it goes quiet again.
+
+**Someone approves the docs PR**
+- If the code PR has already merged → chip: **Final review, then merge**.
+- If the code PR is still open → the approval is just noted for now; docs
+  don't merge ahead of code.
+
+**The linked code PR gets closed instead of merged**
+- Chip: **Close this docs PR** — the documented change no longer applies.
+  This takes priority over anything else showing on that row.
+
+**Nothing happens for a month**
+- A dashed 🕸 **Stale** badge appears — purely a heads-up that nothing's
+  moved in 30+ days. It doesn't change which group the row is in or remove
+  any other chip.
+
+### Filters, your checklist, and the author reminder page
+
+- Use the **Repo** and **Priority** tabs at the top of the dashboard to
+  narrow what you see — see [Filtering](#filtering) below for the exact
+  rules.
+- Every row you can act on has a checkbox for your own tracking — see
+  [Checklist](#checklist). It's saved to your browser only; it doesn't
+  notify anyone or change anything on GitHub.
+- A separate page, `tracker-reminders.html`, is meant to be shared directly
+  with code PR authors — see [Author reminder page](#author-reminder-page).
+
+Everything below this point goes into the exact, detailed rules the tracker
+follows — useful if you're maintaining the tool, curious how a specific chip
+is decided, or want to double-check an edge case. Most reviewers won't need
+it day to day.
 
 ## Setup (1 minute)
 
@@ -92,25 +184,14 @@ This creates `tracker-report.html` — open it in your browser.
 
 ## How It Works
 
-Every open docs PR sorts into exactly one of four groups, answering a single
-question: **whose turn is it?**
+This section — and everything through [Troubleshooting](#troubleshooting) —
+is the exact, detailed reference behind the [four groups](#the-four-groups)
+and [scenarios](#common-scenarios) already covered above. Skip it unless
+you're maintaining the tool or double-checking an edge case.
 
-1. **Need you today** — something only you can do: review a PR, remind the
-   code author, follow up, escalate to the core team, do a final review and
-   merge, or close a docs PR whose linked code PR was closed without
-   merging.
-2. **Bring it forward** — not urgent, but worth doing on your own schedule:
-   brand-new PRs that still need a label or milestone, approvals that are
-   ready to merge with nothing else going on, and anything that's gone
-   quiet for a while (stale).
-3. **Waiting on others or for code PR to merge** — you've done your part —
-   either the code PR hasn't merged yet, a reminder to the code PR author
-   has been sent, or you've escalated and are waiting for a reply.
-4. **Monitoring** — the author replied and you've already responded; a normal
-   back-and-forth is happening. Collapsed by default, but each row still
-   shows a day count since your last reply — if the conversation goes quiet
-   for a week, it resurfaces in "Need you today" asking you to remind them
-   again.
+**Monitoring**, in detail: collapsed by default, but each row still shows a
+day count since your last reply — if the conversation goes quiet for a week,
+it resurfaces in "Need you today" asking you to remind them again.
 
 On top of that, a few extra things can show up on any row, regardless of
 which group it's in, because they're triggered separately:
