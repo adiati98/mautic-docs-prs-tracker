@@ -2349,7 +2349,7 @@
   },
   "mautic/developer-documentation-new#554": {
     "docsUpdatedAt": "2026-07-08T18:26:40Z",
-    "codeUpdatedAt": "2026-07-23T09:30:46Z",
+    "codeUpdatedAt": "2026-07-23T10:23:14Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -2457,7 +2457,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-23T09:30:46Z",
+        "created_at": "2026-07-23T10:18:03Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15569) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [10 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15569&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15569&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15569&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15569&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15569&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15569)\n\n"
       }
     ],
@@ -2501,6 +2501,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-07T14:18:49Z",
         "body": "Looks good. Just a tiny suggestion"
+      },
+      {
+        "user": {
+          "login": "aarohiprasad"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-23T09:58:15Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
@@ -2810,7 +2818,7 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#551": {
-    "docsUpdatedAt": "2026-07-23T08:48:37Z",
+    "docsUpdatedAt": "2026-07-23T10:15:05Z",
     "codeUpdatedAt": "2026-06-27T10:46:56Z",
     "rawDocsReviews": [
       {
@@ -2852,6 +2860,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-23T08:09:00Z",
         "body": "Automated review against the linked core PR (mautic/mautic#15855). One high-severity provenance issue found; everything else in the API documentation (getFormattedTokens, TokenFormatOptions, migration example) checks out against core code."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-23T10:14:45Z",
+        "body": "Good to go 👍 "
       }
     ],
     "rawDocsComments": [
@@ -2938,6 +2954,13 @@
         },
         "created_at": "2026-07-23T08:48:37Z",
         "body": "@patrykgruszka both of these are already addressed on the branch — they were applied in the previous round:\n\n1. **[High] Deprecation version:** `docs/plugin_extensions/emails.rst` now reads `.. deprecated:: 7.2` (source-verified against merge commit `118fd518a9` first appearing in `7.2.0-rc`, matching the PR milestone).\n2. **[Low] Token-sort list:** the sequence now reads `... Asset, This page, Email`, with 'This page' inserted between Asset and Email per `TokenSorter.php`.\n\nThe current branch head (`a26dc50`) reflects both changes — this review looks to have run against an earlier snapshot. Nothing further needed; ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T10:15:05Z",
+        "body": "Thanks @patrykgruszka — appreciate the review! 🙌"
       }
     ],
     "rawCodeComments": [
@@ -8518,7 +8541,7 @@
   },
   "mautic/user-documentation#786": {
     "docsUpdatedAt": "2026-07-08T23:03:52Z",
-    "codeUpdatedAt": "2026-07-22T11:14:06Z",
+    "codeUpdatedAt": "2026-07-23T10:19:58Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8588,7 +8611,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-22T11:14:06Z",
+        "created_at": "2026-07-23T10:19:58Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16350) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16350&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16350&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16350&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16350&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16350&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16350)\n\n"
       }
     ],
