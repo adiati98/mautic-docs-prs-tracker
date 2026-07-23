@@ -2810,7 +2810,7 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#551": {
-    "docsUpdatedAt": "2026-07-22T14:43:58Z",
+    "docsUpdatedAt": "2026-07-23T08:48:37Z",
     "codeUpdatedAt": "2026-06-27T10:46:56Z",
     "rawDocsReviews": [
       {
@@ -2844,6 +2844,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-22T14:11:45Z",
         "body": "Keep after reduction - the API documentation (getFormattedTokens, TokenFormatOptions, deprecations) is genuinely useful for plugin developers. The \"Token sorting\" list (lines 117–143) is accurate but is an implementation-inventory dump: the exact ordering and category labels are determined by TokenSorter constants and translation keys, and maintaining this list in prose adds maintenance burden with no user decision attached. Consider reducing that subsection to \"Tokens are sorted by category (Contact, Company, Owner, …); custom tokens fall into an 'Other' group\" and pointing readers to the TokenSorter source for the exact order."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-23T08:09:00Z",
+        "body": "Automated review against the linked core PR (mautic/mautic#15855). One high-severity provenance issue found; everything else in the API documentation (getFormattedTokens, TokenFormatOptions, migration example) checks out against core code."
       }
     ],
     "rawDocsComments": [
@@ -2881,6 +2889,55 @@
         },
         "created_at": "2026-07-22T14:43:58Z",
         "body": "Thanks for the thorough review, @patrykgruszka — all three points are addressed and verified against the source PR (mautic/mautic#15855):\n\n1. **Restored the `'alias'` value column** in the migration `getFormattedTokens()` example, so upgraded code preserves the same token keys (`{contactfield=email}`) instead of silently switching to the `'id'` default.\n2. **Switched the `linkWithId()` examples to `mautic.page.token.pagelink`** (\"Page link\"), the key Mautic core actually uses — so the label, key, and result comment now agree.\n3. **Reduced the \"Token sorting\" subsection** to a concise, non-exhaustive summary (Contact, Company, Owner, …, with custom tokens in an 'Other' group) that points readers to the `TokenSorter` class constants for the exact order, rather than duplicating a maintenance-prone inventory.\n\nVale passes with 0 errors and 0 warnings. PR #551 is updated and ready for another look."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "created_at": "2026-07-23T08:29:40Z",
+        "body": "@promptless-for-oss apply suggestions"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T08:30:00Z",
+        "body": "Thanks @patrykgruszka — we're on it. We'll apply your review suggestions on this PR and push an update to the branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T08:35:03Z",
+        "body": "Update: we've identified the two open items from your latest round — correcting the deprecation directive to `.. deprecated:: 7.2` and adding the 'This page' entry to the token-sort order between Asset and Email. Applying them now and will push to the branch shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T08:41:14Z",
+        "body": "Update: both items are applied and pushed to the branch — the deprecation directive now reads `.. deprecated:: 7.2` and 'This page' is inserted between Asset and Email in the token-sort order. Vale is clean. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T08:41:31Z",
+        "body": "@patrykgruszka done — both items are applied and pushed to the branch:\n\n1. The deprecation directive now reads `.. deprecated:: 7.2` (verified: PR #15855 first ships in the 7.2.0-rc tag, after 7.1.3, matching its milestone).\n2. The token-sort list now includes the 'This page' category in its correct position between 'Asset' and 'Email', per `TokenSorter.php`.\n\nBoth changes were source-verified against mautic/mautic#15855, and Vale passes with 0 errors and 0 warnings. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T08:47:31Z",
+        "body": "Thanks @patrykgruszka — we're taking a look. Both of these items were just applied in the previous round, so we'll confirm the branch reflects them and follow up here."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T08:48:37Z",
+        "body": "@patrykgruszka both of these are already addressed on the branch — they were applied in the previous round:\n\n1. **[High] Deprecation version:** `docs/plugin_extensions/emails.rst` now reads `.. deprecated:: 7.2` (source-verified against merge commit `118fd518a9` first appearing in `7.2.0-rc`, matching the PR milestone).\n2. **[Low] Token-sort list:** the sequence now reads `... Asset, This page, Email`, with 'This page' inserted between Asset and Email per `TokenSorter.php`.\n\nThe current branch head (`a26dc50`) reflects both changes — this review looks to have run against an earlier snapshot. Nothing further needed; ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -4066,7 +4123,7 @@
     ]
   },
   "mautic/developer-documentation-new#516": {
-    "docsUpdatedAt": "2026-07-22T14:10:17Z",
+    "docsUpdatedAt": "2026-07-23T05:31:05Z",
     "codeUpdatedAt": "2026-07-20T18:41:02Z",
     "rawDocsReviews": [
       {
@@ -4108,6 +4165,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-22T13:53:45Z",
         "body": "@promptless-for-oss  The documentation is useful and covers the new Notes API endpoints well, but some permission details need correction before merging.\n\nNotes permissions don’t grant access to the associated Contact. Creating a Note requires `lead:notes:create`, but the User must also have permission to view the Contact being associated with the Note. Please clarify this in the general permissions section and under the Create Note endpoint.\n\nThere is also an important difference between the standalone Notes endpoints and `GET /contacts/ID/notes`:\n\n* The standalone `/notes` endpoints evaluate own/other permissions using the User who created the Note.\n* `GET /contacts/ID/notes` currently evaluates `viewown` and `viewother` using the Contact owner.\n\nPlease document this distinction accurately, unless the implementation is going to be aligned separately.\n\nA few additional fixes are needed:\n\n* Change “Edits an Note” to “Edits a Note.”\n* Avoid suggesting that Notes permissions can be used without Contact access. They are separate permissions, but Contact access is still required for operations involving the associated Contact.\n\nPlease update the documentation based on these points.\n"
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-23T05:31:04Z",
+        "body": "LGTM!"
       }
     ],
     "rawDocsComments": [
@@ -4771,7 +4836,7 @@
   },
   "mautic/developer-documentation-new#310": {
     "docsUpdatedAt": "2026-06-09T08:32:08Z",
-    "codeUpdatedAt": "2026-07-21T09:45:04Z",
+    "codeUpdatedAt": "2026-07-23T01:57:18Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5053,7 +5118,7 @@
           "login": "thib-d"
         },
         "created_at": "2026-07-07T08:11:03Z",
-        "body": "We've been running this branch (`7.x-postgresql`) against PostgreSQL 16 and hit a reproducible failure on every `doctrine:migrations:migrate` run:\n\n```\nSQLSTATE[42P16]: multiple primary keys for table \"migrations\" are not allowed\n```\n\n**Root cause**: `app/config/config.php` applies `PDO::ATTR_STRINGIFY_FETCHES => true` to the connection options unconditionally (it's there as a MySQL/PHP 8.1 workaround). On `pdo_pgsql`, the option also stringifies the booleans returned by DBAL's schema-introspection queries against `pg_catalog` (e.g. `pg_index.indisprimary`/`indisunique`), which breaks DBAL's boolean handling — `introspectTable()` ends up reporting **zero indexes** for every table. doctrine-migrations then thinks the `migrations` table has no primary key and emits `ALTER TABLE migrations ADD PRIMARY KEY (version)` on every run → 42P16.\n\n**Fix that works for us** — make the option conditional on the driver:\n\n```php\n'options' => 'pdo_pgsql' === $localConfigParameterBag->get('db_driver')\n    ? []\n    : [PDO::ATTR_STRINGIFY_FETCHES => true],\n```\n\nWith that change, introspection is correct and `mautic:install` + all migrations run cleanly on PostgreSQL; we have the branch passing our end-to-end suite (install → login �� dashboard) with it.\n"
+        "body": "We've been running this branch (`7.x-postgresql`) against PostgreSQL 16 and hit a reproducible failure on every `doctrine:migrations:migrate` run:\n\n```\nSQLSTATE[42P16]: multiple primary keys for table \"migrations\" are not allowed\n```\n\n**Root cause**: `app/config/config.php` applies `PDO::ATTR_STRINGIFY_FETCHES => true` to the connection options unconditionally (it's there as a MySQL/PHP 8.1 workaround). On `pdo_pgsql`, the option also stringifies the booleans returned by DBAL's schema-introspection queries against `pg_catalog` (e.g. `pg_index.indisprimary`/`indisunique`), which breaks DBAL's boolean handling — `introspectTable()` ends up reporting **zero indexes** for every table. doctrine-migrations then thinks the `migrations` table has no primary key and emits `ALTER TABLE migrations ADD PRIMARY KEY (version)` on every run → 42P16.\n\n**Fix that works for us** — make the option conditional on the driver:\n\n```php\n'options' => 'pdo_pgsql' === $localConfigParameterBag->get('db_driver')\n    ? []\n    : [PDO::ATTR_STRINGIFY_FETCHES => true],\n```\n\nWith that change, introspection is correct and `mautic:install` + all migrations run cleanly on PostgreSQL; we have the branch passing our end-to-end suite (install → login → dashboard) with it.\n"
       },
       {
         "user": {
@@ -5066,7 +5131,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-21T09:45:02Z",
+        "created_at": "2026-07-23T01:57:18Z",
         "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n💡 **Need a hand with PR review?** Try [Gitar by Sonar](https://gitar.ai/?utm_source=sonarqube-cloud&utm_medium=in-product&utm_campaign=gitar-crosssell-q3-2026&utm_content=pr-deco)!\n\n"
       }
     ],
@@ -6581,7 +6646,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#837": {
-    "docsUpdatedAt": "2026-07-22T13:25:52Z",
+    "docsUpdatedAt": "2026-07-23T06:31:47Z",
     "codeUpdatedAt": "2026-07-22T06:39:46Z",
     "rawDocsReviews": [
       {
@@ -6598,6 +6663,14 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-07-22T06:38:25Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "JonasLudwig1998"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-23T06:31:47Z",
         "body": ""
       }
     ],
@@ -6972,7 +7045,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#811": {
-    "docsUpdatedAt": "2026-07-22T06:11:43Z",
+    "docsUpdatedAt": "2026-07-23T06:56:12Z",
     "codeUpdatedAt": "2026-06-29T14:40:12Z",
     "rawDocsReviews": [
       {
@@ -7062,6 +7135,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-14T13:16:37Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-23T06:28:41Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -7077,7 +7158,7 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-06-29T14:02:51Z",
-        "body": "Thanks @adiati98 ��� converted the variant-management bullets in the \"Managing variants\" section into a numbered (`#.`) list so they read as step-by-step instructions, consistent with the other ordered lists in the section. Pushed to the branch; Vale is clean on the edited lines.\n"
+        "body": "Thanks @adiati98 — converted the variant-management bullets in the \"Managing variants\" section into a numbered (`#.`) list so they read as step-by-step instructions, consistent with the other ordered lists in the section. Pushed to the branch; Vale is clean on the edited lines.\n"
       },
       {
         "user": {
@@ -7106,6 +7187,34 @@
         },
         "created_at": "2026-07-14T13:19:13Z",
         "body": "@adiati98 Done — I've applied both formatting suggestions and pushed the update:\n\n1. Added `|` spacer lines before and after the **Convert to A/B test** card image so it's separated from the surrounding step.\n2. Fixed the indentation so the **Convert to A/B test email** dialog image nests correctly under the **Test audience size** bullet, with spacers before and after.\n\nBoth are structural-only edits — the ordered-list numbering and bullet structure are intact, images nest correctly within their list items, and Vale is clean on the changed lines. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:29:28Z",
+        "body": "Thanks @adiati98 — we're on it. We'll work through your review comments (image swaps and placement, the new variant edit/delete note, the 'Is A/B variant' symbol screenshot, the settings gear wording, the schedule panel image, and the heading dash fix) and push an update to this branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:32:03Z",
+        "body": "Update: we've mapped all 8 review comments to the changes in `emails.rst` — the two conversion image swaps (renamed/stored locally, widths adjusted), the new three-dots edit/delete note, the 'Is A/B variant' symbol screenshot, the gear-icon settings wording, the schedule-panel image, and the heading underline fix. We're applying the edits now and will push to the branch shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:55:57Z",
+        "body": "Update: all 8 review comments are addressed and pushed to the branch — the two conversion images swapped/renamed with adjusted widths, the new three-dots edit/delete note, the 'Is A/B variant' symbol screenshot, the gear-icon settings wording, the schedule-panel image, and the heading underline fix. Four screenshots are committed under `docs/channels/images/emails/`. Ready for another review."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:56:12Z",
+        "body": "@adiati98 thanks for the detailed review — all eight comments are now addressed and pushed to the branch:\n\n1. Convert-card image replaced with your attachment, stored as `channels/images/emails/email_ab_test_convert_card.png`, width set to 800.\n2 & 3. Dialog image stored as `email_ab_test_convert_dialog.png` with the width removed so it renders full size.\n4. Added the alternate path for editing/removing a variant via the three-dots menu on the Emails list.\n5. Added the 'Is A/B variant' list-symbol note plus the `is_ab_variant_symbol.png` image (no width, spaced, with descriptive alt text).\n6. Applied the gear-icon settings wording.\n7. Added the schedule-panel image `ab_test_schedule_panel.png` at height 600 with descriptive alt text.\n8. Fixed the 'Sending and determining the winner' heading underline.\n\nOne small note: the alternate edit/remove sentence was lightly reworded into active voice with capitalized 'Email' and bold/quoted UI labels to match the docs style guide — otherwise everything is exactly as you suggested. Vale is clean on the changed content. Ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -9370,7 +9479,7 @@
     ]
   },
   "mautic/user-documentation#774": {
-    "docsUpdatedAt": "2026-07-15T12:26:24Z",
+    "docsUpdatedAt": "2026-07-23T06:52:44Z",
     "codeUpdatedAt": "2026-06-15T21:56:10Z",
     "rawDocsReviews": [
       {
@@ -9388,6 +9497,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-15T12:26:24Z",
         "body": "OK"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-23T06:46:20Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -9411,6 +9528,27 @@
         },
         "created_at": "2026-07-09T09:46:52Z",
         "body": "We double-checked this against the source change. The unique-weight constraint from [mautic/mautic#15404](https://github.com/mautic/mautic/pull/15404) is a class-level `UniqueEntity` scoped by the `weight` field alone — there's no funnel, category, or project scoping — so a Stage's weight must be unique across **all** funnels, exactly as the corrected note now states. This is also consistent with the Weight field description added in [#758](https://github.com/mautic/user-documentation/pull/758).\n\nOne note for completeness: this uniqueness is enforced at the application/validation layer (no DB-level unique index), which is an app-level guarantee and appropriate for the user-facing docs. The edit reads correctly as-is.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:46:36Z",
+        "body": "Thanks @adiati98 — we're on it. We'll apply your suggested wording for the Stage weight note and push an update to this branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:52:29Z",
+        "body": "Update: applied your suggested wording verbatim to `docs/stages/stages.rst` and pushed to the branch. Ready for another look when you have a moment."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-23T06:52:43Z",
+        "body": "@adiati98 done — applied your suggested wording verbatim to the 'Moving Contacts between Stages' note in `docs/stages/stages.rst` (comma after 'For example') and pushed it to the branch. The note's substance (each Stage must have a unique weight across all funnels) was already correct, so this was just the punctuation fix. Ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -10782,7 +10920,7 @@
     ]
   },
   "mautic/user-documentation#712": {
-    "docsUpdatedAt": "2026-07-16T04:21:51Z",
+    "docsUpdatedAt": "2026-07-23T06:53:21Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -11515,7 +11653,7 @@
   },
   "mautic/user-documentation#697": {
     "docsUpdatedAt": "2026-06-26T05:52:04Z",
-    "codeUpdatedAt": "2026-07-21T09:45:04Z",
+    "codeUpdatedAt": "2026-07-23T01:57:18Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11770,7 +11908,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-21T09:45:02Z",
+        "created_at": "2026-07-23T01:57:18Z",
         "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n💡 **Need a hand with PR review?** Try [Gitar by Sonar](https://gitar.ai/?utm_source=sonarqube-cloud&utm_medium=in-product&utm_campaign=gitar-crosssell-q3-2026&utm_content=pr-deco)!\n\n"
       }
     ],
@@ -12854,23 +12992,23 @@
   },
   "mautic/developer-documentation-new#601": {
     "docsUpdatedAt": "2026-07-22T10:57:17Z",
-    "codeUpdatedAt": "2026-07-22T12:14:05Z",
+    "codeUpdatedAt": "2026-07-23T07:46:28Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-07-22T11:52:57Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [29 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660)\n\n"
-      },
       {
         "user": {
           "login": "andersonjeccel"
         },
         "created_at": "2026-07-22T12:13:57Z",
         "body": "@patrykgruszka would you like to also address SonarQube ideas? they seem relevant"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-07-23T07:46:28Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [29 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -12887,23 +13025,23 @@
   },
   "mautic/user-documentation#858": {
     "docsUpdatedAt": "2026-07-22T10:55:40Z",
-    "codeUpdatedAt": "2026-07-22T12:14:05Z",
+    "codeUpdatedAt": "2026-07-23T07:46:28Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-07-22T11:52:57Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [29 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660)\n\n"
-      },
       {
         "user": {
           "login": "andersonjeccel"
         },
         "created_at": "2026-07-22T12:13:57Z",
         "body": "@patrykgruszka would you like to also address SonarQube ideas? they seem relevant"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-07-23T07:46:28Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [29 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16660&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16660&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16660&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16660)\n\n"
       }
     ],
     "rawCodeReviews": [
