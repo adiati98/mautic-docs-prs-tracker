@@ -13015,7 +13015,7 @@
   },
   "mautic/developer-documentation-new#601": {
     "docsUpdatedAt": "2026-07-22T10:57:17Z",
-    "codeUpdatedAt": "2026-07-23T07:46:28Z",
+    "codeUpdatedAt": "2026-07-23T11:24:55Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -13042,13 +13042,21 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-22T11:02:33Z",
         "body": "nothing else from me"
+      },
+      {
+        "user": {
+          "login": "PatrickJenkner"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-23T11:24:39Z",
+        "body": "Worked as described when tested 👍  Thanks!"
       }
     ],
     "rawReviewRequests": []
   },
   "mautic/user-documentation#858": {
     "docsUpdatedAt": "2026-07-22T10:55:40Z",
-    "codeUpdatedAt": "2026-07-23T07:46:28Z",
+    "codeUpdatedAt": "2026-07-23T11:24:55Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -13075,6 +13083,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-22T11:02:33Z",
         "body": "nothing else from me"
+      },
+      {
+        "user": {
+          "login": "PatrickJenkner"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-23T11:24:39Z",
+        "body": "Worked as described when tested 👍  Thanks!"
       }
     ],
     "rawReviewRequests": []
