@@ -6346,7 +6346,7 @@
     ]
   },
   "mautic/user-documentation#849": {
-    "docsUpdatedAt": "2026-07-22T11:04:27Z",
+    "docsUpdatedAt": "2026-07-24T18:30:10Z",
     "codeUpdatedAt": "2026-07-22T11:03:14Z",
     "rawDocsReviews": [
       {
@@ -7892,7 +7892,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#805": {
-    "docsUpdatedAt": "2026-07-22T14:04:21Z",
+    "docsUpdatedAt": "2026-07-24T18:19:30Z",
     "codeUpdatedAt": "2026-06-27T10:46:56Z",
     "rawDocsReviews": [
       {
@@ -13125,8 +13125,8 @@
     ]
   },
   "mautic/developer-documentation-new#601": {
-    "docsUpdatedAt": "2026-07-22T10:57:17Z",
-    "codeUpdatedAt": "2026-07-24T16:36:48Z",
+    "docsUpdatedAt": "2026-07-24T18:20:35Z",
+    "codeUpdatedAt": "2026-07-24T18:01:44Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -13198,7 +13198,7 @@
   },
   "mautic/user-documentation#858": {
     "docsUpdatedAt": "2026-07-22T10:55:40Z",
-    "codeUpdatedAt": "2026-07-24T16:36:48Z",
+    "codeUpdatedAt": "2026-07-24T18:01:44Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
