@@ -6346,7 +6346,7 @@
     ]
   },
   "mautic/user-documentation#849": {
-    "docsUpdatedAt": "2026-07-24T18:30:10Z",
+    "docsUpdatedAt": "2026-07-24T19:29:44Z",
     "codeUpdatedAt": "2026-07-22T11:03:14Z",
     "rawDocsReviews": [
       {
@@ -6372,6 +6372,22 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-22T11:04:27Z",
         "body": "ok"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-24T18:49:53Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-24T19:19:12Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -6381,6 +6397,48 @@
         },
         "created_at": "2026-07-16T13:38:11Z",
         "body": "Thanks for the review @adiati98 — I've addressed all of the feedback and pushed the updates:\n\n1. Reworded the target-Stage step to use the bold UI labels: **Merging current stage** window and the **Choose a stage to merge into** dropdown.\n2. Wrapped the numbered steps block in `.. vale off` / `.. vale on`.\n3. Updated the confirmation line to: *Mautic confirms the merge with the message **Stage 'name' was successfully merged into 'target'**.*\n4. Replaced the vague \"action\" wording — verified against the source PR that the control is a **Merge Stage** item inside each row's actions (Options) menu (not a standalone button), and the permissions sentence now reads consistently with the numbered steps.\n\nI also added the requested screenshot: I ran Mautic 7.x locally, created two Stages, opened the **Merging current stage** modal with a target Stage selected in the dropdown, and embedded `docs/stages/images/merge-stage.png` after the numbered steps so it shows what you see during the merge.\n\nVale passes clean on the updated section. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-24T18:50:31Z",
+        "body": "Thanks @adiati98 — we're on it. We'll apply your review suggestions on PR #849: the permissions note wording, the updated step for opening the **Options** menu, and adding the `merge_stage_option.png` screenshot with descriptive alt text. We'll follow up here once the changes are pushed."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-24T18:52:46Z",
+        "body": "Quick update: we've reviewed all three of your comments and confirmed the `merge_stage_option.png` screenshot matches the current Stages list **Options** menu. We're applying the two wording changes and adding the image with alt text now, and will push shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-24T19:04:44Z",
+        "body": "Thanks for the review, @adiati98 — all three comments are addressed and pushed.\n\n- The permissions note and the merge step now refer to the **Options** menu opened via the three-dots icon (replacing the earlier \"actions menu\" wording).\n- Added your supplied screenshot as `merge_stage_option.png` after the **Select Merge Stage** step, with descriptive alt text; it's indented under the step so the numbered list keeps continuous numbering.\n\nVale is clean on the changed lines. Ready for another look whenever you have a moment. 🙌"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-24T19:19:29Z",
+        "body": "Thanks, @adiati98 — following up on your latest comments. We'll fix the image indentation so it sits correctly within the ordered list, and update the image name per your note. We'll push and reply here once it's done."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-24T19:21:41Z",
+        "body": "Update: we've mapped out all three changes — the spacer before the Options-menu screenshot, pulling the Merge Stage modal image inside the ordered list (with `.. vale on` moved after it) and the underscore image name, plus the \"To merge Stages:\" lead-in. Applying and pushing now."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-24T19:29:44Z",
+        "body": "All three comments are addressed and pushed, @adiati98:\n\n- Added the **To merge Stages:** lead-in before the numbered procedure.\n- Added the spacer above the Options-menu screenshot and pulled the Merge Stage modal image inside the final numbered step, with `.. vale on` moved after it so the list nesting is correct.\n- Renamed the modal image to `merge_stage.png`.\n\nOne small note on comment 2: the suggestion snippet showed the dash spelling (`merge-stage.png`), but since your prose asked for the underscore name we went with `merge_stage.png` — let us know if you'd prefer the dash instead.\n\nVale is clean on the changed section. Ready for another look. 🙌"
       }
     ],
     "rawCodeComments": [
