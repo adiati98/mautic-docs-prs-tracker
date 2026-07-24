@@ -3330,7 +3330,7 @@
     ]
   },
   "mautic/developer-documentation-new#540": {
-    "docsUpdatedAt": "2026-06-26T19:05:24Z",
+    "docsUpdatedAt": "2026-07-24T06:22:22Z",
     "codeUpdatedAt": "2026-07-14T05:07:38Z",
     "rawDocsReviews": [
       {
@@ -3399,6 +3399,13 @@
         },
         "created_at": "2026-06-23T05:22:11Z",
         "body": "/aside @greichel-evrima as per confirmation from Promptless, this docs can go once your open PR is merged. So, no worries. 🙂 \r\n\r\nAlso, you're doing a great job in your first contribution! Thank you! 🙌🏼    "
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-24T06:22:22Z",
+        "body": "Hi @greichel-evrima,\r\n\r\nIf you find the content is aligned with your changes, can you please approve this PR? That way, we can merge this in once your code PR gets merged.\r\n\r\nTo do so:\r\n\r\n1. Go to the **Files changed** tab.\r\n2. Click the **Submit review** button.\r\n3. Select **Approve**.\r\n4. Add message (optional).\r\n5. Click the **Submit review** button.\r\n\r\nThank you!"
       }
     ],
     "rawCodeComments": [
@@ -4859,7 +4866,7 @@
   },
   "mautic/developer-documentation-new#310": {
     "docsUpdatedAt": "2026-06-09T08:32:08Z",
-    "codeUpdatedAt": "2026-07-23T14:32:37Z",
+    "codeUpdatedAt": "2026-07-24T00:36:53Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5141,7 +5148,7 @@
           "login": "thib-d"
         },
         "created_at": "2026-07-07T08:11:03Z",
-        "body": "We've been running this branch (`7.x-postgresql`) against PostgreSQL 16 and hit a reproducible failure on every `doctrine:migrations:migrate` run:\n\n```\nSQLSTATE[42P16]: multiple primary keys for table \"migrations\" are not allowed\n```\n\n**Root cause**: `app/config/config.php` applies `PDO::ATTR_STRINGIFY_FETCHES => true` to the connection options unconditionally (it's there as a MySQL/PHP 8.1 workaround). On `pdo_pgsql`, the option also stringifies the booleans returned by DBAL's schema-introspection queries against `pg_catalog` (e.g. `pg_index.indisprimary`/`indisunique`), which breaks DBAL's boolean handling — `introspectTable()` ends up reporting **zero indexes** for every table. doctrine-migrations then thinks the `migrations` table has no primary key and emits `ALTER TABLE migrations ADD PRIMARY KEY (version)` on every run → 42P16.\n\n**Fix that works for us** — make the option conditional on the driver:\n\n```php\n'options' => 'pdo_pgsql' === $localConfigParameterBag->get('db_driver')\n    ? []\n    : [PDO::ATTR_STRINGIFY_FETCHES => true],\n```\n\nWith that change, introspection is correct and `mautic:install` + all migrations run cleanly on PostgreSQL; we have the branch passing our end-to-end suite (install → login → dashboard) with it.\n"
+        "body": "We've been running this branch (`7.x-postgresql`) against PostgreSQL 16 and hit a reproducible failure on every `doctrine:migrations:migrate` run:\n\n```\nSQLSTATE[42P16]: multiple primary keys for table \"migrations\" are not allowed\n```\n\n**Root cause**: `app/config/config.php` applies `PDO::ATTR_STRINGIFY_FETCHES => true` to the connection options unconditionally (it's there as a MySQL/PHP 8.1 workaround). On `pdo_pgsql`, the option also stringifies the booleans returned by DBAL's schema-introspection queries against `pg_catalog` (e.g. `pg_index.indisprimary`/`indisunique`), which breaks DBAL's boolean handling — `introspectTable()` ends up reporting **zero indexes** for every table. doctrine-migrations then thinks the `migrations` table has no primary key and emits `ALTER TABLE migrations ADD PRIMARY KEY (version)` on every run → 42P16.\n\n**Fix that works for us** — make the option conditional on the driver:\n\n```php\n'options' => 'pdo_pgsql' === $localConfigParameterBag->get('db_driver')\n    ? []\n    : [PDO::ATTR_STRINGIFY_FETCHES => true],\n```\n\nWith that change, introspection is correct and `mautic:install` + all migrations run cleanly on PostgreSQL; we have the branch passing our end-to-end suite (install → login �� dashboard) with it.\n"
       },
       {
         "user": {
@@ -5154,8 +5161,8 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-23T14:32:37Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n💡 **Need a hand with PR review?** Try [Gitar by Sonar](https://gitar.ai/?utm_source=sonarqube-cloud&utm_medium=in-product&utm_campaign=gitar-crosssell-q3-2026&utm_content=pr-deco)!\n\n"
+        "created_at": "2026-07-24T00:36:52Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -5507,7 +5514,7 @@
   },
   "mautic/user-documentation#856": {
     "docsUpdatedAt": "2026-07-20T18:49:33Z",
-    "codeUpdatedAt": "2026-07-22T11:51:29Z",
+    "codeUpdatedAt": "2026-07-24T04:50:36Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5540,6 +5547,13 @@
         },
         "created_at": "2026-07-20T13:36:21Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16605) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16605&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16605&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16605&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16605&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16605&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16605)\n\n"
+      },
+      {
+        "user": {
+          "login": "adiux"
+        },
+        "created_at": "2026-07-24T04:50:36Z",
+        "body": "@andersonjeccel do you have an example of a mini card?\r\n\r\nFor me, it is important that we show the download URL and that the user can easily copy it"
       }
     ],
     "rawCodeReviews": [
@@ -8303,7 +8317,7 @@
   },
   "mautic/user-documentation#788": {
     "docsUpdatedAt": "2026-06-25T14:47:18Z",
-    "codeUpdatedAt": "2026-07-22T11:30:39Z",
+    "codeUpdatedAt": "2026-07-24T00:04:48Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8328,7 +8342,7 @@
           "login": "codecov[bot]"
         },
         "created_at": "2026-06-24T11:39:10Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16355?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `93.18182%` with `3 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 71.08%. Comparing base ([`26c1827`](https://app.codecov.io/gh/mautic/mautic/commit/26c18279056b6c93d311850ae5b610d5590db073?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`0a93cfa`](https://app.codecov.io/gh/mautic/mautic/commit/0a93cfa63716eb14305f30a7851c03abd23442b9?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16355?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [app/bundles/LeadBundle/Entity/LeadRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEntity%2FLeadRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FbnRpdHkvTGVhZFJlcG9zaXRvcnkucGhw) | 92.00% | [2 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [app/bundles/CoreBundle/Entity/CommonRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEntity%2FCommonRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FbnRpdHkvQ29tbW9uUmVwb3NpdG9yeS5waHA=) | 93.75% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16355/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@            Coverage Diff            @@\n##                7.x   #16355   +/-   ##\n=========================================\n  Coverage     71.07%   71.08%           \n- Complexity    38363    38368    +5     \n=========================================\n  Files          2483     2483           \n  Lines        144467   144497   +30     \n=========================================\n+ Hits         102685   102714   +29     \n- Misses        41782    41783    +1     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16355?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...p/bundles/CoreBundle/Helper/SearchStringHelper.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FHelper%2FSearchStringHelper.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9IZWxwZXIvU2VhcmNoU3RyaW5nSGVscGVyLnBocA==) | `78.72% <100.00%> (+1.02%)` | :arrow_up: |\n| [app/bundles/CoreBundle/Entity/CommonRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEntity%2FCommonRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FbnRpdHkvQ29tbW9uUmVwb3NpdG9yeS5waHA=) | `76.94% <93.75%> (+0.13%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Entity/LeadRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEntity%2FLeadRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FbnRpdHkvTGVhZFJlcG9zaXRvcnkucGhw) | `74.45% <92.00%> (+0.50%)` | :arrow_up: |\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16355?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `93.18182%` with `3 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 71.21%. Comparing base ([`71e5630`](https://app.codecov.io/gh/mautic/mautic/commit/71e5630f1d96ad24ae062c6613b9174eaae33a6d?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`db813a7`](https://app.codecov.io/gh/mautic/mautic/commit/db813a7cfa7e1b23cb0b7f1aa5b036f7b3d0189a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16355?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [app/bundles/LeadBundle/Entity/LeadRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEntity%2FLeadRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FbnRpdHkvTGVhZFJlcG9zaXRvcnkucGhw) | 92.00% | [2 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [app/bundles/CoreBundle/Entity/CommonRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEntity%2FCommonRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FbnRpdHkvQ29tbW9uUmVwb3NpdG9yeS5waHA=) | 93.75% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16355/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@            Coverage Diff            @@\n##                7.x   #16355   +/-   ##\n=========================================\n  Coverage     71.20%   71.21%           \n- Complexity    38407    38412    +5     \n=========================================\n  Files          2483     2483           \n  Lines        143922   143952   +30     \n=========================================\n+ Hits         102483   102513   +30     \n  Misses        41439    41439           \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16355?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...p/bundles/CoreBundle/Helper/SearchStringHelper.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FHelper%2FSearchStringHelper.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9IZWxwZXIvU2VhcmNoU3RyaW5nSGVscGVyLnBocA==) | `78.72% <100.00%> (+1.02%)` | :arrow_up: |\n| [app/bundles/CoreBundle/Entity/CommonRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEntity%2FCommonRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FbnRpdHkvQ29tbW9uUmVwb3NpdG9yeS5waHA=) | `76.94% <93.75%> (+0.13%)` | :arrow_up: |\n| [app/bundles/LeadBundle/Entity/LeadRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/16355?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEntity%2FLeadRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FbnRpdHkvTGVhZFJlcG9zaXRvcnkucGhw) | `74.45% <92.00%> (+0.50%)` | :arrow_up: |\n\n... and [1 file with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16355/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       },
       {
         "user": {
@@ -8355,7 +8369,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-22T11:14:21Z",
+        "created_at": "2026-07-23T23:48:14Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16355) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16355&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16355&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16355&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16355&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16355&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16355)\n\n"
       }
     ],
@@ -11712,7 +11726,7 @@
   },
   "mautic/user-documentation#697": {
     "docsUpdatedAt": "2026-06-26T05:52:04Z",
-    "codeUpdatedAt": "2026-07-23T14:32:37Z",
+    "codeUpdatedAt": "2026-07-24T00:36:53Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11967,8 +11981,8 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-23T14:32:37Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n💡 **Need a hand with PR review?** Try [Gitar by Sonar](https://gitar.ai/?utm_source=sonarqube-cloud&utm_medium=in-product&utm_campaign=gitar-crosssell-q3-2026&utm_content=pr-deco)!\n\n"
+        "created_at": "2026-07-24T00:36:52Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
     "rawCodeReviews": [
