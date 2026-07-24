@@ -8902,7 +8902,7 @@
     ]
   },
   "mautic/user-documentation#783": {
-    "docsUpdatedAt": "2026-07-08T20:54:45Z",
+    "docsUpdatedAt": "2026-07-24T09:02:58Z",
     "codeUpdatedAt": "2026-06-25T14:17:29Z",
     "rawDocsReviews": [
       {
@@ -8928,6 +8928,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-06-26T17:06:40Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-24T09:02:57Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -8951,6 +8959,13 @@
         },
         "created_at": "2026-07-08T20:54:45Z",
         "body": "Hi @rohitpavaskar,\r\n\r\nCan you please review the content in this PR and see if they're align with your changes in https://github.com/mautic/mautic/pull/16103?\r\n\r\nTIA! ✨ "
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-07-24T09:02:47Z",
+        "body": "> Hi @rohitpavaskar,\r\n> \r\n> Can you please review the content in this PR and see if they're align with your changes in [mautic/mautic#16103](https://github.com/mautic/mautic/pull/16103)?\r\n> \r\n> TIA! ✨\r\n\r\nHi @adiati98,\r\nDos changes looks good covering all the work of PR.\r\nThank you!"
       }
     ],
     "rawCodeComments": [
@@ -11095,7 +11110,7 @@
     ]
   },
   "mautic/user-documentation#709": {
-    "docsUpdatedAt": "2026-07-22T06:40:12Z",
+    "docsUpdatedAt": "2026-07-24T09:44:45Z",
     "codeUpdatedAt": "2026-05-19T13:15:32Z",
     "rawDocsReviews": [
       {
@@ -11105,6 +11120,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-05-15T09:45:13Z",
         "body": "@adiati98 we should probably create the 7.2 branch for these PR, right?\n\n@rohitpavaskar shall we suggest users to also configure this command to run periodically as a cron job? Or only in special cases?"
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-24T09:07:27Z",
+        "body": "There are only these 2 small changes as we changes these values. Everything else looks good.\nThank you!"
       }
     ],
     "rawDocsComments": [
@@ -11191,6 +11214,13 @@
         },
         "created_at": "2026-07-22T06:23:40Z",
         "body": "> > ommand to run periodically as a cron j\r\n> \r\n> Yes, This needs to be set as cron job but separate job for each campaign.\r\n\r\nHey @rohitpavaskar,\r\n\r\nCan you please confirm if you'd like to update this PR with the above info? If so, we're holding the review for this PR.\r\n\r\nAlso, can you please rebase this PR to branch 7.2? Thanks! "
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-07-24T09:12:06Z",
+        "body": "> @rohitpavaskar can you please check if the review from Promptless here is correct? TIA! ✨\r\n> \r\n> [#709 (comment)](https://github.com/mautic/user-documentation/pull/709#issuecomment-4488146002)\r\n\r\nYes, Fixed the issue."
       }
     ],
     "rawCodeComments": [
