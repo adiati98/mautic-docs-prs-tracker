@@ -28,17 +28,14 @@ anything on GitHub. It only tells you what to do next.
 
 ## Using the tracker (no setup needed)
 
-Open the published dashboard (`tracker-report.html`) in your browser — ask
-whoever maintains this repo for the link if you don't have it. Nothing below
-requires installing anything or running a command; this section is written
-for anyone reviewing docs PRs, not just for developers.
+Open the [Docs PR Tracker dashboard](https://adiati98.github.io/mautic-docs-prs-tracker/) in your browser.
 
 ### The four groups
 
 Every open docs PR sits in exactly one of four groups, answering one
 question: **whose turn is it?**
 
-1. **Need you today** — something only you can do right now.
+1. **Need you today** — something **only you** can do right now.
 2. **Bring it forward** — not urgent, but worth doing when you get a chance.
 3. **Waiting on others or for code PR to merge** — you've done your part;
    someone or something else needs to move next.
@@ -49,11 +46,11 @@ question: **whose turn is it?**
 
 | What you see | What it means |
 | --- | --- |
-| A colored bar on the left edge | How urgent: red = overdue, orange = due soon, blue = something to do, dark grey = needs your review, green = approved/ready. A pale, colorless edge means "nothing to do right now — it's on someone else." |
+| A colored bar on the left edge | **How urgent.** <br> <br> - **red** = overdue <br> - **orange** = due soon <br> - **blue** = something to do <br> - **dark grey** = needs your review <br> - **green** = approved/ready <br> - A **pale, colorless edge** means "nothing to do right now — it's on someone else." |
 | A plain grey badge (e.g. **Open**, **Draft**, **Merged**, **Closed**) | A fact about the code PR. Not something to act on. |
-| A colored chip with text (e.g. **Review this docs PR**) | An action for you to take. The color groups similar actions together (see the in-page legend for the full color key). |
+| A colored tag with text (e.g. **Review this docs PR**) | An action for you to take. The color groups similar actions together (see the in-page legend for the full color key). |
 
-### Priority tabs, in plain words
+### Priority tabs
 
 | Tab | What it means |
 | --- | --- |
@@ -65,37 +62,34 @@ question: **whose turn is it?**
 
 ### Common scenarios
 
-**A new docs PR shows up, linked to a code PR that's still open**
+**A new docs draft PR shows up, linked to a code PR that's still open**
 1. It opens, not yet labeled or milestoned.
-   → Chips: **Add pending-pr-merge label**, **Add milestone** — in Bring it
-   forward, nothing urgent yet.
-2. Once labeled and milestoned, it just waits on the code PR.
-   → Chip: **Review this docs PR** (quiet — you can read it early if you
+   
+   Tag: **Add pending-pr-merge label**, **Add milestone** — in **Bring it forward**, nothing urgent yet.
+2. Once labeled and milestoned, it just waits on the code PR to merge.
+   
+   Tag: **Review this docs PR** (quiet — you can read it early if you
    like, but there's no rush).
 
 **The code PR merges and nobody's said anything to its author yet**
-1. → Chip: **Remind code PR author — code PR merged** (or **Ask to review
-   content**, if a bot opened the docs PR).
+1. Tag changes to **Remind code PR author — code PR merged** (or **Ask to review content**, if a bot opened the docs PR).
 2. Someone tags the author. The row moves to **Waiting on others**.
-3. 7 days pass, still no reply → chip: **Send a follow-up**.
-4. 14 days pass, still no reply → chip: **Escalate to core team**.
-5. The author finally replies → chip: **Check the author's response**.
-6. You reply back → the row settles into **Monitoring** — nothing more to
-   do unless it goes quiet again.
+3. 7 days pass, still no reply → tag changes to **Send a follow-up**.
+4. 14 days pass, still no reply → tag changes to **Escalate to Core Team**.
+5. The author finally replies → tag changes to **Check the author’s response**.
+6. You reply back → the row settles into **Monitoring** — nothing more to do unless it goes quiet again.
 
 **Someone approves the docs PR**
-- If the code PR has already merged → chip: **Final review, then merge**.
-- If the code PR is still open → the approval is just noted for now; docs
-  don't merge ahead of code.
+- If the code PR has already merged → tag changes to **Final review, then merge**.
+- If the code PR is still open → the approval is just noted for now; docs don't merge ahead of code.
 
 **The linked code PR gets closed instead of merged**
-- Chip: **Close this docs PR** — the documented change no longer applies.
+- Tag: **Close this docs PR** — the documented change no longer applies.
   This takes priority over anything else showing on that row.
 
 **Nothing happens for a month**
 - A dashed 🕸 **Stale** badge appears — purely a heads-up that nothing's
-  moved in 30+ days. It doesn't change which group the row is in or remove
-  any other chip.
+  moved in 30+ days. It doesn't change which group the row is in or remove any other tag.
 
 ### Filters, your checklist, and the author reminder page
 
@@ -105,13 +99,10 @@ question: **whose turn is it?**
 - Every row you can act on has a checkbox for your own tracking — see
   [Checklist](#checklist). It's saved to your browser only; it doesn't
   notify anyone or change anything on GitHub.
-- A separate page, `tracker-reminders.html`, is meant to be shared directly
-  with code PR authors — see [Author reminder page](#author-reminder-page).
+- A separate page, [Docs PR Review Reminders](https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html), is meant to be shared directly with code PR authors — see [Author reminder page](#author-reminder-page).
 
-Everything below this point goes into the exact, detailed rules the tracker
-follows — useful if you're maintaining the tool, curious how a specific chip
-is decided, or want to double-check an edge case. Most reviewers won't need
-it day to day.
+> [!NOTE]
+> Everything below this point goes into the exact, detailed rules the tracker follows — useful if you're maintaining the tool, curious how a specific tag is decided, or want to double-check an edge case. Most reviewers won't need it day to day.
 
 ## Setup (1 minute)
 
@@ -241,10 +232,10 @@ author to confirm things look right. Once merged:
   merged" — no day count.
 - **Day 0–6 since your last reminder**: waiting on others.
 - **Day 7**: send a follow-up.
-- **Day 14**: escalate to the core team.
+- **Day 14**: escalate to the Core Team.
 
 If you still haven't formally reviewed the docs PR by the time any of this
-kicks in, a separate **"Review this docs PR — code PR merged"** label sits
+kicks in, a separate **"Review this docs PR — code PR merged"** tag sits
 alongside whatever this timeline is showing, so that's never lost either.
 
 This timeline stops the moment the code author responds — on either PR, as
@@ -269,7 +260,7 @@ live back-and-forth while it's outstanding still shows up as its own
 
 A docs PR can have a live conversation the timeline above doesn't cover —
 e.g. a contributor or another maintainer asks a question and nobody's
-replied. The row shows a **👀 X is waiting on Y** label in whichever group
+replied. The row shows a **👀 X is waiting on Y** tag in whichever group
 it's currently in (Need you today, Waiting, or Monitoring):
 
 - Waiting on **you** (someone @-mentioned you or a teammate) → orange,
@@ -280,7 +271,7 @@ it's currently in (Need you today, Waiting, or Monitoring):
   teammate's, or Promptless's) feeds the follow-up timeline above, so once
   the code PR has merged it's named right in the row's own text
   ("promptless-for-oss reminded the author, no reply since") rather than a
-  separate label. This label only steps in where the timeline can't yet —
+  separate tag. This tag only steps in where the timeline can't yet —
   mainly before the code PR merges — checked independently of whatever the
   single most recent comment happens to be about, so a later, unrelated
   exchange with someone else can't bury it.
@@ -311,7 +302,7 @@ orange — the moment the code PR merges.
 GitHub automatically removes an approval the moment new commits land on
 the PR — even when the push only addresses feedback that has nothing to do
 with the content the approver actually signed off on. Once that happens,
-the approval disappears from the tracker too: the "Approved by X" label
+the approval disappears from the tracker too: the "Approved by X" tag
 goes away, and everything it unlocked (the "Final review, then merge" step,
 the escalation shortcut once the code PR merges) reverts as if nobody had
 approved at all.
@@ -319,7 +310,7 @@ approved at all.
 If you've checked and the new commits didn't actually touch anything the
 approver reviewed, add the **`content-approved`** label yourself. The
 tracker then treats the approval as still standing: the row shows a
-separate **"Content approved by X — review dismissed"** label (naming the
+separate **"Content approved by X — review dismissed"** tag (naming the
 reviewer GitHub's dismissal wiped out), and everything downstream (final
 review, monitoring, the escalation timeline) behaves as if that approval
 were still active. It's a deliberate, manual call — never inferred
@@ -345,7 +336,7 @@ gets one of two marks:
 This deliberately drops the internal follow-up/escalate urgency language —
 the same timeline still runs underneath (see above), but this page exists
 to remind the author, never to tell them they're about to be escalated to
-the core team.
+the Core Team.
 
 Each row has a checkbox. Checking it off is saved to **that visitor's own
 browser only** — nobody else sees it, and it doesn't notify anyone or
@@ -432,15 +423,19 @@ commits the updated report + cache back to the repo, and publishes both
 filename in the deployment so the pages' cross-links to each other work the
 same whether you're viewing them locally or on Pages. Three schedules:
 
-- **Every half hour, 8am–8pm UK time, Mon–Fri** — incremental (`node
-  tracker.js`, cache-assisted). Anchored to GMT; GitHub Actions cron has no
-  DST support, so during BST (late Mar–late Oct) these land about an hour
-  later by the UK clock. Accepted tradeoff for an internal tool.
-- **9am and 8pm UK/GMT on both Saturday and Sunday** — two incremental
-  check-ins each day, same cadence on both weekend days.
-- **Sunday 11pm UK/GMT** — a third, extra run on Sundays specifically for
-  the weekly full resync (`node tracker.js --fresh`), ignoring the cache to
-  correct any drift. Every other run (weekday or weekend) is incremental.
+- **Every half hour, 9am–9pm Central European time, Mon–Fri** — incremental
+  (`node tracker.js`, cache-assisted). GitHub Actions cron has no DST
+  support, so each rule is duplicated for CEST and CET (switched via the
+  month field) to keep the same local wall-clock hour year-round. This only
+  leaves drift during the DST transition weeks themselves (late Mar / late
+  Oct), rather than for half the year. Accepted tradeoff for an internal
+  tool.
+- **10am and 9pm Central European time on both Saturday and Sunday** — two
+  incremental check-ins each day, same cadence on both weekend days.
+- **Midnight Monday Central European time** — a third, extra run
+  specifically for the weekly full resync (`node tracker.js --fresh`),
+  ignoring the cache to correct any drift. Every other run (weekday or
+  weekend) is incremental.
 
 You can also trigger it manually from the Actions tab (`workflow_dispatch`),
 optionally forcing a fresh fetch via the "Force a full fresh fetch" input.
