@@ -2,6 +2,8 @@
 
 A local JavaScript app that tracks open Mautic docs PRs against their linked code PRs, and tells you — every time you run it — what needs your attention today.
 
+**👀 Just here to review docs PRs?** You don't need to set anything up — jump straight to [Using the tracker](#using-the-tracker-no-setup-needed). **🛠 Setting it up or maintaining it?** Keep reading, or jump to [Setup](#setup-1-minute).
+
 ## What It Does
 
 `tracker.js`:
@@ -12,6 +14,74 @@ A local JavaScript app that tracks open Mautic docs PRs against their linked cod
 - Filters out bot comments/reviews (dependabot, github-actions, renovate, codecov, mergify).
 
 This tool is **strictly read-only** — it never comments, labels, or merges anything on GitHub. It only tells you what to do next.
+
+## Using the tracker (no setup needed)
+
+Open the [Docs PR Tracker dashboard](https://adiati98.github.io/mautic-docs-prs-tracker/) in your browser.
+
+### The four groups
+
+Every open docs PR sits in exactly one of four groups, answering one question: **whose turn is it?**
+
+1. **Need you today** — something **only you** can do right now.
+2. **Bring it forward** — not urgent, but worth doing when you get a chance.
+3. **Waiting on others or for code PR to merge** — you've done your part; someone or something else needs to move next.
+4. **Monitoring** — a normal back-and-forth is happening; nothing to do unless it goes quiet.
+
+### Reading a row
+
+| What you see | What it means |
+| --- | --- |
+| A colored bar on the left edge | **How urgent.** <br> <br> - **red** = overdue <br> - **orange** = due soon <br> - **blue** = something to do <br> - **dark grey** = needs your review <br> - **green** = approved/ready <br> - A **pale, colorless edge** means "nothing to do right now — it's on someone else." |
+| A plain grey badge (e.g. **Open**, **Draft**, **Merged**, **Closed**) | A fact about the code PR. Not something to act on. |
+| A colored tag with text (e.g. **Review this docs PR**) | An action for you to take. The color groups similar actions together (see the in-page legend for the full color key). |
+
+### Priority tabs
+
+| Tab | What it means |
+| --- | --- |
+| **Critical** | You reminded the code author 14+ days ago and it's still silent — time to escalate. |
+| **Serious** | 7–13 days of silence since a reminder, or someone's waiting directly on your reply — send a follow-up. |
+| **Act** | Something needs doing: review, remind, merge, add a label, etc. |
+| **Triage** | A draft PR waiting on its code PR, or a standalone PR waiting on its own author. |
+| **Stale** | Nothing has happened here in 30+ days, regardless of what else is going on with the PR. |
+
+### Common scenarios
+
+**A new docs draft PR shows up, linked to a code PR that's still open**
+1. It opens, not yet labeled or milestoned.
+   
+   Tag: **Add pending-pr-merge label**, **Add milestone** — in **Bring it forward**, nothing urgent yet.
+2. Once labeled and milestoned, it just waits on the code PR to merge.
+   
+   Tag: **Review this docs PR** (quiet — you can read it early if you like, but there's no rush).
+
+**The code PR merges and nobody's said anything to its author yet**
+1. Tag changes to **Remind code PR author — code PR merged** (or **Ask to review content**, if a bot opened the docs PR).
+2. Someone tags the author. The row moves to **Waiting on others**.
+3. 7 days pass, still no reply → tag changes to **Send a follow-up**.
+4. 14 days pass, still no reply → tag changes to **Escalate to Core Team**.
+5. The author finally replies → tag changes to **Check the author’s response**.
+6. You reply back → the row settles into **Monitoring** — nothing more to do unless it goes quiet again.
+
+**Someone approves the docs PR**
+- If the code PR has already merged → tag changes to **Final review, then merge**.
+- If the code PR is still open → the approval is just noted for now; docs don't merge ahead of code.
+
+**The linked code PR gets closed instead of merged**
+- Tag: **Close this docs PR** — the documented change no longer applies. This takes priority over anything else showing on that row.
+
+**Nothing happens for a month**
+- A dashed 🕸 **Stale** badge appears — purely a heads-up that nothing's moved in 30+ days. It doesn't change which group the row is in or remove any other tag.
+
+### Filters, your checklist, and the author reminder page
+
+- Use the **Repo** and **Priority** tabs at the top of the dashboard to narrow what you see — see [Filtering](#filtering) below for the exact rules.
+- Every row you can act on has a checkbox for your own tracking — see [Checklist](#checklist). It's saved to your browser only; it doesn't notify anyone or change anything on GitHub.
+- A separate page, [Docs PR Review Reminders](https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html), is meant to be shared directly with code PR authors — see [Author reminder page](#author-reminder-page).
+
+> [!NOTE]
+> Everything below this point goes into the exact, detailed rules the tracker follows — useful if you're maintaining the tool, curious how a specific tag is decided, or want to double-check an edge case. Most reviewers won't need it day to day.
 
 ## Setup (1 minute)
 
@@ -69,12 +139,9 @@ This creates `tracker-report.html` — open it in your browser.
 
 ## How It Works
 
-Every open docs PR sorts into exactly one of four groups, answering a single question: **whose turn is it?**
+This section — and everything through [Troubleshooting](#troubleshooting) — is the exact, detailed reference behind the [four groups](#the-four-groups) and [scenarios](#common-scenarios) already covered above. Skip it unless you're maintaining the tool or double-checking an edge case.
 
-1. **Need you today** — something only you can do: review a PR, remind the code author, follow up, escalate to the core team, do a final review and merge, or close a docs PR whose linked code PR was closed without merging.
-2. **Bring it forward** — not urgent, but worth doing on your own schedule: brand-new PRs that still need a label or milestone, approvals that are ready to merge with nothing else going on, and anything that's gone quiet for a while (stale).
-3. **Waiting on others or for code PR to merge** — you've done your part — either the code PR hasn't merged yet, a reminder to the code PR author has been sent, or you've escalated and are waiting for a reply.
-4. **Monitoring** — the author replied and you've already responded; a normal back-and-forth is happening. Collapsed by default, but each row still shows a day count since your last reply — if the conversation goes quiet for a week, it resurfaces in "Need you today" asking you to remind them again.
+**Monitoring**, in detail: collapsed by default, but each row still shows a day count since your last reply — if the conversation goes quiet for a week, it resurfaces in "Need you today" asking you to remind them again.
 
 On top of that, a few extra things can show up on any row, regardless of which group it's in, because they're triggered separately:
 
@@ -96,9 +163,9 @@ This timeline can't start until the linked code PR has merged (before that, the 
 - **No reminder sent yet**: shows "Remind code PR author — code PR merged" — no day count.
 - **Day 0–6 since your last reminder**: waiting on others.
 - **Day 7**: send a follow-up.
-- **Day 14**: escalate to the core team.
+- **Day 14**: escalate to the Core Team.
 
-If you still haven't formally reviewed the docs PR by the time any of this kicks in, a separate **"Review this docs PR — code PR merged"** label sits alongside whatever this timeline is showing, so that's never lost either.
+If you still haven't formally reviewed the docs PR by the time any of this kicks in, a separate **"Review this docs PR — code PR merged"** tag sits alongside whatever this timeline is showing, so that's never lost either.
 
 This timeline stops the moment the code author responds — on either PR, as a comment, review, or approval — and the PR moves to **Need you today** as "Check the author's response." Once you reply (even without reminding them again), it settles into **Monitoring** with its own day count: if that goes quiet for 7 days with no further reply from the author, it resurfaces asking you to send another explicit reminder.
 
@@ -106,11 +173,11 @@ This timeline stops the moment the code author responds — on either PR, as a c
 
 ## Live human threads
 
-A docs PR can have a live conversation the timeline above doesn't cover — e.g. a contributor or another maintainer asks a question and nobody's replied. The row shows a **👀 X is waiting on Y** label in whichever group it's currently in (Need you today, Waiting, or Monitoring):
+A docs PR can have a live conversation the timeline above doesn't cover — e.g. a contributor or another maintainer asks a question and nobody's replied. The row shows a **👀 X is waiting on Y** tag in whichever group it's currently in (Need you today, Waiting, or Monitoring):
 
 - Waiting on **you** (someone @-mentioned you or a teammate) → orange, sorted high — you owe a reply.
 - Waiting on a **third party**, or a comment that doesn't @-mention anyone → blue, just so you can keep an eye on it.
-- Waiting on **the code author** — any @-mention of them (yours, a teammate's, or Promptless's) feeds the follow-up timeline above, so once the code PR has merged it's named right in the row's own text ("promptless-for-oss reminded the author, no reply since") rather than a separate label. This label only steps in where the timeline can't yet — mainly before the code PR merges — checked independently of whatever the single most recent comment happens to be about, so a later, unrelated exchange with someone else can't bury it.
+- Waiting on **the code author** — any @-mention of them (yours, a teammate's, or Promptless's) feeds the follow-up timeline above, so once the code PR has merged it's named right in the row's own text ("promptless-for-oss reminded the author, no reply since") rather than a separate tag. This tag only steps in where the timeline can't yet — mainly before the code PR merges — checked independently of whatever the single most recent comment happens to be about, so a later, unrelated exchange with someone else can't bury it.
 
 ## Stale
 
@@ -124,9 +191,9 @@ Reviewing a docs PR is optional while its code PR is open (it sits quietly waiti
 
 ### Keeping an approval that GitHub dismissed
 
-GitHub automatically removes an approval the moment new commits land on the PR — even when the push only addresses feedback that has nothing to do with the content the approver actually signed off on. Once that happens, the approval disappears from the tracker too: the "Approved by X" label goes away, and everything it unlocked (the "Final review, then merge" step, the escalation shortcut once the code PR merges) reverts as if nobody had approved at all.
+GitHub automatically removes an approval the moment new commits land on the PR — even when the push only addresses feedback that has nothing to do with the content the approver actually signed off on. Once that happens, the approval disappears from the tracker too: the "Approved by X" tag goes away, and everything it unlocked (the "Final review, then merge" step, the escalation shortcut once the code PR merges) reverts as if nobody had approved at all.
 
-If you've checked and the new commits didn't actually touch anything the approver reviewed, add the **`content-approved`** label yourself. The tracker then treats the approval as still standing: the row shows a separate **"Content approved by X — review dismissed"** label (naming the reviewer GitHub's dismissal wiped out), and everything downstream (final review, monitoring, the escalation timeline) behaves as if that approval were still active. It's a deliberate, manual call — never inferred automatically — because only a human can judge whether the new commits actually invalidate the review.
+If you've checked and the new commits didn't actually touch anything the approver reviewed, add the **`content-approved`** label yourself. The tracker then treats the approval as still standing: the row shows a separate **"Content approved by X — review dismissed"** tag (naming the reviewer GitHub's dismissal wiped out), and everything downstream (final review, monitoring, the escalation timeline) behaves as if that approval were still active. It's a deliberate, manual call — never inferred automatically — because only a human can judge whether the new commits actually invalidate the review.
 
 ## Author reminder page
 
@@ -137,7 +204,7 @@ It lists every docs PR whose linked code PR has **merged** and where the ball is
 - **Need review** — nobody's @-mentioned them about this docs PR yet (or the thread went quiet after they last replied).
 - **Response to comment from X** — X (you, a teammate, or Promptless) @-mentioned them and they haven't replied since.
 
-This deliberately drops the internal follow-up/escalate urgency language — the same timeline still runs underneath (see above), but this page exists to remind the author, never to tell them they're about to be escalated to the core team.
+This deliberately drops the internal follow-up/escalate urgency language — the same timeline still runs underneath (see above), but this page exists to remind the author, never to tell them they're about to be escalated to the Core Team.
 
 Each row has a checkbox. Checking it off is saved to **that visitor's own browser only** — nobody else sees it, and it doesn't notify anyone or change anything on GitHub. That's a deliberate tradeoff: it's not synced across devices, and clearing browser data resets it — but it means anyone can open this page and use it right away, with no account needed. The list itself always reflects the real current state regardless of what's checked — a PR drops off automatically once it's actually been handled, whether or not anyone ticked the box.
 
@@ -171,7 +238,7 @@ or set `TRACKER_NO_CACHE=1`.
 
 ## Automation (GitHub Actions + Pages)
 
-`.github/workflows/update-tracker.yml` runs the tracker on a schedule, commits the updated report + cache back to the repo, and publishes both `tracker-report.html` (as the Pages site's `index.html`) and `tracker-reminders.html` to GitHub Pages, each also kept under their own filename in the deployment so the pages' cross-links to each other work the same whether you're viewing them locally or on Pages. Three schedules:
+`.github/workflows/update-tracker.yml` runs the tracker on a schedule, commits the updated report + cache back to the repo, and publishes `tracker-report.html` (as the Pages site's `index.html`), `tracker-reminders.html`, and `tracker-guide.html` to GitHub Pages, each also kept under their own filename in the deployment so the pages' cross-links to each other work the same whether you're viewing them locally or on Pages. Three schedules:
 
 - **Every half hour, 9am–9pm Central European time, Mon–Fri** — incremental (`node tracker.js`, cache-assisted). GitHub Actions cron has no DST support, so each rule is duplicated for CEST and CET (switched via the month field) to keep the same local wall-clock hour year-round. This only leaves drift during the DST transition weeks themselves (late Mar / late Oct), rather than for half the year. Accepted tradeoff for an internal tool.
 - **10am and 9pm Central European time on both Saturday and Sunday** — two incremental check-ins each day, same cadence on both weekend days.

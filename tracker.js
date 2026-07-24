@@ -1611,6 +1611,9 @@ async function main() {
 		{ now: new Date() },
 	)
 	console.log("📄 Reminders saved to: tracker-reminders.html")
+
+	generateGuideHTML({ now: new Date() })
+	console.log("📄 Guide saved to: tracker-guide.html")
 	console.log("Open it in your browser to view the dashboard\n")
 }
 
@@ -1946,7 +1949,7 @@ function metaLine(pr) {
 				parts.push(`no reply since your review ${daysAgoText(pr.lastOperatorTouchDate)}`)
 			} else if (pr.handedBack) {
 				parts.push(
-					`core team (<b>${escapeHtml(pr.lastPingActor)}</b>) asked the author to review, no reply since`,
+					`Core Team (<b>${escapeHtml(pr.lastPingActor)}</b>) asked the author to review, no reply since`,
 				)
 			} else {
 				parts.push(
@@ -1988,7 +1991,7 @@ function metaLine(pr) {
 		case "waiting-code-author-response":
 			parts.push(
 				pr.handedBack
-					? `core team (<b>${escapeHtml(pr.lastPingActor)}</b>) asked the author, waiting for a reply`
+					? `Core Team (<b>${escapeHtml(pr.lastPingActor)}</b>) asked the author, waiting for a reply`
 					: pr.pingEverSent && !pr.lastPingByOperator
 						? `${escapeHtml(pr.lastPingActor)} reminded the author, waiting for a reply`
 						: "reminder sent, waiting for a reply",
@@ -2040,7 +2043,7 @@ function buildClock(pr) {
 				return {
 					big: `Day ${days}`,
 					bigClass: "serious",
-					sub: "since core team asked · keep reminding",
+					sub: "since Core Team asked · keep reminding",
 				}
 			}
 			const pct = Math.min(100, Math.round((days / ESCALATE_DAYS) * 100))
@@ -2153,7 +2156,7 @@ function chipsFor(pr) {
 	// another automated poke. The stale badge (added above) covers it instead.
 	switch (pr.category) {
 		case "needs-escalate-core-team":
-			if (!pr.staleFlag) chips.push({ cls: "nudge3", text: "▲ Escalate to core team" })
+			if (!pr.staleFlag) chips.push({ cls: "nudge3", text: "▲ Escalate to Core Team" })
 			break
 		case "needs-followup":
 			if (!pr.staleFlag) chips.push({ cls: "nudge2", text: "Send a follow-up" })
@@ -2424,7 +2427,7 @@ function isHandbackLive(pr) {
 // reading as "still with the dev team."
 function handbackChip(pr) {
 	return isHandbackLive(pr)
-		? { cls: "muted", text: "↩ Core team passed back to author" }
+		? { cls: "muted", text: "↩ Core Team passed back to author" }
 		: null
 }
 
@@ -2893,7 +2896,7 @@ function generateHTML(prData, { operatorUsername }) {
 		else if (minDays === 1) waitingSub = "next follow-up due tomorrow"
 		else waitingSub = `next follow-up due in ${minDays} days`
 	} else if (escalationWaiting.length > 0) {
-		waitingSub = "waiting for a reply from core team"
+		waitingSub = "waiting for a reply from Core Team"
 	} else if (mergeWaiting.length > 0) {
 		waitingSub = "waiting for code PRs to merge"
 	} else {
@@ -2920,11 +2923,23 @@ function generateHTML(prData, { operatorUsername }) {
 	const repoList = Object.keys(repoCounts).sort()
 
 	const PRIORITY_TABS = [
-		["critical", "Critical"],
-		["serious", "Serious"],
-		["act", "Act"],
-		["triage", "Triage"],
-		["stale", "🕸 Stale"],
+		[
+			"critical",
+			"Critical",
+			`You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate.`,
+		],
+		[
+			"serious",
+			"Serious",
+			`You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting on your reply — follow up.`,
+		],
+		["act", "Act", "Something needs doing now: review, remind, merge, or add a label."],
+		[
+			"triage",
+			"Triage",
+			"A draft PR waiting on its code PR, or a standalone PR waiting on its author.",
+		],
+		["stale", "🕸 Stale", "No activity on the PR for 30+ days."],
 	]
 	const sevCounts = { critical: 0, serious: 0, act: 0, triage: 0 }
 	for (const p of needToday) {
@@ -2947,8 +2962,8 @@ function generateHTML(prData, { operatorUsername }) {
 	const priorityTabs = [
 		`<button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">${needToday.length}</span></button>`,
 		...PRIORITY_TABS.map(
-			([v, label]) =>
-				`<button class="ftab" data-f="pri" data-v="${v}" aria-pressed="false">${label} <span class="fc">${sevCounts[v]}</span></button>`,
+			([v, label, tip]) =>
+				`<button class="ftab" data-f="pri" data-v="${v}" aria-pressed="false" title="${escapeHtml(tip)}">${label} <span class="fc">${sevCounts[v]}</span></button>`,
 		),
 	].join("")
 	const searchBar = `
@@ -3196,44 +3211,13 @@ function generateHTML(prData, { operatorUsername }) {
   .dot.triage{background:var(--ink-3)}
   .dot.stale{background:var(--warning)}
 
-  .legend{
+  .quick-tip{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
-    box-shadow:var(--shadow);margin-bottom:28px;
+    box-shadow:var(--shadow);margin-bottom:12px;padding:10px 16px;
+    font-size:12.5px;color:var(--ink-2);line-height:1.5;
   }
-  .legend summary{
-    list-style:none;cursor:pointer;padding:10px 16px;
-    font-size:12.5px;font-weight:600;color:var(--ink-3);
-    display:flex;align-items:center;gap:8px;
-  }
-  .legend summary::-webkit-details-marker{display:none}
-  .legend summary .tw{transition:transform .15s;color:var(--ink-3);font-size:10px}
-  .legend[open] summary .tw{transform:rotate(90deg)}
-  .legend[open] summary{border-bottom:1px solid var(--line);color:var(--ink-2)}
-  .legend-body{
-    padding:4px 16px 16px;font-size:12.5px;color:var(--ink-2);
-  }
-  .legend section{margin-top:16px}
-  .legend-h{
-    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-    color:var(--ink-3);margin-bottom:6px;
-  }
-  .legend-note{color:var(--ink-3);font-size:12px;margin-bottom:6px}
-  .legend table{width:100%;border-collapse:collapse}
-  .legend td{
-    padding:6px 10px 6px 0;border-bottom:1px solid var(--line);
-    vertical-align:top;line-height:1.5;
-  }
-  .legend tr:last-child td{border-bottom:none}
-  .legend td:first-child{white-space:nowrap;width:1%;padding-right:16px}
-  .legend code{
-    font-family:ui-monospace,monospace;font-size:11px;
-    background:color-mix(in srgb, var(--ink) 6%, transparent);
-    border-radius:4px;padding:1px 5px;
-  }
-  .edge-sample{
-    display:inline-block;width:4px;height:14px;border-radius:2px;
-    background:var(--accent);vertical-align:-2px;margin-right:2px;
-  }
+  .quick-tip b{color:var(--ink)}
+  .quick-tip a{font-weight:600}
 
   section{margin-bottom:28px}
   .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
@@ -3537,9 +3521,6 @@ function generateHTML(prData, { operatorUsername }) {
     .tile{display:flex;align-items:baseline;gap:10px;padding:10px 14px}
     .tile .num{font-size:22px}
     .tile .sub{margin-left:auto;text-align:right}
-    .legend td:first-child{white-space:normal;width:auto;display:block;padding-bottom:2px}
-    .legend tr{display:block;padding:6px 0;border-bottom:1px solid var(--line)}
-    .legend tr td{border-bottom:none;padding-left:0}
     .row{grid-template-columns:4px 1fr;row-gap:6px;padding:10px 44px 10px 12px}
     .row .chk{position:absolute;top:10px;right:10px}
     .when{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap}
@@ -3562,6 +3543,7 @@ function generateHTML(prData, { operatorUsername }) {
   <div class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
+    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
@@ -3593,101 +3575,7 @@ function generateHTML(prData, { operatorUsername }) {
   </div>
 ${searchBar}
 ${filterBar}
-  <details class="legend">
-    <summary><span class="tw">▶</span> New here? How to read this board</summary>
-    <div class="legend-body">
-
-      <section>
-        <h2 class="legend-h">1. The four groups — whose turn is it?</h2>
-        <table>
-          <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
-          <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth doing on your own schedule — brand-new PRs that still need a label or milestone, approvals that are ready to merge with nothing else going on, and anything that's gone quiet for a while (stale).</td></tr>
-          <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, a reminder to the code PR author has been sent, or you've escalated and are waiting for a reply.</td></tr>
-          <tr><td><b>Monitoring</b></td><td>The author replied and you've already responded. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">2. Filters — narrowing what you see</h2>
-        <p class="legend-note">Both filter bars live at the top of the page, above the groups.</p>
-        <table>
-          <tr><td><b>Repo</b></td><td>Switches the whole board to show just one repo. The counts on each tab are totals across all four groups.</td></tr>
-          <tr><td><b>Priority</b></td><td><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> only apply to <b>Need you today</b> — picking one of these hides the other three groups entirely. <b>Act</b> and <b>Stale</b> work differently: they show up in every group instead of hiding the rest, since <b>Bring it forward</b> has its own actionable and stale rows too. Counts follow whichever repo tab is selected.</td></tr>
-        </table>
-        <table>
-          <tr><td><span class="dot critical"></span><b>Critical</b></td><td>You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate to the core team.</td></tr>
-          <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting directly on your reply — send a follow-up.</td></tr>
-          <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs doing: check the author's response, remind the code author, review a standalone PR, do a final review on an approval that has something else attached, add a label/milestone to a new PR, or merge one that's cleanly approved and ready.</td></tr>
-          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Review a draft PR — still waiting the code PR to merge — or, for a standalone PR, waiting on its author before it escalates.</td></tr>
-          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on the PR for 30+ days.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">3. Reading a row</h2>
-        <table>
-          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → dark grey triage (needs your review) → green approved/ready to merge. A plain <b>pale</b> edge (no colour) means the row is in Waiting — nothing to do right now, it's on someone else — regardless of whether the code PR is a draft, open, or merged.</td></tr>
-          <tr><td><span class="pill open">Open</span></td><td>A <b>badge</b> — a fact about the code PR: Draft / Open / Merged / Closed.</td></tr>
-          <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>label</b> — an action for you. Colour = the type of task (see below).</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">4. Colour key — same kind of task, same colour</h2>
-        <table>
-          <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add ${PENDING_LABEL} label (drafts) · Add ${BACKPORT_LABEL} label (older branch)</td></tr>
-          <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same colour, getting more intense the more urgent it gets: Remind → Follow up → Escalate.</td></tr>
-          <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR (standalone, awaiting your review) · Check the author's response · Note since approval.</td></tr>
-          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove ${PENDING_LABEL} label · Approved by X · Approved — ready to merge.</td></tr>
-          <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
-          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase · code PR's milestone doesn't match the docs branch/milestone yet.</td></tr>
-          <tr><td><span class="chip muted">Optional / already done</span></td><td>Review draft PR · a reminder you already sent · X reviewed this (someone's looked, no approval yet).</td></tr>
-          <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was closed.</td></tr>
-          <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on the PR for 30+ days.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">5. Live threads &amp; approvals</h2>
-        <table>
-          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown if someone outside the review team is waiting on the <b>code author</b> — checked separately, so a later unrelated reply to someone else can't hide it. Once the PR is approved, only what's been said since that approval counts — earlier comments don't. Otherwise, it's just there so you can keep an eye on it. Includes Promptless when it @-mentions a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"Approved by X" is a label shown wherever there's an active approval — whether that's you, a teammate, or someone else (the one exception: a PR author can't approve their own PR, except for one admin account GitHub allows this for). "Final review, then merge" only appears once the code PR has merged. For a standalone PR with no code PR to wait on, your own approval combines both into one label: "Approved by X — ready to merge". Anything added after the approval gets its own "Note since approval" label.</td></tr>
-          <tr><td>Content-approved label</td><td>GitHub automatically dismisses an approval the moment new commits land — even if the push only addresses unrelated feedback. The tracker keeps trusting the approval anyway ("Approved by X" and everything it unlocks stay put), but flags it with an "Add ${CONTENT_APPROVED_LABEL} label" reminder so you can go confirm on GitHub that the new commits didn't actually change what was approved. Add the <code>${CONTENT_APPROVED_LABEL}</code> label there and the reminder clears.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">6. Follow-up &amp; escalation timeline</h2>
-        <p class="legend-note">Only a comment that <b>@-mentions the code author</b> starts this timeline — yours or a teammate's, not just a regular reply — and it stops the moment the author replies.</p>
-        <table>
-          <tr><td>Day 0</td><td>Code PR merges, someone @-mentions the code author.</td></tr>
-          <tr><td>Day ${FOLLOWUP_DAYS}</td><td>Row asks for a follow-up.</td></tr>
-          <tr><td>Day ${ESCALATE_DAYS}</td><td>Row asks you to escalate to the core team.</td></tr>
-          <tr><td>Any day</td><td>Author replies — the row asks you to check their response.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">7. Good to know</h2>
-        <table>
-          <tr><td>Review vs. the timeline</td><td>The remind/follow-up/escalate timeline no longer waits on you having formally reviewed the docs PR — it only needs the code PR to have merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" label shows up alongside whatever the timeline shows.</td></tr>
-          <tr><td>Review vs. triage</td><td>A brand-new PR still missing its label/milestone also gets a "Review this docs PR" label right away, alongside the setup chips — reading the content doesn't have to wait on triage being finished.</td></tr>
-          <tr><td>Labels</td><td><code>${PENDING_LABEL}</code> — removed once the code PR merges. <code>${BACKPORT_LABEL}</code> — added when a PR targets an older branch than the latest. <code>${NEEDS_REBASE_LABEL}</code> — just shown as-is, it doesn't affect timing. <code>${CONTENT_APPROVED_LABEL}</code> — clears the "Add content-approved label" reminder once you've confirmed a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">8. Your personal checklist</h2>
-        <p class="legend-note">Every row in Need you today, Bring it forward, and Waiting has a checkbox — Monitoring doesn't, since it's already "nothing to do."</p>
-        <table>
-          <tr><td><input type="checkbox" disabled></td><td>Tick it off once you've actually handled a row. It's saved to <b>your own browser only</b> — nobody else sees it, and it won't change anything on GitHub or on this page's data. The row dims and its title gets struck through; clearing your browser data resets everything.</td></tr>
-          <tr><td><span class="chk-progress" data-state="partial">2/5 checked</span></td><td>Each group's header shows its own progress, always out of the <b>whole group</b> — not just whatever's currently filtered into view. Grey while untouched, blue while in progress, green with a ✓ once every row in that group is checked off.</td></tr>
-          <tr><td><b>Hide checked rows</b></td><td>A switch next to the Repo/Priority filters (Checklist row) that collapses checked rows out of view instead of just dimming them. Your checked state is exactly the same either way — this only changes what's shown.</td></tr>
-        </table>
-      </section>
-
-    </div>
-  </details>
+  <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down — everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> — worth keeping open in its own tab.</p>
 ${needTodaySection}
 ${bringForwardSection}
 ${waitingSection}
@@ -4388,6 +4276,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
     <h1>Docs PR Review Reminders</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
+    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
@@ -4503,6 +4392,500 @@ ${bodyHtml}
 </html>`
 
 	fs.writeFileSync("tracker-reminders.html", html)
+}
+
+// A third, standalone page — no PR data, content doesn't change run to run
+// except the "Generated on" timestamp and whatever day-count/label constants
+// it's built from. Exists so the in-page legend on the dashboard can stay
+// down to a one-line reminder: this is the one place with the full picture
+// (colors, tags, badges, scenarios, the escalation timeline) in plain
+// language, meant to be kept open in its own tab alongside the dashboard
+// rather than expanded and re-collapsed on it.
+function generateGuideHTML({ now }) {
+	const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs PR Tracker — Guide</title>
+<script>
+  (function(){
+    try {
+      var saved = localStorage.getItem('docsPrTrackerTheme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+  :root{
+    --page:#f9f9f7;
+    --surface:#fcfcfb;
+    --ink:#0b0b0b;
+    --ink-2:#52514e;
+    --ink-3:#6e6c67;
+    --line:#e1e0d9;
+    --ring:rgba(11,11,11,.10);
+    --critical:#d03b3b;
+    --serious:#ec835a;
+    --warning:#fab219;
+    --good:#0ca30c;
+    --accent:#266cc1;
+    --shadow:0 1px 2px rgba(11,11,11,.05);
+    --setup:#0e7490;
+    --manual:#c2255c;
+    --dismiss:#8a5252;
+    --gh-open:#1a7f37;
+    --gh-draft:#59636e;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+      --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+      --accent:#3987e5; --shadow:none;
+      --setup:#26b6d4; --manual:#e57e9f; --dismiss:#c49090; --gh-open:#3fb950; --gh-draft:#b1bac4;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink-2:#c3c2b7;
+    --ink-3:#898781; --line:#2c2c2a; --ring:rgba(255,255,255,.10);
+    --accent:#3987e5; --shadow:none;
+    --setup:#26b6d4; --manual:#e57e9f; --dismiss:#c49090; --gh-open:#3fb950; --gh-draft:#b1bac4;
+  }
+  :root[data-theme="light"]{
+    --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+    --ink-3:#6e6c67; --line:#e1e0d9; --ring:rgba(11,11,11,.10);
+    --accent:#266cc1; --shadow:0 1px 2px rgba(11,11,11,.05);
+    --setup:#0e7490; --manual:#c2255c; --dismiss:#8a5252; --gh-open:#1a7f37; --gh-draft:#59636e;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--page); color:var(--ink);
+    font-size:14px; line-height:1.5;
+    padding:24px 16px 48px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  b{font-weight:600}
+
+  .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+  h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+  .updated{color:var(--ink-3);font-size:12px;margin-right:auto}
+  .theme-btn{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;font-family:inherit;
+  }
+  .nav-link{
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:4px 10px;font-size:12px;text-decoration:none;
+  }
+  .nav-link:hover{text-decoration:none;border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;align-self:center;
+    border:1px solid var(--ring);background:var(--surface);color:var(--ink-2);
+    border-radius:6px;padding:5px;line-height:0;text-decoration:none;
+  }
+  .icon-btn:hover{
+    text-decoration:none;color:var(--ink);
+    border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));
+  }
+  .icon-btn svg{display:block}
+
+  .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
+
+  .jump-nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+  .jump-nav a{
+    border:1px solid var(--ring);background:var(--surface);border-radius:999px;
+    padding:4px 12px;font-size:12px;color:var(--ink-2);text-decoration:none;
+  }
+  .jump-nav a:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));text-decoration:none}
+
+  section.guide-sec{margin:40px 0}
+  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:16px}
+  .guide-sec > p.sec-lede{color:var(--ink-2);font-size:13px;margin-bottom:16px}
+  .guide-sec p{color:var(--ink-2);font-size:13.5px;margin:8px 0}
+
+  .band-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0}
+  .band{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:14px 16px;box-shadow:var(--shadow);border-left:4px solid var(--c, var(--accent));
+  }
+  .band.today{--c:var(--critical)}
+  .band.forward{--c:var(--serious)}
+  .band.waiting{--c:var(--ink-3)}
+  .band.monitor{--c:var(--good)}
+  .band .band-name{font-weight:650;font-size:13.5px}
+  .band .band-desc{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+  @media (max-width:600px){.band-grid{grid-template-columns:1fr}}
+
+  .swatch-row{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink-2);margin:8px 0}
+  .swatch-bar{display:inline-block;width:5px;height:16px;border-radius:2px;flex:none}
+  .swatch-bar.critical{background:var(--critical)}
+  .swatch-bar.serious{background:var(--serious)}
+  .swatch-bar.act{background:var(--accent)}
+  .swatch-bar.triage{background:var(--ink-3)}
+  .swatch-bar.finish{background:var(--good)}
+  .swatch-bar.pale{background:transparent;border:1px dashed var(--ring)}
+
+  .sample-row{display:flex;align-items:center;gap:12px;margin:10px 0;font-size:13.5px;color:var(--ink-2)}
+  .sample-row .pill,.sample-row .chip{flex:none}
+
+  .dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex:none}
+  .dot.critical{background:var(--critical)}
+  .dot.serious{background:var(--serious)}
+  .dot.act{background:var(--accent)}
+  .dot.triage{background:var(--ink-3)}
+  .dot.stale{background:var(--warning)}
+
+  .pill{
+    display:inline-block;font-size:11px;font-weight:600;border-radius:999px;
+    padding:1px 7px;
+    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-2);
+  }
+  .pill.open{
+    background:color-mix(in srgb, var(--gh-open) 13%, var(--surface));
+    color:color-mix(in srgb, var(--gh-open) 85%, var(--ink));
+  }
+  .pill.draft{
+    background:color-mix(in srgb, var(--gh-draft) 14%, var(--surface));
+    color:var(--gh-draft);
+  }
+
+  .chip{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12px;font-weight:600;border-radius:6px;padding:2.5px 9px;
+    border:1px solid transparent;white-space:nowrap;
+  }
+  .chip.nudge1{
+    background:color-mix(in srgb, var(--critical) 8%, var(--surface));
+    color:color-mix(in srgb, var(--critical) 55%, var(--ink));
+    border-color:color-mix(in srgb, var(--critical) 22%, transparent);
+  }
+  .chip.nudge2{
+    background:color-mix(in srgb, var(--critical) 17%, var(--surface));
+    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    border-color:color-mix(in srgb, var(--critical) 42%, transparent);
+  }
+  .chip.nudge3{
+    background:var(--critical);color:#fff;
+    border-color:color-mix(in srgb, var(--critical) 70%, var(--ink));
+  }
+  .chip.setup{
+    background:color-mix(in srgb, var(--setup) 11%, var(--surface));
+    color:color-mix(in srgb, var(--setup) 75%, var(--ink));
+    border-color:color-mix(in srgb, var(--setup) 32%, transparent);
+  }
+  .chip.act{
+    background:color-mix(in srgb, var(--accent) 11%, var(--surface));
+    color:color-mix(in srgb, var(--accent) 78%, var(--ink));
+    border-color:color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .chip.finish{
+    background:color-mix(in srgb, var(--good) 12%, var(--surface));
+    color:color-mix(in srgb, var(--good) 62%, var(--ink));
+    border-color:color-mix(in srgb, var(--good) 34%, transparent);
+  }
+  .chip.backport{
+    background:color-mix(in srgb, var(--warning) 17%, var(--surface));
+    color:color-mix(in srgb, var(--warning) 42%, var(--ink));
+    border-color:color-mix(in srgb, var(--warning) 45%, transparent);
+  }
+  .chip.manual{
+    background:color-mix(in srgb, var(--manual) 10%, var(--surface));
+    color:color-mix(in srgb, var(--manual) 72%, var(--ink));
+    border-color:color-mix(in srgb, var(--manual) 32%, transparent);
+  }
+  .chip.dismiss{
+    background:color-mix(in srgb, var(--dismiss) 13%, var(--surface));
+    color:color-mix(in srgb, var(--dismiss) 80%, var(--ink));
+    border-color:color-mix(in srgb, var(--dismiss) 40%, transparent);
+  }
+  .chip.muted{
+    background:color-mix(in srgb, var(--ink-3) 12%, var(--surface));
+    color:var(--ink-3);
+    border-color:color-mix(in srgb, var(--ink-3) 30%, transparent);
+  }
+  .chip.stale{
+    background:color-mix(in srgb, var(--warning) 10%, var(--surface));
+    color:color-mix(in srgb, var(--warning) 55%, var(--ink));
+    border-color:color-mix(in srgb, var(--warning) 35%, transparent);
+    border-style:dashed;
+  }
+
+  .scenario{
+    background:var(--surface);border:1px solid var(--ring);border-radius:10px;
+    padding:16px 18px;margin:14px 0;box-shadow:var(--shadow);
+  }
+  .scenario h3{font-size:14px;font-weight:650;margin-bottom:10px}
+  .scenario ol{margin:0 0 0 18px;padding:0}
+  .scenario li{margin:10px 0;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .scenario .see{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:5px}
+  .scenario .see .lbl{
+    font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--ink-3);margin-right:2px;
+  }
+
+  abbr.gloss{text-decoration:none;border-bottom:1px dotted var(--ink-3);cursor:help}
+
+  footer{margin-top:48px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.7}
+  footer a{color:var(--ink-2);font-weight:600}
+  footer a:hover{color:var(--accent)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;scroll-behavior:auto !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <h1>Docs PR Tracker — Guide</h1>
+    <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
+    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
+    <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
+    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+
+  <p class="lede">Everything about how the dashboard sorts and labels docs PRs: the four groups, what a row's colors and tags mean, and how a docs PR typically moves from opening to merged.</p>
+
+  <nav class="jump-nav">
+    <a href="#groups">The four groups</a>
+    <a href="#reading-a-row">Reading a row</a>
+    <a href="#colors">Tag colors</a>
+    <a href="#priority">Priority filter</a>
+    <a href="#scenarios">Common scenarios</a>
+    <a href="#reminders-page">Reminders page</a>
+    <a href="#checklist">Your checklist</a>
+  </nav>
+
+  <section class="guide-sec" id="groups">
+    <h2>The four groups</h2>
+    <p class="sec-lede">Every open docs PR sits in exactly one of these four groups. They answer one question: whose turn is it?</p>
+    <div class="band-grid">
+      <div class="band today">
+        <div class="band-name">Need you today</div>
+        <div class="band-desc">Something only you can do right now: review a PR, remind the code author, follow up, escalate, do a final review and merge, or close a PR whose code changes got abandoned.</div>
+      </div>
+      <div class="band forward">
+        <div class="band-name">Bring it forward</div>
+        <div class="band-desc">Not urgent, but worth doing when you have time: a brand-new PR that still needs a label or milestone, an approval that's ready to merge with nothing else going on, or anything that's gone quiet for a while.</div>
+      </div>
+      <div class="band waiting">
+        <div class="band-name">Waiting on others or for code PR to merge</div>
+        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a Draft while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
+      </div>
+      <div class="band monitor">
+        <div class="band-name">Monitoring</div>
+        <div class="band-desc">The author replied and you've already answered back — a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to Need you today asking you to check in again.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-sec" id="reading-a-row">
+    <h2>Reading a row</h2>
+    <p class="sec-lede">Every row uses the same three visual signals, in this order: a colored bar on the left, a badge, and one or more colored tags.</p>
+
+    <div class="swatch-row"><span class="swatch-bar critical"></span> Red — overdue, act on this first.</div>
+    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange — due soon.</div>
+    <div class="swatch-row"><span class="swatch-bar act"></span> Blue — something to do.</div>
+    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey — needs your review.</div>
+    <div class="swatch-row"><span class="swatch-bar finish"></span> Green — approved and ready to merge.</div>
+    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale — nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
+
+    <div class="sample-row"><span class="pill open">Open</span> A badge like this is a fact, not an action. It names the linked code PR's own state — Open, Merged, or Closed.</div>
+    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. This is usually true while the linked code PR hasn't merged yet — once the code merges, the docs PR is normally marked ready for review.</div>
+    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is — see below.</div>
+  </section>
+
+  <section class="guide-sec" id="colors">
+    <h2>What the tag colors mean</h2>
+    <p class="sec-lede">Every tag of the same color is the same kind of task:</p>
+
+    <div class="sample-row"><span class="chip setup">Setup &amp; triage</span> A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</div>
+    <div class="sample-row"><span class="chip nudge1">Remind</span><span class="chip nudge2">Follow up</span><span class="chip nudge3">Escalate</span> The same color family, getting more intense the longer it's been quiet: a first reminder, then a follow-up, then escalating to the Core Team.</div>
+    <div class="sample-row"><span class="chip act">Review / respond</span> Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</div>
+    <div class="sample-row"><span class="chip finish">Finish &amp; merge</span> The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</div>
+    <div class="sample-row"><span class="chip backport">Backport first</span> Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</div>
+    <div class="sample-row"><span class="chip manual">Manual attention</span> Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</div>
+    <div class="sample-row"><span class="chip muted">Optional / already done</span> Nothing urgent: an early look at a still-open PR, a reminder you already sent, or someone's looked but hasn't approved yet.</div>
+    <div class="sample-row"><span class="chip dismiss">Close / dismiss</span> The docs PR should be closed — its linked code PR was closed without merging.</div>
+    <div class="sample-row"><span class="chip stale">🕸 Stale</span> No activity for 30+ days, on either PR. Just a heads-up — it doesn't change which group the row is in.</div>
+  </section>
+
+  <section class="guide-sec" id="priority">
+    <h2>The Priority filter</h2>
+    <p class="sec-lede">The Priority tab strip at the top of the dashboard lets you narrow the board down to one severity at a time:</p>
+
+    <div class="swatch-row"><span class="dot critical"></span> <b>Critical</b> — you reminded the code author 14+ days ago and it's still quiet. Time to escalate to the Core Team.</div>
+    <div class="swatch-row"><span class="dot serious"></span> <b>Serious</b> — 7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</div>
+    <div class="swatch-row"><span class="dot act"></span> <b>Act</b> — something needs doing: review, remind, merge, or add a label.</div>
+    <div class="swatch-row"><span class="dot triage"></span> <b>Triage</b> — a draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</div>
+    <div class="swatch-row"><span class="dot stale"></span> <b>Stale</b> — nothing has happened here in 30+ days, no matter what else is going on with the PR.</div>
+
+    <p>Critical, Serious, and Triage only narrow "Need you today" — picking one hides the other three groups. Act and Stale work differently: they show up across every group instead, since Bring it forward has actionable and stale rows of its own.</p>
+  </section>
+
+  <section class="guide-sec" id="scenarios">
+    <h2>Common scenarios</h2>
+    <p class="sec-lede">Concrete walk-throughs of how a docs PR moves through the board, start to finish.</p>
+
+    <div class="scenario">
+      <h3>A new docs PR opens, linked to a code PR that's still open</h3>
+      <ol>
+        <li>It opens, usually still a Draft since the code isn't merged yet, not yet labeled or milestoned.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span></div>
+          In Bring it forward — nothing urgent yet.
+        </li>
+        <li>Once it's labeled and milestoned, it just waits on the code PR.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
+          Quiet — you can read it early if you like, but there's no rush.
+        </li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>The code PR merges and nobody's said anything to its author yet</h3>
+      <ol>
+        <li>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+          (Or "Ask to review content" if a bot opened the docs PR.)
+        </li>
+        <li>Someone tags the author. The row moves to Waiting on others.</li>
+        <li>7 days pass, still no reply.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge2">Send a follow-up</span></div>
+        </li>
+        <li>14 days pass, still no reply.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge3">▲ Escalate to Core Team</span></div>
+        </li>
+        <li>The author replies.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip act">Check the author's response</span></div>
+        </li>
+        <li>You reply back — the row settles into Monitoring. Nothing more to do unless it goes quiet again.</li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>Someone approves the docs PR</h3>
+      <ol>
+        <li>If the code PR has already merged.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div>
+        </li>
+        <li>If the code PR is still open (the docs PR is usually still a Draft at this point), the approval is just noted for now — docs don't merge ahead of code.</li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>An approval gets reset by new commits</h3>
+      <ol>
+        <li>GitHub automatically removes an approval the moment new commits land — even if they only address something unrelated to what was approved.</li>
+        <li>If you've checked and the new commits don't touch anything the approver reviewed, add the <code>${CONTENT_APPROVED_LABEL}</code> label yourself.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Content approved by X — review dismissed</span></div>
+          Everything the approval had unlocked keeps working as before.
+        </li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>The docs PR needs a backport</h3>
+      <ol>
+        <li>The PR targets an older release branch than the current latest (say, 7.1 while 7.2 is out).
+          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
+          Before merging, ask Promptless to cherry-pick the changes onto the newer branch(es) too — e.g. <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
+        </li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>The Core Team hands the PR back to the code author</h3>
+      <ol>
+        <li>After an escalation, the Core Team asks the code author to review or confirm something themselves rather than answering it directly.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">↩ Core Team passed back to author</span></div>
+          It's no longer the Core Team's turn — the row rejoins the normal reminder flow, waiting on the code author again.
+        </li>
+        <li>7 days pass with no reply from the author.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge2">Send a follow-up</span></div>
+          This row won't escalate to the Core Team a second time — it keeps asking for follow-ups until the author replies or it goes stale.
+        </li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>Someone else jumps into the conversation</h3>
+      <ol>
+        <li>A contributor or another maintainer leaves a comment and nobody's replied yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip manual">👀 X is waiting on Y</span></div>
+          Orange and sorted high if it's waiting on you; otherwise it's just there so you can keep an eye on it.
+        </li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>The linked code PR gets closed instead of merged</h3>
+      <ol>
+        <li>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip dismiss">Close this docs PR</span></div>
+          The documented change no longer applies. This outranks everything else showing on that row.
+        </li>
+      </ol>
+    </div>
+
+    <div class="scenario">
+      <h3>Nothing happens for a month</h3>
+      <ol>
+        <li>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip stale">🕸 Stale</span></div>
+          Just a heads-up that nothing's moved in 30+ days. It doesn't change which group the row is in, or remove any other tag.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="guide-sec" id="reminders-page">
+    <h2>The reminders page</h2>
+    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">tracker-reminders.html</a> is a separate page meant to be shared directly with code PR authors, not just used by the docs team.</p>
+    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Each row gets one of two marks: <b>Need review</b> (nobody's asked them about this docs PR yet, or the thread went quiet after they last replied), or <b>Response to comment from X</b> (X asked them and they haven't replied since).</p>
+    <p>It deliberately leaves out escalation language — the same timeline still runs underneath, but this page exists to remind the author, never to warn them they're about to be escalated to the Core Team.</p>
+  </section>
+
+  <section class="guide-sec" id="checklist">
+    <h2>Your checklist</h2>
+    <p class="sec-lede">Every row you can act on has a checkbox for your own tracking.</p>
+    <p>Checking it off is saved to <b>your own browser only</b> — nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A "Hide checked rows" switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
+  </section>
+
+  <footer>
+    <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span></div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll('[data-updated-iso]').forEach(function(el){
+    el.textContent = new Date(el.getAttribute('data-updated-iso')).toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+    });
+  });
+
+  function toggleTheme(){
+    const r = document.documentElement;
+    const cur = r.getAttribute('data-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', next);
+    try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
+  }
+</script>
+</body>
+</html>`
+
+	fs.writeFileSync("tracker-guide.html", html)
 }
 
 module.exports = { main }

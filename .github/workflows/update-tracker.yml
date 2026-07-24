@@ -76,7 +76,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tracker-report.html tracker-reminders.html data/pr-cache.json
+          git add tracker-report.html tracker-reminders.html tracker-guide.html data/pr-cache.json
           if ! git diff --staged --quiet; then
             git commit -m "chore: update tracker report [skip ci]"
             git push
@@ -88,12 +88,13 @@ jobs:
         run: |
           mkdir -p _site
           # Published under both names: index.html is the Pages entry point,
-          # and the plain filenames keep the dashboard's and reminders
-          # page's cross-links (which use their local dev filenames) working
-          # on the deployed site too.
+          # and the plain filenames keep the dashboard's, reminders page's,
+          # and guide's cross-links (which use their local dev filenames)
+          # working on the deployed site too.
           cp tracker-report.html _site/index.html
           cp tracker-report.html _site/tracker-report.html
           cp tracker-reminders.html _site/tracker-reminders.html
+          cp tracker-guide.html _site/tracker-guide.html
 
       - name: Configure Pages
         uses: actions/configure-pages@v6
