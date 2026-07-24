@@ -95,6 +95,10 @@ jobs:
           cp tracker-report.html _site/tracker-report.html
           cp tracker-reminders.html _site/tracker-reminders.html
           cp tracker-guide.html _site/tracker-guide.html
+          # Screenshots referenced by the guide (relative paths like
+          # assets/guide/foo.png) live in the repo and aren't generated,
+          # so they're copied as-is rather than staged by tracker.js.
+          cp -r assets _site/assets
 
       - name: Configure Pages
         uses: actions/configure-pages@v6

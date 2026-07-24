@@ -4471,6 +4471,10 @@ function generateGuideHTML({ now }) {
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
   b{font-weight:600}
+  code{
+    font-family:ui-monospace,monospace;font-size:12.5px;
+    background:var(--ring);border-radius:4px;padding:.15em .4em;
+  }
 
   .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
   h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
@@ -4623,13 +4627,27 @@ function generateGuideHTML({ now }) {
   .scenario h3{font-size:14px;font-weight:650;margin-bottom:10px}
   .scenario ol{margin:0 0 0 18px;padding:0}
   .scenario li{margin:10px 0;font-size:13.5px;color:var(--ink-2);line-height:1.55}
-  .scenario .see{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:5px}
+  .scenario > p,.scenario > .note{margin:10px 0;font-size:13.5px;color:var(--ink-2);line-height:1.55}
+  .scenario .see{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
   .scenario .see .lbl{
     font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
     color:var(--ink-3);margin-right:2px;
   }
 
   abbr.gloss{text-decoration:none;border-bottom:1px dotted var(--ink-3);cursor:help}
+
+  .guide-table{width:100%;border-collapse:collapse;margin:14px 0}
+  .guide-table th,.guide-table td{
+    text-align:left;padding:10px 12px;border-bottom:1px solid var(--ring);
+    font-size:13.5px;color:var(--ink-2);vertical-align:top;
+  }
+  .guide-table th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600}
+  .guide-table td:first-child{white-space:nowrap;width:1%}
+  @media (max-width:600px){
+    .guide-table thead{display:none}
+    .guide-table tr{display:block;padding:10px 0;border-bottom:1px solid var(--ring)}
+    .guide-table td{display:block;padding:4px 0;border:none;white-space:normal}
+  }
 
   footer{margin-top:48px;font-size:12px;color:var(--ink-3);text-align:center;line-height:1.7}
   footer a{color:var(--ink-2);font-weight:600}
@@ -4708,26 +4726,36 @@ function generateGuideHTML({ now }) {
     <h2>What the tag colors mean</h2>
     <p class="sec-lede">Every tag of the same color is the same kind of task:</p>
 
-    <div class="sample-row"><span class="chip setup">Setup &amp; triage</span> A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</div>
-    <div class="sample-row"><span class="chip nudge1">Remind</span><span class="chip nudge2">Follow up</span><span class="chip nudge3">Escalate</span> The same color family, getting more intense the longer it's been quiet: a first reminder, then a follow-up, then escalating to the Core Team.</div>
-    <div class="sample-row"><span class="chip act">Review / respond</span> Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</div>
-    <div class="sample-row"><span class="chip finish">Finish &amp; merge</span> The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</div>
-    <div class="sample-row"><span class="chip backport">Backport first</span> Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</div>
-    <div class="sample-row"><span class="chip manual">Manual attention</span> Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</div>
-    <div class="sample-row"><span class="chip muted">Optional / already done</span> Nothing urgent: an early look at a still-open PR, a reminder you already sent, or someone's looked but hasn't approved yet.</div>
-    <div class="sample-row"><span class="chip dismiss">Close / dismiss</span> The docs PR should be closed — its linked code PR was closed without merging.</div>
-    <div class="sample-row"><span class="chip stale">🕸 Stale</span> No activity for 30+ days, on either PR. Just a heads-up — it doesn't change which group the row is in.</div>
+    <table class="guide-table">
+      <thead><tr><th scope="col">Color</th><th scope="col">Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</td></tr>
+        <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first reminder, then a follow-up, then escalating to the Core Team.</td></tr>
+        <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
+        <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</td></tr>
+        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</td></tr>
+        <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
+        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, or someone's looked but hasn't approved yet.</td></tr>
+        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed — its linked code PR was closed without merging.</td></tr>
+        <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity for 30+ days, on either PR. Just a heads-up — it doesn't change which group the row is in.</td></tr>
+      </tbody>
+    </table>
   </section>
 
   <section class="guide-sec" id="priority">
     <h2>The Priority filter</h2>
     <p class="sec-lede">The Priority tab strip at the top of the dashboard lets you narrow the board down to one severity at a time:</p>
 
-    <div class="swatch-row"><span class="dot critical"></span> <b>Critical</b> — you reminded the code author 14+ days ago and it's still quiet. Time to escalate to the Core Team.</div>
-    <div class="swatch-row"><span class="dot serious"></span> <b>Serious</b> — 7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</div>
-    <div class="swatch-row"><span class="dot act"></span> <b>Act</b> — something needs doing: review, remind, merge, or add a label.</div>
-    <div class="swatch-row"><span class="dot triage"></span> <b>Triage</b> — a draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</div>
-    <div class="swatch-row"><span class="dot stale"></span> <b>Stale</b> — nothing has happened here in 30+ days, no matter what else is going on with the PR.</div>
+    <table class="guide-table">
+      <thead><tr><th scope="col">Priority</th><th scope="col">Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dot critical"></span> <b>Critical</b></td><td>You reminded the code author 14+ days ago and it's still quiet. Time to escalate to the Core Team.</td></tr>
+        <tr><td><span class="dot serious"></span> <b>Serious</b></td><td>7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</td></tr>
+        <tr><td><span class="dot act"></span> <b>Act</b></td><td>Something needs doing: review, remind, merge, or add a label.</td></tr>
+        <tr><td><span class="dot triage"></span> <b>Triage</b></td><td>A draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</td></tr>
+        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened here in 30+ days, no matter what else is going on with the PR.</td></tr>
+      </tbody>
+    </table>
 
     <p>Critical, Serious, and Triage only narrow "Need you today" — picking one hides the other three groups. Act and Stale work differently: they show up across every group instead, since Bring it forward has actionable and stale rows of its own.</p>
   </section>
@@ -4737,9 +4765,9 @@ function generateGuideHTML({ now }) {
     <p class="sec-lede">Concrete walk-throughs of how a docs PR moves through the board, start to finish.</p>
 
     <div class="scenario">
-      <h3>A new docs PR opens, linked to a code PR that's still open</h3>
+      <h3>A new docs PR opens</h3>
       <ol>
-        <li>It opens, usually still a Draft since the code isn't merged yet, not yet labeled or milestoned.
+        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR is not yet labeled or milestoned.
           <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span></div>
           In Bring it forward — nothing urgent yet.
         </li>
@@ -4747,35 +4775,44 @@ function generateGuideHTML({ now }) {
           <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
           Quiet — you can read it early if you like, but there's no rush.
         </li>
+        <li>If the linked code PR is already merged, Promptless creates a PR. There's no waiting-on-code step here — it skips straight to the reminder flow below.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+        </li>
       </ol>
     </div>
 
     <div class="scenario">
-      <h3>The code PR merges and nobody's said anything to its author yet</h3>
+      <h3>The code PR merges and nobody informs the code PR author to review the docs PR yet</h3>
       <ol>
         <li>
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
-          (Or "Ask to review content" if a bot opened the docs PR.)
+          This is your cue to comment on the <b>code PR</b>, tag the author, and ask them to review the docs PR's content.
         </li>
-        <li>Someone tags the author. The row moves to Waiting on others.</li>
+        <li>The row moves to <strong>Waiting on others</strong>.
+          You've done your part — nothing more to do here until the author replies or time passes.
+        </li>
         <li>7 days pass, still no reply.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge2">Send a follow-up</span></div>
+          Post a follow-up comment on the code PR, tagging the author again.
         </li>
         <li>14 days pass, still no reply.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge3">▲ Escalate to Core Team</span></div>
+          Tag the Core Team so they can help with reviewing the docs PR's content: on the <b>docs PR</b>, click the gear icon next to <b>Reviewers</b> in the sidebar, type <code>mautic/core-team</code>, and select it from the list.
         </li>
         <li>The author replies.
           <div class="see"><span class="lbl">You'll see</span><span class="chip act">Check the author's response</span></div>
+          Read what they said and reply back when necessary.
         </li>
-        <li>You reply back — the row settles into Monitoring. Nothing more to do unless it goes quiet again.</li>
+        <li>The row settles into <strong>Monitoring</strong> once you replied. Nothing more to do unless it goes quiet again.</li>
       </ol>
     </div>
 
     <div class="scenario">
       <h3>Someone approves the docs PR</h3>
       <ol>
+        <li>A docs PR is only merged once the code PR's author has approved it — either a formal GitHub review, or a clear approval left as a comment.</li>
         <li>If the code PR has already merged.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> You need to do final review — check the grammar and wordings — and approve the PR. Leave a comment and tag the <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
         <li>If the code PR is still open (the docs PR is usually still a Draft at this point), the approval is just noted for now — docs don't merge ahead of code.</li>
       </ol>
@@ -4784,22 +4821,19 @@ function generateGuideHTML({ now }) {
     <div class="scenario">
       <h3>An approval gets reset by new commits</h3>
       <ol>
-        <li>GitHub automatically removes an approval the moment new commits land — even if they only address something unrelated to what was approved.</li>
-        <li>If you've checked and the new commits don't touch anything the approver reviewed, add the <code>${CONTENT_APPROVED_LABEL}</code> label yourself.
+        <li>Whenever someone approves the docs PR, add the <code>${CONTENT_APPROVED_LABEL}</code> label right away. That way, if the approval later gets dismissed, there's already a record that the content itself was approved.</li>
+        <li>GitHub automatically dismisses approvals the moment new commits land.
           <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Content approved by X — review dismissed</span></div>
-          Everything the approval had unlocked keeps working as before.
         </li>
       </ol>
     </div>
 
     <div class="scenario">
       <h3>The docs PR needs a backport</h3>
-      <ol>
-        <li>The PR targets an older release branch than the current latest (say, 7.1 while 7.2 is out).
-          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
-          Before merging, ask Promptless to cherry-pick the changes onto the newer branch(es) too — e.g. <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
-        </li>
-      </ol>
+      <div class="note">The PR targets a release branch other than the one it should update (say, it targets 7.1 but 7.2 also needs the fix — or vice versa).
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
+        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it too — this can be newer or older branches than the one this PR targets, depending on which release branches need the update. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
+      </div>
     </div>
 
     <div class="scenario">
@@ -4818,32 +4852,26 @@ function generateGuideHTML({ now }) {
 
     <div class="scenario">
       <h3>Someone else jumps into the conversation</h3>
-      <ol>
-        <li>A contributor or another maintainer leaves a comment and nobody's replied yet.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip manual">👀 X is waiting on Y</span></div>
-          Orange and sorted high if it's waiting on you; otherwise it's just there so you can keep an eye on it.
-        </li>
-      </ol>
+      <div class="note">A contributor or another maintainer leaves a comment and nobody's replied yet.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip manual">👀 X is waiting on Y</span></div>
+        Orange and sorted high if it's waiting on you; otherwise it's just there so you can keep an eye on it.
+      </div>
     </div>
 
     <div class="scenario">
       <h3>The linked code PR gets closed instead of merged</h3>
-      <ol>
-        <li>
-          <div class="see"><span class="lbl">You'll see</span><span class="chip dismiss">Close this docs PR</span></div>
-          The documented change no longer applies. This outranks everything else showing on that row.
-        </li>
-      </ol>
+      <div class="note">
+        <div class="see"><span class="lbl">You'll see</span><span class="chip dismiss">Close this docs PR</span></div>
+        The documented change no longer applies. This outranks everything else showing on that row.
+      </div>
     </div>
 
     <div class="scenario">
       <h3>Nothing happens for a month</h3>
-      <ol>
-        <li>
-          <div class="see"><span class="lbl">You'll see</span><span class="chip stale">🕸 Stale</span></div>
-          Just a heads-up that nothing's moved in 30+ days. It doesn't change which group the row is in, or remove any other tag.
-        </li>
-      </ol>
+      <div class="note">
+        <div class="see"><span class="lbl">You'll see</span><span class="chip stale">🕸 Stale</span></div>
+        Just a heads-up that nothing's moved in 30+ days. It doesn't change which group the row is in, or remove any other tag.
+      </div>
     </div>
   </section>
 
