@@ -2557,24 +2557,33 @@ function formatUpdated(date) {
 }
 
 // Mirrors the CI cron in .github/workflows/update-tracker.yml: every half
-// hour Mon-Fri 08:00-20:00 UTC, two check-ins each on Saturday and Sunday
-// (09:00 and 20:00 UTC), plus Sunday's extra 23:00 UTC slot for the weekly
-// full resync. Kept in sync with that file by hand (there's no way to read
-// the cron at runtime). Used to tell a viewer when the next refresh is due,
-// so a page that's hours old over a weekend reads as "expected" rather than
-// broken.
+// hour Mon-Fri 9am-9pm Central European time, two check-ins each on
+// Saturday and Sunday (10am and 9pm CE time), plus a Sunday-midnight
+// (Monday 00:00 CE time) slot for the weekly full resync. GitHub Actions
+// cron has no DST support, so - like the workflow file - this switches
+// between CEST (UTC+2) and CET (UTC+1) UTC offsets via the month, which
+// only drifts during the DST transition weeks themselves. Kept in sync with
+// that file by hand (there's no way to read the cron at runtime). Used to
+// tell a viewer when the next refresh is due, so a page that's hours old
+// over a weekend reads as "expected" rather than broken.
 function isScheduledRunUTC(d) {
 	const day = d.getUTCDay() // 0 = Sun … 6 = Sat
 	const hour = d.getUTCHours()
 	const minute = d.getUTCMinutes()
+	const isCEST = d.getUTCMonth() + 1 >= 4 && d.getUTCMonth() + 1 <= 10
+	const weekdayStart = isCEST ? 7 : 8 // 9am CE time
+	const weekdayClose = isCEST ? 19 : 20 // 9pm CE time
 	if (day >= 1 && day <= 5) {
 		if (minute !== 0 && minute !== 30) return false
-		if (hour === 20) return minute === 0 // window closes exactly at 8pm
-		return hour >= 8 && hour <= 19
+		if (hour === weekdayClose) return minute === 0 // window closes exactly at 9pm
+		return hour >= weekdayStart && hour <= weekdayClose - 1
 	}
 	if (minute !== 0) return false
-	if (hour === 9 || hour === 20) return true // both Sat and Sun
-	return day === 0 && hour === 23 // Sunday's extra full-resync run
+	const weekendMorning = isCEST ? 8 : 9 // 10am CE time
+	const weekendEvening = isCEST ? 19 : 20 // 9pm CE time
+	if (hour === weekendMorning || hour === weekendEvening) return true // both Sat and Sun
+	const resyncHour = isCEST ? 22 : 23 // Sunday's extra full-resync run (midnight Mon CE time)
+	return day === 0 && hour === resyncHour
 }
 
 function nextScheduledRun(now) {
