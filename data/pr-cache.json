@@ -2025,7 +2025,7 @@
   },
   "mautic/developer-documentation-new#563": {
     "docsUpdatedAt": "2026-07-10T12:18:19Z",
-    "codeUpdatedAt": "2026-07-10T09:18:12Z",
+    "codeUpdatedAt": "2026-07-25T07:27:15Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -2154,6 +2154,13 @@
         },
         "created_at": "2026-07-10T09:18:12Z",
         "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by this PR — the GrapesJS Builder's compiled assets are no longer tracked in git, so anyone working from a git checkout now builds them (auto on `composer install`/`update` and DDEV bootstrap, or manually via `composer gjs-build` / `ddev gjs-build`, Node 24).\n\nDocumented the new build workflow in the developer docs (7.2), including the Parcel content-hashing + `manifest.json` that feeds the runtime `AssetsSubscriber`. No user-documentation change is needed since end users install pre-built release packages.\n\nReview: [developer-documentation-new #563](https://github.com/mautic/developer-documentation-new/pull/563)\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-25T07:27:15Z",
+        "body": "Hi @patrykgruszka,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/16435#issuecomment-4933863153"
       }
     ],
     "rawCodeReviews": [
@@ -6346,7 +6353,7 @@
     ]
   },
   "mautic/user-documentation#849": {
-    "docsUpdatedAt": "2026-07-24T19:29:44Z",
+    "docsUpdatedAt": "2026-07-24T19:31:58Z",
     "codeUpdatedAt": "2026-07-22T11:03:14Z",
     "rawDocsReviews": [
       {
@@ -13183,7 +13190,7 @@
     ]
   },
   "mautic/developer-documentation-new#601": {
-    "docsUpdatedAt": "2026-07-24T18:20:35Z",
+    "docsUpdatedAt": "2026-07-25T07:28:35Z",
     "codeUpdatedAt": "2026-07-24T18:01:44Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
