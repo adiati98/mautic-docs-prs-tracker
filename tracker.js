@@ -4730,7 +4730,7 @@ function generateGuideHTML({ now }) {
       <thead><tr><th scope="col">Color</th><th scope="col">Meaning</th></tr></thead>
       <tbody>
         <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</td></tr>
-        <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first reminder, then a follow-up, then escalating to the Core Team.</td></tr>
+        <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
         <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</td></tr>
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</td></tr>
@@ -4776,7 +4776,7 @@ function generateGuideHTML({ now }) {
           Quiet — you can read it early if you like, but there's no rush.
         </li>
         <li>If the linked code PR is already merged, Promptless creates a PR. There's no waiting-on-code step here — it skips straight to the reminder flow below.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
         </li>
       </ol>
     </div>
@@ -4785,7 +4785,7 @@ function generateGuideHTML({ now }) {
       <h3>The code PR merges and nobody informs the code PR author to review the docs PR yet</h3>
       <ol>
         <li>
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
           This is your cue to comment on the <b>code PR</b>, tag the author, and ask them to review the docs PR's content.
         </li>
         <li>The row moves to <strong>Waiting on others</strong>.

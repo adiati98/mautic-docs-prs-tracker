@@ -260,7 +260,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker — Guide</h1>
-    <span class="updated" data-updated-iso="2026-07-24T19:23:44.320Z">Updated Fri, Jul 24, 9:23 PM</span>
+    <span class="updated" data-updated-iso="2026-07-26T18:22:10.531Z">Updated Sun, Jul 26, 8:22 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -326,7 +326,7 @@
       <thead><tr><th scope="col">Color</th><th scope="col">Meaning</th></tr></thead>
       <tbody>
         <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</td></tr>
-        <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first reminder, then a follow-up, then escalating to the Core Team.</td></tr>
+        <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
         <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</td></tr>
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</td></tr>
@@ -372,7 +372,7 @@
           Quiet — you can read it early if you like, but there's no rush.
         </li>
         <li>If the linked code PR is already merged, Promptless creates a PR. There's no waiting-on-code step here — it skips straight to the reminder flow below.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
         </li>
       </ol>
     </div>
@@ -381,7 +381,7 @@
       <h3>The code PR merges and nobody informs the code PR author to review the docs PR yet</h3>
       <ol>
         <li>
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Remind code PR author — code PR merged</span></div>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
           This is your cue to comment on the <b>code PR</b>, tag the author, and ask them to review the docs PR's content.
         </li>
         <li>The row moves to <strong>Waiting on others</strong>.
@@ -393,7 +393,7 @@
         </li>
         <li>14 days pass, still no reply.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge3">▲ Escalate to Core Team</span></div>
-          Tag the Core Team so they can help with reviewing the docs PR's content: on the <b>code PR</b>, click the gear icon next to <b>Reviewers</b> in the sidebar, type <code>mautic/core-team</code>, and select it from the list.
+          Tag the Core Team so they can help with reviewing the docs PR's content: on the <b>docs PR</b>, click the gear icon next to <b>Reviewers</b> in the sidebar, type <code>mautic/core-team</code>, and select it from the list.
         </li>
         <li>The author replies.
           <div class="see"><span class="lbl">You'll see</span><span class="chip act">Check the author's response</span></div>
@@ -485,7 +485,7 @@
   </section>
 
   <footer>
-    <div>Generated on <span data-updated-iso="2026-07-24T19:23:44.320Z">Fri, Jul 24, 9:23 PM</span></div>
+    <div>Generated on <span data-updated-iso="2026-07-26T18:22:10.531Z">Sun, Jul 26, 8:22 PM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
