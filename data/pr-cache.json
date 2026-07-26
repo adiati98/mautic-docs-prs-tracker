@@ -9896,7 +9896,7 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-26T22:25:06Z",
+    "docsUpdatedAt": "2026-07-26T22:31:11Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
       {
@@ -10010,6 +10010,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-26T22:09:10Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-26T22:31:11Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -10096,6 +10104,13 @@
         },
         "created_at": "2026-07-26T22:09:41Z",
         "body": "Thanks — got your follow-up suggestions too. We'll fold the \"use without selecting any rows / gear icon → Options → Find and Replace\" paragraph into both the Companies and Contacts sections along with the earlier changes, and push everything together shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-26T22:27:04Z",
+        "body": "Thanks @adiati98 — all of your feedback across both review rounds is applied and pushed.\n\nContacts guide (`manage_contacts.rst`):\n- Moved the large-volume / Campaign guidance to lead the Batch changes section.\n- Moved and renamed the screenshot `batch-actions.png` → `batch_actions.png`, now after the intro paragraph.\n- Added the \"You can find the following options:\" lead-in before the list, with the **Change Campaigns** wording.\n- Reworded the gear-icon paragraph to \"open the **Options**, then select **Find and Replace**.\"\n\nCompanies guide (`companies_overview.rst`):\n- Moved `companies_batch_selection_bar.png` to right after the selection-bar intro paragraph.\n- Reworded the gear-icon paragraph the same way.\n\nEvery suggested change was applied exactly as written; Vale introduced no new findings on the changed lines. Ready for another look."
       }
     ],
     "rawCodeComments": [
