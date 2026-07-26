@@ -4865,7 +4865,7 @@ function generateGuideHTML({ now }) {
   <section class="guide-sec" id="reminders-page">
     <h2>The reminders page</h2>
     <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR Review Reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
-    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Each row gets one of two marks: <b>Need review</b> (nobody's asked them about this docs PR yet, or the thread went quiet after they last replied), or <b>Response to comment from X</b> (X asked them and they haven't replied since).</p>
+    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page — nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
   </section>
 
   <section class="guide-sec" id="checklist">

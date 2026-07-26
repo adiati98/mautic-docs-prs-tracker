@@ -199,10 +199,10 @@ If you've checked and the new commits didn't actually touch anything the approve
 
 `tracker.js` also writes `tracker-reminders.html` — a second, separate page meant to be **shared directly with code PR authors**, not just used by you. Linked from the main dashboard's header (📋 Author reminders) and vice versa.
 
-It lists every docs PR whose linked code PR has **merged** and where the ball is genuinely in the code author's court — grouped into one table per author (bots, including Promptless, are never a "person" here). Each row gets one of two marks:
+It lists every docs PR whose linked code PR has **merged** and where the ball is genuinely in the code author's court — grouped into one table per author. Once the code author approves the docs PR, it disappears from this page — nothing left to ask them. Every row still here gets one of two marks:
 
-- **Need review** — nobody's @-mentioned them about this docs PR yet (or the thread went quiet after they last replied).
-- **Response to comment from X** — X (you, a teammate, or Promptless) @-mentioned them and they haven't replied since.
+- **Need review** — the code PR has already merged, so this docs PR needs the code author's review.
+- **Response to comment from X** — the code PR author hasn't replied to X's comment yet.
 
 This deliberately drops the internal follow-up/escalate urgency language — the same timeline still runs underneath (see above), but this page exists to remind the author, never to tell them they're about to be escalated to the Core Team.
 
