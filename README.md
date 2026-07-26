@@ -34,7 +34,7 @@ Every open docs PR sits in exactly one of four groups, answering one question: *
 | --- | --- |
 | A colored bar on the left edge | **How urgent.** <br> <br> - **red** = overdue <br> - **orange** = due soon <br> - **blue** = something to do <br> - **dark grey** = needs your review <br> - **green** = approved/ready <br> - A **pale, colorless edge** means "nothing to do right now — it's on someone else." |
 | A plain grey badge (e.g. **Open**, **Draft**, **Merged**, **Closed**) | A fact about the code PR. Not something to act on. |
-| A colored tag with text (e.g. **Review this docs PR**) | An action for you to take. The color groups similar actions together (see the in-page legend for the full color key). |
+| A colored tag with text (e.g. **Review this docs PR**) | An action for you to take. The color groups similar actions together (see the [guide](https://adiati98.github.io/mautic-docs-prs-tracker/tracker-guide.html) for the full color key). |
 
 ### Priority tabs
 
@@ -65,7 +65,7 @@ Every open docs PR sits in exactly one of four groups, answering one question: *
 6. You reply back → the row settles into **Monitoring** — nothing more to do unless it goes quiet again.
 
 **Someone approves the docs PR**
-- If the code PR has already merged → tag changes to **Final review, then merge**.
+- If the code PR has already merged → tag changes to **Final review, then merge**, and the row stays in **Need you today**.
 - If the code PR is still open → the approval is just noted for now; docs don't merge ahead of code.
 
 **The linked code PR gets closed instead of merged**

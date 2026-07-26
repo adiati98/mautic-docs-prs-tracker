@@ -4680,7 +4680,7 @@ function generateGuideHTML({ now }) {
       </div>
       <div class="band forward">
         <div class="band-name">Bring it forward</div>
-        <div class="band-desc">Not urgent, but worth doing when you have time: a brand-new PR that still needs a label or milestone, an approval that's ready to merge with nothing else going on, or anything that's gone quiet for a while.</div>
+        <div class="band-desc">Not urgent, but worth doing when you have time: a brand-new PR that still needs a label or milestone, a review on hold for its code PR to merge, or anything that's gone quiet for a while.</div>
       </div>
       <div class="band waiting">
         <div class="band-name">Waiting on others or for code PR to merge</div>
@@ -4798,7 +4798,7 @@ function generateGuideHTML({ now }) {
       <h3>Someone approves the docs PR</h3>
       <ol>
         <li>A docs PR is only merged once the code PR's author has approved it — either a formal GitHub review, or a clear approval left as a comment.</li>
-        <li>If the code PR has already merged.
+        <li>If the code PR has already merged, the row stays in <b>Need you today</b>.
           <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> You need to do final review — check the grammar and wordings — and approve the PR. Leave a comment and tag the <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
         <li>If the code PR is still open (the docs PR is usually still a Draft at this point), the approval is just noted for now — docs don't merge ahead of code.</li>
@@ -4864,9 +4864,8 @@ function generateGuideHTML({ now }) {
 
   <section class="guide-sec" id="reminders-page">
     <h2>The reminders page</h2>
-    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">tracker-reminders.html</a> is a separate page meant to be shared directly with code PR authors, not just used by the docs team.</p>
+    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR Review Reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
     <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Each row gets one of two marks: <b>Need review</b> (nobody's asked them about this docs PR yet, or the thread went quiet after they last replied), or <b>Response to comment from X</b> (X asked them and they haven't replied since).</p>
-    <p>It deliberately leaves out escalation language — the same timeline still runs underneath, but this page exists to remind the author, never to warn them they're about to be escalated to the Core Team.</p>
   </section>
 
   <section class="guide-sec" id="checklist">
