@@ -1666,17 +1666,6 @@ function isNeedTodayRow(pr) {
 	)
 }
 
-// Approved and ready, with nothing else going on — every chip on the row
-// belongs to the finish/backport family (the "Approved by X" fact plus the
-// merge action itself). Anything else present (a rebase flag, a live
-// thread, a milestone advisory, a stale badge...) means there's still a
-// human judgment call to make, so it doesn't count as "clean" — that row
-// stays in Need-today instead (see sortRank), right at the top.
-function isCleanApprovedRow(pr) {
-	if (!pr.finalReviewActionable) return false
-	return chipsFor(pr).every((c) => c.cls === "finish" || c.cls === "backport")
-}
-
 // A brand-new PR still missing its label/milestone — ordinarily not urgent
 // (see isBringForwardRow below), *unless* its linked code PR has already
 // merged. Once the code is out, the docs PR shouldn't linger in triage on
@@ -1711,23 +1700,23 @@ function isPendingCodeReviewRow(pr) {
 // out of what would otherwise be Need-today (never out of Waiting or
 // Monitoring, which stay as they are): brand-new PRs still needing their
 // first label/milestone (unless isUrgentTriageRow says otherwise), a review
-// that's on hold for a code PR that hasn't merged yet, approvals that are
-// cleanly ready to merge, and anything stale. Stale wins over "clean
-// approved" by construction — a stale row's chip list always includes the
-// stale badge, so it can never pass the all-finish/backport check above.
+// that's on hold for a code PR that hasn't merged yet, and anything stale.
+// An approval never qualifies on its own, however "clean" the row otherwise
+// looks — once something is approved, merging it is the whole point, and
+// only an operator can do that, so it stays in Need-today until it's merged
+// (see finalReviewActionable in isNeedTodayRow).
 function isBringForwardRow(pr) {
 	return (
 		((pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") &&
 			!isUrgentTriageRow(pr)) ||
 		isPendingCodeReviewRow(pr) ||
-		pr.staleFlag ||
-		isCleanApprovedRow(pr)
+		pr.staleFlag
 	)
 }
 
-// Which of the four Bring-it-forward groups a row belongs to, in the order
+// Which of the three Bring-it-forward groups a row belongs to, in the order
 // they're listed: new PRs to triage, then reviews on hold for their code PR,
-// then clean approvals, then stale.
+// then stale.
 function bringForwardRank(pr) {
 	if (pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") return 0
 	if (pr.staleFlag) return 2
@@ -2907,12 +2896,10 @@ function generateHTML(prData, { operatorUsername }) {
 		(p) => p.category === "needs-label-and-milestone" || p.category === "needs-milestone",
 	).length
 	const pendingReviewCount = bringForward.filter((p) => isPendingCodeReviewRow(p)).length
-	const readyCount = bringForward.filter((p) => isCleanApprovedRow(p)).length
 	const bringForwardStaleCount = bringForward.filter((p) => p.staleFlag).length
 	const bringForwardBits = []
 	if (newTriageCount > 0) bringForwardBits.push(`${newTriageCount} new`)
 	if (pendingReviewCount > 0) bringForwardBits.push(`${pendingReviewCount} to review`)
-	if (readyCount > 0) bringForwardBits.push(`${readyCount} ready to merge`)
 	if (bringForwardStaleCount > 0)
 		bringForwardBits.push(`<span class="dot stale"></span>${bringForwardStaleCount} stale`)
 	const bringForwardSub = bringForwardBits.join(" · ")
@@ -3011,7 +2998,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Bring it forward</h2><span class="count">${bringForward.length}</span>
       <span class="chk-progress" data-state="zero">0/${bringForward.length} checked</span>
-      <span class="hint">not urgent — new PRs to triage, approvals ready to merge, anything gone quiet</span>
+      <span class="hint">not urgent — new PRs to triage, reviews on hold for their code PR, anything gone quiet</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${bringForward.map(renderNeedTodayRow).join("")}
