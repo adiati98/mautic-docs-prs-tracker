@@ -157,44 +157,13 @@
   .dot.triage{background:var(--ink-3)}
   .dot.stale{background:var(--warning)}
 
-  .legend{
+  .quick-tip{
     background:var(--surface);border:1px solid var(--ring);border-radius:10px;
-    box-shadow:var(--shadow);margin-bottom:28px;
+    box-shadow:var(--shadow);margin-bottom:12px;padding:10px 16px;
+    font-size:12.5px;color:var(--ink-2);line-height:1.5;
   }
-  .legend summary{
-    list-style:none;cursor:pointer;padding:10px 16px;
-    font-size:12.5px;font-weight:600;color:var(--ink-3);
-    display:flex;align-items:center;gap:8px;
-  }
-  .legend summary::-webkit-details-marker{display:none}
-  .legend summary .tw{transition:transform .15s;color:var(--ink-3);font-size:10px}
-  .legend[open] summary .tw{transform:rotate(90deg)}
-  .legend[open] summary{border-bottom:1px solid var(--line);color:var(--ink-2)}
-  .legend-body{
-    padding:4px 16px 16px;font-size:12.5px;color:var(--ink-2);
-  }
-  .legend section{margin-top:16px}
-  .legend-h{
-    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-    color:var(--ink-3);margin-bottom:6px;
-  }
-  .legend-note{color:var(--ink-3);font-size:12px;margin-bottom:6px}
-  .legend table{width:100%;border-collapse:collapse}
-  .legend td{
-    padding:6px 10px 6px 0;border-bottom:1px solid var(--line);
-    vertical-align:top;line-height:1.5;
-  }
-  .legend tr:last-child td{border-bottom:none}
-  .legend td:first-child{white-space:nowrap;width:1%;padding-right:16px}
-  .legend code{
-    font-family:ui-monospace,monospace;font-size:11px;
-    background:color-mix(in srgb, var(--ink) 6%, transparent);
-    border-radius:4px;padding:1px 5px;
-  }
-  .edge-sample{
-    display:inline-block;width:4px;height:14px;border-radius:2px;
-    background:var(--accent);vertical-align:-2px;margin-right:2px;
-  }
+  .quick-tip b{color:var(--ink)}
+  .quick-tip a{font-weight:600}
 
   section{margin-bottom:28px}
   .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
@@ -498,9 +467,6 @@
     .tile{display:flex;align-items:baseline;gap:10px;padding:10px 14px}
     .tile .num{font-size:22px}
     .tile .sub{margin-left:auto;text-align:right}
-    .legend td:first-child{white-space:normal;width:auto;display:block;padding-bottom:2px}
-    .legend tr{display:block;padding:6px 0;border-bottom:1px solid var(--line)}
-    .legend tr td{border-bottom:none;padding-left:0}
     .row{grid-template-columns:4px 1fr;row-gap:6px;padding:10px 44px 10px 12px}
     .row .chk{position:absolute;top:10px;right:10px}
     .when{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:8px;min-width:0;flex-wrap:wrap}
@@ -522,7 +488,8 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-07-26T22:19:11.529Z">Updated Sun, Jul 26, 10:19 PM</span>
+    <span class="updated" data-updated-iso="2026-07-26T22:25:47.039Z">Updated Mon, Jul 27, 12:25 AM</span>
+    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
@@ -565,104 +532,10 @@
 
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">89</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">49</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">40</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">23</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false">Critical <span class="fc">0</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false">Serious <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false">Act <span class="fc">42</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false">Triage <span class="fc">5</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false">🕸 Stale <span class="fc">5</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">23</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" title="You reminded the code author 14+ days ago and it&#039;s still quiet — escalate.">Critical <span class="fc">0</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" title="You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply — follow up.">Serious <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" title="Something needs doing now: review, remind, merge, or add a label.">Act <span class="fc">42</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" title="A draft PR waiting on its code PR, or a standalone PR waiting on its author.">Triage <span class="fc">5</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" title="No activity on the PR for 30+ days.">🕸 Stale <span class="fc">5</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
-  <details class="legend">
-    <summary><span class="tw">▶</span> New here? How to read this board</summary>
-    <div class="legend-body">
-
-      <section>
-        <h2 class="legend-h">1. The four groups — whose turn is it?</h2>
-        <table>
-          <tr><td><b>Need you today</b></td><td>Actions only you can take, most urgent first.</td></tr>
-          <tr><td><b>Bring it forward</b></td><td>Not urgent, but worth doing on your own schedule — brand-new PRs that still need a label or milestone, reviews on hold for their code PR to merge, and anything that's gone quiet for a while (stale). Anything approved belongs in Need you today instead — merging it is the one thing left to do, and only you can do it.</td></tr>
-          <tr><td><b>Waiting on others or for code PR to merge</b></td><td>You've done your part — either the code PR hasn't merged yet, a reminder to the code PR author has been sent, or you've escalated and are waiting for a reply.</td></tr>
-          <tr><td><b>Monitoring</b></td><td>The author replied and you've already responded. Collapsed by default — if the conversation goes quiet for a week, it resurfaces so you can send another reminder.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">2. Filters — narrowing what you see</h2>
-        <p class="legend-note">Both filter bars live at the top of the page, above the groups.</p>
-        <table>
-          <tr><td><b>Repo</b></td><td>Switches the whole board to show just one repo. The counts on each tab are totals across all four groups.</td></tr>
-          <tr><td><b>Priority</b></td><td><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> only apply to <b>Need you today</b> — picking one of these hides the other three groups entirely. <b>Act</b> and <b>Stale</b> work differently: they show up in every group instead of hiding the rest, since <b>Bring it forward</b> has its own actionable and stale rows too. Counts follow whichever repo tab is selected.</td></tr>
-        </table>
-        <table>
-          <tr><td><span class="dot critical"></span><b>Critical</b></td><td>You reminded the code author 14+ days ago and it's still quiet — escalate to the core team.</td></tr>
-          <tr><td><span class="dot serious"></span><b>Serious</b></td><td>You reminded the code author 7–14 days ago, or someone's waiting directly on your reply — send a follow-up.</td></tr>
-          <tr><td><span class="dot act"></span><b>Act</b></td><td>Something needs doing: check the author's response, remind the code author, review a standalone PR, do a final review on an approval that has something else attached, add a label/milestone to a new PR, or merge one that's cleanly approved and ready.</td></tr>
-          <tr><td><span class="dot triage"></span><b>Triage</b></td><td>Review a draft PR — still waiting the code PR to merge — or, for a standalone PR, waiting on its author before it escalates.</td></tr>
-          <tr><td><span class="dot stale"></span><b>🕸 Stale</b></td><td>No activity on the PR for 30+ days.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">3. Reading a row</h2>
-        <table>
-          <tr><td><span class="edge-sample"></span> Left edge</td><td>Urgency at a glance: red overdue → orange due soon → blue actionable → dark grey triage (needs your review) → green approved/ready to merge. A plain <b>pale</b> edge (no colour) means the row is in Waiting — nothing to do right now, it's on someone else — regardless of whether the code PR is a draft, open, or merged.</td></tr>
-          <tr><td><span class="pill open">Open</span></td><td>A <b>badge</b> — a fact about the code PR: Draft / Open / Merged / Closed.</td></tr>
-          <tr><td><span class="chip act">Review this docs PR</span></td><td>A <b>label</b> — an action for you. Colour = the type of task (see below).</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">4. Colour key — same kind of task, same colour</h2>
-        <table>
-          <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>Add milestone (every new PR) · Add pending-pr-merge label (drafts) · Add needs-backport label (older branch)</td></tr>
-          <tr><td><span class="chip nudge1">Remind</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same colour, getting more intense the more urgent it gets: Remind → Follow up → Escalate.</td></tr>
-          <tr><td><span class="chip act">Review / respond</span></td><td>Review this docs PR (standalone, awaiting your review) · Check the author's response · Note since approval.</td></tr>
-          <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>Final review, then merge · Remove pending-pr-merge label · Approved by X · Approved — ready to merge.</td></tr>
-          <tr><td><span class="chip backport">Backport first</span></td><td>Must be backported before it can merge.</td></tr>
-          <tr><td><span class="chip manual">Manual attention</span></td><td>No code PR linked · someone's waiting on a reply · docs PR needs a rebase · code PR's milestone doesn't match the docs branch/milestone yet.</td></tr>
-          <tr><td><span class="chip muted">Optional / already done</span></td><td>Review draft PR · a reminder you already sent · X reviewed this (someone's looked, no approval yet).</td></tr>
-          <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>Close this docs PR — its code PR was closed.</td></tr>
-          <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity on the PR for 30+ days.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">5. Live threads &amp; approvals</h2>
-        <table>
-          <tr><td>👀 Live threads</td><td>An unanswered human comment on the docs PR. Orange if someone's waiting on <b>you</b>; also shown if someone outside the review team is waiting on the <b>code author</b> — checked separately, so a later unrelated reply to someone else can't hide it. Once the PR is approved, only what's been said since that approval counts — earlier comments don't. Otherwise, it's just there so you can keep an eye on it. Includes Promptless when it @-mentions a reviewer outside your team for feedback.</td></tr>
-          <tr><td>Approvals</td><td>"Approved by X" is a label shown wherever there's an active approval — whether that's you, a teammate, or someone else (the one exception: a PR author can't approve their own PR, except for one admin account GitHub allows this for). "Final review, then merge" only appears once the code PR has merged. For a standalone PR with no code PR to wait on, your own approval combines both into one label: "Approved by X — ready to merge". Anything added after the approval gets its own "Note since approval" label.</td></tr>
-          <tr><td>Content-approved label</td><td>GitHub automatically dismisses an approval the moment new commits land — even if the push only addresses unrelated feedback. The tracker keeps trusting the approval anyway ("Approved by X" and everything it unlocks stay put), but flags it with an "Add content-approved label" reminder so you can go confirm on GitHub that the new commits didn't actually change what was approved. Add the <code>content-approved</code> label there and the reminder clears.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">6. Follow-up &amp; escalation timeline</h2>
-        <p class="legend-note">Only a comment that <b>@-mentions the code author</b> starts this timeline — yours or a teammate's, not just a regular reply — and it stops the moment the author replies.</p>
-        <table>
-          <tr><td>Day 0</td><td>Code PR merges, someone @-mentions the code author.</td></tr>
-          <tr><td>Day 7</td><td>Row asks for a follow-up.</td></tr>
-          <tr><td>Day 14</td><td>Row asks you to escalate to the core team.</td></tr>
-          <tr><td>Any day</td><td>Author replies — the row asks you to check their response.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">7. Good to know</h2>
-        <table>
-          <tr><td>Review vs. the timeline</td><td>The remind/follow-up/escalate timeline no longer waits on you having formally reviewed the docs PR — it only needs the code PR to have merged. If review's still outstanding, a separate "Review this docs PR — code PR merged" label shows up alongside whatever the timeline shows.</td></tr>
-          <tr><td>Review vs. triage</td><td>A brand-new PR still missing its label/milestone also gets a "Review this docs PR" label right away, alongside the setup chips — reading the content doesn't have to wait on triage being finished.</td></tr>
-          <tr><td>Labels</td><td><code>pending-pr-merge</code> — removed once the code PR merges. <code>needs-backport</code> — added when a PR targets an older branch than the latest. <code>needs-rebase</code> — just shown as-is, it doesn't affect timing. <code>content-approved</code> — clears the "Add content-approved label" reminder once you've confirmed a GitHub-dismissed approval still stands; see "Content-approved label" above.</td></tr>
-        </table>
-      </section>
-
-      <section>
-        <h2 class="legend-h">8. Your personal checklist</h2>
-        <p class="legend-note">Every row in Need you today, Bring it forward, and Waiting has a checkbox — Monitoring doesn't, since it's already "nothing to do."</p>
-        <table>
-          <tr><td><input type="checkbox" disabled></td><td>Tick it off once you've actually handled a row. It's saved to <b>your own browser only</b> — nobody else sees it, and it won't change anything on GitHub or on this page's data. The row dims and its title gets struck through; clearing your browser data resets everything.</td></tr>
-          <tr><td><span class="chk-progress" data-state="partial">2/5 checked</span></td><td>Each group's header shows its own progress, always out of the <b>whole group</b> — not just whatever's currently filtered into view. Grey while untouched, blue while in progress, green with a ✓ once every row in that group is checked off.</td></tr>
-          <tr><td><b>Hide checked rows</b></td><td>A switch next to the Repo/Priority filters (Checklist row) that collapses checked rows out of view instead of just dimming them. Your checked state is exactly the same either way — this only changes what's shown.</td></tr>
-        </table>
-      </section>
-
-    </div>
-  </details>
+  <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down — everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> — worth keeping open in its own tab.</p>
 
   <section data-band="today">
     <div class="sec-head">
@@ -1589,7 +1462,7 @@
 
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-07-26T22:19:11.529Z">Sun, Jul 26, 10:19 PM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-07-26T22:25:47.039Z">Mon, Jul 27, 12:25 AM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
