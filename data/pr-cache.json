@@ -6715,7 +6715,7 @@
     ]
   },
   "mautic/user-documentation#849": {
-    "docsUpdatedAt": "2026-07-24T19:31:58Z",
+    "docsUpdatedAt": "2026-07-27T18:22:50Z",
     "codeUpdatedAt": "2026-07-22T11:03:14Z",
     "rawDocsReviews": [
       {
@@ -6757,6 +6757,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-24T19:19:12Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-27T18:22:23Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -8735,186 +8743,6 @@
       }
     ]
   },
-  "mautic/user-documentation#783": {
-    "docsUpdatedAt": "2026-07-24T09:02:58Z",
-    "codeUpdatedAt": "2026-06-25T14:17:29Z",
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-22T12:53:57Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-25T14:30:52Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-26T17:06:40Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-24T09:02:57Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-25T14:35:54Z",
-        "body": "Good catch, thanks @adiati98 — you're right that there's no drop-down labeled \"Redirect Event\". I checked the source change in [mautic/mautic#16103](https://github.com/mautic/mautic/pull/16103): that string (`mautic.campaign.event.delete.redirect_event`) is the confirm button in the delete-event dialog's footer, not a drop-down. The ID-prefixed options actually appear in the drop-down under *\"Redirect existing contacts scheduled for this event to another event:\"*.\n\nI've updated the docs to describe that drop-down by function rather than referencing a non-existent \"Redirect Event\" drop-down. The sentence now reads: *\"…and in the drop-down you use to redirect scheduled Contacts when you delete an event.\"* Vale passes with no new warnings, and the change is pushed to this PR.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-26T17:45:08Z",
-        "body": "Thanks @adiati98 — removed the colon. The sentence now reads:\n\n> The ID helps you tell events apart when two or more share the same name. This matters most when you delete an event, because the delete dialog asks you to redirect any Contacts scheduled for that event to another one, and the ID lets you pick the exact event you want from the drop-down.\n\nVale ran clean on the file. The branch has been updated.\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-08T20:54:45Z",
-        "body": "Hi @rohitpavaskar,\r\n\r\nCan you please review the content in this PR and see if they're align with your changes in https://github.com/mautic/mautic/pull/16103?\r\n\r\nTIA! ✨ "
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-07-24T09:02:47Z",
-        "body": "> Hi @rohitpavaskar,\r\n> \r\n> Can you please review the content in this PR and see if they're align with your changes in [mautic/mautic#16103](https://github.com/mautic/mautic/pull/16103)?\r\n> \r\n> TIA! ✨\r\n\r\nHi @adiati98,\r\nDos changes looks good covering all the work of PR.\r\nThank you!"
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-05-14T09:20:30Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16103) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16103&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16103&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16103&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16103&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16103&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16103)\n\n"
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-06-22T12:49:52Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16103) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16103&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16103&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16103&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16103&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16103&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16103)\n\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-22T12:54:22Z",
-        "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by this PR (campaign event IDs now always shown in the Campaign Builder).\n\nAdded an \"Identifying Campaign events\" section explaining that saved Campaign events now display their numeric ID (prefixed as `(ID: <number>)`) on event cards, the Campaign Preview, the Jump to Event action, and the Redirect Event drop-down — useful for disambiguating same-named events when redirecting scheduled Contacts on deletion.\n\nReview: [docs PR #783](https://github.com/mautic/user-documentation/pull/783)\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-06-25T14:17:29Z",
-        "body": "Hi @rohitpavaskar,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/16103#issuecomment-4768493487"
-      }
-    ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "aarohiprasad"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-05-22T10:15:37Z",
-        "body": "Thanks @rohitp19 "
-      },
-      {
-        "user": {
-          "login": "hluchas"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-05-27T12:55:42Z",
-        "body": "I see no problem here.\nTY!"
-      },
-      {
-        "user": {
-          "login": "Bastian2718"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-10T11:48:48Z",
-        "body": "For Event Deletion it works but for \"jump to\"-event its just showing the names and no ID <img width=\"608\" height=\"534\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/50c44cf6-a4dc-4e97-9746-d9de7465778c\" />"
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-18T15:03:27Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-18T16:27:37Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-06-22T12:26:14Z",
-        "body": ""
-      }
-    ],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-22T12:53:57Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-22T12:53:57Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-06-22T12:53:57Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ]
-  },
   "mautic/user-documentation#768": {
     "docsUpdatedAt": "2026-06-25T10:57:25Z",
     "codeUpdatedAt": "2026-07-20T11:02:50Z",
@@ -9441,7 +9269,7 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-27T14:49:16Z",
+    "docsUpdatedAt": "2026-07-27T18:39:18Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
       {
@@ -9611,6 +9439,22 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-27T14:39:04Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-27T17:33:44Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-27T18:12:16Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -9781,6 +9625,34 @@
         },
         "created_at": "2026-07-27T14:49:16Z",
         "body": "Applied, @adiati98 — the **Change Tags** bullet now reads \"opens a dialog\" and \"You see this option only\", exactly as you suggested. This is a Contacts-only batch action, so no change was needed on the Companies page. Pushed to PR #750; Vale is clean on the changed line. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T17:34:08Z",
+        "body": "Thanks — will do. We'll pull the no-selection Find and Replace flow into its own standalone subsection (after the note) on both the Companies and Contacts pages, and fix the whitespace on the two image directives. Pushing the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T17:56:51Z",
+        "body": "All three applied and pushed, @adiati98 — on both the Companies and Contacts pages:\n\n- Moved the \"update all records without selecting checkboxes\" (gear-icon list view) flow into its own standalone subsection after the permissions note, as you suggested.\n- Fixed the two batch-selection image directives (indentation + trailing period on the alt text).\n\nOne small structural note: on the Contacts page I used a lower heading level (`-` underline) for the new subsection than your block showed (`=`), so it nests correctly as a child of that file's `=`-underlined \"Batch changes\" heading — the rendered structure matches your intent. Vale is clean on the changed lines. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T18:12:36Z",
+        "body": "Thanks — on it. We'll wrap the two new subsection headings in vale off/on, fix the whitespace on the two image directives, and simplify the Segments cross-reference. Pushing the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T18:39:18Z",
+        "body": "All five applied and pushed, @adiati98:\n\n- Removed the extra vertical-space markers around both batch-action screenshots.\n- Trimmed the trailing clause on the Segments cross-reference.\n- Wrapped both \"Find and Replace for all …\" headings in the `.. vale off`/`.. vale on` directives.\n\nOne small adjustment alongside the Contacts heading change: that heading sat inside an existing Vale-off region, so the new `.. vale on` was re-exposing the neighbouring \"Individual Contact details\" heading (which would have introduced a new Google.Headings warning). I re-added a `.. vale off` just before it to keep it suppressed as before. Vale reports no new findings on the changed lines. Ready for another look."
       }
     ],
     "rawCodeComments": [
