@@ -2602,7 +2602,7 @@
   },
   "mautic/developer-documentation-new#552": {
     "docsUpdatedAt": "2026-06-30T05:31:07Z",
-    "codeUpdatedAt": "2026-07-07T11:47:48Z",
+    "codeUpdatedAt": "2026-07-27T15:19:53Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -2786,6 +2786,13 @@
         },
         "created_at": "2026-07-03T13:49:30Z",
         "body": "We should go class by class and evaluate if it need to exist alone or if we could reuse the existing one in the contact segments. Perhaps it needs an interface or an abstract class or a trait where we can do 90% of the common stuff."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-07-27T15:19:53Z",
+        "body": "I'm getting questions about this PR from other places. But let's keep the discussion here.\r\n\r\nI'd also need some explanation why is this necessary because you can actually segment contacts based on company fields. Is that not how account based marketing works?\r\n\r\n<img width=\"526\" height=\"538\" alt=\"Screenshot 2026-07-27 at 17 16 39\" src=\"https://github.com/user-attachments/assets/7a76bde3-1670-43a1-86f3-32148f38d432\" />\r\n\r\n\r\nWhat should users do with companies in a company segment? The whole Mautic works with contacts. Not with companies. A company is just another way users can group contacts together. \r\n\r\nWould anything change if users who need such account based marketing would start using contact segments to group contacts based on a company instead of companies? I clearly need some use cases what this is solving that Mautic can't do today.\r\n\r\nI wanted to look at what this PR does as there are no screenshots in the description. This doesn't seem ready. And I have doubts about the menu structure.\r\n<img width=\"2318\" height=\"988\" alt=\"Screenshot 2026-07-27 at 17 11 56\" src=\"https://github.com/user-attachments/assets/6b6c155e-ae96-4dae-afd6-f13512947564\" />\r\n\r\n"
       }
     ],
     "rawCodeReviews": [
@@ -7534,7 +7541,7 @@
   },
   "mautic/user-documentation#809": {
     "docsUpdatedAt": "2026-06-30T11:05:29Z",
-    "codeUpdatedAt": "2026-07-07T11:47:48Z",
+    "codeUpdatedAt": "2026-07-27T15:19:53Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -7719,6 +7726,13 @@
         },
         "created_at": "2026-07-03T13:49:30Z",
         "body": "We should go class by class and evaluate if it need to exist alone or if we could reuse the existing one in the contact segments. Perhaps it needs an interface or an abstract class or a trait where we can do 90% of the common stuff."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-07-27T15:19:53Z",
+        "body": "I'm getting questions about this PR from other places. But let's keep the discussion here.\r\n\r\nI'd also need some explanation why is this necessary because you can actually segment contacts based on company fields. Is that not how account based marketing works?\r\n\r\n<img width=\"526\" height=\"538\" alt=\"Screenshot 2026-07-27 at 17 16 39\" src=\"https://github.com/user-attachments/assets/7a76bde3-1670-43a1-86f3-32148f38d432\" />\r\n\r\n\r\nWhat should users do with companies in a company segment? The whole Mautic works with contacts. Not with companies. A company is just another way users can group contacts together. \r\n\r\nWould anything change if users who need such account based marketing would start using contact segments to group contacts based on a company instead of companies? I clearly need some use cases what this is solving that Mautic can't do today.\r\n\r\nI wanted to look at what this PR does as there are no screenshots in the description. This doesn't seem ready. And I have doubts about the menu structure.\r\n<img width=\"2318\" height=\"988\" alt=\"Screenshot 2026-07-27 at 17 11 56\" src=\"https://github.com/user-attachments/assets/6b6c155e-ae96-4dae-afd6-f13512947564\" />\r\n\r\n"
       }
     ],
     "rawCodeReviews": [
@@ -8294,7 +8308,7 @@
   },
   "mautic/user-documentation#788": {
     "docsUpdatedAt": "2026-06-25T14:47:18Z",
-    "codeUpdatedAt": "2026-07-26T19:51:43Z",
+    "codeUpdatedAt": "2026-07-27T16:03:06Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8346,7 +8360,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-25T10:15:20Z",
+        "created_at": "2026-07-27T15:50:23Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16355) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16355&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16355&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16355&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16355&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16355&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16355)\n\n"
       }
     ],

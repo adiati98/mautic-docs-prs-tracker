@@ -488,7 +488,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-07-27T15:04:35.850Z">Updated Mon, Jul 27, 3:04 PM</span>
+    <span class="updated" data-updated-iso="2026-07-27T16:19:23.818Z">Updated Mon, Jul 27, 4:19 PM</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -499,14 +499,14 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">22</div>
+      <div class="num">23</div>
       <div><div class="lbl">Need you today</div>
       <div class="sub"><span class="dot serious"></span>1 follow-up</div></div>
     </button>
     <button class="tile" data-goto="forward" type="button">
-      <div class="num">42</div>
+      <div class="num">41</div>
       <div><div class="lbl">Bring it forward</div>
-      <div class="sub">25 new · 12 to review · <span class="dot stale"></span>5 stale</div></div>
+      <div class="sub">25 new · 11 to review · <span class="dot stale"></span>5 stale</div></div>
     </button>
     <button class="tile" data-goto="waiting" type="button">
       <div class="num">23</div>
@@ -532,15 +532,15 @@
 
   <div class="filters">
     <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">87</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">49</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">38</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">22</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" title="You reminded the code author 14+ days ago and it&#039;s still quiet — escalate.">Critical <span class="fc">0</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" title="You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply — follow up.">Serious <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" title="Something needs doing now: review, remind, merge, or add a label.">Act <span class="fc">41</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" title="A draft PR waiting on its code PR, or a standalone PR waiting on its author.">Triage <span class="fc">5</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" title="No activity on the PR for 30+ days.">🕸 Stale <span class="fc">5</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">23</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" title="You reminded the code author 14+ days ago and it&#039;s still quiet — escalate.">Critical <span class="fc">0</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" title="You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply — follow up.">Serious <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" title="Something needs doing now: review, remind, merge, or add a label.">Act <span class="fc">42</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" title="A draft PR waiting on its code PR, or a standalone PR waiting on its author.">Triage <span class="fc">5</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" title="No activity on the PR for 30+ days.">🕸 Stale <span class="fc">5</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
   <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down — everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> — worth keeping open in its own tab.</p>
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">22</span>
-      <span class="chk-progress" data-state="zero">0/22 checked</span>
+      <h2>Need you today</h2><span class="count">23</span>
+      <span class="chk-progress" data-state="zero">0/23 checked</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -644,6 +644,16 @@
           <div class="chips"><span class="chip nudge2">Send a follow-up</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
         <div class="when"><div class="days serious">Day 11</div><div class="sub">since your review · escalate at 14</div><div class="meter late"><i style="width:79%"></i></div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#788" data-search="user-documentation #788 document the form: contact search filter promptless-for-oss #16355 andersonjeccel check the author’s response review this docs pr — code pr merged remove pending-pr-merge label" data-status="[&quot;needs-check-author-response&quot;,false,false,true,false,false,false,true,false,false,false,[],false,null,false,true,true,true,false,false,true]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #788: Document the form: contact search filter as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/788" target="_blank" class="name">user-documentation #788</a> <span class="desc">Document the form: contact search filter</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16355" target="_blank">#16355</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · responded 11 days ago</div>
+          <div class="chips"><span class="chip act">Check the author’s response</span><span class="chip act">Review this docs PR — code PR merged</span><span class="chip finish">Remove pending-pr-merge label</span></div>
+        </div>
+        <div class="when"><div class="days">Replied</div><div class="sub">11 days ago · clock stopped</div></div>
       </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#853" data-search="user-documentation #853 docs: document reply-to resolution hierarchy for queued email sends promptless-for-oss #15945 shinde-rahul review this docs pr — code pr merged" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,true,false,false,false,[],false,null,false,false,true,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #853: docs: Document Reply-To resolution hierarchy for queued Email sends as done"></div>
@@ -770,8 +780,8 @@
 
   <section class="band-secondary" data-band="forward">
     <div class="sec-head">
-      <h2>Bring it forward</h2><span class="count">42</span>
-      <span class="chk-progress" data-state="zero">0/42 checked</span>
+      <h2>Bring it forward</h2><span class="count">41</span>
+      <span class="chk-progress" data-state="zero">0/41 checked</span>
       <span class="hint">not urgent — new PRs to triage, reviews on hold for their code PR, anything gone quiet</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -1036,16 +1046,6 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">opened 48 days ago</div></div>
       </article>
-      <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#788" data-search="user-documentation #788 document the form: contact search filter promptless-for-oss #16355 andersonjeccel review this docs pr ✅ reminded code pr author" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,true,[],false,null,false,true,true,false,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #788: Document the form: contact search filter as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/788" target="_blank" class="name">user-documentation #788</a> <span class="desc">Document the form: contact search filter</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16355" target="_blank">#16355</a> <span class="pill open">Open</span> · author <b>andersonjeccel</b> · milestone <b>Mautic 7.2</b></div>
-          <div class="chips"><span class="chip muted">Review this docs PR</span><span class="chip muted">✅ Reminded code PR author</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 33 days ago</div></div>
-      </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#784" data-search="user-documentation #784 document support mautic navigation menu item and support_mautic_enabled option promptless-for-oss #16337 escopecz review this docs pr 👀 promptless-for-oss is waiting on escopecz" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,true,[],false,&quot;author&quot;,false,false,true,false,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #784: Document Support Mautic navigation menu item and support_mautic_enabled option as done"></div>
         <div class="edge"></div>
@@ -1134,7 +1134,7 @@
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16479" target="_blank">#16479</a> <span class="pill open">Open</span> · author <b>hluchas</b> · milestone <b>Mautic 7.2</b></div>
           <div class="chips"><span class="chip muted">Review this docs PR</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 19 days ago</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 20 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#812" data-search="user-documentation #812 docs: update default contact social field tokens (x, tiktok, youtube) in variables reference promptless-for-oss #16413 shinde-rahul review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #812: docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference as done"></div>
@@ -1442,7 +1442,7 @@
 
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-07-27T15:04:35.850Z">Mon, Jul 27, 3:04 PM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-07-27T16:19:23.818Z">Mon, Jul 27, 4:19 PM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
