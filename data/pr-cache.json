@@ -5861,7 +5861,7 @@
   },
   "mautic/user-documentation#856": {
     "docsUpdatedAt": "2026-07-20T18:49:33Z",
-    "codeUpdatedAt": "2026-07-24T04:50:36Z",
+    "codeUpdatedAt": "2026-07-27T11:03:10Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8576,7 +8576,7 @@
   },
   "mautic/user-documentation#786": {
     "docsUpdatedAt": "2026-07-08T23:03:52Z",
-    "codeUpdatedAt": "2026-07-24T10:17:32Z",
+    "codeUpdatedAt": "2026-07-27T10:21:22Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8646,7 +8646,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-24T10:17:31Z",
+        "created_at": "2026-07-27T10:21:21Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16350) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16350&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16350&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16350&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16350&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16350&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16350)\n\n"
       }
     ],
@@ -9926,16 +9926,9 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-27T09:00:03Z",
+    "docsUpdatedAt": "2026-07-27T10:10:44Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "PENDING",
-        "body": ""
-      },
       {
         "user": {
           "login": "promptless-for-oss"
@@ -10071,6 +10064,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-27T08:44:51Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-27T09:51:17Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -10199,6 +10200,20 @@
         },
         "created_at": "2026-07-27T09:00:03Z",
         "body": "All three comments addressed, @adiati98 — each applied to both the Contacts and Companies Find and Replace sections:\n\n1. Removed the redundant \"click the three-dot icon\" first step (already covered in the intro paragraph). For Companies, that step also mentioned \"opens a dialog,\" so I folded that detail into the option's description rather than lose it.\n2. Added a note that the **Find value** and **Replace with** fields are case sensitive, using your Country / 'United States' example.\n3. Clarified that running the action without selecting any rows updates **all** matching records, and that selecting checkboxes limits it to those specific records.\n\nVale introduced no new findings; the update is pushed to PR #750 and ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T09:51:34Z",
+        "body": "Thanks — applying your suggested step restructuring for the no-selection Find and Replace flow to both the Contacts and Companies sections (with the correct Contact field / Company field wording each), and will push the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T10:10:43Z",
+        "body": "All three suggestions applied, @adiati98 — exactly as written, on both the Contacts and Companies pages:\n\n- Bolded **Contact field** / **Company field** in the \"Choose the field to update\" step.\n- Restructured the no-selection (list-view) path into a clear numbered sequence: click the gear icon to open **Options**, select **Find and Replace**, then choose the field and enter the **Find value** / **Replace with** values.\n\nPushed to PR #750; Vale introduced no new findings on the changed lines. Ready for another look."
       }
     ],
     "rawCodeComments": [
