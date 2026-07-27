@@ -2546,42 +2546,47 @@ function formatUpdated(date) {
 }
 
 // Mirrors the CI cron in .github/workflows/update-tracker.yml: every half
-// hour Mon-Fri 9am-9pm Central European time, two check-ins each on
-// Saturday and Sunday (10am and 9pm CE time), plus a Sunday-midnight
-// (Monday 00:00 CE time) slot for the weekly full resync. GitHub Actions
-// cron has no DST support, so - like the workflow file - this switches
-// between CEST (UTC+2) and CET (UTC+1) UTC offsets via the month, which
-// only drifts during the DST transition weeks themselves. Kept in sync with
-// that file by hand (there's no way to read the cron at runtime). Used to
-// tell a viewer when the next refresh is due, so a page that's hours old
-// over a weekend reads as "expected" rather than broken.
+// hour Mon-Fri ~9am-9pm Central European time, two check-ins each on
+// Saturday and Sunday (~10am and ~9pm CE time), plus a Sunday-midnight
+// (~Monday 00:00 CE time) slot for the weekly full resync. Marks sit at
+// :07/:37, not :00/:30, to dodge GitHub Actions' scheduler congestion at
+// the most oversubscribed cron minutes (see the workflow file). GitHub
+// Actions cron has no DST support, so - like the workflow file - this
+// switches between CEST (UTC+2) and CET (UTC+1) UTC offsets via the month,
+// which only drifts during the DST transition weeks themselves. Kept in
+// sync with that file by hand (there's no way to read the cron at
+// runtime). Used to tell a viewer when the next refresh is due, so a page
+// that's hours old over a weekend reads as "expected" rather than broken.
 function isScheduledRunUTC(d) {
 	const day = d.getUTCDay() // 0 = Sun … 6 = Sat
 	const hour = d.getUTCHours()
 	const minute = d.getUTCMinutes()
 	const isCEST = d.getUTCMonth() + 1 >= 4 && d.getUTCMonth() + 1 <= 10
-	const weekdayStart = isCEST ? 7 : 8 // 9am CE time
-	const weekdayClose = isCEST ? 19 : 20 // 9pm CE time
+	const weekdayStart = isCEST ? 7 : 8 // ~9am CE time
+	const weekdayClose = isCEST ? 19 : 20 // ~9pm CE time
 	if (day >= 1 && day <= 5) {
-		if (minute !== 0 && minute !== 30) return false
-		if (hour === weekdayClose) return minute === 0 // window closes exactly at 9pm
+		if (minute !== 7 && minute !== 37) return false
+		if (hour === weekdayClose) return minute === 7 // window closes exactly at ~9pm
 		return hour >= weekdayStart && hour <= weekdayClose - 1
 	}
-	if (minute !== 0) return false
-	const weekendMorning = isCEST ? 8 : 9 // 10am CE time
-	const weekendEvening = isCEST ? 19 : 20 // 9pm CE time
+	if (minute !== 7) return false
+	const weekendMorning = isCEST ? 8 : 9 // ~10am CE time
+	const weekendEvening = isCEST ? 19 : 20 // ~9pm CE time
 	if (hour === weekendMorning || hour === weekendEvening) return true // both Sat and Sun
-	const resyncHour = isCEST ? 22 : 23 // Sunday's extra full-resync run (midnight Mon CE time)
+	const resyncHour = isCEST ? 22 : 23 // Sunday's extra full-resync run (~midnight Mon CE time)
 	return day === 0 && hour === resyncHour
 }
 
 function nextScheduledRun(now) {
 	const d = new Date(now)
 	d.setUTCSeconds(0, 0)
-	// Round up to the next half-hour mark — the one we're currently in, even
-	// if it matches, already ran (Date's setters normalize the 60 overflow
-	// into the next hour, so this works right across the hour boundary too).
-	d.setUTCMinutes(d.getUTCMinutes() < 30 ? 30 : 60)
+	// Round up to the next :07/:37 mark — the one we're currently in, even
+	// if it matches, already ran (Date's setters normalize the overflow into
+	// the next hour, so this works right across the hour boundary too).
+	const minute = d.getUTCMinutes()
+	if (minute < 7) d.setUTCMinutes(7)
+	else if (minute < 37) d.setUTCMinutes(37)
+	else d.setUTCMinutes(67)
 	for (let i = 0; i < 48 * 8; i++) {
 		if (isScheduledRunUTC(d)) return new Date(d)
 		d.setUTCMinutes(d.getUTCMinutes() + 30)
