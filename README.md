@@ -244,7 +244,7 @@ or set `TRACKER_NO_CACHE=1`.
 - **~10am and ~9pm Central European time on both Saturday and Sunday** — two incremental check-ins each day, same cadence on both weekend days.
 - **~Midnight Monday Central European time** — a third, extra run specifically for the weekly full resync (`node tracker.js --fresh`), ignoring the cache to correct any drift. Every other run (weekday or weekend) is incremental.
 
-All marks land at `:07`/`:37` past the hour, not `:00`/`:30` — this org relies on the tracker being close to live, but `:00`/`:30` are the most oversubscribed minutes across all of GitHub Actions (everyone's default cron), which was making scheduled runs land 30-60+ min late. Offsetting by 7 minutes keeps the same cadence while dodging that queue. GitHub Actions schedules are still best-effort and can occasionally run late regardless — this reduces that, it doesn't eliminate it.
+All marks land at `:07`/`:37` past the hour rather than `:00`/`:30`, to avoid GitHub Actions' scheduler congestion at those more common minutes.
 
 You can also trigger it manually from the Actions tab (`workflow_dispatch`), optionally forcing a fresh fetch via the "Force a full fresh fetch" input.
 
