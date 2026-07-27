@@ -8410,7 +8410,7 @@
     ]
   },
   "mautic/user-documentation#787": {
-    "docsUpdatedAt": "2026-07-21T09:12:13Z",
+    "docsUpdatedAt": "2026-07-27T13:50:26Z",
     "codeUpdatedAt": "2026-07-27T11:16:25Z",
     "rawDocsReviews": [
       {
@@ -9075,7 +9075,7 @@
     ]
   },
   "mautic/user-documentation#779": {
-    "docsUpdatedAt": "2026-07-26T22:51:54Z",
+    "docsUpdatedAt": "2026-07-27T13:43:58Z",
     "codeUpdatedAt": "2026-06-25T12:56:33Z",
     "rawDocsReviews": [
       {
@@ -9934,7 +9934,7 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-27T10:10:44Z",
+    "docsUpdatedAt": "2026-07-27T13:45:52Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
       {
@@ -10080,6 +10080,22 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-27T09:51:17Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-27T13:41:06Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-27T13:45:18Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -10222,6 +10238,20 @@
         },
         "created_at": "2026-07-27T10:10:43Z",
         "body": "All three suggestions applied, @adiati98 — exactly as written, on both the Contacts and Companies pages:\n\n- Bolded **Contact field** / **Company field** in the \"Choose the field to update\" step.\n- Restructured the no-selection (list-view) path into a clear numbered sequence: click the gear icon to open **Options**, select **Find and Replace**, then choose the field and enter the **Find value** / **Replace with** values.\n\nPushed to PR #750; Vale introduced no new findings on the changed lines. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T13:41:26Z",
+        "body": "Thanks — applying your latest suggestions now: the batch-options lead-in, the Companies Find and Replace bullet wording, and the vale-wrapped Segments cross-reference for bulk deletion. We'll push the update to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T13:45:52Z",
+        "body": "Thanks for the heads-up on the wording tweak — noted. We'll reconcile with your change as we apply the rest of the suggestions and push everything together shortly."
       }
     ],
     "rawCodeComments": [
