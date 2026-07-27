@@ -9,23 +9,31 @@ on:
     # during the DST transition weeks themselves (late Mar / late Oct),
     # instead of for half the year - accepted tradeoff for an internal tool.
     #
-    # Incremental update, every half hour, 9am-9pm CE time, Mon-Fri. Split
+    # Every mark below sits at :07/:37, not :00/:30. GitHub Actions runs
+    # scheduled workflows best-effort and de-prioritizes them under load, and
+    # :00/:30 are the most oversubscribed minutes platform-wide (everyone's
+    # default cron), which was causing runs to land 30-60+ min late. Offsetting
+    # by 7 minutes keeps the same cadence while dodging that queue - this tool
+    # is used org-wide and needs to actually be near-live, not just eventually
+    # consistent.
+    #
+    # Incremental update, every half hour, ~9am-9pm CE time, Mon-Fri. Split
     # into two rules so the window closes exactly at 9pm (a single "9-21"
-    # hour range with :00/:30 minutes would run over into 9:30pm).
-    - cron: "0,30 7-18 * 4-10 1-5" # CEST: 9am-9pm = 7-19 UTC
-    - cron: "0 19 * 4-10 1-5"
-    - cron: "0,30 8-19 * 11,12,1,2,3 1-5" # CET: 9am-9pm = 8-20 UTC
-    - cron: "0 20 * 11,12,1,2,3 1-5"
-    # Weekend: two incremental check-ins each day (Sat and Sun), 10am and
-    # 9pm CE time - same cadence both days.
-    - cron: "0 8 * 4-10 6,0" # CEST: 10am = 8 UTC, 9pm = 19 UTC
-    - cron: "0 19 * 4-10 6,0"
-    - cron: "0 9 * 11,12,1,2,3 6,0" # CET: 10am = 9 UTC, 9pm = 20 UTC
-    - cron: "0 20 * 11,12,1,2,3 6,0"
-    # Weekly full resync - midnight Monday CE time, its own separate slot
-    # rather than reusing Sunday's 9pm incremental run above.
-    - cron: "0 22 * 4-10 0" # CEST: midnight Mon = 22 UTC Sun
-    - cron: "0 23 * 11,12,1,2,3 0" # CET: midnight Mon = 23 UTC Sun
+    # hour range with :07/:37 minutes would run over into 9:37pm).
+    - cron: "7,37 7-18 * 4-10 1-5" # CEST: ~9am-9pm = 7-19 UTC
+    - cron: "7 19 * 4-10 1-5"
+    - cron: "7,37 8-19 * 11,12,1,2,3 1-5" # CET: ~9am-9pm = 8-20 UTC
+    - cron: "7 20 * 11,12,1,2,3 1-5"
+    # Weekend: two incremental check-ins each day (Sat and Sun), ~10am and
+    # ~9pm CE time - same cadence both days.
+    - cron: "7 8 * 4-10 6,0" # CEST: ~10am = 8 UTC, ~9pm = 19 UTC
+    - cron: "7 19 * 4-10 6,0"
+    - cron: "7 9 * 11,12,1,2,3 6,0" # CET: ~10am = 9 UTC, ~9pm = 20 UTC
+    - cron: "7 20 * 11,12,1,2,3 6,0"
+    # Weekly full resync - ~midnight Monday CE time, its own separate slot
+    # rather than reusing Sunday's ~9pm incremental run above.
+    - cron: "7 22 * 4-10 0" # CEST: ~midnight Mon = 22 UTC Sun
+    - cron: "7 23 * 11,12,1,2,3 0" # CET: ~midnight Mon = 23 UTC Sun
   workflow_dispatch:
     inputs:
       fresh:
@@ -64,7 +72,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TRACKER_PAT }}
         run: |
-          if [ "${{ github.event.schedule }}" = "0 22 * 4-10 0" ] || [ "${{ github.event.schedule }}" = "0 23 * 11,12,1,2,3 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
+          if [ "${{ github.event.schedule }}" = "7 22 * 4-10 0" ] || [ "${{ github.event.schedule }}" = "7 23 * 11,12,1,2,3 0" ] || [ "${{ inputs.fresh }}" = "true" ]; then
             echo "Running full fresh fetch..."
             node tracker.js --fresh
           else
