@@ -9926,9 +9926,16 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-26T23:28:33Z",
+    "docsUpdatedAt": "2026-07-27T09:00:03Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "PENDING",
+        "body": ""
+      },
       {
         "user": {
           "login": "promptless-for-oss"
@@ -10056,6 +10063,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-26T23:14:59Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-27T08:44:51Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -10170,6 +10185,20 @@
         },
         "created_at": "2026-07-26T23:28:33Z",
         "body": "All seven comments addressed and pushed, @adiati98:\n\n- Removed the fixed width from both new Companies batch-action screenshots.\n- Applied your suggested wording for the **Change Channels**, **Change Owner**, **Change Segments**, and **Set Do Not Contact (DNC)** bullets.\n- Wrapped the entire Contacts batch-options list in `.. vale off` / `.. vale on` so the linter no longer flags it.\n\nEverything was applied exactly as written; Vale is clean on the changed lines. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T08:45:12Z",
+        "body": "Thanks — on it. We'll remove the duplicated step, add a note that 'Find value' and 'Replace with' are case-sensitive, and clarify that running Find and Replace without selecting any rows applies to all matching records (select checkboxes to scope it) — applying all three to both the Contacts and Companies sections. We'll push the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-27T09:00:03Z",
+        "body": "All three comments addressed, @adiati98 — each applied to both the Contacts and Companies Find and Replace sections:\n\n1. Removed the redundant \"click the three-dot icon\" first step (already covered in the intro paragraph). For Companies, that step also mentioned \"opens a dialog,\" so I folded that detail into the option's description rather than lose it.\n2. Added a note that the **Find value** and **Replace with** fields are case sensitive, using your Country / 'United States' example.\n3. Clarified that running the action without selecting any rows updates **all** matching records, and that selecting checkboxes limits it to those specific records.\n\nVale introduced no new findings; the update is pushed to PR #750 and ready for another look."
       }
     ],
     "rawCodeComments": [
