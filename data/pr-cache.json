@@ -4952,7 +4952,7 @@
   },
   "mautic/developer-documentation-new#310": {
     "docsUpdatedAt": "2026-06-09T08:32:08Z",
-    "codeUpdatedAt": "2026-07-24T00:36:53Z",
+    "codeUpdatedAt": "2026-07-27T05:14:58Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5234,7 +5234,7 @@
           "login": "thib-d"
         },
         "created_at": "2026-07-07T08:11:03Z",
-        "body": "We've been running this branch (`7.x-postgresql`) against PostgreSQL 16 and hit a reproducible failure on every `doctrine:migrations:migrate` run:\n\n```\nSQLSTATE[42P16]: multiple primary keys for table \"migrations\" are not allowed\n```\n\n**Root cause**: `app/config/config.php` applies `PDO::ATTR_STRINGIFY_FETCHES => true` to the connection options unconditionally (it's there as a MySQL/PHP 8.1 workaround). On `pdo_pgsql`, the option also stringifies the booleans returned by DBAL's schema-introspection queries against `pg_catalog` (e.g. `pg_index.indisprimary`/`indisunique`), which breaks DBAL's boolean handling — `introspectTable()` ends up reporting **zero indexes** for every table. doctrine-migrations then thinks the `migrations` table has no primary key and emits `ALTER TABLE migrations ADD PRIMARY KEY (version)` on every run → 42P16.\n\n**Fix that works for us** — make the option conditional on the driver:\n\n```php\n'options' => 'pdo_pgsql' === $localConfigParameterBag->get('db_driver')\n    ? []\n    : [PDO::ATTR_STRINGIFY_FETCHES => true],\n```\n\nWith that change, introspection is correct and `mautic:install` + all migrations run cleanly on PostgreSQL; we have the branch passing our end-to-end suite (install → login �� dashboard) with it.\n"
+        "body": "We've been running this branch (`7.x-postgresql`) against PostgreSQL 16 and hit a reproducible failure on every `doctrine:migrations:migrate` run:\n\n```\nSQLSTATE[42P16]: multiple primary keys for table \"migrations\" are not allowed\n```\n\n**Root cause**: `app/config/config.php` applies `PDO::ATTR_STRINGIFY_FETCHES => true` to the connection options unconditionally (it's there as a MySQL/PHP 8.1 workaround). On `pdo_pgsql`, the option also stringifies the booleans returned by DBAL's schema-introspection queries against `pg_catalog` (e.g. `pg_index.indisprimary`/`indisunique`), which breaks DBAL's boolean handling — `introspectTable()` ends up reporting **zero indexes** for every table. doctrine-migrations then thinks the `migrations` table has no primary key and emits `ALTER TABLE migrations ADD PRIMARY KEY (version)` on every run → 42P16.\n\n**Fix that works for us** — make the option conditional on the driver:\n\n```php\n'options' => 'pdo_pgsql' === $localConfigParameterBag->get('db_driver')\n    ? []\n    : [PDO::ATTR_STRINGIFY_FETCHES => true],\n```\n\nWith that change, introspection is correct and `mautic:install` + all migrations run cleanly on PostgreSQL; we have the branch passing our end-to-end suite (install → login → dashboard) with it.\n"
       },
       {
         "user": {
@@ -5247,8 +5247,8 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-24T00:36:52Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+        "created_at": "2026-07-27T05:14:57Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e2c678cf8acf1ddbd70501355924d9135422d34bcc7de0e7fceb765842cf40a1 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -5330,6 +5330,14 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-07-21T09:45:03Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "wieslawgolec"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-27T01:23:32Z",
         "body": ""
       }
     ],
@@ -9059,7 +9067,7 @@
     ]
   },
   "mautic/user-documentation#779": {
-    "docsUpdatedAt": "2026-07-22T13:48:05Z",
+    "docsUpdatedAt": "2026-07-26T22:51:54Z",
     "codeUpdatedAt": "2026-06-25T12:56:33Z",
     "rawDocsReviews": [
       {
@@ -9106,9 +9114,17 @@
         "user": {
           "login": "shinde-rahul"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-07-22T13:48:05Z",
         "body": "Approved from my side."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-26T22:39:27Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -9125,6 +9141,20 @@
         },
         "created_at": "2026-07-15T07:50:48Z",
         "body": "@shinde-rahul please review this."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-26T22:39:43Z",
+        "body": "Thanks — we're addressing the flagged Vale warnings on this PR now and will push the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-26T22:51:54Z",
+        "body": "Thanks @adiati98 — all three Vale `Mautic.FeatureList` findings are resolved.\n\nOn investigation they were false positives:\n- 'page' in \"the Contact's detail page\" (2×) refers to a Contact's record view — the house term used across the docs (`manage_contacts.rst`, `frequency_rules.rst`) — not the Landing Page feature.\n- The lowercase 'contact' is inside the verbatim UI confirmation string 'Are you sure you want to remove this tag from the contact?', which the style guide requires us to quote exactly.\n\nRather than reword either, I narrowly disabled just the `Mautic.FeatureList` rule around those two paragraphs with per-rule `.. vale Mautic.FeatureList = NO/YES` directives — no blanket `vale off`, no prose change. A local Vale run is now clean (0/0/0), and the PR description records the per-comment reasoning. Ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -9896,7 +9926,7 @@
     ]
   },
   "mautic/user-documentation#750": {
-    "docsUpdatedAt": "2026-07-26T22:31:11Z",
+    "docsUpdatedAt": "2026-07-26T23:28:33Z",
     "codeUpdatedAt": "2026-06-26T07:59:57Z",
     "rawDocsReviews": [
       {
@@ -10018,6 +10048,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-26T22:31:11Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-26T23:14:59Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -10111,6 +10149,27 @@
         },
         "created_at": "2026-07-26T22:27:04Z",
         "body": "Thanks @adiati98 — all of your feedback across both review rounds is applied and pushed.\n\nContacts guide (`manage_contacts.rst`):\n- Moved the large-volume / Campaign guidance to lead the Batch changes section.\n- Moved and renamed the screenshot `batch-actions.png` → `batch_actions.png`, now after the intro paragraph.\n- Added the \"You can find the following options:\" lead-in before the list, with the **Change Campaigns** wording.\n- Reworded the gear-icon paragraph to \"open the **Options**, then select **Find and Replace**.\"\n\nCompanies guide (`companies_overview.rst`):\n- Moved `companies_batch_selection_bar.png` to right after the selection-bar intro paragraph.\n- Reworded the gear-icon paragraph the same way.\n\nEvery suggested change was applied exactly as written; Vale introduced no new findings on the changed lines. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-26T22:50:05Z",
+        "body": "Good catch — we investigated the 7.x codebase, and you're right that it's no longer where the bullet placed it.\n\nIn Mautic 7.x the **Delete selected** action still exists, but it was moved out of the three-dot Options menu into the selection bar at the top of the table (next to **Export to CSV**) — that relocation is why you didn't see it in the menu. We also confirmed the \"up to 100 Contacts at a time\" limit that bullet claimed does not exist anywhere in the 7.x code.\n\nSo we've removed that stale, misplaced bullet. **Delete selected** is already accurately described in the section's intro paragraph as a selection-bar action, so no correct information was lost, and the Companies page needed no change. Pushed to PR #750 — ready for another look.\n\n(One likely explanation for it being invisible in your instance: the button is gated on the Contacts delete permission, so a role without that permission won't show it — the docs correctly present it as a selection-bar action regardless.)"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-26T23:15:15Z",
+        "body": "Thanks — on it. We'll remove the image widths, apply your wording for the Change Channels / Change Owner / Change Segments / Set Do Not Contact bullets, and wrap the options list in vale off/on, then push the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-26T23:28:33Z",
+        "body": "All seven comments addressed and pushed, @adiati98:\n\n- Removed the fixed width from both new Companies batch-action screenshots.\n- Applied your suggested wording for the **Change Channels**, **Change Owner**, **Change Segments**, and **Set Do Not Contact (DNC)** bullets.\n- Wrapped the entire Contacts batch-options list in `.. vale off` / `.. vale on` so the linter no longer flags it.\n\nEverything was applied exactly as written; Vale is clean on the changed lines. Ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -11383,7 +11442,7 @@
   },
   "mautic/user-documentation#697": {
     "docsUpdatedAt": "2026-06-26T05:52:04Z",
-    "codeUpdatedAt": "2026-07-24T00:36:53Z",
+    "codeUpdatedAt": "2026-07-27T05:14:58Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11638,8 +11697,8 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-07-24T00:36:52Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e4d8df19b7e606d33a8f4f7f4d313eac9cdc545ce2bb8805593fcb48b02ffe9c -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+        "created_at": "2026-07-27T05:14:57Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e2c678cf8acf1ddbd70501355924d9135422d34bcc7de0e7fceb765842cf40a1 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -11721,6 +11780,14 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-07-21T09:45:03Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "wieslawgolec"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-27T01:23:32Z",
         "body": ""
       }
     ],
