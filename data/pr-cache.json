@@ -6494,206 +6494,6 @@
     ],
     "rawReviewRequests": []
   },
-  "mautic/user-documentation#837": {
-    "docsUpdatedAt": "2026-07-28T17:36:11Z",
-    "codeUpdatedAt": "2026-07-22T06:39:46Z",
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-10T10:13:04Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-22T06:38:25Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "JonasLudwig1998"
-        },
-        "state": "DISMISSED",
-        "submitted_at": "2026-07-23T06:31:47Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-28T17:27:51Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T06:46:15Z",
-        "body": "Thanks, @adiati98 — your suggestion has been applied verbatim to the 'Link validation' note in `docs/channels/emails.rst`: \"checks every link\" → \"validates every link\" and \"`href` is malformed\" → \"`href` uses an invalid format\", with no other changes. Vale passes cleanly. Ready for another look."
-      },
-      {
-        "user": {
-          "login": "JonasLudwig1998"
-        },
-        "created_at": "2026-07-22T06:49:16Z",
-        "body": "Why not list all valid schemes from the PR in your docu?"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T07:01:23Z",
-        "body": "Good catch, @JonasLudwig1998 — done. The 'Link validation' note now lists the complete set of accepted URL schemes (`http`, `https`, `ftp`, `ftps`, `mailto`, `tel`, and `sms`) instead of the earlier open-ended \"such as\" phrasing that only gave examples and left out `ftp`, `ftps`, and `sms`. It also now clarifies that `http`/`https`/`ftp`/`ftps` links must be structurally valid URLs while `mailto`/`tel`/`sms` need only the scheme, and it keeps the guidance on anchor links (`#`) and Mautic tokens. Pushed to the branch — ready for another look."
-      },
-      {
-        "user": {
-          "login": "JonasLudwig1998"
-        },
-        "created_at": "2026-07-22T10:53:49Z",
-        "body": "Can you keep the changes a bit more compact? Inforamtion like 'beneath the editor,' or 'Fix any flagged link, then save the Email again.' doesn't seem to add extra value in my opinion"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T11:05:12Z",
-        "body": "Thanks, @JonasLudwig1998 — the 'Link validation' note is now more compact. We dropped the 'beneath the editor' detail, the 'prevents broken links from going out' rationale, and the closing 'Fix any flagged link, then save the Email again.' line, since they didn't add value. The list of accepted schemes (`http`, `https`, `ftp`, `ftps`, `mailto`, `tel`, `sms`) plus the anchor-link (`#`), Mautic-token, and structural-URL details are all still there. Updated diff is pushed to the branch."
-      },
-      {
-        "user": {
-          "login": "JonasLudwig1998"
-        },
-        "created_at": "2026-07-22T13:17:54Z",
-        "body": "The last sentence should be removed from my point of view (Links using ``http``, ``https``, ``ftp``, or ``ftps`` must also be structurally valid URLs, while ``mailto``, ``tel``, and ``sms`` only need the scheme.)"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T13:25:52Z",
-        "body": "Done, @JonasLudwig1998 — removed the final sentence (the structural-URL vs scheme-only clause) as you suggested. The note is now more compact and still lists the accepted schemes (`http`, `https`, `ftp`, `ftps`, `mailto`, `tel`, `sms`), anchor links (`#`), and Mautic tokens, and states that Mautic validates links on save and blocks invalid ones with an error. Pushed to the branch — ready for another look."
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T10:13:32Z",
-        "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by this PR broadening the save-time Email link validation (now accepting any scheme such as `tel:`/`mailto:`, anchor links starting with `#`, and Mautic tokens, and surfacing the validation error beneath the editor).\n\nThe existing \"Link validation\" note in the user docs stated only absolute http(s) URLs, `mailto:`, or Mautic tokens were valid, which this change makes inaccurate. The docs update corrects that note.\n\nReview: [Update Email link validation note for allowed schemes and anchor links](https://github.com/mautic/user-documentation/pull/837)\n\nNote: this was drafted against the current diff while the PR is still open — if the allowed-scheme logic changes before merge, let us know and we'll adjust.\n"
-      },
-      {
-        "user": {
-          "login": "codecov[bot]"
-        },
-        "created_at": "2026-07-10T10:28:46Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16508?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `83.33333%` with `1 line` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 70.96%. Comparing base ([`9f8b81a`](https://app.codecov.io/gh/mautic/mautic/commit/9f8b81a26b9e783ead017c4f56c85dd5a725766a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`a85f250`](https://app.codecov.io/gh/mautic/mautic/commit/a85f250a276944fa6ccb2a96599fbde9967b0f3f?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 192 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16508?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...EmailBundle/Validator/ValidEmailLinksValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FValidEmailLinksValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL1ZhbGlkRW1haWxMaW5rc1ZhbGlkYXRvci5waHA=) | 83.33% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16508/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16508      +/-   ##\n============================================\n+ Coverage     70.82%   70.96%   +0.13%     \n- Complexity    38267    38271       +4     \n============================================\n  Files          2480     2480              \n  Lines        144131   144169      +38     \n============================================\n+ Hits         102082   102304     +222     \n+ Misses        42049    41865     -184     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16508?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...EmailBundle/Validator/ValidEmailLinksValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16508?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FValidEmailLinksValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL1ZhbGlkRW1haWxMaW5rc1ZhbGlkYXRvci5waHA=) | `85.71% <83.33%> (-0.78%)` | :arrow_down: |\n\n... and [111 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16508/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
-      },
-      {
-        "user": {
-          "login": "JonasLudwig1998"
-        },
-        "created_at": "2026-07-14T07:19:02Z",
-        "body": "@andersonjeccel Added the allowlist. Do you think all needed schemes are covered?"
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-07-22T05:06:22Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16508) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16508&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16508&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16508&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16508&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16508&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16508)\n\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-22T06:39:46Z",
-        "body": "Hi @JonasLudwig1998,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! �� \r\n\r\nhttps://github.com/mautic/mautic/pull/16508#issuecomment-4934286126"
-      }
-    ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-13T11:14:46Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-14T11:05:32Z",
-        "body": "I'm good with this"
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-16T13:58:49Z",
-        "body": "Good improvement, saving email with default template is hard rn. Have a look at the two findings."
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-20T14:24:33Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-22T05:06:08Z",
-        "body": ""
-      }
-    ],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T05:27:21Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T05:27:21Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-22T05:27:21Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ]
-  },
   "mautic/user-documentation#836": {
     "docsUpdatedAt": "2026-07-12T08:41:51Z",
     "codeUpdatedAt": "2026-07-13T11:18:05Z",
@@ -10568,6 +10368,55 @@
         "created_at": "2026-01-15T14:07:15Z",
         "requested_reviewer": {
           "login": "RCheesley"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/user-documentation#867": {
+    "docsUpdatedAt": "2026-07-28T18:36:36Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-28T18:40:08Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "allcontributors[bot]"
+        },
+        "created_at": "2026-07-28T18:36:35Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "allcontributors[bot]"
+        },
+        "created_at": "2026-07-28T18:36:36Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "allcontributors[bot]"
+        },
+        "created_at": "2026-07-28T18:36:36Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
         },
         "requested_team": null
       }
