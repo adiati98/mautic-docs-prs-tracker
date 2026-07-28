@@ -1,9 +1,26 @@
 {
   "mautic/developer-documentation-new#601": {
-    "docsUpdatedAt": "2026-07-25T07:28:35Z",
+    "docsUpdatedAt": "2026-07-28T09:32:42Z",
     "codeUpdatedAt": "2026-07-24T18:01:44Z",
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-28T09:16:46Z",
+        "body": "The scoped extension API and appendJs() migration guidance are useful additions. Before merging, the essential script’s capabilities should be narrowed to match the tested DWC fallback and form behavior, RUNTIME should not be presented as interchangeable with ESSENTIAL, and the readiness example should clearly state that mauticEssentialReady depends on the shipped consent-managed loader rather than the endpoint itself. With those reductions, this documentation will provide useful and accurate plugin guidance."
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T09:32:42Z",
+        "body": "Thanks for the detailed review, @patrykgruszka — all three points are addressed and pushed to PR #601:\n\n1. The **ESSENTIAL** scope description (both the scope list and the endpoint table) now reflects that it preserves existing Dynamic Content *fallback* content without making a new DWC request, and initializes Forms already embedded in that fallback content — rather than general DWC rendering / form injection.\n2. **RUNTIME** is no longer presented as interchangeable with ESSENTIAL for plugin features — it's described only as the core bootstrap; plugin pre-consent code targets ESSENTIAL (with optional `acceptsScope()` gating).\n3. The readiness example now makes explicit that `mauticEssentialReady` is dispatched by the shipped consent-managed loader snippet (not by `/mautic-essential.js` itself), with guidance for custom loaders to use their own `load` callback or dispatch an equivalent event.\n\nAll claims were re-verified against the PR #16660 source, and no new Vale issues were introduced. Ready for another look."
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -4254,7 +4271,7 @@
     ]
   },
   "mautic/developer-documentation-new#516": {
-    "docsUpdatedAt": "2026-07-23T05:31:05Z",
+    "docsUpdatedAt": "2026-07-28T10:05:08Z",
     "codeUpdatedAt": "2026-07-20T18:41:02Z",
     "rawDocsReviews": [
       {
@@ -4301,9 +4318,25 @@
         "user": {
           "login": "shinde-rahul"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-07-23T05:31:04Z",
         "body": "LGTM!"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-28T09:08:41Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-28T09:45:04Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -4348,6 +4381,27 @@
         },
         "created_at": "2026-07-22T14:10:17Z",
         "body": "Thanks for the detailed review, @shinde-rahul — all four points have been applied and verified against the merged code in mautic/mautic#16067:\n\n1. **Notes permissions don't grant Contact access** — the Permissions section no longer implies `lead:notes` confers Contact access; Contact operations still require the relevant `lead:leads` permissions.\n2. **Create Note requires Contact view access** — documented under both the general permissions section and the Create Note endpoint.\n3. **own/other evaluation distinction** — the standalone `/notes` endpoints evaluate `viewown`/`viewother` against the Note's creator (`createdBy`), while `GET /contacts/ID/notes` evaluates against the Contact owner. Documented accurately in both `notes.rst` and `contacts.rst`.\n4. **Grammar** — \"Edits an Note\" → \"Edits a Note.\"\n\nVale passes on the changed content. PR #516 is updated and ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T09:09:19Z",
+        "body": "Thanks — we'll address the two `Google.Parens` Vale warnings by switching the flagged parentheses to a normal dash, per the house convention, and push the update to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T09:22:33Z",
+        "body": "Done, @adiati98 — both `Google.Parens` warnings in `docs/rest_api/notes.rst` are resolved by switching the two parenthetical asides to dashes (line 13 and the permission aside on line 260), per the house convention. Vale now passes cleanly (0/0/0) on the file. Pushed to PR #516 — ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T09:45:42Z",
+        "body": "Thanks — we'll apply your two suggested rewordings for the permission descriptions (using dashes, no parentheses), address the remaining parentheses, and look into the 'no code-block here?' point. We'll verify against the source and push the update shortly."
       }
     ],
     "rawCodeComments": [
@@ -5779,7 +5833,7 @@
     ]
   },
   "mautic/user-documentation#858": {
-    "docsUpdatedAt": "2026-07-28T09:01:25Z",
+    "docsUpdatedAt": "2026-07-28T09:35:44Z",
     "codeUpdatedAt": "2026-07-24T18:01:44Z",
     "rawDocsReviews": [
       {
@@ -5820,6 +5874,13 @@
         },
         "created_at": "2026-07-28T09:01:25Z",
         "body": "Thanks for the detailed technical review, @patrykgruszka. We'll address all three points: scope the `</body>` placement to the Full tracking and essential snippets (and direct the add-on to run only from the consent-manager callback), replace the legacy `/mtc.js` Full tracking example with the current loader (keeping a backward-compatibility note), and narrow the before-consent description to fallback content and fallback-slot Forms. We'll verify against the source and push the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T09:35:44Z",
+        "body": "Thanks for the detailed technical review, @patrykgruszka — all three points are addressed and pushed:\n\n1. **Callback placement:** the pre-`</body>` insert instruction is now scoped to the Full tracking and essential scripts only, and the tracking add-on is directed to run from your consent manager's callback after consent — so it can't fire as soon as the essential script becomes ready.\n2. **Legacy `/mtc.js` example:** removed from the Full tracking section, keeping only the backward-compatibility note. We went with your \"omit\" option rather than transcribing the current loader, since the tab's exact loader text is authoritative only in the instance UI (not in our sources) and reproducing an approximation risked a fresh inaccuracy — the page already directs users to copy the exact block from their own Tracking Settings.\n3. **Essential-script claims:** narrowed to say the essential script keeps existing Dynamic Content fallback content visible (no DWC request) and initializes Forms inside those fallback slots, with personalized content and Contact tracking beginning only after both scripts load; also clarified that standalone Form embeds work independently of the tracking scripts.\n\nEvery changed claim was re-verified against the merged mautic/mautic #16660, and Vale passes cleanly. Ready for another look."
       }
     ],
     "rawCodeComments": [
