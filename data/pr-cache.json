@@ -10372,54 +10372,5 @@
         "requested_team": null
       }
     ]
-  },
-  "mautic/user-documentation#867": {
-    "docsUpdatedAt": "2026-07-28T18:36:36Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-28T18:40:08Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-07-28T18:36:35Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-07-28T18:36:36Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-07-28T18:36:36Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ]
   }
 }
