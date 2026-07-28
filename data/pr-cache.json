@@ -4279,7 +4279,7 @@
     ]
   },
   "mautic/developer-documentation-new#516": {
-    "docsUpdatedAt": "2026-07-28T10:07:09Z",
+    "docsUpdatedAt": "2026-07-28T11:44:43Z",
     "codeUpdatedAt": "2026-07-20T18:41:02Z",
     "rawDocsReviews": [
       {
@@ -4344,6 +4344,14 @@
         },
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-28T09:45:04Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-28T11:35:23Z",
         "body": "@promptless-for-oss please address the suggestions."
       }
     ],
@@ -4417,6 +4425,20 @@
         },
         "created_at": "2026-07-28T10:07:08Z",
         "body": "All four addressed and pushed, @adiati98:\n\n- Removed the parentheses in the List Contact Notes permission note (`contacts.rst`) — now reads \"the createdBy field\".\n- Applied your two suggested rewordings verbatim: the `lead:notes` vs `lead:leads` permissions intro (line 13) and the Create Note view-access note (line 260).\n- Filled the empty **Delete Note** response code block with the deleted-Note JSON, mirroring the Get Note response and the delete-returns-full-entity convention used by Delete Company/Contact.\n\nVale passes cleanly on the Notes API page (both `Google.Parens` findings cleared), and the contacts.rst edit added no new findings. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T11:35:49Z",
+        "body": "Thanks — we'll apply your suggested clarification distinguishing how viewown/viewother is evaluated for this endpoint (against the Contact owner) versus the standalone /notes endpoints (against the Note's createdBy), and push the update shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-28T11:44:43Z",
+        "body": "Applied, @adiati98 — the \"List Contact Notes\" note now uses a spaced hyphen instead of an em dash (\"the Note's creator - the `createdBy` field\"), exactly as your suggestion specified. Nothing else changed, the permission behavior described is unchanged and still verified against the source PR, and Vale is clean at the changed line. Pushed to PR #516 — ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -6178,7 +6200,7 @@
   },
   "mautic/user-documentation#854": {
     "docsUpdatedAt": "2026-07-20T18:50:06Z",
-    "codeUpdatedAt": "2026-07-20T14:43:55Z",
+    "codeUpdatedAt": "2026-07-28T11:02:04Z",
     "rawDocsReviews": [
       {
         "user": {
