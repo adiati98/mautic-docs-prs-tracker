@@ -5461,7 +5461,7 @@
   },
   "mautic/user-documentation#854": {
     "docsUpdatedAt": "2026-07-20T18:50:06Z",
-    "codeUpdatedAt": "2026-07-28T11:02:04Z",
+    "codeUpdatedAt": "2026-07-29T16:59:17Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5528,6 +5528,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-20T14:43:55Z",
         "body": "Works as expected 👍 "
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-29T16:59:17Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
