@@ -1,6 +1,6 @@
 {
   "mautic/developer-documentation-new#601": {
-    "docsUpdatedAt": "2026-07-29T11:26:34Z",
+    "docsUpdatedAt": "2026-07-29T11:37:41Z",
     "codeUpdatedAt": "2026-07-24T18:01:44Z",
     "rawDocsReviews": [
       {
@@ -84,6 +84,13 @@
         },
         "created_at": "2026-07-29T11:25:33Z",
         "body": "Thanks @adiati98 — will do. We are pushing an empty commit to the branch to force RTD to re-post its status against the current head, and will report back here whether the check clears."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-29T11:37:41Z",
+        "body": "@adiati98 update on the pending Read the Docs check: we pushed the empty commit as you asked. It landed correctly as the PR head and did re-trigger your GitHub Actions 'Linting' checks (prose and build both re-ran) — so the push itself works. However, Read the Docs still posted no commit status at all: the check stayed 'pending' with nothing reported across about 10 minutes of monitoring.\n\nBecause the commit triggered GitHub Actions but not RTD, this looks like a Read the Docs integration issue on the project side rather than something another commit can fix — further empty commits will just re-run CI, not RTD. Since this is on the RTD project configuration (which we do not have access to), could you check, in the Read the Docs project settings:\n\n- the connected GitHub repository / webhook is active and healthy (RTD → Admin → Integrations), and\n- the 'Share build status with your VCS provider' (build status on pull requests) option is enabled.\n\nRe-syncing or re-adding the webhook there should let RTD post its status to the current commit and clear the pending check. Happy to help further from our side once that is in place — just let us know."
       }
     ],
     "rawCodeComments": [
@@ -281,7 +288,7 @@
   },
   "mautic/developer-documentation-new#594": {
     "docsUpdatedAt": "2026-07-10T18:51:48Z",
-    "codeUpdatedAt": "2026-07-29T11:11:02Z",
+    "codeUpdatedAt": "2026-07-29T12:04:03Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -330,6 +337,13 @@
         },
         "created_at": "2026-07-29T11:11:01Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16517) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16517&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16517&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16517&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16517&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16517&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16517)\n\n"
+      },
+      {
+        "user": {
+          "login": "adiux"
+        },
+        "created_at": "2026-07-29T11:46:11Z",
+        "body": "> @adiux please resolve the failed CI checks. I did it locally but cannot push: <img alt=\"Screenshot 2026-07-29 at 12 16 00\" width=\"300\" height=\"334\" src=\"https://private-user-images.githubusercontent.com/1235442/628411739-3b9985b9-cafc-4177-8f97-f3bcdd3a470c.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODUzMjU4NTMsIm5iZiI6MTc4NTMyNTU1MywicGF0aCI6Ii8xMjM1NDQyLzYyODQxMTczOS0zYjk5ODViOS1jYWZjLTQxNzctOGY5Ny1mM2JjZGQzYTQ3MGMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDcyOSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA3MjlUMTE0NTUzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZGMzMDUwMmQ0Y2QxYmYyYTM3ODIwMDE3MWFmYThlODE5NDQ4YzAxMDMxZDcxZWMzNjZmNDVhYjVjYmZlMjUzMyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.2Wt34e4r0z457m9ewdmr2V3PnLIS6ULz8GLwOxPGg40\">\r\n\r\ndone, all green again  ✅ "
       }
     ],
     "rawCodeReviews": [
