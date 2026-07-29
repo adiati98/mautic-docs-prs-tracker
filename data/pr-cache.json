@@ -2129,8 +2129,8 @@
     ]
   },
   "mautic/developer-documentation-new#563": {
-    "docsUpdatedAt": "2026-07-10T12:18:19Z",
-    "codeUpdatedAt": "2026-07-25T07:27:15Z",
+    "docsUpdatedAt": "2026-07-29T08:57:42Z",
+    "codeUpdatedAt": "2026-07-29T08:07:55Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -2171,6 +2171,22 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-07-10T09:52:02Z",
         "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-29T08:19:56Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-29T08:57:41Z",
+        "body": "Good to go 👍 "
       }
     ],
     "rawDocsComments": [
@@ -2180,6 +2196,13 @@
         },
         "created_at": "2026-07-10T10:03:39Z",
         "body": "Thanks for the review, @adiati98 — I've pushed updates addressing all the comments:\n\n- **Feature-name capitalization** — Applied the `Mautic.FeatureList` fixes where the word refers to the Mautic feature. Where `assets` refers to the built JS/CSS build artifacts (not the Mautic Asset feature), I kept the artifact meaning and cleared Vale accordingly so the text stays accurate.\n- **Suggested text** — Applied all three of your suggested-text replacements (Node 24 / automatic-build paragraph, the Parcel + `manifest.json` / `AssetsSubscriber` paragraph, and the git-checkout paragraph).\n- **Active voice** — Fixed the `aren't committed` passive usage and changed `like` → `such as`.\n\nVale now reports no findings for this content. Ready for another look.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-29T08:21:02Z",
+        "body": "Thanks @patrykgruszka — on it. We will scope the section to 'From Mautic 7.2.' and clarify that the build runs during the initial DDEV-managed setup (not on every start), directing existing environments to `ddev gjs-build` when needed. We will push an update to this PR shortly."
       }
     ],
     "rawCodeComments": [
@@ -2266,6 +2289,13 @@
         },
         "created_at": "2026-07-25T07:27:15Z",
         "body": "Hi @patrykgruszka,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/16435#issuecomment-4933863153"
+      },
+      {
+        "user": {
+          "login": "RCheesley"
+        },
+        "created_at": "2026-07-29T08:07:55Z",
+        "body": "@patrykgruszka please review the docs PR here: https://github.com/mautic/developer-documentation-new/pull/563 for this PR. Thanks!"
       }
     ],
     "rawCodeReviews": [
