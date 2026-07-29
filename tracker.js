@@ -660,13 +660,34 @@ function computeConversationState({
 			.map((r) => new Date(r.submitted_at)),
 	])
 
+	// On the docs PR itself, any author activity is already on-topic — no tag
+	// needed. On the *code* PR, the author is often just doing ordinary code
+	// work (e.g. replying to an unrelated bug report from a third party), so
+	// that only counts as a response to the docs-review ping when it actually
+	// tags one of us — the same signal that started the ping in the first
+	// place. Without this, any code-PR chatter from the author — regardless
+	// of what it's about — gets misread as "the author replied to your ask."
 	const lastAuthorEventDate = appPRAuthor
 		? latestDate([
-				...allComments
+				...docsComments
 					.filter((c) => c.user.login === appPRAuthor)
 					.map((c) => new Date(c.created_at)),
-				...allReviews
+				...docsReviews
 					.filter((r) => r.user.login === appPRAuthor)
+					.map((r) => new Date(r.submitted_at)),
+				...codeComments
+					.filter(
+						(c) =>
+							c.user.login === appPRAuthor &&
+							Array.from(operatorLogins).some((op) => mentions(c.body, op)),
+					)
+					.map((c) => new Date(c.created_at)),
+				...codeReviews
+					.filter(
+						(r) =>
+							r.user.login === appPRAuthor &&
+							Array.from(operatorLogins).some((op) => mentions(r.body, op)),
+					)
 					.map((r) => new Date(r.submitted_at)),
 			])
 		: null
