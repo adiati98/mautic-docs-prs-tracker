@@ -1,6 +1,6 @@
 {
   "mautic/developer-documentation-new#601": {
-    "docsUpdatedAt": "2026-07-28T10:38:50Z",
+    "docsUpdatedAt": "2026-07-29T10:27:40Z",
     "codeUpdatedAt": "2026-07-24T18:01:44Z",
     "rawDocsReviews": [
       {
@@ -15,9 +15,17 @@
         "user": {
           "login": "patrykgruszka"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-07-28T10:38:50Z",
         "body": "Good to go from my perspective 👍 "
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-29T10:17:26Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -27,6 +35,20 @@
         },
         "created_at": "2026-07-28T09:32:42Z",
         "body": "Thanks for the detailed review, @patrykgruszka — all three points are addressed and pushed to PR #601:\n\n1. The **ESSENTIAL** scope description (both the scope list and the endpoint table) now reflects that it preserves existing Dynamic Content *fallback* content without making a new DWC request, and initializes Forms already embedded in that fallback content — rather than general DWC rendering / form injection.\n2. **RUNTIME** is no longer presented as interchangeable with ESSENTIAL for plugin features — it's described only as the core bootstrap; plugin pre-consent code targets ESSENTIAL (with optional `acceptsScope()` gating).\n3. The readiness example now makes explicit that `mauticEssentialReady` is dispatched by the shipped consent-managed loader snippet (not by `/mautic-essential.js` itself), with guidance for custom loaders to use their own `load` callback or dispatch an equivalent event.\n\nAll claims were re-verified against the PR #16660 source, and no new Vale issues were introduced. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-29T10:17:52Z",
+        "body": "Thanks @adiati98 — on it. We will switch the flagged sentences to active voice ('is treated', 'It's excluded'), replace the parenthetical scope list with a hyphenated form where it is not inline code, and address the Vale FeatureList warning on 'Reports'. We will push an update to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-29T10:27:40Z",
+        "body": "@adiati98 thanks for the review — all three points are addressed and pushed:\n\n- The note about `appendJs()` now reads in active voice.\n- The list of build scopes is set off with a hyphen instead of parentheses.\n- The wording that tripped the Vale `Mautic.FeatureList` check has been rephrased — we reworded the verb 'reports' to 'exposes' rather than capitalizing it to 'Reports', since it's the verb 'to report', not the Mautic Report feature. Let us know if you'd prefer a different phrasing.\n\nVale is clean apart from one pre-existing finding on an unchanged line (line 64, `plugins` in an existing `:ref:` path), which is outside this change's scope. The update is ready for another look.\n\nOne note: we tried to re-request your review programmatically but GitHub returned a 404 (the service account can't add a reviewer on this cross-fork PR). Would you mind re-triggering your review manually when you have a moment?"
       }
     ],
     "rawCodeComments": [
@@ -193,7 +215,7 @@
   },
   "mautic/developer-documentation-new#594": {
     "docsUpdatedAt": "2026-07-10T18:51:48Z",
-    "codeUpdatedAt": "2026-07-29T07:43:29Z",
+    "codeUpdatedAt": "2026-07-29T10:16:56Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -235,6 +257,13 @@
         },
         "created_at": "2026-07-29T07:43:29Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16517) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16517&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16517&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16517&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16517&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16517&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16517)\n\n"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-07-29T10:16:50Z",
+        "body": "@adiux please resolve the failed CI checks. I did it locally but cannot push:\r\n<img width=\"300\" height=\"334\" alt=\"Screenshot 2026-07-29 at 12 16 00\" src=\"https://github.com/user-attachments/assets/3b9985b9-cafc-4177-8f97-f3bcdd3a470c\" />\r\n"
       }
     ],
     "rawCodeReviews": [
@@ -2123,293 +2152,6 @@
         "created_at": "2026-07-10T09:34:33Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ]
-  },
-  "mautic/developer-documentation-new#563": {
-    "docsUpdatedAt": "2026-07-29T08:57:42Z",
-    "codeUpdatedAt": "2026-07-29T08:07:55Z",
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-10T09:17:41Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-10T09:17:42Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-10T09:17:43Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-10T09:17:44Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-10T09:52:02Z",
-        "body": "@promptless-for-oss please address the suggestions."
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-29T08:19:56Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-29T08:57:41Z",
-        "body": "Good to go 👍 "
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T10:03:39Z",
-        "body": "Thanks for the review, @adiati98 — I've pushed updates addressing all the comments:\n\n- **Feature-name capitalization** — Applied the `Mautic.FeatureList` fixes where the word refers to the Mautic feature. Where `assets` refers to the built JS/CSS build artifacts (not the Mautic Asset feature), I kept the artifact meaning and cleared Vale accordingly so the text stays accurate.\n- **Suggested text** — Applied all three of your suggested-text replacements (Node 24 / automatic-build paragraph, the Parcel + `manifest.json` / `AssetsSubscriber` paragraph, and the git-checkout paragraph).\n- **Active voice** — Fixed the `aren't committed` passive usage and changed `like` → `such as`.\n\nVale now reports no findings for this content. Ready for another look.\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-29T08:21:02Z",
-        "body": "Thanks @patrykgruszka — on it. We will scope the section to 'From Mautic 7.2.' and clarify that the build runs during the initial DDEV-managed setup (not on every start), directing existing environments to `ddev gjs-build` when needed. We will push an update to this PR shortly."
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "codecov[bot]"
-        },
-        "created_at": "2026-07-02T14:45:42Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16435?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `95.45455%` with `1 line` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 70.83%. Comparing base ([`9f8b81a`](https://app.codecov.io/gh/mautic/mautic/commit/9f8b81a26b9e783ead017c4f56c85dd5a725766a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`d8421ba`](https://app.codecov.io/gh/mautic/mautic/commit/d8421ba5a3b4083b2ac4365c85fd581728916697?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16435?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...BuilderBundle/EventSubscriber/AssetsSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16435?src=pr&el=tree&filepath=plugins%2FGrapesJsBuilderBundle%2FEventSubscriber%2FAssetsSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-cGx1Z2lucy9HcmFwZXNKc0J1aWxkZXJCdW5kbGUvRXZlbnRTdWJzY3JpYmVyL0Fzc2V0c1N1YnNjcmliZXIucGhw) | 95.45% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16435?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16435/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16435?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@            Coverage Diff            @@\n##                7.x   #16435   +/-   ##\n=========================================\n  Coverage     70.82%   70.83%           \n- Complexity    38267    38277   +10     \n=========================================\n  Files          2480     2480           \n  Lines        144131   144150   +19     \n=========================================\n+ Hits         102082   102103   +21     \n+ Misses        42049    42047    -2     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16435?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...BuilderBundle/EventSubscriber/AssetsSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16435?src=pr&el=tree&filepath=plugins%2FGrapesJsBuilderBundle%2FEventSubscriber%2FAssetsSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-cGx1Z2lucy9HcmFwZXNKc0J1aWxkZXJCdW5kbGUvRXZlbnRTdWJzY3JpYmVyL0Fzc2V0c1N1YnNjcmliZXIucGhw) | `96.87% <95.45%> (+19.95%)` | :arrow_up: |\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "created_at": "2026-07-03T09:36:50Z",
-        "body": "@escopecz ready for review. I'm not sure how we could test the dist files are correctly generated and embedded in the release package for 7.2. Any ideas?"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-07-03T10:03:08Z",
-        "body": "@patrykgruszka perhaps we could release 7.2.0-RC2 to see it in action?"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-07-03T10:14:35Z",
-        "body": "@patrykgruszka can we automate the prod GJS asset build on a composer post install/update hook? Like https://github.com/mautic/mautic/blob/7.x/composer.json#L173? So users don't have to think about this?"
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "created_at": "2026-07-07T06:28:50Z",
-        "body": "I've added `gjs-build-safe` to composer post-install-cmd/post-update-cmd so GrapesJS assets auto-build on composer install/update, with non-fatal failure if node is missing.\r\n\r\n`package_release.php` now removes GrapesJsBuilderBundle/node_modules and .parcel-cache before packaging so build-only deps don't ship in release zip."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-07-08T15:31:00Z",
-        "body": "There's a conflict. Can you please take a look @patrykgruszka ?"
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "created_at": "2026-07-09T09:59:48Z",
-        "body": "conflicts resolved"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-07-09T10:16:32Z",
-        "body": "@patrykgruszka can you please check the conflict before we merge this?"
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "created_at": "2026-07-10T08:20:28Z",
-        "body": "@escopecz sure, done "
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-07-10T08:21:58Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16435) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [2 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16435&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16435&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16435&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16435&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16435&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16435)\n\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T09:18:12Z",
-        "body": "Promptless prepared a documentation update related to this change.\n\nTriggered by this PR — the GrapesJS Builder's compiled assets are no longer tracked in git, so anyone working from a git checkout now builds them (auto on `composer install`/`update` and DDEV bootstrap, or manually via `composer gjs-build` / `ddev gjs-build`, Node 24).\n\nDocumented the new build workflow in the developer docs (7.2), including the Parcel content-hashing + `manifest.json` that feeds the runtime `AssetsSubscriber`. No user-documentation change is needed since end users install pre-built release packages.\n\nReview: [developer-documentation-new #563](https://github.com/mautic/developer-documentation-new/pull/563)\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-25T07:27:15Z",
-        "body": "Hi @patrykgruszka,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/mautic/pull/16435#issuecomment-4933863153"
-      },
-      {
-        "user": {
-          "login": "RCheesley"
-        },
-        "created_at": "2026-07-29T08:07:55Z",
-        "body": "@patrykgruszka please review the docs PR here: https://github.com/mautic/developer-documentation-new/pull/563 for this PR. Thanks!"
-      }
-    ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "adiux"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-03T12:20:41Z",
-        "body": "if im not wrong:\n\nbuild/package_release.php:73 \nleaves plugins/GrapesJsBuilderBundle/node_modules and .parcel-cache in the packaging tree after npm ci && npm run build. \n\nbuild/exclude_files.txt:30 \nonly excludes root node_modules/*, and build/package_release.php:94 also puts the whole plugin dir into the update package, so both release zips can ship the plugin’s dev dependencies/cache. I verified the exclude pattern does not catch nested plugin node_modules; my local build produced ~217M node_modules and ~13M .parcel-cache. Fix by deleting those after the build or adding explicit excludes.\n\nplugins/GrapesJsBuilderBundle/.gitignore:4 \nremoves dist from source, but only DDEV setup and release packaging build it. A normal source install via composer install/root asset generation does not create manifest.json; then AssetsSubscriber.php:63 returns null and no builder assets load. The PR comment already hints at this. I’d add a root Composer script/post-install hook for the GJS build, or otherwise make mautic:assets:generate cover it."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-07T08:27:02Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-07T14:17:04Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-07T14:19:09Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-07T14:20:59Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-07T14:27:13Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-07T14:48:34Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-08T11:14:06Z",
-        "body": "this looks fine to me"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-07-09T10:15:10Z",
-        "body": "I tested by running `composer install`. It generated the prod files in `plugins/GrapesJsBuilderBundle/Assets/library/js/dist` that aren't tracked by git. I can see the assets are being loaded in the browser from the same location at `\nhttps://mautic-community.ddev.site/plugins/GrapesJsBuilderBundle/Assets/library/js/dist/builder.js?vf405b90b`. And testing various features of the landing page builder. I did not notice any issues. Thanks! 👍 "
-      }
-    ],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T09:17:40Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T09:17:41Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-07-10T09:17:41Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-10T10:13:36Z",
-        "requested_reviewer": {
-          "login": "patrykgruszka"
         },
         "requested_team": null
       }
@@ -8438,7 +8180,7 @@
     ]
   },
   "mautic/user-documentation#709": {
-    "docsUpdatedAt": "2026-07-24T09:44:45Z",
+    "docsUpdatedAt": "2026-07-29T10:25:01Z",
     "codeUpdatedAt": "2026-05-19T13:15:32Z",
     "rawDocsReviews": [
       {
@@ -8456,6 +8198,30 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-24T09:07:27Z",
         "body": "There are only these 2 small changes as we changes these values. Everything else looks good.\nThank you!"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-29T09:52:11Z",
+        "body": "@rohitpavaskar thanks for the rebase! 🎉 \n\nI left some suggestions here for you to address. You can just commit them if you're agree with the suggestions.\n\n@escopecz can you please help us to review the content here? TIA! ✨ "
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-29T10:09:22Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-29T10:25:01Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
