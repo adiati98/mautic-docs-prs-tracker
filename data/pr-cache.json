@@ -287,7 +287,7 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#594": {
-    "docsUpdatedAt": "2026-07-29T14:25:19Z",
+    "docsUpdatedAt": "2026-07-29T15:49:34Z",
     "codeUpdatedAt": "2026-07-29T14:25:14Z",
     "rawDocsReviews": [
       {
@@ -305,6 +305,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-10T17:20:12Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-29T15:28:48Z",
+        "body": "@promptless-for-oss please address the suggestions."
       }
     ],
     "rawDocsComments": [
@@ -314,6 +322,20 @@
         },
         "created_at": "2026-07-10T17:20:16Z",
         "body": "Just a reminder: I review PR comments by default. If you want me to ignore a specific comment, start it with `aside` or `/aside`."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-29T15:29:15Z",
+        "body": "Thanks @adiati98 — on it. We will apply the 'orderBy' wording suggestion and make the other requested removal, then push an update to this PR."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-07-29T15:49:34Z",
+        "body": "@adiati98 thanks for the review — we have addressed both comments:\n\n- The vocabulary entry is back to the singular `tooltip`, as you asked.\n- The `orderBy` description now reads \"…a clickable sort link, and when omitted…\" per your suggestion.\n\nOne knock-on effect: dropping the plural from the accepted vocabulary made Vale flag \"tooltips\" elsewhere on the page, so we reworded that sentence to \"Mautic initializes tooltip support globally\" — same meaning, and the linter now passes cleanly. Let us know if you would prefer different wording there. The updated PR is ready for another look.\n\nOne note: we tried to re-request your review programmatically but GitHub returned a 404 (the service account can't add a reviewer on this cross-fork PR). Would you mind re-triggering your review manually when you have a moment?"
       }
     ],
     "rawCodeComments": [
@@ -7629,7 +7651,7 @@
   },
   "mautic/user-documentation#752": {
     "docsUpdatedAt": "2026-06-26T18:55:48Z",
-    "codeUpdatedAt": "2026-07-29T15:20:07Z",
+    "codeUpdatedAt": "2026-07-29T15:57:34Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -7726,7 +7748,7 @@
           "login": "codecov[bot]"
         },
         "created_at": "2026-06-14T10:24:03Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/15664?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 70.10%. Comparing base ([`df53051`](https://app.codecov.io/gh/mautic/mautic/commit/df5305189e411cf4dd921dfd66eb23afdf22bc1a?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`aabddda`](https://app.codecov.io/gh/mautic/mautic/commit/aabdddabbf0dee8da51e0989c04e68bde5c1744d?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 2652 commits behind head on 7.x.\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/15664/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@            Coverage Diff            @@\n##                7.x   #15664   +/-   ##\n=========================================\n  Coverage     70.10%   70.10%           \n- Complexity    37852    37853    +1     \n=========================================\n  Files          2449     2449           \n  Lines        141975   141981    +6     \n=========================================\n+ Hits          99536    99542    +6     \n  Misses        42439    42439           \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15664?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...s/CampaignBundle/Entity/LeadEventLogRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEntity%2FLeadEventLogRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRW50aXR5L0xlYWRFdmVudExvZ1JlcG9zaXRvcnkucGhw) | `89.68% <ø> (ø)` | |\n| [...es/CampaignBundle/EventListener/LeadSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEventListener%2FLeadSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRXZlbnRMaXN0ZW5lci9MZWFkU3Vic2NyaWJlci5waHA=) | `91.01% <100.00%> (-0.20%)` | :arrow_down: |\n| [...es/LeadBundle/EventListener/CampaignSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FCampaignSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0NhbXBhaWduU3Vic2NyaWJlci5waHA=) | `86.54% <100.00%> (+0.22%)` | :arrow_up: |\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/15664?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n:white_check_mark: Project coverage is 71.73%. Comparing base ([`59fbc9c`](https://app.codecov.io/gh/mautic/mautic/commit/59fbc9ce68576c36cf8e5a9e5e58500141349d63?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`90a801a`](https://app.codecov.io/gh/mautic/mautic/commit/90a801aeb2a4eb82b98a6615a58ad4c69492be8c?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/15664/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@            Coverage Diff            @@\n##                7.x   #15664   +/-   ##\n=========================================\n  Coverage     71.73%   71.73%           \n- Complexity    38438    38439    +1     \n=========================================\n  Files          2476     2476           \n  Lines        143950   143956    +6     \n=========================================\n+ Hits         103258   103264    +6     \n  Misses        40692    40692           \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15664?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [...s/CampaignBundle/Entity/LeadEventLogRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEntity%2FLeadEventLogRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRW50aXR5L0xlYWRFdmVudExvZ1JlcG9zaXRvcnkucGhw) | `91.70% <ø> (ø)` | |\n| [...es/CampaignBundle/EventListener/LeadSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEventListener%2FLeadSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRXZlbnRMaXN0ZW5lci9MZWFkU3Vic2NyaWJlci5waHA=) | `90.69% <100.00%> (-0.22%)` | :arrow_down: |\n| [...es/LeadBundle/EventListener/CampaignSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/15664?src=pr&el=tree&filepath=app%2Fbundles%2FLeadBundle%2FEventListener%2FCampaignSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvTGVhZEJ1bmRsZS9FdmVudExpc3RlbmVyL0NhbXBhaWduU3Vic2NyaWJlci5waHA=) | `87.09% <100.00%> (+0.21%)` | :arrow_up: |\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       },
       {
         "user": {
@@ -7755,6 +7777,13 @@
         },
         "created_at": "2026-07-29T15:08:09Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15664) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15664&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15664&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15664&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15664&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15664&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15664)\n\n"
+      },
+      {
+        "user": {
+          "login": "adiux"
+        },
+        "created_at": "2026-07-29T15:57:34Z",
+        "body": "> @adiux there is a conflict. Please take a look\r\n\r\nThanks @escopecz . all green again ✅ "
       }
     ],
     "rawCodeReviews": [
@@ -10049,7 +10078,7 @@
   },
   "mautic/user-documentation#869": {
     "docsUpdatedAt": "2026-07-29T15:01:54Z",
-    "codeUpdatedAt": "2026-07-29T15:17:59Z",
+    "codeUpdatedAt": "2026-07-29T15:45:50Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
