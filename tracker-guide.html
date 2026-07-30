@@ -260,7 +260,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker — Guide</h1>
-    <span class="updated" data-updated-iso="2026-07-29T19:39:35.976Z">Updated Wed, Jul 29, 7:39 PM</span>
+    <span class="updated" data-updated-iso="2026-07-30T07:56:52.668Z">Updated Thu, Jul 30, 7:56 AM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -433,6 +433,22 @@
     </div>
 
     <div class="scenario">
+      <h3>Dependabot opens a dependency-bump PR</h3>
+      <div class="note">A bump PR doesn't get a docs milestone — that requirement is skipped entirely for these. It always needs porting to older maintained branches too, even when it's opened straight against the latest one.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add needs-backport label</span><span class="chip act">Bump dependency — dependabot</span></div>
+        Don't add a milestone to these. The blue tag is just an FYI — it doesn't ask you to do anything.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>Someone hand-ports a dependency bump to an older branch</h3>
+      <div class="note">Rather than waiting on Promptless, a maintainer cherry-picks a dependabot bump onto an older release branch by hand — titling the PR after the original bump with a <code>— branch X.Y</code> suffix matching the branch it targets, e.g. <em>"chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0"</em> against base branch 7.0.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
+        No "Add milestone" or "Add needs-backport label" chip — the tool recognizes this PR title/branch pairing as the backport itself, so both would be redundant.
+      </div>
+    </div>
+
+    <div class="scenario">
       <h3>The Core Team hands the PR back to the code author</h3>
       <ol>
         <li>After an escalation, the Core Team asks the code author to review or confirm something themselves rather than answering it directly.
@@ -484,7 +500,7 @@
   </section>
 
   <footer>
-    <div>Generated on <span data-updated-iso="2026-07-29T19:39:35.976Z">Wed, Jul 29, 7:39 PM</span></div>
+    <div>Generated on <span data-updated-iso="2026-07-30T07:56:52.668Z">Thu, Jul 30, 7:56 AM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>

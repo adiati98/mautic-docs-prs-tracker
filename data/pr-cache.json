@@ -6594,7 +6594,7 @@
   },
   "mautic/user-documentation#786": {
     "docsUpdatedAt": "2026-07-08T23:03:52Z",
-    "codeUpdatedAt": "2026-07-29T10:54:17Z",
+    "codeUpdatedAt": "2026-07-30T07:11:13Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -6676,6 +6676,22 @@
         "state": "APPROVED",
         "submitted_at": "2026-06-30T13:44:37Z",
         "body": "Code looks good. It works.\n\nMaybe ... consider cache usage because of using COUNT() on big segments could be slow.\nCan be added later in next PR.\n\nTY!"
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-30T07:10:21Z",
+        "body": "Could you load these statistics asynchronously, similar to how you handle contact statistics with `contactStatsAction()` and `getStatsSummaryForContacts()`? Right now, these calls perform two full segment membership scans on every initial page load, including the filter-added count even when its card isn't displayed. This could become a performance issue on larger systems.\n\nThe new endpoint could return the total, manually added, and filter-added counts in a single aggregate query. You could then cache that result if segment membership changes can reliably invalidate it. Async loading or caching alone would still perform both scans on every cache miss."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-07-30T07:11:00Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": [
@@ -7845,7 +7861,7 @@
     ]
   },
   "mautic/user-documentation#712": {
-    "docsUpdatedAt": "2026-07-23T06:53:21Z",
+    "docsUpdatedAt": "2026-07-30T05:54:03Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -7941,6 +7957,26 @@
         "created_at": "2026-05-15T15:48:43Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:54:02Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:54:03Z",
+        "requested_reviewer": {
+          "login": "adiati98"
         },
         "requested_team": null
       }
@@ -8738,7 +8774,7 @@
     ]
   },
   "mautic/user-documentation#361": {
-    "docsUpdatedAt": "2026-07-29T05:01:47Z",
+    "docsUpdatedAt": "2026-07-30T04:26:36Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -9259,6 +9295,26 @@
           "login": "adiati98"
         },
         "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T04:26:26Z",
+        "requested_reviewer": {
+          "login": "RCheesley"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T04:26:36Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
       }
     ]
   },
@@ -9650,7 +9706,7 @@
     ]
   },
   "mautic/developer-documentation-new#603": {
-    "docsUpdatedAt": "2026-07-29T06:42:41Z",
+    "docsUpdatedAt": "2026-07-30T04:51:40Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [],
     "rawDocsComments": [],
@@ -9771,7 +9827,7 @@
     ]
   },
   "mautic/user-documentation#872": {
-    "docsUpdatedAt": "2026-07-29T19:05:06Z",
+    "docsUpdatedAt": "2026-07-30T06:14:40Z",
     "codeUpdatedAt": "2026-07-29T18:56:14Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
@@ -9782,6 +9838,190 @@
         },
         "created_at": "2026-07-29T18:56:14Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16849) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16849&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16849&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16849&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16849&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16849&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16849)\n\n"
+      }
+    ],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
+  },
+  "mautic/developer-documentation-new#610": {
+    "docsUpdatedAt": "2026-07-30T05:26:08Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:26:08Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:26:08Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/developer-documentation-new#609": {
+    "docsUpdatedAt": "2026-07-30T05:14:41Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:14:40Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:14:41Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/developer-documentation-new#608": {
+    "docsUpdatedAt": "2026-07-30T05:07:33Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:07:33Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T05:07:33Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/developer-documentation-new#607": {
+    "docsUpdatedAt": "2026-07-30T04:56:51Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T04:56:51Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T04:56:51Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/user-documentation#876": {
+    "docsUpdatedAt": "2026-07-30T04:26:01Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T04:26:00Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-07-30T04:26:01Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ]
+  },
+  "mautic/user-documentation#875": {
+    "docsUpdatedAt": "2026-07-30T06:17:32Z",
+    "codeUpdatedAt": "2026-07-29T23:43:25Z",
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-07-29T23:43:25Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16853) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16853&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16853&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16853&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16853&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16853&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16853)\n\n"
+      }
+    ],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
+  },
+  "mautic/user-documentation#874": {
+    "docsUpdatedAt": "2026-07-30T06:17:08Z",
+    "codeUpdatedAt": "2026-07-30T02:28:54Z",
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-07-29T23:33:15Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16852) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16852&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16852&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16852&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16852&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16852&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16852)\n\n"
       }
     ],
     "rawCodeReviews": [],
