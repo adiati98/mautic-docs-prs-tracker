@@ -31,7 +31,7 @@ const REPOS = {
 }
 
 const BOTS = [
-	"dependabot",
+	"dependabot[bot]",
 	"github-actions",
 	"renovate",
 	"codecov",
@@ -44,6 +44,12 @@ const BACKPORT_LABEL = process.env.BACKPORT_LABEL || "needs-backport"
 const NEEDS_REBASE_LABEL = process.env.NEEDS_REBASE_LABEL || "needs-rebase"
 const CONTENT_APPROVED_LABEL =
 	process.env.CONTENT_APPROVED_LABEL || "content-approved"
+const BUMP_DEPENDENCY_LABEL =
+	process.env.BUMP_DEPENDENCY_LABEL || "Bump dependency — dependabot"
+// GitHub's actual login for dependency-bump PRs — distinct from the plain
+// "dependabot" entry in BOTS (which filters comment/review participants, not
+// PR authorship).
+const DEPENDABOT_LOGIN = "dependabot[bot]"
 const RELEASE_BRANCH_PATTERN = /^\d+\.\d+$/
 const FOLLOWUP_DAYS = 7
 const ESCALATE_DAYS = 14
@@ -376,6 +382,41 @@ function backportContradictsMilestone(baseBranch, milestoneTitle) {
 // left to do, so asking for needs-backport on top of it would be redundant.
 function isPurposeBuiltForBranch(title, baseBranch, authorLogin) {
 	return authorLogin === PROMPTLESS && milestoneVersion(title) === baseBranch
+}
+
+// A maintainer hand-porting a dependency bump cherry-picks it onto the older
+// branch and names the PR after the original bump's title with a
+// "— branch X.Y" suffix, e.g. "chore(deps): bump rstcheck from 6.2.5 to
+// 6.3.0 in /docs — branch 7.0" against base branch "7.0". Same situation as
+// isPurposeBuiltForBranch above (the PR itself *is* the backport, so
+// milestone/needs-backport triage would be redundant) — just for a human
+// doing it by hand instead of Promptless doing it per-branch automatically.
+// The suffix names whatever branch the PR actually targets, which isn't
+// always a release-version pattern — a dev-line branch like "5.x" is a
+// legitimate target too — so the captured name is compared as-is against
+// baseBranch rather than restricted to \d+\.\d+.
+const DEPENDENCY_BACKPORT_TITLE_PATTERN = /bump.*[-—]\s*branch\s+([\w.]+)\s*$/i
+function isDependencyBumpBackportTitle(title, baseBranch) {
+	const m = title.match(DEPENDENCY_BACKPORT_TITLE_PATTERN)
+	return m !== null && m[1] === baseBranch
+}
+
+// Fallback for a hand-made bump backport whose title doesn't follow the
+// "— branch X.Y" convention above — it may still name its parent PR in the
+// body (Promptless's own convention: "following https://github.com/<repo>/
+// pull/<N>"), or use backport language like "cherry-pick #<N>" /
+// "following #<N>". Only the first same-repo reference is read, matching
+// extractAppPR's "first mention wins" precedent.
+function extractReferencedPRNumber(sourceRepo, text) {
+	if (!text) return null
+	const repoEscaped = escapeRegExp(sourceRepo)
+	let m = text.match(new RegExp(`github\\.com/${repoEscaped}/pull/(\\d+)`, "i"))
+	if (m) return Number(m[1])
+	m = text.match(/cherry-pick(?:ed|s|ing)?\s*(?:of\s*)?#(\d+)/i)
+	if (m) return Number(m[1])
+	m = text.match(/\bfollowing\s+#(\d+)/i)
+	if (m) return Number(m[1])
+	return null
 }
 
 function tryExtractAppPR(text) {
@@ -987,6 +1028,36 @@ async function main() {
 		const latestReleaseBranch = await getLatestReleaseBranch(pr.sourceRepo)
 		const olderBranch = targetsOlderBranch(baseBranch, latestReleaseBranch)
 
+		// Dependency bumps don't map to a docs milestone the way content
+		// changes do, so milestone triage is skipped for them entirely (see
+		// effectiveHasMilestone below) — but because a bump can land in the
+		// docs repo itself, it still needs to be ported to older maintained
+		// branches even when opened straight against the latest one, which a
+		// content PR never needs (that's what forces the needs-backport
+		// exception below). A hand-made backport of a bump (see
+		// isDependencyBumpBackportTitle) gets the same milestone exemption,
+		// and also skips needs-backport since it already *is* the backport.
+		const isDependabotPR = pr.user.login === DEPENDABOT_LOGIN
+		let isManualDependencyBackport = isDependencyBumpBackportTitle(pr.title, baseBranch)
+		if (!isManualDependencyBackport) {
+			// Title didn't follow the "— branch X.Y" convention — fall back to
+			// whatever parent PR this one names in its title/body, and confirm
+			// (one extra fetch) that the parent really was authored by
+			// dependabot before trusting the reference. The parent is very
+			// likely merged and closed by the time a backport exists, so it
+			// won't be sitting in this run's already-fetched open-PR data —
+			// hence the fetch instead of an in-memory lookup.
+			const referencedNumber = extractReferencedPRNumber(
+				pr.sourceRepo,
+				`${pr.title}\n${pr.body || ""}`,
+			)
+			if (referencedNumber && referencedNumber !== pr.number) {
+				const referencedPR = await fetchCodePR(pr.sourceRepo, referencedNumber)
+				isManualDependencyBackport = referencedPR.author === DEPENDABOT_LOGIN
+			}
+		}
+		const effectiveHasMilestone = hasMilestone || isDependabotPR || isManualDependencyBackport
+
 		const appPRData = extractAppPR(pr.body)
 		let appPRRepo = null
 		let appPRNumber = null
@@ -1289,11 +1360,18 @@ async function main() {
 		// would contradict "the branch needs fixing first."
 		let rebaseWinsOverBackport =
 			needsRebaseFlag && backportContradictsMilestone(baseBranch, milestoneTitle)
+		// Dependabot bump PRs always need porting to older maintained branches,
+		// even one opened straight against the latest release branch — unlike
+		// a content PR, there's no "this only ever targets one branch" case
+		// for a dependency bump, so the olderBranch requirement is waived for
+		// them. A PR that's itself the hand-made backport of a bump is
+		// excluded the same way Promptless's per-branch PRs are.
 		let backportLabelFlag =
-			olderBranch &&
+			(olderBranch || isDependabotPR) &&
 			!hasBackportLabel &&
 			!rebaseWinsOverBackport &&
-			!isPurposeBuiltForBranch(pr.title, baseBranch, pr.user.login)
+			!isPurposeBuiltForBranch(pr.title, baseBranch, pr.user.login) &&
+			!isManualDependencyBackport
 		if (codeClosed) {
 			removeLabelFlag = false
 			finalReviewActionable = false
@@ -1461,9 +1539,9 @@ async function main() {
 				else if (daysSinceReview >= FOLLOWUP_DAYS) category = "needs-followup"
 				else category = "blocked-no-code-pr"
 			}
-		} else if (isDraft && (!hasLabel || !hasMilestone)) {
+		} else if (isDraft && (!hasLabel || !effectiveHasMilestone)) {
 			category = "needs-label-and-milestone"
-		} else if (!isDraft && !hasMilestone) {
+		} else if (!isDraft && !effectiveHasMilestone) {
 			category = "needs-milestone"
 		} else if (appPRNumber && codeMerged) {
 			// The remind/follow-up/escalate clock no longer waits on a formal
@@ -1504,7 +1582,7 @@ async function main() {
 				else if (daysSincePing >= FOLLOWUP_DAYS) category = "needs-followup"
 				else category = "waiting-code-author-response"
 			}
-		} else if (hasMilestone && !operatorReviewDone) {
+		} else if (effectiveHasMilestone && !operatorReviewDone) {
 			category = "needs-operator-review"
 		} else if (operatorReviewDone && appPRNumber && !codeMerged) {
 			// Code PR still open — don't start any clock, just wait.
@@ -1585,6 +1663,8 @@ async function main() {
 			removeLabelFlag,
 			finalReviewActionable,
 			backportLabelFlag,
+			isDependabotPR,
+			isManualDependencyBackport,
 			needsRebaseFlag,
 			backportModifierActive,
 			standaloneOperatorReady,
@@ -2184,7 +2264,10 @@ function chipsFor(pr) {
 			break
 		case "needs-label-and-milestone":
 			if (!pr.hasLabel) chips.push({ cls: "setup", text: `Add ${PENDING_LABEL} label` })
-			if (!pr.hasMilestone) chips.push({ cls: "setup", text: "Add milestone" })
+			// Dependency bumps (and their hand-made backports) don't get a
+			// docs milestone — see effectiveHasMilestone.
+			if (!pr.hasMilestone && !pr.isDependabotPR && !pr.isManualDependencyBackport)
+				chips.push({ cls: "setup", text: "Add milestone" })
 			// Review shouldn't wait on triage finishing — a maintainer can
 			// (and should) start reading the content the moment the PR
 			// shows up, in parallel with adding the label/milestone. Skipped
@@ -2267,6 +2350,9 @@ function chipsFor(pr) {
 	}
 	if (pr.backportLabelFlag) {
 		chips.push({ cls: "setup", text: `Add ${BACKPORT_LABEL} label` })
+	}
+	if (pr.isDependabotPR) {
+		chips.push({ cls: "act", text: BUMP_DEPENDENCY_LABEL })
 	}
 
 	return chips
@@ -4846,6 +4932,22 @@ function generateGuideHTML({ now }) {
       <div class="note">The PR targets a release branch other than the one it should update (say, it targets 7.1 but 7.2 also needs the fix — or vice versa).
         <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
         Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it too — this can be newer or older branches than the one this PR targets, depending on which release branches need the update. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>Dependabot opens a dependency-bump PR</h3>
+      <div class="note">A bump PR doesn't get a docs milestone — that requirement is skipped entirely for these. It always needs porting to older maintained branches too, even when it's opened straight against the latest one.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add needs-backport label</span><span class="chip act">${BUMP_DEPENDENCY_LABEL}</span></div>
+        Don't add a milestone to these. The blue tag is just an FYI — it doesn't ask you to do anything.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>Someone hand-ports a dependency bump to an older branch</h3>
+      <div class="note">Rather than waiting on Promptless, a maintainer cherry-picks a dependabot bump onto an older release branch by hand — titling the PR after the original bump with a <code>— branch X.Y</code> suffix matching the branch it targets, e.g. <em>"chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0"</em> against base branch 7.0.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
+        No "Add milestone" or "Add needs-backport label" chip — the tool recognizes this PR title/branch pairing as the backport itself, so both would be redundant.
       </div>
     </div>
 
