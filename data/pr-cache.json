@@ -6485,7 +6485,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#788": {
-    "docsUpdatedAt": "2026-07-30T10:47:49Z",
+    "docsUpdatedAt": "2026-07-30T14:48:50Z",
     "codeUpdatedAt": "2026-07-29T18:31:51Z",
     "rawDocsReviews": [
       {
@@ -6503,6 +6503,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-30T10:47:48Z",
         "body": "ok"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-30T14:48:33Z",
+        "body": "Thanks for the review, @andersonjeccel! 🚀 "
       }
     ],
     "rawDocsComments": [],
