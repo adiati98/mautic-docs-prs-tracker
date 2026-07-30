@@ -488,7 +488,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-07-30T14:55:11.427Z">Updated Thu, Jul 30, 2:55 PM</span>
+    <span class="updated" data-updated-iso="2026-07-30T15:47:23.322Z">Updated Thu, Jul 30, 3:47 PM</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -531,7 +531,7 @@
   </div>
 
   <div class="filters">
-    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">90</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">50</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">40</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">90</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">51</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">39</span></button></div>
     <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">22</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" title="You reminded the code author 14+ days ago and it&#039;s still quiet — escalate.">Critical <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" title="You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply — follow up.">Serious <span class="fc">4</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" title="Something needs doing now: review, remind, merge, or add a label.">Act <span class="fc">42</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" title="A draft PR waiting on its code PR, or a standalone PR waiting on its author.">Triage <span class="fc">5</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" title="No activity on the PR for 30+ days.">🕸 Stale <span class="fc">5</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
@@ -545,16 +545,6 @@
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#752" data-search="user-documentation #752 document campaign condition event details in contact history promptless-for-oss #15664 adiux review this docs pr — code pr merged approved by adiux final review, then merge remove pending-pr-merge label" data-status="[&quot;monitoring&quot;,true,false,true,false,false,false,true,false,false,false,[&quot;adiux&quot;],false,null,false,true,true,true,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #752: Document Campaign condition event details in Contact history as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/752" target="_blank" class="name">user-documentation #752</a> <span class="desc">Document Campaign condition event details in Contact history</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15664" target="_blank">#15664</a> <span class="pill merged">Merged</span> · author <b>adiux</b></div>
-          <div class="chips"><span class="chip act">Review this docs PR — code PR merged</span><span class="chip finish">Approved by adiux</span><span class="chip finish">Final review, then merge</span><span class="chip finish">Remove pending-pr-merge label</span></div>
-        </div>
-        <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
-      </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#859" data-search="user-documentation #859 document role cloning in roles management promptless-for-oss #15402 andersonjeccel approved by andersonjeccel note since approval — take a look final review, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,false,false,false,false,[&quot;andersonjeccel&quot;],false,null,false,false,true,true,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #859: Document role cloning in Roles management as done"></div>
         <div class="edge"></div>
@@ -565,23 +555,83 @@
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#788" data-search="user-documentation #788 document the form: contact search filter promptless-for-oss #16355 andersonjeccel approved by andersonjeccel, adiati98 note since approval — take a look final review, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,false,false,false,false,[&quot;andersonjeccel&quot;,&quot;adiati98&quot;],false,null,false,false,true,true,false,true,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #788: Document the form: contact search filter as done"></div>
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#610" data-search="developer-documentation #610 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 5.x adiati98 approved by rcheesley — ready to merge" data-status="[&quot;monitoring&quot;,true,true,false,false,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #610: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 5.x as done"></div>
         <div class="edge"></div>
         <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/788" target="_blank" class="name">user-documentation #788</a> <span class="desc">Document the form: contact search filter</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16355" target="_blank">#16355</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b></div>
-          <div class="chips"><span class="chip finish">Approved by andersonjeccel, adiati98</span><span class="chip act">Note since approval — take a look</span><span class="chip finish">Final review, then merge</span></div>
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/610" target="_blank" class="name">developer-documentation #610</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 5.x</span></div>
+          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley — ready to merge</span></div>
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#361" data-search="user-documentation #361 campaign import export user docs dcjarvis approved by vukovicpredrag note since approval — take a look final review · backport, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,null,false,false,false,[&quot;vukovicpredrag&quot;],false,null,false,false,true,false,false,true,false]">
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#609" data-search="developer-documentation #609 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 6.0 adiati98 approved by rcheesley final review · backport, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #609: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 6.0 as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/609" target="_blank" class="name">developer-documentation #609</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 6.0</span></div>
+          <div class="meta">No linked code PR · docs author <b>adiati98</b> · targets <b>6.0</b> (latest is <b>7.2</b>)</div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley</span><span class="chip backport">Final review · backport, then merge</span></div>
+        </div>
+        <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#608" data-search="developer-documentation #608 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0 adiati98 approved by rcheesley final review · backport, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #608: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0 as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/608" target="_blank" class="name">developer-documentation #608</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0</span></div>
+          <div class="meta">No linked code PR · docs author <b>adiati98</b> · targets <b>7.0</b> (latest is <b>7.2</b>)</div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley</span><span class="chip backport">Final review · backport, then merge</span></div>
+        </div>
+        <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#607" data-search="developer-documentation #607 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs&quot; — branch 7.2 adiati98 approved by rcheesley — ready to merge note since approval — take a look" data-status="[&quot;monitoring&quot;,true,true,false,false,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #607: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs&quot; — branch 7.2 as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/607" target="_blank" class="name">developer-documentation #607</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs&quot; — branch 7.2</span></div>
+          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley — ready to merge</span><span class="chip act">Note since approval — take a look</span></div>
+        </div>
+        <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#603" data-search="developer-documentation #603 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs dependabot[bot] approved by rcheesley note since approval — take a look final review · backport, then merge add needs-backport label bump dependency — dependabot" data-status="[&quot;monitoring&quot;,true,false,false,true,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #603: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/603" target="_blank" class="name">developer-documentation #603</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs</span></div>
+          <div class="meta">No linked code PR · docs author <b>dependabot[bot]</b> · targets <b>7.1</b> (latest is <b>7.2</b>)</div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley</span><span class="chip act">Note since approval — take a look</span><span class="chip backport">Final review · backport, then merge</span><span class="chip setup">Add needs-backport label</span><span class="chip act">Bump dependency — dependabot</span></div>
+        </div>
+        <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#876" data-search="user-documentation #876 cherry pick: &quot;campaign import export user docs&quot; to 7.2 adiati98 approved by rcheesley — ready to merge note since approval — take a look" data-status="[&quot;monitoring&quot;,true,true,false,false,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #876: Cherry pick: &quot;Campaign import export user docs&quot; to 7.2 as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/876" target="_blank" class="name">user-documentation #876</a> <span class="desc">Cherry pick: &quot;Campaign import export user docs&quot; to 7.2</span></div>
+          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley — ready to merge</span><span class="chip act">Note since approval — take a look</span></div>
+        </div>
+        <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#873" data-search="user-documentation #873 cherry pick: &quot;campaign import export user docs&quot; to 7.1 adiati98 approved by rcheesley note since approval — take a look final review · backport, then merge add needs-backport label" data-status="[&quot;monitoring&quot;,true,false,false,true,false,false,null,false,false,false,[&quot;RCheesley&quot;],false,null,false,false,false,false,false,true,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #873: Cherry pick: &quot;Campaign import export user docs&quot; to 7.1 as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/873" target="_blank" class="name">user-documentation #873</a> <span class="desc">Cherry pick: &quot;Campaign import export user docs&quot; to 7.1</span></div>
+          <div class="meta">No linked code PR · docs author <b>adiati98</b> · targets <b>7.1</b> (latest is <b>7.2</b>)</div>
+          <div class="chips"><span class="chip finish">Approved by RCheesley</span><span class="chip act">Note since approval — take a look</span><span class="chip backport">Final review · backport, then merge</span><span class="chip setup">Add needs-backport label</span></div>
+        </div>
+        <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
+      </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="1" data-key="mautic/user-documentation#361" data-search="user-documentation #361 campaign import export user docs dcjarvis approved by vukovicpredrag, rcheesley note since approval — take a look final review · backport, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,null,false,false,false,[&quot;vukovicpredrag&quot;,&quot;RCheesley&quot;],false,null,false,false,true,false,false,true,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #361: Campaign import export user docs as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/361" target="_blank" class="name">user-documentation #361</a> <span class="desc">Campaign import export user docs</span></div>
           <div class="meta">No linked code PR · docs author <b>dcjarvis</b> · targets <b>7.0</b> (latest is <b>7.2</b>)</div>
-          <div class="chips"><span class="chip finish">Approved by vukovicpredrag</span><span class="chip act">Note since approval — take a look</span><span class="chip backport">Final review · backport, then merge</span></div>
+          <div class="chips"><span class="chip finish">Approved by vukovicpredrag, RCheesley</span><span class="chip act">Note since approval — take a look</span><span class="chip backport">Final review · backport, then merge</span></div>
         </div>
         <div class="when"><div class="days warn">Ready</div><div class="sub warn">⚠ backport before merging</div></div>
       </article>
@@ -665,56 +715,6 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">no reminder sent yet</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#610" data-search="developer-documentation #610 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 5.x adiati98 review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #610: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 5.x as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/610" target="_blank" class="name">developer-documentation #610</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 5.x</span></div>
-          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
-          <div class="chips"><span class="chip act">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened today</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#609" data-search="developer-documentation #609 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 6.0 adiati98 review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #609: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 6.0 as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/609" target="_blank" class="name">developer-documentation #609</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 6.0</span></div>
-          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
-          <div class="chips"><span class="chip act">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened today</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#608" data-search="developer-documentation #608 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0 adiati98 review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #608: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0 as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/608" target="_blank" class="name">developer-documentation #608</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0</span></div>
-          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
-          <div class="chips"><span class="chip act">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened today</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#607" data-search="developer-documentation #607 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs&quot; — branch 7.2 adiati98 review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #607: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs&quot; — branch 7.2 as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/607" target="_blank" class="name">developer-documentation #607</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs&quot; — branch 7.2</span></div>
-          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
-          <div class="chips"><span class="chip act">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened today</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#603" data-search="developer-documentation #603 chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs dependabot[bot] review this docs pr add needs-backport label bump dependency — dependabot" data-status="[&quot;needs-operator-review&quot;,false,false,false,true,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #603: chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/603" target="_blank" class="name">developer-documentation #603</a> <span class="desc">chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs</span></div>
-          <div class="meta">No linked code PR · docs author <b>dependabot[bot]</b> · targets <b>7.1</b>, no backport label</div>
-          <div class="chips"><span class="chip act">Review this docs PR</span><span class="chip setup">Add needs-backport label</span><span class="chip act">Bump dependency — dependabot</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened yesterday</div></div>
-      </article>
       <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#592" data-search="developer-documentation #592 docs: port &quot;manipulating contacts&quot; extension page to 7.2 promptless-for-oss ask core team to review content adiati98 reviewed this" data-status="[&quot;blocked-no-code-pr&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,true,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #592: docs: Port &quot;Manipulating Contacts&quot; extension page to 7.2 as done"></div>
         <div class="edge"></div>
@@ -776,6 +776,16 @@
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#612" data-search="developer-documentation #612 reference auth provider factory fqcns instead of removed service ids promptless-for-oss #16875 tomasvotruba add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #612: Reference auth provider factory FQCNs instead of removed service IDs as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/612" target="_blank" class="name">developer-documentation #612</a> <span class="desc">Reference auth provider factory FQCNs instead of removed service IDs</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16875" target="_blank">#16875</a> <span class="pill open">Open</span> · author <b>TomasVotruba</b></div>
+          <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+      </article>
       <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#611" data-search="developer-documentation #611 document api permission-context event for plugins promptless-for-oss #16837 escopecz add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #611: Document API permission-context event for plugins as done"></div>
         <div class="edge"></div>
@@ -1036,6 +1046,16 @@
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
+      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#880" data-search="user-documentation #880 document that theme zips with a single wrapper folder install correctly promptless-for-oss #16877 santhiprakash add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,false,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #880: Document that theme zips with a single wrapper folder install correctly as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/880" target="_blank" class="name">user-documentation #880</a> <span class="desc">Document that theme zips with a single wrapper folder install correctly</span> <span class="pill draft">Draft</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16877" target="_blank">#16877</a> <span class="pill open">Open</span> · author <b>santhiprakash</b></div>
+          <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
+      </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#878" data-search="user-documentation #878 document indexed and unique quick filters for custom fields promptless-for-oss add pending-pr-merge label add milestone review this docs pr" data-status="[&quot;needs-label-and-milestone&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #878: Document Indexed and Unique quick filters for Custom Fields as done"></div>
         <div class="edge"></div>
@@ -1053,26 +1073,6 @@
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/877" target="_blank" class="name">user-documentation #877</a> <span class="desc">Document Send example action in the Email listing</span> <span class="pill draft">Draft</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16871" target="_blank">#16871</a> <span class="pill open">Open</span> · author <b>andersonjeccel</b></div>
           <div class="chips"><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#876" data-search="user-documentation #876 cherry pick: &quot;campaign import export user docs&quot; to 7.2 adiati98 add milestone review this docs pr" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #876: Cherry pick: &quot;Campaign import export user docs&quot; to 7.2 as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/876" target="_blank" class="name">user-documentation #876</a> <span class="desc">Cherry pick: &quot;Campaign import export user docs&quot; to 7.2</span></div>
-          <div class="meta">No linked code PR · docs author <b>adiati98</b></div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip act">Review this docs PR</span></div>
-        </div>
-        <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#873" data-search="user-documentation #873 cherry pick: &quot;campaign import export user docs&quot; to 7.1 adiati98 add milestone review this docs pr add needs-backport label" data-status="[&quot;needs-milestone&quot;,false,false,false,true,false,false,null,false,false,false,[],false,null,false,false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #873: Cherry pick: &quot;Campaign import export user docs&quot; to 7.1 as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/873" target="_blank" class="name">user-documentation #873</a> <span class="desc">Cherry pick: &quot;Campaign import export user docs&quot; to 7.1</span></div>
-          <div class="meta">No linked code PR · docs author <b>adiati98</b> · targets <b>7.1</b> (latest 7.2) · no milestone, no backport label</div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip act">Review this docs PR</span><span class="chip setup">Add needs-backport label</span></div>
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
@@ -1194,7 +1194,7 @@
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16479" target="_blank">#16479</a> <span class="pill open">Open</span> · author <b>hluchas</b> · milestone <b>Mautic 7.2</b></div>
           <div class="chips"><span class="chip muted">Review this docs PR</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 22 days ago</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 23 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#812" data-search="user-documentation #812 docs: update default contact social field tokens (x, tiktok, youtube) in variables reference promptless-for-oss #16413 shinde-rahul review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,true,true,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #812: docs: Update default Contact social field tokens (X, TikTok, YouTube) in variables reference as done"></div>
@@ -1475,7 +1475,7 @@
   </section>
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-07-30T14:55:11.427Z">Thu, Jul 30, 2:55 PM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-07-30T15:47:23.322Z">Thu, Jul 30, 3:47 PM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
