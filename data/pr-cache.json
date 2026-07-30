@@ -7280,7 +7280,7 @@
   },
   "mautic/user-documentation#752": {
     "docsUpdatedAt": "2026-06-26T18:55:48Z",
-    "codeUpdatedAt": "2026-07-29T15:57:34Z",
+    "codeUpdatedAt": "2026-07-30T08:30:18Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -9747,7 +9747,7 @@
   },
   "mautic/user-documentation#869": {
     "docsUpdatedAt": "2026-07-29T17:54:02Z",
-    "codeUpdatedAt": "2026-07-29T17:10:13Z",
+    "codeUpdatedAt": "2026-07-30T08:32:00Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -9759,7 +9759,16 @@
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16830) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16830&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16830&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16830&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16830&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16830&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16830)\n\n"
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-07-30T08:31:34Z",
+        "body": ""
+      }
+    ],
     "rawReviewRequests": []
   },
   "mautic/user-documentation#871": {
