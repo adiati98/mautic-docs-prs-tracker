@@ -8809,7 +8809,7 @@
   },
   "mautic/user-documentation#874": {
     "docsUpdatedAt": "2026-07-30T06:17:08Z",
-    "codeUpdatedAt": "2026-07-31T11:16:41Z",
+    "codeUpdatedAt": "2026-07-31T12:12:09Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -8836,6 +8836,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-31T11:16:41Z",
         "body": "LGTM"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-07-31T12:11:58Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
