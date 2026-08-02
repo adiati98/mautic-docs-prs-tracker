@@ -488,7 +488,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-08-02T08:56:47.566Z">Updated Sun, Aug 2, 8:56 AM</span>
+    <span class="updated" data-updated-iso="2026-08-02T09:04:56.641Z">Updated Sun, Aug 2, 9:04 AM</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -1685,7 +1685,7 @@
   </section>
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-08-02T08:56:47.566Z">Sun, Aug 2, 8:56 AM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-08-02T09:04:56.641Z">Sun, Aug 2, 9:04 AM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
@@ -1729,9 +1729,9 @@
   // the original substring behavior.
   function matchesSearch(blob, query){
     if (!query) return true;
-    if (/^#?d+$/.test(query)) {
+    if (/^#?[0-9]+$/.test(query)) {
       const digits = query.replace(/^#/, '');
-      return new RegExp('#' + digits + '(?!\d)').test(blob);
+      return new RegExp('#' + digits + '(?![0-9])').test(blob);
     }
     return blob.indexOf(query) !== -1;
   }
