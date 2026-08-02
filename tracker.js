@@ -3735,9 +3735,9 @@ ${monitoringSection}
   // the original substring behavior.
   function matchesSearch(blob, query){
     if (!query) return true;
-    if (/^#?\d+$/.test(query)) {
+    if (/^#?[0-9]+$/.test(query)) {
       const digits = query.replace(/^#/, '');
-      return new RegExp('#' + digits + '(?!\\d)').test(blob);
+      return new RegExp('#' + digits + '(?![0-9])').test(blob);
     }
     return blob.indexOf(query) !== -1;
   }
