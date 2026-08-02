@@ -419,11 +419,21 @@ function extractReferencedPRNumber(sourceRepo, text) {
 	return null
 }
 
-function tryExtractAppPR(text) {
-	let match = text.match(/mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/i)
-	if (match) return { repo: `mautic/${match[1]}`, number: match[2] }
+function tryExtractAppPR(text, sourceRepo) {
+	// A docs PR's own repo is never the linked *code* PR's repo — a
+	// "mautic/user-documentation#N" mention inside a user-documentation PR
+	// body is a same-repo issue/PR reference (e.g. Promptless's "Trigger
+	// Events" links back to the tracked issue), not the app change. Skip
+	// same-repo matches and keep scanning rather than returning the first
+	// one, so a genuine code PR mentioned later in the body still gets
+	// found.
+	const explicitRepoPattern = /mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/gi
+	for (const match of text.matchAll(explicitRepoPattern)) {
+		const repo = `mautic/${match[1]}`
+		if (repo !== sourceRepo) return { repo, number: match[2] }
+	}
 
-	match = text.match(/mautic\s+PR\s*#(\d+)/i)
+	let match = text.match(/mautic\s+PR\s*#(\d+)/i)
 	if (match) return { repo: "mautic/mautic", number: match[1] }
 
 	match = text.match(/\[PR\s*#(\d+)\]/i)
@@ -445,9 +455,9 @@ function tryExtractAppPR(text) {
 // purposes. So "first PR number mentioned" is closer to this project's real
 // convention than "whatever's under this particular heading," at least
 // until there's positive evidence otherwise.
-function extractAppPR(description) {
+function extractAppPR(description, sourceRepo) {
 	if (!description) return null
-	return tryExtractAppPR(description)
+	return tryExtractAppPR(description, sourceRepo)
 }
 
 // ---------------------------------------------------------------------------
@@ -1058,7 +1068,7 @@ async function main() {
 		}
 		const effectiveHasMilestone = hasMilestone || isDependabotPR || isManualDependencyBackport
 
-		const appPRData = extractAppPR(pr.body)
+		const appPRData = extractAppPR(pr.body, pr.sourceRepo)
 		let appPRRepo = null
 		let appPRNumber = null
 		let appPRUrl = null
@@ -3717,6 +3727,21 @@ ${monitoringSection}
   // whole row to see why it matched. Caches the untouched text on first run
   // so repeated searches (and clearing) always restore from the original,
   // never from a previously-marked-up version.
+  // A pure-number query (typed to find a specific PR by number) needs an
+  // exact match against a "#123" token, not a plain substring test — a
+  // substring test on a query like "877" also matches "#16877" (someone
+  // else's code PR number that merely contains those digits), pulling in
+  // unrelated rows. Non-numeric queries (titles, authors, chip text) keep
+  // the original substring behavior.
+  function matchesSearch(blob, query){
+    if (!query) return true;
+    if (/^#?\d+$/.test(query)) {
+      const digits = query.replace(/^#/, '');
+      return new RegExp('#' + digits + '(?!\\d)').test(blob);
+    }
+    return blob.indexOf(query) !== -1;
+  }
+
   function highlightMatch(el, query){
     if (!el) return;
     if (el.dataset.orig === undefined) el.dataset.orig = el.textContent;
@@ -3744,14 +3769,14 @@ ${monitoringSection}
       const okPri  = pri === 'all' ||
         (pri === 'stale' ? row.getAttribute('data-stale') === '1' : row.getAttribute('data-sev') === pri);
       const okChecked = !hideChecked || !row.classList.contains('checked');
-      const okSearch = !search || (row.getAttribute('data-search') || '').indexOf(search) !== -1;
+      const okSearch = matchesSearch(row.getAttribute('data-search') || '', search);
       row.classList.toggle('hidden', !(okRepo && okPri && okChecked && okSearch));
       highlightMatch(row.querySelector('.title .desc'), search);
     });
     document.querySelectorAll('.mon-row').forEach(function(row){
       const okRepo = repo === 'all' || row.getAttribute('data-repo') === repo;
       const okPri = pri === 'all' || (pri === 'stale' && row.getAttribute('data-stale') === '1');
-      const okSearch = !search || (row.getAttribute('data-search') || '').indexOf(search) !== -1;
+      const okSearch = matchesSearch(row.getAttribute('data-search') || '', search);
       row.classList.toggle('hidden', !(okRepo && okPri && okSearch));
     });
     // A search hit tucked inside the collapsed Monitoring panel is invisible
