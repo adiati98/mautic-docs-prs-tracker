@@ -10400,7 +10400,7 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#614": {
-    "docsUpdatedAt": "2026-08-04T13:07:03Z",
+    "docsUpdatedAt": "2026-08-04T13:51:12Z",
     "codeUpdatedAt": "2026-08-04T13:04:16Z",
     "rawDocsReviews": [],
     "rawDocsComments": [
@@ -10417,6 +10417,20 @@
         },
         "created_at": "2026-08-04T13:07:03Z",
         "body": "Thanks @patrykgruszka — on it. We're re-checking the updated source PR (mautic/mautic#16926) and refreshing this developer page to match the current endpoints, runtime globals, and activation API. We'll follow up on this thread once the updated changes are ready."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-04T13:50:31Z",
+        "body": "Update: we've refreshed this developer page to match the current source PR. Highlights: the public activation API is now documented as `window.MauticFocus.enableTracking(<id>)` (the earlier draft-era `enableMauticFocusTracking{id}()` callback no longer exists in the ready PR and was removed), the FocusJsScope-vs-BuildJsScope distinction is sharpened (separate enums, distinct script families, no shared code path), and the Dynamic Web Content behavior is clarified (the legacy `/focus/{id}.js` is injected additively on top of the always-allowed `display.js` once tracking is enabled). A runnable registry/queue inspection example was added and citations re-anchored to the current source. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-04T13:51:12Z",
+        "body": "@patrykgruszka done — we've re-checked this developer page against the updated source PR and pushed the corrected changes.\n\nThe key fix: the activation API is now documented as the public `window.MauticFocus.enableTracking(<id>)` call, since the earlier per-item `enableMauticFocusTracking{id}()` callback no longer exists in the current implementation. We also:\n\n- Sharpened the `FocusJsScope`-vs-`BuildJsScope` distinction (separate enums, distinct script families, no shared code path).\n- Clarified that Dynamic Web Content injects the legacy `/focus/{id}.js` additively on top of the always-allowed `display.js` once tracking is enabled.\n- Added a runnable registry/queue inspection example.\n- Re-anchored all citations to the current source.\n\nThe PR is updated and ready for another look. Since PR #16926 isn't merged yet, we'll reconcile again if further code changes land before merge."
       }
     ],
     "rawCodeComments": [
@@ -10457,7 +10471,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#914": {
-    "docsUpdatedAt": "2026-08-04T13:06:37Z",
+    "docsUpdatedAt": "2026-08-04T13:51:26Z",
     "codeUpdatedAt": "2026-08-04T13:04:16Z",
     "rawDocsReviews": [],
     "rawDocsComments": [
@@ -10474,6 +10488,20 @@
         },
         "created_at": "2026-08-04T13:06:36Z",
         "body": "Thanks @patrykgruszka — picking this up now. We're re-checking the updated source PR (mautic/mautic#16926) and refreshing this documentation to match the current endpoints, tokens, and consent setting. We'll follow up on this thread once the updated changes are ready."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-04T13:50:16Z",
+        "body": "Update: we've refreshed this documentation to match the current source PR. Highlights: the install panel is now described as 'Focus implementation' with the two external-website options ('Consent-managed' and 'Full tracking'), the public activation API is documented as `window.MauticFocus.enableTracking(<id>)` (the earlier draft-era `enableMauticFocusTracking{id}()` callback no longer exists in the ready PR and was removed), and the 'Use Mautic consent for Focus tracking' setting is clarified (default off, scope noted, with a consent-gating warning). Citations were re-anchored to the current source. Ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-04T13:51:26Z",
+        "body": "@patrykgruszka done — we've re-checked this documentation against the updated source PR and pushed the corrected changes.\n\nThe key fix: the activation API is now documented as the public `window.MauticFocus.enableTracking(<id>)` call, since the earlier per-item `enableMauticFocusTracking{id}()` callback no longer exists in the current implementation. We also:\n\n- Renamed the panel to 'Focus implementation' and described the two external-website options ('Consent-managed' / 'Full tracking') plus the Landing Page tokens.\n- Clarified the 'Use Mautic consent for Focus tracking' setting (default off, under 'Script modifiers', with a note on the no-consent-gating case).\n- Aligned the Dynamic Web Content injection behavior and added a runnable activation example plus a cross-reference to the developer docs.\n- Re-anchored all citations to the current source.\n\nOne heads-up: the embed screenshot on this page still shows the old single-script panel and predates the 'Focus implementation' rename — let us know if you'd like it refreshed before merge. The PR is updated and ready for another look; since PR #16926 isn't merged yet, we'll reconcile again if further code changes land."
       }
     ],
     "rawCodeComments": [
