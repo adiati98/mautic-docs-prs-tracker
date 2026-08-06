@@ -10422,7 +10422,7 @@
   },
   "mautic/developer-documentation-new#613": {
     "docsUpdatedAt": "2026-08-03T10:08:06Z",
-    "codeUpdatedAt": "2026-08-06T08:59:37Z",
+    "codeUpdatedAt": "2026-08-06T13:51:56Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -10487,7 +10487,7 @@
   },
   "mautic/user-documentation#913": {
     "docsUpdatedAt": "2026-08-03T10:07:34Z",
-    "codeUpdatedAt": "2026-08-06T08:59:37Z",
+    "codeUpdatedAt": "2026-08-06T13:51:56Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -10765,7 +10765,7 @@
   },
   "mautic/user-documentation#917": {
     "docsUpdatedAt": "2026-08-04T14:49:55Z",
-    "codeUpdatedAt": "2026-08-06T07:22:18Z",
+    "codeUpdatedAt": "2026-08-06T14:56:52Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -10815,6 +10815,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-08-05T11:06:06Z",
         "body": "I found two issues that should be addressed before merging."
+      },
+      {
+        "user": {
+          "login": "kuzmany"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-06T14:56:52Z",
+        "body": "Everything looks good to me 👍"
       }
     ],
     "rawReviewRequests": []
