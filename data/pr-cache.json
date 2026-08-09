@@ -10958,5 +10958,36 @@
         "requested_team": null
       }
     ]
+  },
+  "mautic/developer-documentation-new#616": {
+    "docsUpdatedAt": "2026-08-09T17:02:16Z",
+    "codeUpdatedAt": "2026-08-09T19:27:53Z",
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-08-09T16:42:59Z",
+        "body": "Ready for review :+1: "
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-08-09T16:43:54Z",
+        "body": "I'm wondering... we coule make some mautic-rector set later, to fix all these changes for the users that, once they update to Mautic 8.  WDYT?"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-08-09T19:27:52Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17005) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [3 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17005&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17005&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17005&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17005&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [6.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17005&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17005)\n\n"
+      }
+    ],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
   }
 }
