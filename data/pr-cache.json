@@ -214,7 +214,7 @@
   },
   "mautic/developer-documentation-new#613": {
     "docsUpdatedAt": "2026-08-03T10:08:06Z",
-    "codeUpdatedAt": "2026-08-10T06:48:59Z",
+    "codeUpdatedAt": "2026-08-10T14:59:27Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -227,17 +227,24 @@
       },
       {
         "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-08-06T08:59:36Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [18 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870)\n\n"
-      },
-      {
-        "user": {
           "login": "patrykgruszka"
         },
         "created_at": "2026-08-10T06:48:59Z",
         "body": "How should this work with one-click unsubscribe? That flow must rely only on the URL, and it currently runs before the email and hash are validated. It therefore seems possible to bypass the new form with a crafted one-click POST.\r\n\r\nI don't see an option how we could keep RFC 8058 working while also requiring information that is not included in the unsubscribe link."
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-08-10T14:58:52Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [19 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870)\n\n"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-10T14:59:27Z",
+        "body": "@patrykgruszka great catch! Yes, the one click unsubscribe handling should also validate the email and email hash. Those params were always part of that header so there is no issue. Just added the validation in the last commit.\r\n\r\nAs far as I know there is no report that email header links are being published the same as the normal content unsubscribe links. So with that in mind we should be fine here."
       }
     ],
     "rawCodeReviews": [
@@ -5339,7 +5346,7 @@
   },
   "mautic/user-documentation#913": {
     "docsUpdatedAt": "2026-08-03T10:07:34Z",
-    "codeUpdatedAt": "2026-08-10T06:48:59Z",
+    "codeUpdatedAt": "2026-08-10T14:59:27Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -5352,17 +5359,24 @@
       },
       {
         "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-08-06T08:59:36Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [18 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870)\n\n"
-      },
-      {
-        "user": {
           "login": "patrykgruszka"
         },
         "created_at": "2026-08-10T06:48:59Z",
         "body": "How should this work with one-click unsubscribe? That flow must rely only on the URL, and it currently runs before the email and hash are validated. It therefore seems possible to bypass the new form with a crafted one-click POST.\r\n\r\nI don't see an option how we could keep RFC 8058 working while also requiring information that is not included in the unsubscribe link."
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-08-10T14:58:52Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [19 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870)\n\n"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-10T14:59:27Z",
+        "body": "@patrykgruszka great catch! Yes, the one click unsubscribe handling should also validate the email and email hash. Those params were always part of that header so there is no issue. Just added the validation in the last commit.\r\n\r\nAs far as I know there is no report that email header links are being published the same as the normal content unsubscribe links. So with that in mind we should be fine here."
       }
     ],
     "rawCodeReviews": [
