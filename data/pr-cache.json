@@ -541,7 +541,7 @@
   },
   "mautic/developer-documentation-new#593": {
     "docsUpdatedAt": "2026-07-11T18:57:40Z",
-    "codeUpdatedAt": "2026-08-10T09:17:02Z",
+    "codeUpdatedAt": "2026-08-10T11:19:07Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -669,6 +669,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-13T14:01:12Z",
         "body": "Worked as described when tested, thanks! 👍 "
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-10T11:19:06Z",
+        "body": "`batchAddContactsAction()` reads `$request->request->all()`, but this endpoint is documented/tested with `Content-Type: application/json`. Symfony does not populate the request parameter bag from a JSON body automatically, so valid JSON requests will see no `assignments` and return the 400 “parameter is required” error. Please decode `$request->getContent()` (or use the project’s established JSON-input handling) and keep a functional test that exercises the real JSON payload."
       }
     ],
     "rawReviewRequests": []
@@ -3358,7 +3366,7 @@
   },
   "mautic/developer-documentation-new#531": {
     "docsUpdatedAt": "2026-06-26T19:04:29Z",
-    "codeUpdatedAt": "2026-08-02T16:28:33Z",
+    "codeUpdatedAt": "2026-08-10T11:23:32Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -3518,6 +3526,13 @@
         },
         "created_at": "2026-08-02T16:28:33Z",
         "body": "Resolved conflicts again."
+      },
+      {
+        "user": {
+          "login": "mzagmajster"
+        },
+        "created_at": "2026-08-10T11:23:32Z",
+        "body": "Would it be possible to merge this to 7.2?"
       }
     ],
     "rawCodeReviews": [
@@ -6596,7 +6611,7 @@
   },
   "mautic/user-documentation#880": {
     "docsUpdatedAt": "2026-07-31T08:44:23Z",
-    "codeUpdatedAt": "2026-08-09T02:06:26Z",
+    "codeUpdatedAt": "2026-08-10T11:12:05Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -6604,7 +6619,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-09T02:06:26Z",
+        "created_at": "2026-08-10T10:45:21Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16877) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [10 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16877&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16877&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16877&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16877&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16877&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16877)\n\n"
       }
     ],
@@ -6632,6 +6647,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-09T00:20:52Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-10T11:12:05Z",
+        "body": "Thanks, this addresses the remaining concern."
       }
     ],
     "rawReviewRequests": []
@@ -7133,7 +7156,7 @@
   },
   "mautic/user-documentation#854": {
     "docsUpdatedAt": "2026-07-20T18:50:06Z",
-    "codeUpdatedAt": "2026-08-10T09:50:57Z",
+    "codeUpdatedAt": "2026-08-10T11:13:49Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -7216,6 +7239,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-29T17:05:32Z",
         "body": "Okay then"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-10T11:13:49Z",
+        "body": "All set from my side."
       }
     ],
     "rawReviewRequests": []
@@ -7894,7 +7925,7 @@
   },
   "mautic/user-documentation#836": {
     "docsUpdatedAt": "2026-07-12T08:41:51Z",
-    "codeUpdatedAt": "2026-07-31T10:09:10Z",
+    "codeUpdatedAt": "2026-08-10T11:20:12Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -7937,13 +7968,21 @@
         "state": "APPROVED",
         "submitted_at": "2026-07-13T11:18:05Z",
         "body": "looks good to me"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-10T11:20:12Z",
+        "body": "All set from my side."
       }
     ],
     "rawReviewRequests": []
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
-    "codeUpdatedAt": "2026-08-10T10:29:01Z",
+    "codeUpdatedAt": "2026-08-10T11:26:59Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -7989,7 +8028,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-10T10:29:00Z",
+        "created_at": "2026-08-10T11:26:59Z",
         "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Reliability Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) (required ≥ A)  \n  \n<!-- sqra:qg_revision=c03e154134dabd30f60b6f3019f911c9286165f0476595d0d5eddd0b58269ea2 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
@@ -8988,7 +9027,7 @@
   },
   "mautic/user-documentation#768": {
     "docsUpdatedAt": "2026-06-25T10:57:25Z",
-    "codeUpdatedAt": "2026-08-02T16:28:33Z",
+    "codeUpdatedAt": "2026-08-10T11:23:32Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -9102,6 +9141,13 @@
         },
         "created_at": "2026-08-02T16:28:33Z",
         "body": "Resolved conflicts again."
+      },
+      {
+        "user": {
+          "login": "mzagmajster"
+        },
+        "created_at": "2026-08-10T11:23:32Z",
+        "body": "Would it be possible to merge this to 7.2?"
       }
     ],
     "rawCodeReviews": [
