@@ -292,8 +292,8 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#612": {
-    "docsUpdatedAt": "2026-07-30T20:51:07Z",
-    "codeUpdatedAt": "2026-08-11T11:26:59Z",
+    "docsUpdatedAt": "2026-08-11T12:44:15Z",
+    "codeUpdatedAt": "2026-08-11T12:24:44Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -323,13 +323,13 @@
           "login": "TomasVotruba"
         },
         "created_at": "2026-08-11T11:05:44Z",
-        "body": "Good to go ����"
+        "body": "Good to go 👌"
       },
       {
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-11T11:26:58Z",
+        "created_at": "2026-08-11T12:02:32Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16875) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [3 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16875&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16875&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16875&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16875&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16875&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16875)\n\n"
       }
     ],
@@ -341,6 +341,30 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-31T10:14:06Z",
         "body": "Do you think we could keep the aliases for now in case a plugin is using them? I'd like to remove them for Mautic 8. Perhaps it's a good time to create the 8.x branch where we could start merging the BC breaking PRs?"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-11T11:59:58Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-11T12:02:23Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-11T12:24:27Z",
+        "body": "Looks good. I bet you have a plan for the baseline addition 👍 "
       }
     ],
     "rawReviewRequests": []
@@ -8003,7 +8027,7 @@
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
-    "codeUpdatedAt": "2026-08-11T11:42:31Z",
+    "codeUpdatedAt": "2026-08-11T13:36:52Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8047,17 +8071,17 @@
       },
       {
         "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-08-10T12:18:11Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Reliability Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) (required ≥ A)  \n  \n<!-- sqra:qg_revision=c03e154134dabd30f60b6f3019f911c9286165f0476595d0d5eddd0b58269ea2 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
-      },
-      {
-        "user": {
           "login": "hluchas"
         },
         "created_at": "2026-08-11T11:40:09Z",
         "body": "> The results are filtered by Is:Unpublished but \"cats\" query seems to not have any effect here.\r\n\r\nNow it works by selecting the filter and in case if argument is applicable, then it is applied. In case of `isUnpublished` filter argument `cats` does not make sense. It is not comparable. It is not possible to define multiple filters using dropdown in current implementation.\r\n\r\nWe can talk about final solution. Your comments make sense.\r\n\r\n@patrykgruszka @MadlenF "
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-08-11T13:36:52Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Reliability Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) (required ≥ A)  \n  \n<!-- sqra:qg_revision=431f0c93e6e8e306195bdd92e47733baabeab3e93a30278aa8117e3808b33f18 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
     "rawCodeReviews": [
