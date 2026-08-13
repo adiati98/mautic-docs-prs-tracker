@@ -4522,7 +4522,7 @@
   },
   "mautic/developer-documentation-new#310": {
     "docsUpdatedAt": "2026-06-09T08:32:08Z",
-    "codeUpdatedAt": "2026-07-27T14:12:57Z",
+    "codeUpdatedAt": "2026-08-13T09:36:04Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -4818,7 +4818,7 @@
           "login": "sonarqubecloud[bot]"
         },
         "created_at": "2026-07-27T14:12:57Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e2c678cf8acf1ddbd70501355924d9135422d34bcc7de0e7fceb765842cf40a1 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [33 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted.svg '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/no-data.svg '') No data about Coverage  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -5289,7 +5289,7 @@
   },
   "mautic/user-documentation#915": {
     "docsUpdatedAt": "2026-08-03T14:07:47Z",
-    "codeUpdatedAt": "2026-08-12T10:19:29Z",
+    "codeUpdatedAt": "2026-08-13T10:18:07Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -5309,10 +5309,17 @@
       },
       {
         "user": {
+          "login": "andersonjeccel"
+        },
+        "created_at": "2026-08-13T09:58:28Z",
+        "body": "@escopecz Updated the permissions coverage and description, could you check again?"
+      },
+      {
+        "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-12T10:19:28Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16927) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16927&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16927&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16927&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16927&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16927&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16927)\n\n"
+        "created_at": "2026-08-13T10:03:04Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16927) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16927&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16927&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16927&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16927&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16927&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16927)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -5331,6 +5338,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-08-12T09:58:39Z",
         "body": "@andersonjeccel I didn't understand from the PR description and title that this PR is about permissions. Can you update it so it's clear?"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-13T09:58:26Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
@@ -6959,7 +6974,7 @@
   },
   "mautic/user-documentation#872": {
     "docsUpdatedAt": "2026-07-30T06:14:40Z",
-    "codeUpdatedAt": "2026-08-12T11:14:28Z",
+    "codeUpdatedAt": "2026-08-13T10:18:09Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -7048,7 +7063,7 @@
   },
   "mautic/user-documentation#870": {
     "docsUpdatedAt": "2026-07-29T17:53:35Z",
-    "codeUpdatedAt": "2026-08-12T10:19:37Z",
+    "codeUpdatedAt": "2026-08-13T10:18:12Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -8127,7 +8142,7 @@
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
-    "codeUpdatedAt": "2026-08-13T08:39:58Z",
+    "codeUpdatedAt": "2026-08-13T09:17:11Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8187,7 +8202,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-13T08:27:53Z",
+        "created_at": "2026-08-13T09:17:11Z",
         "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Reliability Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479) (required ≥ A)  \n  \n<!-- sqra:qg_revision=13072145657005b6d8d8ddd5ac486935eece227954e7a20105597e440194452e -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16479)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
@@ -9589,7 +9604,7 @@
     ]
   },
   "mautic/user-documentation#728": {
-    "docsUpdatedAt": "2026-06-25T11:32:13Z",
+    "docsUpdatedAt": "2026-08-13T10:06:17Z",
     "codeUpdatedAt": "2026-08-03T11:04:29Z",
     "rawDocsReviews": [
       {
@@ -9683,7 +9698,7 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-06-25T10:35:26Z",
-        "body": "Thanks @adiati98 — I've addressed all seven review suggestions and pushed the changes:\n\n1. Wrapped the \"For each area...\" sentence in `.. vale off` / `.. vale on` so the UI terms (**View Same Role**, **Edit Same Role**, **Delete Same Role**, **Publish Same Role**) stay verbatim.\n2. Wrapped the regional-team numbered list (create `Italy`/`Germany` Roles, enable Same Role permissions) in `.. vale off` / `.. vale on`.\n3. Italian Users bullet: changed \"publish\" → \"send\".\n4. German Users bullet: changed \"publish\" → \"send\".\n5. Section heading → `Using 'Same Role' permissions`.\n6. Subsection heading → `Where 'Same Role' permissions apply`.\n7. Bolded **Own** and **Others** in the \"checks permissions in this order\" sentence.\n\nPer your \"keep the UI term as is\" note, the literal product labels (including **Publish Same Role**) are preserved and Vale is satisfied via the `.. vale off`/`.. vale on` guards rather than rewording. I corrected the two heading underline lengths to match the heading text per RST rules. Vale now reports 0 errors / 0 warnings on `docs/users_roles/managing_roles.rst`.\n"
+        "body": "Thanks @adiati98 — I've addressed all seven review suggestions and pushed the changes:\n\n1. Wrapped the \"For each area...\" sentence in `.. vale off` / `.. vale on` so the UI terms (**View Same Role**, **Edit Same Role**, **Delete Same Role**, **Publish Same Role**) stay verbatim.\n2. Wrapped the regional-team numbered list (create `Italy`/`Germany` Roles, enable Same Role permissions) in `.. vale off` / `.. vale on`.\n3. Italian Users bullet: changed \"publish\" → \"send\".\n4. German Users bullet: changed \"publish\" ��� \"send\".\n5. Section heading → `Using 'Same Role' permissions`.\n6. Subsection heading → `Where 'Same Role' permissions apply`.\n7. Bolded **Own** and **Others** in the \"checks permissions in this order\" sentence.\n\nPer your \"keep the UI term as is\" note, the literal product labels (including **Publish Same Role**) are preserved and Vale is satisfied via the `.. vale off`/`.. vale on` guards rather than rewording. I corrected the two heading underline lengths to match the heading text per RST rules. Vale now reports 0 errors / 0 warnings on `docs/users_roles/managing_roles.rst`.\n"
       },
       {
         "user": {
@@ -9983,7 +9998,7 @@
     ]
   },
   "mautic/user-documentation#712": {
-    "docsUpdatedAt": "2026-07-31T10:42:55Z",
+    "docsUpdatedAt": "2026-08-13T10:05:37Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -10017,6 +10032,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-07-16T04:21:51Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "RCheesley"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-08-13T10:04:56Z",
+        "body": "Thank you for this thorough and comprehensive overview @andersonjeccel! I noticed a few small tweaks that I've suggested changes for."
       }
     ],
     "rawDocsComments": [
@@ -10054,6 +10077,27 @@
         },
         "created_at": "2026-07-31T10:42:55Z",
         "body": "@andersonjeccel I've addressed the Vale warnings, and tweak some wordings and structure for clarity. Can you please review? Thanks!\r\n\r\ncc: @RCheesley "
+      },
+      {
+        "user": {
+          "login": "RCheesley"
+        },
+        "created_at": "2026-08-13T09:46:16Z",
+        "body": "@promptless-for-oss can you make a version of this PR for the 7.1, 7.2, 6.0 and 5.2 branches? Thanks!"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T09:47:06Z",
+        "body": "Thanks for the request. We're looking into documenting UTM tags in Mautic and will follow up here with an update. 🔍"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T09:57:33Z",
+        "body": "Update: we've confirmed the scope for porting these UTM tags docs to the 7.1, 7.2, 6.0, and 5.2 branches. The new pages apply cleanly across all four, with one small per-branch adjustment needed on 6.0 and 5.2 (a screenshot reference differs on those versions). Preparing the branch-specific PRs now."
       }
     ],
     "rawCodeComments": [],
@@ -10111,341 +10155,9 @@
       }
     ]
   },
-  "mautic/user-documentation#709": {
-    "docsUpdatedAt": "2026-07-29T10:25:01Z",
-    "codeUpdatedAt": "2026-05-19T13:15:32Z",
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-05-15T09:45:13Z",
-        "body": "@adiati98 we should probably create the 7.2 branch for these PR, right?\n\n@rohitpavaskar shall we suggest users to also configure this command to run periodically as a cron job? Or only in special cases?"
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-24T09:07:27Z",
-        "body": "There are only these 2 small changes as we changes these values. Everything else looks good.\nThank you!"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-07-29T09:52:11Z",
-        "body": "@rohitpavaskar thanks for the rebase! 🎉 \n\nI left some suggestions here for you to address. You can just commit them if you're agree with the suggestions.\n\n@escopecz can you please help us to review the content here? TIA! ✨ "
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-29T10:09:22Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-07-29T10:25:01Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-05-15T10:34:54Z",
-        "body": "@escopecz if this aims 7.2, we can create the branch. Would it be based on 7.1 or 7.0?"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-05-15T11:22:05Z",
-        "body": "It should be based on 7.1"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-05-15T12:59:15Z",
-        "body": "@escopecz noted. Can we hold on a bit? I'll try to review and merge as much PRs as we can for branch 7.1 before creating 7.2."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-05-15T13:07:59Z",
-        "body": "Sure thing!"
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-05-18T10:29:05Z",
-        "body": "> ommand to run periodically as a cron j\r\n\r\nYes, This needs to be set as cron job but separate job for each campaign."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-05-19T13:19:25Z",
-        "body": "Thanks for documenting the new `mautic:campaigns:resume-stuck` command! The documentation is comprehensive and well-structured.\n\nI noticed two numerical values that don't match the source code and should be corrected:\n\n1. **Batch limit default**: The docs currently say \"Defaults to 1000\" but the [source code](https://github.com/mautic/mautic/blob/7.x/app/bundles/CampaignBundle/Command/ResumeStuckCampaignCommand.php#L96-L97) shows the default is `100`.\n\n2. **Max records per execution**: The docs say \"5000 records\" but the [source code](https://github.com/mautic/mautic/blob/7.x/app/bundles/CampaignBundle/Command/ResumeStuckCampaignCommand.php#L47) shows `MAX_ALLOWED_RECORDS_EACH_PROCESS = 500`.\n\n---\n🤖 Review by [Promptless](https://promptless.ai)\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-05-20T07:51:33Z",
-        "body": "@rohitpavaskar can you please check if the review from Promptless here is correct? TIA! ✨ \r\n\r\nhttps://github.com/mautic/user-documentation/pull/709#issuecomment-4488146002\r\n\r\n"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-05-26T11:26:26Z",
-        "body": "@promptless-for-oss please rebase to 7.2 branch"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-05-26T11:31:25Z",
-        "body": "It seems like Promptless can't rebase this as it's not opened by it.\r\n\r\n@rohitpavaskar as we now have 7.2 branch, can you please rebase this to 7.2? TIA! ✨ "
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-06-10T10:44:13Z",
-        "body": "Hi @rohitpavaskar,\r\n\r\nCan you please rebase this to 7.2? TIA! ✨"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-03T09:40:53Z",
-        "body": "Hi @rohitpavaskar,\r\n\r\nCan you please rebase this to 7.2? TIA! ✨"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-07-22T06:23:40Z",
-        "body": "> > ommand to run periodically as a cron j\r\n> \r\n> Yes, This needs to be set as cron job but separate job for each campaign.\r\n\r\nHey @rohitpavaskar,\r\n\r\nCan you please confirm if you'd like to update this PR with the above info? If so, we're holding the review for this PR.\r\n\r\nAlso, can you please rebase this PR to branch 7.2? Thanks! "
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-07-24T09:12:06Z",
-        "body": "> @rohitpavaskar can you please check if the review from Promptless here is correct? TIA! ✨\r\n> \r\n> [#709 (comment)](https://github.com/mautic/user-documentation/pull/709#issuecomment-4488146002)\r\n\r\nYes, Fixed the issue."
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "codecov[bot]"
-        },
-        "created_at": "2025-07-25T15:40:31Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/15310?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `85.22337%` with `43 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 69.70%. Comparing base ([`f1cef26`](https://app.codecov.io/gh/mautic/mautic/commit/f1cef2648041ae3c1ddacc6816f1cc705f2f52f0?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`168a2e8`](https://app.codecov.io/gh/mautic/mautic/commit/168a2e82f8c8f89bb2cd720530a96f2bdae14a89?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15310?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...ndles/CampaignBundle/Entity/CampaignRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEntity%2FCampaignRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRW50aXR5L0NhbXBhaWduUmVwb3NpdG9yeS5waHA=) | 78.30% | [23 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...paignBundle/Command/ResumeStuckCampaignCommand.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FCommand%2FResumeStuckCampaignCommand.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvQ29tbWFuZC9SZXN1bWVTdHVja0NhbXBhaWduQ29tbWFuZC5waHA=) | 89.86% | [15 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...t/MaxAllowedRecordsReachedInSingleProcessEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEvent%2FMaxAllowedRecordsReachedInSingleProcessEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRXZlbnQvTWF4QWxsb3dlZFJlY29yZHNSZWFjaGVkSW5TaW5nbGVQcm9jZXNzRXZlbnQucGhw) | 0.00% | [3 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [app/bundles/CoreBundle/Entity/DateAddedTrait.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEntity%2FDateAddedTrait.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FbnRpdHkvRGF0ZUFkZGVkVHJhaXQucGhw) | 66.66% | [2 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/15310/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #15310      +/-   ##\n============================================\n+ Coverage     69.65%   69.70%   +0.04%     \n- Complexity    37423    37466      +43     \n============================================\n  Files          2424     2427       +3     \n  Lines        140210   140496     +286     \n============================================\n+ Hits          97670    97926     +256     \n- Misses        42540    42570      +30     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/15310?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/CampaignBundle/Entity/Event.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEntity%2FEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRW50aXR5L0V2ZW50LnBocA==) | `94.24% <100.00%> (+0.30%)` | :arrow_up: |\n| [app/bundles/CampaignBundle/Model/CampaignModel.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FModel%2FCampaignModel.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvTW9kZWwvQ2FtcGFpZ25Nb2RlbC5waHA=) | `79.29% <100.00%> (ø)` | |\n| [...pp/bundles/CoreBundle/Event/JobExtendTimeEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEvent%2FJobExtendTimeEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FdmVudC9Kb2JFeHRlbmRUaW1lRXZlbnQucGhw) | `33.33% <ø> (ø)` | |\n| [app/bundles/CoreBundle/Entity/DateAddedTrait.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCoreBundle%2FEntity%2FDateAddedTrait.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ29yZUJ1bmRsZS9FbnRpdHkvRGF0ZUFkZGVkVHJhaXQucGhw) | `66.66% <66.66%> (ø)` | |\n| [...t/MaxAllowedRecordsReachedInSingleProcessEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEvent%2FMaxAllowedRecordsReachedInSingleProcessEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRXZlbnQvTWF4QWxsb3dlZFJlY29yZHNSZWFjaGVkSW5TaW5nbGVQcm9jZXNzRXZlbnQucGhw) | `0.00% <0.00%> (ø)` | |\n| [...paignBundle/Command/ResumeStuckCampaignCommand.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FCommand%2FResumeStuckCampaignCommand.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvQ29tbWFuZC9SZXN1bWVTdHVja0NhbXBhaWduQ29tbWFuZC5waHA=) | `89.86% <89.86%> (ø)` | |\n| [...ndles/CampaignBundle/Entity/CampaignRepository.php](https://app.codecov.io/gh/mautic/mautic/pull/15310?src=pr&el=tree&filepath=app%2Fbundles%2FCampaignBundle%2FEntity%2FCampaignRepository.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvQ2FtcGFpZ25CdW5kbGUvRW50aXR5L0NhbXBhaWduUmVwb3NpdG9yeS5waHA=) | `64.58% <78.30%> (+3.71%)` | :arrow_up: |\n\n... and [3 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/15310/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2025-07-30T06:11:51Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15310) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [10 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15310&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15310&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15310&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15310&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15310&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15310)\n\n"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2025-09-18T10:55:19Z",
-        "body": "There seem to be a conflict now"
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2025-09-29T10:19:42Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15310) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [14 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15310&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15310&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15310&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15310&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15310&metric=new_duplicated_lines_density&view=list)  \n  \n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15310)\n\n"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2025-09-29T13:29:36Z",
-        "body": "@rohitpavaskar I executed the step 4 but the new campaign event with back-dated date_linked value was not executed with the command. There was no output from the command.\r\n\r\nAlso, please add docs PR describing this new command to https://github.com/mautic/user-documentation."
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-05-12T13:49:22Z",
-        "body": "> @rohitpavaskar I executed the step 4 but the new campaign event with back-dated date_linked value was not executed with the command. There was no output from the command.\r\n> \r\n> Also, please add docs PR describing this new command to https://github.com/mautic/user-documentation.\r\n\r\nHi @escopecz,\r\nCan you please retest the PR as I can see it is working fine.\r\nAs per your comment I have added docs https://github.com/mautic/user-documentation/pull/709.\r\nThank you!"
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-05-14T05:12:54Z",
-        "body": "Hi @escopecz,\r\nCan you please re-trigger the build, test case failing here looks flaky.\r\nThank you!"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-05-15T09:18:09Z",
-        "body": "I'm verifying each step. Rather making a todo list so I won't skip any:\r\n\r\n- [x] Create a Campaign and add contacts to it and let them execute and finish campaign for them\r\n- [x] Now create new events in Campaign and set the dateLinked of newly added event less than the dateTriggered of contact in campiagn_lead_event_log - [ ] table to simulate the event was preesent while parent event was executed but stuck due to any reason.\r\n- [x] After executing command mautic:campaigns:resume-stuck <CAMPAIGN_ID> verify all the contacts should executed stuck event.\r\n- [ ] Verify these scenario by deleting leaf node events and updated added new events.\r\n- [x] Verify that events should not be executed for contacts which are manually removed from campaign.\r\n- [x] Verify that if in campaign there is any scheduled event which is not executed then ignore such contacts.\r\n- [x] Test this will large campaign to check the performance of command. (over 500 contacts)\r\n- [ ] This will also fix if there is any contact which is stucked at any point of campaign due to any exeption earlier.\r\n- [x] Verify changing the link to event the date linked is updated.e.g. parent is changed, linked to campaign source.\r\n- [ ] Verify that rsume stuck command is not fetching or executing decision events as they are ignored by command."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-05-15T09:42:20Z",
-        "body": "@rohitp19 I validated most of the points, but 3 aren't clear to me how to validate:\r\n1. Verify these scenario by deleting leaf node events and updated added new events.\r\n2. This will also fix if there is any contact which is stucked at any point of campaign due to any exeption earlier.\r\n3. Verify that rsume stuck command is not fetching or executing decision events as they are ignored by command.\r\n\r\nCan you please describe what should I do to verify these? For 1 I deleted a leaf note and it did nothing after rebuild which I think is what should happen, but unsure what shall I validate about that. I also added a new event in the middle of the campaign and it wasn't executed. I'm also not clear when should I run the `mautic:campaigns:trigger` command and when `mautic:campaigns:resume-stuck` for each step."
-      },
-      {
-        "user": {
-          "login": "rohitp19"
-        },
-        "created_at": "2026-05-18T05:27:08Z",
-        "body": "> @rohitp19 I validated most of the points, but 3 aren't clear to me how to validate:\r\n> \r\n> 1. Verify these scenario by deleting leaf node events and updated added new events.\r\n> 2. This will also fix if there is any contact which is stucked at any point of campaign due to any exeption earlier.\r\n> 3. Verify that rsume stuck command is not fetching or executing decision events as they are ignored by command.\r\n> \r\n> Can you please describe what should I do to verify these? For 1 I deleted a leaf note and it did nothing after rebuild which I think is what should happen, but unsure what shall I validate about that. I also added a new event in the middle of the campaign and it wasn't executed. I'm also not clear when should I run the `mautic:campaigns:trigger` command and when `mautic:campaigns:resume-stuck` for each step.\r\n\r\nHi @escopecz,\r\n1. Verify these scenario by deleting leaf node events and updated added new events.\r\nVerify scenarios by deleting leaf node events means it will not work if you delete events in between two events which are already executed. like \"Event A\", \"Event B (Child of event A)\", \"Event C (Child of event B)\" all are executed and now if you delete event B and add new event there and updated the date it will not execute that event as \"Event C\" is already executed. So it's like warning that verify these scenarios with leaf node events.\r\n\r\n2. This will also fix if there is any contact which is stucked at any point of campaign due to any exeption earlier.\r\nIt's just not limited to scenarios mentioned in ticket to test but in any scenario, due to any reason campaign is stuck this command should unstuck it.\r\n\r\n3. Verify that rsume stuck command is not fetching or executing decision events as they are ignored by command.\r\nThis is like verification step that check by running command in dry run mode and see there are no decision events shown in output. Earlier when command was written and decision events are not ignored it created a never ending loop and command never gets completed."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-05-18T13:55:54Z",
-        "body": "@rohitp19 I'm still confused.\r\n\r\n1. deleting leaf node events\r\n\r\n- You explain it that you have a campaign with events A -> B -> C and you delete B and replace with D then you end up with A -> D -> C and the confirmation should be that event C won't be executed twice. Is that what you mean? If so I have 2 more questions:\r\n- a) Why is this called \"Deleting leaf node events\" since there is no leaf node being deleted. In this example there is just 1 leaf node and it's C.\r\n- b) Should the event D be executed in this case?\r\n\r\n2. So it's not testable? In that case it probably shouldn't be in the testing steps.\r\n\r\n3. This is clear. I'll test this.\r\n\r\nI have another question about when should this command be executed. I checked our fork and I can't find any automatic trigger or job. So it should be executed only if someone notices that some campaign event didn't execute correctly? In the [docs comment](https://github.com/mautic/user-documentation/pull/709#issuecomment-4476761327) you mention that a cron job should be created for each campaign. That's not very practical. Shoudn't this be executed on after every `mautic:campaigns:trigger` command for each campaign automatically?"
-      },
-      {
-        "user": {
-          "login": "rohitp19"
-        },
-        "created_at": "2026-05-19T06:31:49Z",
-        "body": "> @rohitp19 I'm still confused.\r\n> \r\n> 1. deleting leaf node events\r\n> \r\n> * You explain it that you have a campaign with events A -> B -> C and you delete B and replace with D then you end up with A -> D -> C and the confirmation should be that event C won't be executed twice. Is that what you mean? If so I have 2 more questions:\r\n> * a) Why is this called \"Deleting leaf node events\" since there is no leaf node being deleted. In this example there is just 1 leaf node and it's C.\r\n> * b) Should the event D be executed in this case?\r\n> \r\n> 2. So it's not testable? In that case it probably shouldn't be in the testing steps.\r\n> 3. This is clear. I'll test this.\r\n> \r\n> I have another question about when should this command be executed. I checked our fork and I can't find any automatic trigger or job. So it should be executed only if someone notices that some campaign event didn't execute correctly? In the [docs comment](https://github.com/mautic/user-documentation/pull/709#issuecomment-4476761327) you mention that a cron job should be created for each campaign. That's not very practical. Shoudn't this be executed on after every `mautic:campaigns:trigger` command for each campaign automatically?\r\n\r\na) Why is this called \"Deleting leaf node events\" since there is no leaf node being deleted. In this example there is just 1 leaf node and it's C. \r\nI added that statement so that whoever test should test only with leaf nodes if he /she deleted the in between node and add new node there command will not execute that event.\r\n\r\n b) Should the event D be executed in this case?\r\n No\r\n\r\n2. So it's not testable? In that case it probably shouldn't be in the testing steps.\r\nOk\r\n\r\nWhen should it execute?\r\n=> In our case it is executed by jobs for each published campaign for which we add a job in maintenance tube. \r\n\r\nShoudn't this be executed on after every mautic:campaigns:trigger command for each campaign automatically?\r\n=> No it is not needed to run after every trigger, As this is edge case scenario Mautic Admins can run in case they find any issue with campaign."
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-05-19T12:29:14Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15310) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [13 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15310&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15310&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15310&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15310&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15310&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15310)\n\n"
-      }
-    ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "dadarya0"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2025-07-29T05:03:05Z",
-        "body": "Code changes looks good to me, Thanks @rohitpavaskar "
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2025-09-12T10:56:57Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2025-09-18T05:52:27Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "dadarya0"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2025-09-18T06:10:24Z",
-        "body": "No issue found in code changes "
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2025-09-18T08:58:20Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "rohitp19"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2025-09-18T09:10:06Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-05-19T12:27:33Z",
-        "body": "All the manual testing was successful 👍 "
-      }
-    ],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-05-12T13:33:16Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-05-12T13:33:17Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-05-12T13:33:17Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-05-26T11:31:14Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      }
-    ]
-  },
   "mautic/user-documentation#697": {
-    "docsUpdatedAt": "2026-06-26T05:52:04Z",
-    "codeUpdatedAt": "2026-07-27T14:12:57Z",
+    "docsUpdatedAt": "2026-08-13T09:37:44Z",
+    "codeUpdatedAt": "2026-08-13T09:36:04Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -10502,6 +10214,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-04-22T00:51:00Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "RCheesley"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-13T09:37:43Z",
+        "body": "I think this is GTG once the PR is merged."
       }
     ],
     "rawDocsComments": [
@@ -10701,7 +10421,7 @@
           "login": "sonarqubecloud[bot]"
         },
         "created_at": "2026-07-27T14:12:57Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [C Security Rating on New Code](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) (required ≥ A)  \n  \n<!-- sqra:qg_revision=e2c678cf8acf1ddbd70501355924d9135422d34bcc7de0e7fceb765842cf40a1 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [33 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted.svg '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/no-data.svg '') No data about Coverage  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed.svg '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -11904,7 +11624,7 @@
   },
   "mautic/developer-documentation-new#621": {
     "docsUpdatedAt": "2026-08-12T19:27:13Z",
-    "codeUpdatedAt": "2026-08-13T07:55:08Z",
+    "codeUpdatedAt": "2026-08-13T09:07:01Z",
     "rawDocsReviews": [],
     "rawDocsComments": [
       {
@@ -11931,7 +11651,16 @@
         "body": "Ready for review :+1: "
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-13T09:06:42Z",
+        "body": "No issues spotted 👍 "
+      }
+    ],
     "rawReviewRequests": []
   }
 }
