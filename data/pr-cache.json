@@ -5289,7 +5289,7 @@
   },
   "mautic/user-documentation#915": {
     "docsUpdatedAt": "2026-08-03T14:07:47Z",
-    "codeUpdatedAt": "2026-08-13T10:18:07Z",
+    "codeUpdatedAt": "2026-08-13T10:21:08Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -5318,7 +5318,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-13T10:03:04Z",
+        "created_at": "2026-08-13T10:21:08Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16927) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16927&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16927&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16927&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16927&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16927&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16927)\n\n"
       }
     ],
@@ -6974,7 +6974,7 @@
   },
   "mautic/user-documentation#872": {
     "docsUpdatedAt": "2026-07-30T06:14:40Z",
-    "codeUpdatedAt": "2026-08-13T10:18:09Z",
+    "codeUpdatedAt": "2026-08-13T10:21:21Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -7003,7 +7003,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-12T11:14:27Z",
+        "created_at": "2026-08-13T10:21:21Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16849) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16849&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16849&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16849&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16849&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16849&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16849)\n\n"
       }
     ],
@@ -7063,7 +7063,7 @@
   },
   "mautic/user-documentation#870": {
     "docsUpdatedAt": "2026-07-29T17:53:35Z",
-    "codeUpdatedAt": "2026-08-13T10:18:12Z",
+    "codeUpdatedAt": "2026-08-13T10:22:51Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -7078,7 +7078,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-08-12T10:19:36Z",
+        "created_at": "2026-08-13T10:22:50Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16845) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16845&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16845&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16845&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16845&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16845&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16845)\n\n"
       }
     ],
@@ -9998,7 +9998,7 @@
     ]
   },
   "mautic/user-documentation#712": {
-    "docsUpdatedAt": "2026-08-13T10:05:37Z",
+    "docsUpdatedAt": "2026-08-13T10:33:08Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -10098,6 +10098,34 @@
         },
         "created_at": "2026-08-13T09:57:33Z",
         "body": "Update: we've confirmed the scope for porting these UTM tags docs to the 7.1, 7.2, 6.0, and 5.2 branches. The new pages apply cleanly across all four, with one small per-branch adjustment needed on 6.0 and 5.2 (a screenshot reference differs on those versions). Preparing the branch-specific PRs now."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:24:50Z",
+        "body": "Progress: the first backport is up — a 7.1 version of this UTM tags documentation (mautic/user-documentation#921). Working on the 7.2, 6.0, and 5.2 versions next."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:28:34Z",
+        "body": "Progress: the 7.2 version is now up too (mautic/user-documentation#922). Next up are the 6.0 and 5.2 versions."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:30:45Z",
+        "body": "Progress: the 6.0 version is up (mautic/user-documentation#923). Just the 5.2 version left."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:33:08Z",
+        "body": "Done! I've opened backport PRs of this UTM tags documentation for all four requested branches:\n\n- 7.1 — mautic/user-documentation#921\n- 7.2 — mautic/user-documentation#922\n- 6.0 — mautic/user-documentation#923\n- 5.2 — mautic/user-documentation#924\n\nEach mirrors the new eight-page UTM Tags section from this PR. On 6.0 and 5.2 the Google Analytics screenshot reference was adjusted to the image filename those branches use (`add_ga_code.png`). I also cleaned up a few small RST issues carried over from the source (a nested `note`, a malformed inline literal, and lowercased the UTM values inside the example URLs).\n\nHeads-up: each PR shows a failing `build` check, but it's a pre-existing broken external link (`aivie.ch`) in an unrelated page that fails the link-checker on all of these branches — it isn't caused by these docs and needs no change here."
       }
     ],
     "rawCodeComments": [],
@@ -11661,6 +11689,102 @@
         "body": "No issues spotted 👍 "
       }
     ],
+    "rawReviewRequests": []
+  },
+  "mautic/user-documentation#924": {
+    "docsUpdatedAt": "2026-08-13T10:33:52Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-13T10:31:53Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:33:52Z",
+        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
+      }
+    ],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
+  },
+  "mautic/user-documentation#923": {
+    "docsUpdatedAt": "2026-08-13T10:33:42Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-13T10:30:28Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:33:42Z",
+        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
+      }
+    ],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
+  },
+  "mautic/user-documentation#922": {
+    "docsUpdatedAt": "2026-08-13T10:28:19Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-13T10:28:18Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": []
+  },
+  "mautic/user-documentation#921": {
+    "docsUpdatedAt": "2026-08-13T10:25:55Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-13T10:24:36Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-08-13T10:25:55Z",
+        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
+      }
+    ],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
     "rawReviewRequests": []
   }
 }
