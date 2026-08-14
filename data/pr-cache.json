@@ -10743,7 +10743,7 @@
   },
   "mautic/user-documentation#918": {
     "docsUpdatedAt": "2026-08-11T01:25:50Z",
-    "codeUpdatedAt": "2026-08-14T10:58:05Z",
+    "codeUpdatedAt": "2026-08-14T11:08:23Z",
     "rawDocsReviews": [],
     "rawDocsComments": [],
     "rawCodeComments": [
@@ -10763,6 +10763,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-08-11T11:05:36Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "hluchas"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-14T11:08:23Z",
+        "body": "Code looks good. It works.\nTY!"
       }
     ],
     "rawReviewRequests": []
@@ -11492,8 +11500,8 @@
     "rawReviewRequests": []
   },
   "mautic/developer-documentation-new#622": {
-    "docsUpdatedAt": "2026-08-13T15:04:42Z",
-    "codeUpdatedAt": "2026-08-14T10:06:02Z",
+    "docsUpdatedAt": "2026-08-14T11:53:15Z",
+    "codeUpdatedAt": "2026-08-14T11:37:44Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11550,6 +11558,22 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-13T14:58:01Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-14T11:52:37Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-14T11:52:39Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -11591,7 +11615,16 @@
         "body": "Ready to go :+1: :partying_face: \r\n\r\n(I've accidentally changed a config that was meant to be in another PR, that's why CI kept failing :palm_tree: )"
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-14T11:37:27Z",
+        "body": "Looks fine 👍 "
+      }
+    ],
     "rawReviewRequests": []
   }
 }
