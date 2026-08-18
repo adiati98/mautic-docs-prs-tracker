@@ -8483,7 +8483,7 @@
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
-    "codeUpdatedAt": "2026-08-18T08:47:12Z",
+    "codeUpdatedAt": "2026-08-18T09:23:05Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8627,6 +8627,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-18T08:47:12Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-18T09:22:38Z",
+        "body": "Code looks good and it makes the search features more accessible to users 👍 "
       }
     ],
     "rawReviewRequests": []
