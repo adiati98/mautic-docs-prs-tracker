@@ -1081,7 +1081,7 @@
   },
   "mautic/developer-documentation-new#593": {
     "docsUpdatedAt": "2026-07-11T18:57:40Z",
-    "codeUpdatedAt": "2026-08-18T07:33:41Z",
+    "codeUpdatedAt": "2026-08-19T13:19:57Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -1233,6 +1233,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-08-18T07:33:24Z",
         "body": "Works from a users perspective - LGTM!"
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-19T13:19:57Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": []
