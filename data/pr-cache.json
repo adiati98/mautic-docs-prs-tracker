@@ -8490,7 +8490,7 @@
   },
   "mautic/user-documentation#832": {
     "docsUpdatedAt": "2026-07-08T18:23:56Z",
-    "codeUpdatedAt": "2026-08-19T08:16:33Z",
+    "codeUpdatedAt": "2026-08-19T08:54:22Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -8650,6 +8650,14 @@
         "state": "APPROVED",
         "submitted_at": "2026-08-19T08:16:22Z",
         "body": "Very nice addition to the search - very solid addition from a users perspective"
+      },
+      {
+        "user": {
+          "login": "PatrickJenkner"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-08-19T08:54:22Z",
+        "body": "The feature works well almost everywhere, but for themes: The search bar is duplicated when trying to apply a filter\n\n<img width=\"2301\" height=\"658\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b61f6e53-6c4f-4fc3-9493-b2e83ec1acfe\" />"
       }
     ],
     "rawReviewRequests": []
