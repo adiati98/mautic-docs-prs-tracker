@@ -11056,7 +11056,7 @@
   },
   "mautic/developer-documentation-new#625": {
     "docsUpdatedAt": "2026-08-19T22:19:23Z",
-    "codeUpdatedAt": "2026-08-19T21:56:16Z",
+    "codeUpdatedAt": "2026-08-20T10:44:19Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11116,7 +11116,16 @@
         "body": "Good to go :+1: "
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-20T10:43:45Z",
+        "body": "One non-blocking migration documentation request."
+      }
+    ],
     "rawReviewRequests": []
   }
 }
