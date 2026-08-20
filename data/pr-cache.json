@@ -8497,7 +8497,7 @@
     "rawReviewRequests": []
   },
   "mautic/user-documentation#832": {
-    "docsUpdatedAt": "2026-08-20T14:53:11Z",
+    "docsUpdatedAt": "2026-08-20T15:12:54Z",
     "codeUpdatedAt": "2026-08-20T14:53:06Z",
     "rawDocsReviews": [
       {
@@ -8514,6 +8514,14 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-07-07T15:39:25Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-20T15:12:21Z",
         "body": ""
       }
     ],
