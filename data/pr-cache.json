@@ -11132,7 +11132,7 @@
   },
   "mautic/developer-documentation-new#625": {
     "docsUpdatedAt": "2026-08-19T22:19:23Z",
-    "codeUpdatedAt": "2026-08-21T11:26:36Z",
+    "codeUpdatedAt": "2026-08-21T13:38:08Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11215,6 +11215,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-21T11:20:44Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-21T13:37:59Z",
+        "body": "Looks good 👍 "
       }
     ],
     "rawReviewRequests": []
