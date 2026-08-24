@@ -1,7 +1,7 @@
 {
   "mautic/developer-documentation-new#629": {
     "docsUpdatedAt": "2026-08-23T12:04:10Z",
-    "codeUpdatedAt": "2026-08-23T23:25:11Z",
+    "codeUpdatedAt": "2026-08-24T11:21:55Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -77,6 +77,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-23T22:52:48Z",
         "body": "Tested locally (DDEV, PHP 8.5 / MariaDB 10.11)\r\n\r\nLGTM"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-24T11:21:29Z",
+        "body": "Nice improvement 👍 I see no issues"
       }
     ],
     "rawReviewRequests": []
