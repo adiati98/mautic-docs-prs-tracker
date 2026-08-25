@@ -11648,7 +11648,7 @@
   },
   "mautic/user-documentation#930": {
     "docsUpdatedAt": "2026-08-25T10:49:26Z",
-    "codeUpdatedAt": "2026-08-25T11:10:03Z",
+    "codeUpdatedAt": "2026-08-25T19:39:06Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11682,6 +11682,13 @@
         },
         "created_at": "2026-08-25T11:04:33Z",
         "body": "I'm thinking that this is a little hidden or assumed behavior. Perhaps we could just make a validation so the To field is mandatory?"
+      },
+      {
+        "user": {
+          "login": "peculiaruc"
+        },
+        "created_at": "2026-08-25T19:39:06Z",
+        "body": "> I'm thinking that this is a little hidden or assumed behavior. Perhaps we could just make a validation so the To field is mandatory?\r\n\r\nI agree with you. Making To field mandatory would stop empty-To sending nothing, and would be clearer than falling back to the form creator. I’ll update this PR to do that."
       }
     ],
     "rawCodeReviews": [],
