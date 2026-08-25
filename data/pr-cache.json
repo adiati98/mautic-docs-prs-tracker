@@ -6896,7 +6896,7 @@
   },
   "mautic/user-documentation#915": {
     "docsUpdatedAt": "2026-08-14T19:25:48Z",
-    "codeUpdatedAt": "2026-08-25T08:37:53Z",
+    "codeUpdatedAt": "2026-08-25T09:03:59Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -6970,6 +6970,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-13T09:58:26Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-25T09:03:24Z",
+        "body": "Works well \n\n<img width=\"703\" height=\"382\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/17ed7b0e-f9af-46ab-a603-79a1cf84a2ad\" />"
       }
     ],
     "rawReviewRequests": []
