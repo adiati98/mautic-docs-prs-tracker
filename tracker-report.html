@@ -488,7 +488,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-08-26T19:17:42.690Z">Updated Wed, Aug 26, 7:17 PM</span>
+    <span class="updated" data-updated-iso="2026-08-26T21:48:13.983Z">Updated Wed, Aug 26, 9:48 PM</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -499,9 +499,9 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">35</div>
+      <div class="num">36</div>
       <div><div class="lbl">Need you today</div>
-      <div class="sub"><span class="dot serious"></span>1 follow-up</div></div>
+      <div class="sub"><span class="dot dismiss"></span>1 to close · <span class="dot serious"></span>1 follow-up</div></div>
     </button>
     <button class="tile" data-goto="forward" type="button">
       <div class="num">71</div>
@@ -531,16 +531,16 @@
   </div>
 
   <div class="filters">
-    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">123</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">62</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">61</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">35</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" title="You reminded the code author 14+ days ago and it&#039;s still quiet — escalate.">Critical <span class="fc">0</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" title="You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply — follow up.">Serious <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" title="Something needs doing now: review, remind, merge, or add a label.">Act <span class="fc">76</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" title="A draft PR waiting on its code PR, or a standalone PR waiting on its author.">Triage <span class="fc">10</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" title="No activity on the PR for 30+ days.">🕸 Stale <span class="fc">42</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">124</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">63</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">61</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">36</span></button><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" title="You reminded the code author 14+ days ago and it&#039;s still quiet — escalate.">Critical <span class="fc">0</span></button><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" title="You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply — follow up.">Serious <span class="fc">1</span></button><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" title="Something needs doing now: review, remind, merge, or add a label.">Act <span class="fc">76</span></button><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" title="A draft PR waiting on its code PR, or a standalone PR waiting on its author.">Triage <span class="fc">10</span></button><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" title="No activity on the PR for 30+ days.">🕸 Stale <span class="fc">43</span></button></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
   <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down — everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> — worth keeping open in its own tab.</p>
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">35</span>
-      <span class="chk-progress" data-state="zero">0/35 checked</span>
+      <h2>Need you today</h2><span class="count">36</span>
+      <span class="chk-progress" data-state="zero">0/36 checked</span>
       <span class="hint">actions only you can take — most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
@@ -575,15 +575,25 @@
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
+      <article class="row" data-sev="dismiss" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#632" data-search="developer-documentation #632 update custom sms transport docs for the autowireiterator refactor (mautic 8) promptless-for-oss #17154 tomasvotruba close this docs pr" data-status="[&quot;needs-close-docs-pr&quot;,false,false,false,false,false,false,false,false,false,false,[],false,null,false,false,false,false,true,false,false]">
+        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #632: Update custom SMS transport docs for the AutowireIterator refactor (Mautic 8) as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/632" target="_blank" class="name">developer-documentation #632</a> <span class="desc">Update custom SMS transport docs for the AutowireIterator refactor (Mautic 8)</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17154" target="_blank">#17154</a> <span class="pill closed">Closed</span> · author <b>TomasVotruba</b> · code PR closed without merging</div>
+          <div class="chips"><span class="chip dismiss">Close this docs PR</span></div>
+        </div>
+        <div class="when"><div class="days">—</div><div class="sub">code PR abandoned</div></div>
+      </article>
       <article class="row" data-sev="serious" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#712" data-search="user-documentation #712 everything about utm tags in mautic andersonjeccel send a follow-up adiati98 reviewed this" data-status="[&quot;needs-followup&quot;,false,false,false,false,false,false,null,false,false,false,[],false,null,false,false,false,false,false,true,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #712: EVERYTHING about UTM tags in Mautic as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/712" target="_blank" class="name">user-documentation #712</a> <span class="desc">EVERYTHING about UTM tags in Mautic</span></div>
-          <div class="meta">No linked code PR · docs author <b>andersonjeccel</b> · no reply since your review 11 days ago</div>
+          <div class="meta">No linked code PR · docs author <b>andersonjeccel</b> · no reply since your review 12 days ago</div>
           <div class="chips"><span class="chip nudge2">Send a follow-up</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
-        <div class="when"><div class="days serious">Day 11</div><div class="sub">since your review · escalate at 14</div><div class="meter late"><i style="width:79%"></i></div></div>
+        <div class="when"><div class="days serious">Day 12</div><div class="sub">since your review · escalate at 14</div><div class="meter late"><i style="width:86%"></i></div></div>
       </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#919" data-search="user-documentation #919 update url filter matching guidance for points and campaign page visits promptless-for-oss #15979 shinde-rahul ask code pr author to review content — code pr merged approved by rcheesley add content-approved label — rcheesley’s review was dismissed note since approval — take a look" data-status="[&quot;needs-remind-code-author&quot;,false,false,false,false,false,false,false,false,false,false,[&quot;RCheesley&quot;],true,null,false,false,true,true,false,true,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #919: Update URL filter matching guidance for Points and Campaign page visits as done"></div>
@@ -870,7 +880,7 @@
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/user-documentation/pull/888" target="_blank" class="name">user-documentation #888</a> <span class="desc">Update Plugin resources page images for the Mautic 7.0 UI</span></div>
-          <div class="meta">No linked code PR · docs author <b>promptless-for-oss</b> · you reviewed 11 days ago</div>
+          <div class="meta">No linked code PR · docs author <b>promptless-for-oss</b> · you reviewed 12 days ago</div>
           <div class="chips"><span class="chip manual">Ask Core Team to review content</span><span class="chip muted">RCheesley reviewed this</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">maintainer review</div></div>
@@ -1196,13 +1206,13 @@
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="1" data-approved="0" data-key="mautic/developer-documentation-new#562" data-search="developer-documentation #562 docs: add default dashboard screenshot to the ddev install page promptless-for-oss 🕸 stale — 47d quiet add milestone review this docs pr" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,null,true,false,false,[],false,null,false,false,false,false,false,false,false]">
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="1" data-approved="0" data-key="mautic/developer-documentation-new#562" data-search="developer-documentation #562 docs: add default dashboard screenshot to the ddev install page promptless-for-oss 🕸 stale — 48d quiet add milestone review this docs pr" data-status="[&quot;needs-milestone&quot;,false,false,false,false,false,false,null,true,false,false,[],false,null,false,false,false,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #562: docs: Add default Dashboard screenshot to the DDEV install page as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/562" target="_blank" class="name">developer-documentation #562</a> <span class="desc">docs: Add default Dashboard screenshot to the DDEV install page</span></div>
           <div class="meta">No linked code PR</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 47d quiet</span><span class="chip setup">Add milestone</span><span class="chip act">Review this docs PR</span></div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 48d quiet</span><span class="chip setup">Add milestone</span><span class="chip act">Review this docs PR</span></div>
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
@@ -1627,13 +1637,13 @@
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="1" data-key="mautic/developer-documentation-new#297" data-search="developer-documentation #297 docs: clarify that value 0 is valid when setting contact fields via api promptless-for-oss #15900 turanalmammadov 🕸 stale — 48d quiet 👀 prithvi2206 commented — no reply yet ✅ reminded code pr author adiati98 reviewed this" data-status="[&quot;waiting-code-pr-merge&quot;,false,false,false,false,false,false,false,true,false,true,[],false,&quot;untagged&quot;,false,true,true,false,false,true,true]">
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="1" data-key="mautic/developer-documentation-new#297" data-search="developer-documentation #297 docs: clarify that value 0 is valid when setting contact fields via api promptless-for-oss #15900 turanalmammadov 🕸 stale — 49d quiet 👀 prithvi2206 commented — no reply yet ✅ reminded code pr author adiati98 reviewed this" data-status="[&quot;waiting-code-pr-merge&quot;,false,false,false,false,false,false,false,true,false,true,[],false,&quot;untagged&quot;,false,true,true,false,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #297: docs: Clarify that value 0 is valid when setting contact fields via API as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/297" target="_blank" class="name">developer-documentation #297</a> <span class="desc">docs: Clarify that value 0 is valid when setting contact fields via API</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/15900" target="_blank">#15900</a> <span class="pill open">Open</span> · author <b>turanalmammadov</b> · code PR is still open</div>
-          <div class="chips"><span class="chip stale">🕸 Stale — 48d quiet</span><span class="chip manual">👀 prithvi2206 commented — no reply yet</span><span class="chip muted">✅ Reminded code PR author</span><span class="chip muted">adiati98 reviewed this</span></div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 49d quiet</span><span class="chip manual">👀 prithvi2206 commented — no reply yet</span><span class="chip muted">✅ Reminded code PR author</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
@@ -1707,13 +1717,13 @@
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
-      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="0" data-key="mautic/developer-documentation-new#527" data-search="developer-documentation #527 document form style-only theme import requirements promptless-for-oss #16257 thecesar85 👀 adiati98 is waiting on thecesar85 adiati98 reviewed this" data-status="[&quot;waiting-code-pr-merge&quot;,false,false,false,false,false,false,false,false,false,true,[],false,&quot;author&quot;,false,true,true,false,false,true,true]">
+      <article class="row" data-sev="none" data-repo="developer-documentation" data-stale="1" data-key="mautic/developer-documentation-new#527" data-search="developer-documentation #527 document form style-only theme import requirements promptless-for-oss #16257 thecesar85 🕸 stale — 31d quiet 👀 adiati98 is waiting on thecesar85 adiati98 reviewed this" data-status="[&quot;waiting-code-pr-merge&quot;,false,false,false,false,false,false,false,true,false,true,[],false,&quot;author&quot;,false,true,true,false,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #527: Document form style-only Theme import requirements as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/527" target="_blank" class="name">developer-documentation #527</a> <span class="desc">Document form style-only Theme import requirements</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16257" target="_blank">#16257</a> <span class="pill open">Open</span> · author <b>Thecesar85</b> · code PR is still open</div>
-          <div class="chips"><span class="chip manual">👀 adiati98 is waiting on Thecesar85</span><span class="chip muted">adiati98 reviewed this</span></div>
+          <div class="chips"><span class="chip stale">🕸 Stale — 31d quiet</span><span class="chip manual">👀 adiati98 is waiting on Thecesar85</span><span class="chip muted">adiati98 reviewed this</span></div>
         </div>
         <div class="when"><div class="days">—</div><div class="sub">waiting for the code PR to merge</div></div>
       </article>
@@ -1802,7 +1812,7 @@
 
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-08-26T19:17:42.690Z">Wed, Aug 26, 7:17 PM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-08-26T21:48:13.983Z">Wed, Aug 26, 9:48 PM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
