@@ -1635,7 +1635,21 @@ async function main() {
 				else if (daysSinceReview >= FOLLOWUP_DAYS) category = "needs-followup"
 				else category = "blocked-no-code-pr"
 			}
-		} else if (!effectiveHasMilestone) {
+		} else if (
+			!effectiveHasMilestone &&
+			!(appPRNumber && codeMerged && !codeMilestoneBranchMismatch)
+		) {
+			// A missing milestone blocks triage-first the way it always has —
+			// *except* when the code PR has already merged and its branch
+			// already lines up with where the docs PR is actually targeted
+			// (codeMilestoneBranchMismatch). In that case an operator simply
+			// forgetting to file the milestone isn't a reason to hold up the
+			// code author's review: the milestone doesn't change what they'd
+			// be reviewing. A real branch mismatch still blocks, since
+			// reminding them now risks asking them to review it twice, once
+			// before and once after the docs PR gets retargeted. The missing
+			// milestone itself stays visible either way, as its own chip (see
+			// missingMilestoneFlag below), so it doesn't get forgotten.
 			category = "needs-milestone"
 		} else if (appPRNumber && codeMerged) {
 			// The remind/follow-up/escalate clock no longer waits on a formal
@@ -1691,6 +1705,14 @@ async function main() {
 		// reviewed it" visible as its own chip alongside whatever the clock
 		// is showing, instead of being lost.
 		const reviewPendingFlag = appPRNumber && codeMerged && !operatorReviewDone
+
+		// Independent flag: the milestone is still missing, but that no
+		// longer blocked the category above (see the branch-match carve-out
+		// there) — so it needs its own chip to stay visible instead of
+		// silently going unfiled. Whenever the category *is* still
+		// needs-milestone, this and that are the same fact, so the chip only
+		// needs to render once regardless of which case triggered it.
+		const missingMilestoneFlag = !effectiveHasMilestone
 
 		// §3b — when this docs PR actually became reviewable, not when it was
 		// opened. Promptless opens docs PRs as drafts while the code PR is
@@ -1772,6 +1794,7 @@ async function main() {
 			lastAuthorEventDate,
 			docsAuthorLastEventDate,
 			reviewPendingFlag,
+			missingMilestoneFlag,
 			community,
 			remindedWhileOpen,
 			removeLabelFlag,
@@ -1991,6 +2014,7 @@ function statusSignature(pr) {
 		pr.staleDraftFlag,
 		pr.prematureReadyFlag,
 		pr.reviewPendingFlag,
+		pr.missingMilestoneFlag,
 		pr.staleFlag,
 		pr.handedBack,
 		pr.remindedWhileOpen,
@@ -2339,12 +2363,8 @@ function reviewNowChip(pr) {
 		: { cls: "muted", text: "Review this docs PR" }
 }
 
-// The red first-touch nudge — shared by needs-remind-code-author (the
-// category built entirely around this ask) and the needs-milestone category
-// below, whose "add milestone" chip otherwise takes priority even when the
-// code PR is also sitting there un-pinged (see isUrgentTriageRow). Same chip
-// either way, so a maintainer landing on a merged-but-untriaged docs PR
-// isn't missing that nobody's said anything to the code author yet.
+// The red first-touch nudge for needs-remind-code-author, the category
+// built entirely around this ask.
 function remindCodeAuthorChip(pr) {
 	if (pr.staleFlag) return null
 	return {
@@ -2364,6 +2384,11 @@ function chipsFor(pr) {
 	if (pr.needsRebaseFlag) chips.push({ cls: "manual", text: "Needs rebase" })
 	const codeMilestone = codeMilestoneAdvisoryChip(pr)
 	if (codeMilestone) chips.push(codeMilestone)
+	// Independent of category (see missingMilestoneFlag) — covers both the
+	// plain needs-milestone row and the branch-match carve-out that lets a
+	// merged, un-milestoned PR proceed straight into the remind chain below
+	// while still surfacing this as its own outstanding task.
+	if (pr.missingMilestoneFlag) chips.push({ cls: "setup", text: "Add milestone" })
 	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
 	// / "remind them" stops being an honest next step — it's not a fresh
 	// nudge anymore, it's a stale situation that needs a human decision, not
@@ -2387,10 +2412,10 @@ function chipsFor(pr) {
 			chips.push(reviewNowChip(pr))
 			break
 		case "needs-milestone":
-			// Dependency bumps (and their hand-made backports) don't get a
-			// docs milestone — see effectiveHasMilestone.
-			if (!pr.hasMilestone && !pr.isDependabotPR && !pr.isManualDependencyBackport)
-				chips.push({ cls: "setup", text: "Add milestone" })
+			// The "Add milestone" chip itself is pushed above, unconditionally
+			// on missingMilestoneFlag, since it now also has to render for
+			// rows the branch-match carve-out moved out of this category.
+			//
 			// Review shouldn't wait on triage finishing — a maintainer can
 			// (and should) start reading the content the moment the PR
 			// shows up, in parallel with adding the milestone. Skipped
@@ -2398,15 +2423,12 @@ function chipsFor(pr) {
 			// specific "code PR merged" wording, or when a maintainer has
 			// already reviewed — asking again would just be noise.
 			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
-			// A row lands here in Need-today once it's out of draft (see
-			// isUrgentTriageRow) purely for missing its milestone — but if on
-			// top of that nobody's ever pinged the code author either, that's
-			// worth surfacing too rather than waiting for the milestone to
-			// get added before the remind chain even starts.
-			if (pr.appPRNumber && pr.codeMerged && !pr.pingEverSent) {
-				const remind = remindCodeAuthorChip(pr)
-				if (remind) chips.push(remind)
-			}
+			// Note there's no remind-the-code-author nudge here: reaching
+			// this category while merged now only happens on a genuine
+			// branch mismatch (see the category logic in main()) — and
+			// reminding the author before that's sorted out risks asking
+			// them to review the docs PR twice, once now and once after it's
+			// retargeted.
 			break
 		case "blocked-no-code-pr":
 			// A qualifying approval settles it too, same as the code-author
