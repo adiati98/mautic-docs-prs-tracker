@@ -1265,6 +1265,15 @@ async function main() {
 			(r) => isApprovalLike(r) && !operatorLogins.has(r.user.login.toLowerCase()),
 		)
 		const approvedByNonOperator = nonOperatorApprovals.length > 0
+		// Latest approval from someone who isn't an operator — the code PR
+		// author, or any other outside reviewer. An operator's own approval
+		// only vouches for wording/style (see computeOperatorReviewDate), not
+		// content accuracy, so it's this date — not lastApprovalDate below —
+		// that the reminder report (buildReminderGroups) treats as "someone
+		// outside the team actually confirmed this is right."
+		const lastNonOperatorApprovalDate = latestDate(
+			nonOperatorApprovals.map((r) => new Date(r.submitted_at)),
+		)
 		// Any unrevoked-or-dismissed approval that isn't the PR author
 		// approving their own work — GitHub blocks self-approval for everyone
 		// except one admin exception, so in practice this exclusion only ever
@@ -1626,7 +1635,21 @@ async function main() {
 				else if (daysSinceReview >= FOLLOWUP_DAYS) category = "needs-followup"
 				else category = "blocked-no-code-pr"
 			}
-		} else if (!effectiveHasMilestone) {
+		} else if (
+			!effectiveHasMilestone &&
+			!(appPRNumber && codeMerged && !codeMilestoneBranchMismatch)
+		) {
+			// A missing milestone blocks triage-first the way it always has —
+			// *except* when the code PR has already merged and its branch
+			// already lines up with where the docs PR is actually targeted
+			// (codeMilestoneBranchMismatch). In that case an operator simply
+			// forgetting to file the milestone isn't a reason to hold up the
+			// code author's review: the milestone doesn't change what they'd
+			// be reviewing. A real branch mismatch still blocks, since
+			// reminding them now risks asking them to review it twice, once
+			// before and once after the docs PR gets retargeted. The missing
+			// milestone itself stays visible either way, as its own chip (see
+			// missingMilestoneFlag below), so it doesn't get forgotten.
 			category = "needs-milestone"
 		} else if (appPRNumber && codeMerged) {
 			// The remind/follow-up/escalate clock no longer waits on a formal
@@ -1682,6 +1705,14 @@ async function main() {
 		// reviewed it" visible as its own chip alongside whatever the clock
 		// is showing, instead of being lost.
 		const reviewPendingFlag = appPRNumber && codeMerged && !operatorReviewDone
+
+		// Independent flag: the milestone is still missing, but that no
+		// longer blocked the category above (see the branch-match carve-out
+		// there) — so it needs its own chip to stay visible instead of
+		// silently going unfiled. Whenever the category *is* still
+		// needs-milestone, this and that are the same fact, so the chip only
+		// needs to render once regardless of which case triggered it.
+		const missingMilestoneFlag = !effectiveHasMilestone
 
 		// §3b — when this docs PR actually became reviewable, not when it was
 		// opened. Promptless opens docs PRs as drafts while the code PR is
@@ -1746,6 +1777,7 @@ async function main() {
 			operatorApproved,
 			approverLogins,
 			lastApprovalDate,
+			lastNonOperatorApprovalDate,
 			noteSinceApprovalFlag,
 			docsAuthorPingDate,
 			docsAuthorPingActor,
@@ -1762,6 +1794,7 @@ async function main() {
 			lastAuthorEventDate,
 			docsAuthorLastEventDate,
 			reviewPendingFlag,
+			missingMilestoneFlag,
 			community,
 			remindedWhileOpen,
 			removeLabelFlag,
@@ -1981,6 +2014,7 @@ function statusSignature(pr) {
 		pr.staleDraftFlag,
 		pr.prematureReadyFlag,
 		pr.reviewPendingFlag,
+		pr.missingMilestoneFlag,
 		pr.staleFlag,
 		pr.handedBack,
 		pr.remindedWhileOpen,
@@ -2329,12 +2363,8 @@ function reviewNowChip(pr) {
 		: { cls: "muted", text: "Review this docs PR" }
 }
 
-// The red first-touch nudge — shared by needs-remind-code-author (the
-// category built entirely around this ask) and the needs-milestone category
-// below, whose "add milestone" chip otherwise takes priority even when the
-// code PR is also sitting there un-pinged (see isUrgentTriageRow). Same chip
-// either way, so a maintainer landing on a merged-but-untriaged docs PR
-// isn't missing that nobody's said anything to the code author yet.
+// The red first-touch nudge for needs-remind-code-author, the category
+// built entirely around this ask.
 function remindCodeAuthorChip(pr) {
 	if (pr.staleFlag) return null
 	return {
@@ -2354,6 +2384,11 @@ function chipsFor(pr) {
 	if (pr.needsRebaseFlag) chips.push({ cls: "manual", text: "Needs rebase" })
 	const codeMilestone = codeMilestoneAdvisoryChip(pr)
 	if (codeMilestone) chips.push(codeMilestone)
+	// Independent of category (see missingMilestoneFlag) — covers both the
+	// plain needs-milestone row and the branch-match carve-out that lets a
+	// merged, un-milestoned PR proceed straight into the remind chain below
+	// while still surfacing this as its own outstanding task.
+	if (pr.missingMilestoneFlag) chips.push({ cls: "setup", text: "Add milestone" })
 	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
 	// / "remind them" stops being an honest next step — it's not a fresh
 	// nudge anymore, it's a stale situation that needs a human decision, not
@@ -2377,10 +2412,10 @@ function chipsFor(pr) {
 			chips.push(reviewNowChip(pr))
 			break
 		case "needs-milestone":
-			// Dependency bumps (and their hand-made backports) don't get a
-			// docs milestone — see effectiveHasMilestone.
-			if (!pr.hasMilestone && !pr.isDependabotPR && !pr.isManualDependencyBackport)
-				chips.push({ cls: "setup", text: "Add milestone" })
+			// The "Add milestone" chip itself is pushed above, unconditionally
+			// on missingMilestoneFlag, since it now also has to render for
+			// rows the branch-match carve-out moved out of this category.
+			//
 			// Review shouldn't wait on triage finishing — a maintainer can
 			// (and should) start reading the content the moment the PR
 			// shows up, in parallel with adding the milestone. Skipped
@@ -2388,15 +2423,12 @@ function chipsFor(pr) {
 			// specific "code PR merged" wording, or when a maintainer has
 			// already reviewed — asking again would just be noise.
 			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
-			// A row lands here in Need-today once it's out of draft (see
-			// isUrgentTriageRow) purely for missing its milestone — but if on
-			// top of that nobody's ever pinged the code author either, that's
-			// worth surfacing too rather than waiting for the milestone to
-			// get added before the remind chain even starts.
-			if (pr.appPRNumber && pr.codeMerged && !pr.pingEverSent) {
-				const remind = remindCodeAuthorChip(pr)
-				if (remind) chips.push(remind)
-			}
+			// Note there's no remind-the-code-author nudge here: reaching
+			// this category while merged now only happens on a genuine
+			// branch mismatch (see the category logic in main()) — and
+			// reminding the author before that's sorted out risks asking
+			// them to review the docs PR twice, once now and once after it's
+			// retargeted.
 			break
 		case "blocked-no-code-pr":
 			// A qualifying approval settles it too, same as the code-author
@@ -2888,12 +2920,17 @@ const REMINDER_ELIGIBLE_CATEGORIES = new Set([
 // (or there's no approval at all yet). An approval doesn't retroactively
 // erase an earlier tag that's still unanswered, but it does settle things
 // once nothing's tagged them since. Whichever happened last wins.
+//
+// The approval that "wins" here has to be a non-operator one — an
+// operator's own approval only vouches for wording/style, not content
+// accuracy, so it can't be what quiets a still-unanswered tag to the code
+// author (see lastNonOperatorApprovalDate above).
 function hasOutstandingDocsPing(pr) {
 	return (
 		pr.pingEverSent &&
 		(pr.lastPingSource === "docs" || pr.lastPingSource === "review-request") &&
 		pr.lastPingActor !== PROMPTLESS &&
-		(!pr.lastApprovalDate || pr.lastPingDate > pr.lastApprovalDate)
+		(!pr.lastNonOperatorApprovalDate || pr.lastPingDate > pr.lastNonOperatorApprovalDate)
 	)
 }
 
@@ -2961,11 +2998,15 @@ function buildReminderGroups(prData) {
 		if (pr.appPRNumber && pr.appPRAuthor) {
 			if (!pr.codeMerged) continue
 			if (!REMINDER_ELIGIBLE_CATEGORIES.has(pr.category)) continue
-			// Approved, with nothing tagging the code author since — the docs
-			// PR is essentially ready, nothing left to ask them for. If a tag
-			// *did* land after the approval, hasOutstandingDocsPing keeps it
-			// in (via the "respond" mark) instead of excluding it here.
-			if (pr.lastApprovalDate && !hasOutstandingDocsPing(pr)) continue
+			// Approved by someone outside the team, with nothing tagging the
+			// code author since — the docs PR is essentially ready, nothing
+			// left to ask them for. If a tag *did* land after the approval,
+			// hasOutstandingDocsPing keeps it in (via the "respond" mark)
+			// instead of excluding it here. An operator's own approval
+			// doesn't count for this — it only vouches for wording/style, not
+			// content accuracy, so it can't be what closes out the code
+			// author's own reminder.
+			if (pr.lastNonOperatorApprovalDate && !hasOutstandingDocsPing(pr)) continue
 			remindLogin = pr.appPRAuthor
 			mark = reminderMark(pr)
 		} else {
@@ -4884,6 +4925,18 @@ function generateGuideHTML({ now }) {
   footer a{color:var(--ink-2);font-weight:600}
   footer a:hover{color:var(--accent)}
 
+  .back-to-top{
+    position:fixed;bottom:22px;right:22px;z-index:20;
+    width:42px;height:42px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--ring);box-shadow:var(--shadow);
+    color:var(--ink-2);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .15s,transform .15s,visibility .15s,border-color .15s;
+  }
+  .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
       transition-duration:.01ms !important;scroll-behavior:auto !important}
@@ -5144,6 +5197,8 @@ function generateGuideHTML({ now }) {
   </footer>
 </div>
 
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
 <script>
   document.querySelectorAll('[data-updated-iso]').forEach(function(el){
     el.textContent = new Date(el.getAttribute('data-updated-iso')).toLocaleString('en-US', {
@@ -5158,6 +5213,22 @@ function generateGuideHTML({ now }) {
     const next = cur === 'dark' ? 'light' : 'dark';
     r.setAttribute('data-theme', next);
     try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
+  }
+
+  // ---- back to top ----
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scrollBehavior = reduceMotion ? 'auto' : 'smooth';
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', function(){
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: scrollBehavior });
+      backToTop.blur();
+      document.querySelector('h1').setAttribute('tabindex', '-1');
+      document.querySelector('h1').focus();
+    });
   }
 </script>
 </body>
