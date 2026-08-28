@@ -1,9 +1,11 @@
 # Mautic Docs PR Tracker 📊
 
 > [!NOTE]
-> **👀 Just here to review docs PRs?** You don't need to set anything up — open the [Docs PR Tracker dashboard](https://adiati98.github.io/mautic-docs-prs-tracker/) and read the [tracker guide](https://adiati98.github.io/mautic-docs-prs-tracker/tracker-guide.html) to learn how to use it.
+> **👀 Just here to review docs PRs?** You don't need to set anything up. Open the [Docs PR Tracker dashboard](https://adiati98.github.io/mautic-docs-prs-tracker/) and read the [tracker guide](https://adiati98.github.io/mautic-docs-prs-tracker/tracker-guide.html) to learn how to use it.
 >
 > This README is for people setting up or maintaining the tool itself.
+
+---
 
 A local Node.js script that tracks open Mautic docs PRs and generates a dashboard showing what needs attention.
 
