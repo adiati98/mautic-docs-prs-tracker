@@ -49,10 +49,11 @@ Every open docs PR sits in exactly one of four groups, answering one question: *
 ### Common scenarios
 
 **A new docs draft PR shows up, linked to a code PR that's still open**
-1. It opens, not yet labeled or milestoned.
+1. It opens as a draft, without a milestone yet.
    
-   Tag: **Add pending-pr-merge label**, **Add milestone** — in **Bring it forward**, nothing urgent yet.
-2. Once labeled and milestoned, it just waits on the code PR to merge.
+   Tag: **Add milestone** — in **Bring it forward**, nothing urgent yet.
+2. Once it has a milestone, it just waits on the code PR to merge. Promptless
+   marks it ready for review automatically once that happens.
    
    Tag: **Review this docs PR** (quiet — you can read it early if you like, but there's no rush).
 
