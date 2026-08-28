@@ -260,7 +260,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker — Guide</h1>
-    <span class="updated" data-updated-iso="2026-08-28T19:25:15.479Z">Updated Fri, Aug 28, 7:25 PM</span>
+    <span class="updated" data-updated-iso="2026-08-28T19:32:44.747Z">Updated Fri, Aug 28, 9:32 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -314,7 +314,7 @@
     <div class="swatch-row"><span class="swatch-bar pale"></span> Pale — nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
 
     <div class="sample-row"><span class="pill open">Open</span> A badge like this is a fact, not an action. It names the linked code PR's own state — Open, Merged, or Closed.</div>
-    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. This is usually true while the linked code PR hasn't merged yet — once the code merges, the docs PR is normally marked ready for review.</div>
+    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open — Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
     <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is — see below.</div>
   </section>
 
@@ -325,15 +325,15 @@
     <table class="guide-table">
       <thead><tr><th scope="col">Color</th><th scope="col">Meaning</th></tr></thead>
       <tbody>
-        <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</td></tr>
+        <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone.</td></tr>
         <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
-        <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</td></tr>
+        <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, marking a docs PR ready after its code PR merged, or an approval that's ready to go.</td></tr>
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
-        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, or someone's looked but hasn't approved yet.</td></tr>
+        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
         <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed — its linked code PR was closed without merging.</td></tr>
-        <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity for 30+ days, on either PR. Just a heads-up — it doesn't change which group the row is in.</td></tr>
+        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
   </section>
@@ -349,7 +349,7 @@
         <tr><td><span class="dot serious"></span> <b>Serious</b></td><td>7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</td></tr>
         <tr><td><span class="dot act"></span> <b>Act</b></td><td>Something needs doing: review, remind, merge, or add a label.</td></tr>
         <tr><td><span class="dot triage"></span> <b>Triage</b></td><td>A draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</td></tr>
-        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened here in 30+ days, no matter what else is going on with the PR.</td></tr>
+        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
 
@@ -363,16 +363,20 @@
     <div class="scenario">
       <h3>A new docs PR opens</h3>
       <ol>
-        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR is not yet labeled or milestoned.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span></div>
+        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR does not have a milestone yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add milestone</span></div>
           In Bring it forward — nothing urgent yet.
         </li>
-        <li>Once it's labeled and milestoned, it just waits on the code PR.
+        <li>Once it has a milestone, it just waits on the code PR.
           <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
           Quiet — you can read it early if you like, but there's no rush.
         </li>
         <li>If the linked code PR is already merged, Promptless creates a PR. There's no waiting-on-code step here — it skips straight to the reminder flow below.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
+        </li>
+        <li>Occasionally the code PR merges but the docs PR stays a draft — Promptless normally flips it within seconds, so this means its automation didn't fire. The row waits 6 hours before saying so, to give the bot time.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
+          Mark the PR ready for review on GitHub by hand. Everything else then carries on as normal.
         </li>
       </ol>
     </div>
@@ -435,7 +439,7 @@
     <div class="scenario">
       <h3>Dependabot opens a dependency-bump PR</h3>
       <div class="note">A bump PR doesn't get a docs milestone — that requirement is skipped entirely for these. It always needs porting to older maintained branches too, even when it's opened straight against the latest one.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add needs-backport label</span><span class="chip act">Bump dependency — dependabot</span></div>
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip act">Bump dependency — dependabot</span></div>
         Don't add a milestone to these. The blue tag is just an FYI — it doesn't ask you to do anything.
       </div>
     </div>
@@ -482,7 +486,7 @@
       <h3>Nothing happens for a month</h3>
       <div class="note">
         <div class="see"><span class="lbl">You'll see</span><span class="chip stale">🕸 Stale</span></div>
-        Just a heads-up that nothing's moved in 30+ days. It doesn't change which group the row is in, or remove any other tag.
+        Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock. It doesn't change which group the row is in, or remove any other tag.
       </div>
     </div>
   </section>
@@ -500,7 +504,7 @@
   </section>
 
   <footer>
-    <div>Generated on <span data-updated-iso="2026-08-28T19:25:15.479Z">Fri, Aug 28, 7:25 PM</span></div>
+    <div>Generated on <span data-updated-iso="2026-08-28T19:32:44.747Z">Fri, Aug 28, 9:32 PM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>

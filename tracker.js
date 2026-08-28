@@ -53,6 +53,11 @@ const DEPENDABOT_LOGIN = "dependabot[bot]"
 const RELEASE_BRANCH_PATTERN = /^\d+\.\d+$/
 const FOLLOWUP_DAYS = 7
 const ESCALATE_DAYS = 14
+// Promptless marks a docs PR ready for review within seconds of its code PR
+// merging (measured ~5s on a real PR) — this threshold exists only to absorb
+// a short bot outage before flagging it as stuck. Based on a single
+// measurement; may need tuning.
+const STALE_DRAFT_HOURS = 6
 
 const CACHE_PATH = "data/pr-cache.json"
 const NO_CACHE = process.argv.includes("--fresh") || process.env.TRACKER_NO_CACHE === "1"
@@ -312,6 +317,31 @@ function slimReviewRequests(events) {
 			requested_reviewer: e.requested_reviewer ? { login: e.requested_reviewer.login } : null,
 			requested_team: e.requested_team ? { slug: e.requested_team.slug } : null,
 		}))
+}
+
+// The events endpoint also carries a "ready_for_review" event when a draft
+// PR (Promptless's docs PRs start as drafts, marked ready once the linked
+// code PR merges) transitions to ready — used to measure "how long has this
+// been reviewable" rather than "how long has it existed" (see readyDate in
+// main()). A PR can in principle be marked ready more than once, so the most
+// recent one is what matters.
+//
+// It can also be put *back* into draft afterwards. When that's the latest
+// transition the PR isn't reviewable at all, so there's no "ready since"
+// date to report — returning the old one would print "ready N days ago"
+// beside a Draft pill. Fall back to null (readyDate then uses the code-merge
+// or creation date) rather than reporting a date that's no longer true.
+function extractReadyForReviewDate(events) {
+	const latestOf = (name) => {
+		const dates = events.filter((e) => e.event === name).map((e) => e.created_at)
+		if (dates.length === 0) return null
+		return dates.reduce((latest, d) => (new Date(d) > new Date(latest) ? d : latest))
+	}
+	const ready = latestOf("ready_for_review")
+	if (ready === null) return null
+	const backToDraft = latestOf("convert_to_draft")
+	if (backToDraft !== null && new Date(backToDraft) > new Date(ready)) return null
+	return ready
 }
 
 function cacheHit(entry, docsUpdatedAt, codeUpdatedAt) {
@@ -1105,11 +1135,13 @@ async function main() {
 		let rawCodeComments
 		let rawCodeReviews
 		let rawReviewRequests
+		let readyForReviewAt
 
 		if (cacheHit(cached, pr.updated_at, codeUpdatedAt)) {
 			;({ rawDocsReviews, rawDocsComments, rawCodeComments, rawCodeReviews } = cached)
-			// Older cache entries predate this field.
+			// Older cache entries predate these fields.
 			rawReviewRequests = cached.rawReviewRequests || []
+			readyForReviewAt = cached.readyForReviewAt || null
 			cacheHits++
 		} else {
 			const dReviews = await fetchPRReviews(pr.sourceRepo, pr.number)
@@ -1138,12 +1170,14 @@ async function main() {
 				if (cached) {
 					;({ rawDocsReviews, rawDocsComments, rawCodeComments, rawCodeReviews } = cached)
 					rawReviewRequests = cached.rawReviewRequests || []
+					readyForReviewAt = cached.readyForReviewAt || null
 				} else {
 					rawDocsReviews = []
 					rawDocsComments = []
 					rawCodeComments = []
 					rawCodeReviews = []
 					rawReviewRequests = []
+					readyForReviewAt = null
 				}
 				fetchFailures++
 			} else {
@@ -1154,6 +1188,7 @@ async function main() {
 				rawCodeComments = cComments.map(slimComment)
 				rawCodeReviews = cReviews.map(slimReview)
 				rawReviewRequests = slimReviewRequests(dEvents)
+				readyForReviewAt = extractReadyForReviewDate(dEvents)
 				cache[key] = {
 					docsUpdatedAt: pr.updated_at,
 					codeUpdatedAt,
@@ -1162,6 +1197,7 @@ async function main() {
 					rawCodeComments,
 					rawCodeReviews,
 					rawReviewRequests,
+					readyForReviewAt,
 				}
 				cacheMisses++
 			}
@@ -1356,6 +1392,14 @@ async function main() {
 		// action. A standalone PR has no code PR to wait on, so any
 		// qualifying approval — including the operator's own — is enough;
 		// there's no one else left to review it.
+		//
+		// The label itself has no valid state anymore — the workflow that used
+		// it (a human marking "code PR not merged yet") is gone, replaced by
+		// the docs PR simply opening as a draft. It's deliberately still gated
+		// on codeMerged anyway: this flag feeds isNeedTodayRow, so dropping the
+		// gate would drag every label-carrying row out of Waiting and into
+		// Need-today for what is only housekeeping. The stragglers still drain
+		// on their own — every code PR eventually merges or closes.
 		let removeLabelFlag = codeMerged && hasLabel
 		let finalReviewActionable = appPRNumber
 			? approvedByNonOperator && codeMerged
@@ -1382,12 +1426,39 @@ async function main() {
 			!rebaseWinsOverBackport &&
 			!isPurposeBuiltForBranch(pr.title, baseBranch, pr.user.login) &&
 			!isManualDependencyBackport
+		// Promptless should have flipped this out of draft the moment the code
+		// PR merged (see STALE_DRAFT_HOURS) — still a draft this long after
+		// means the bot's automation didn't fire, and a human needs to mark it
+		// ready manually.
+		let staleDraftFlag =
+			isDraft &&
+			codeMerged &&
+			codeMergedDate !== null &&
+			Date.now() - codeMergedDate.getTime() > STALE_DRAFT_HOURS * 3600000
+		// Informational only: the docs PR says it's ready, but its linked code
+		// PR is still open. Either it was marked ready too early, or the code
+		// PR link in the description is wrong or out of date.
+		//
+		// Gated on readyForReviewAt because "not a draft" on its own doesn't
+		// mean anything converted it: PRs opened straight to ready — the old
+		// workflow, and community PRs — have simply never been drafts, and an
+		// open code PR alongside one of those is normal, not a mistake. Only a
+		// PR that actually fired a ready_for_review event can have been marked
+		// ready too early.
+		let prematureReadyFlag =
+			!isDraft &&
+			appPRNumber !== null &&
+			!codeMerged &&
+			!codeClosed &&
+			readyForReviewAt !== null
 		if (codeClosed) {
 			removeLabelFlag = false
 			finalReviewActionable = false
 			backportLabelFlag = false
 			needsRebaseFlag = false
 			rebaseWinsOverBackport = false
+			staleDraftFlag = false
+			prematureReadyFlag = false
 		}
 		const backportModifierActive =
 			finalReviewActionable && olderBranch && !rebaseWinsOverBackport
@@ -1449,14 +1520,20 @@ async function main() {
 		const daysSinceActivity = lastActivityDate
 			? Math.floor((Date.now() - lastActivityDate.getTime()) / 86400000)
 			: null
-		const staleFlag = daysSinceActivity !== null && daysSinceActivity > 30
+		// A draft docs PR whose linked code PR is still open is *supposed* to
+		// be quiet — it's waiting on the code PR, which moves at its own pace,
+		// so 30+ days of silence there isn't a real staleness signal. An
+		// abandoned code PR is still caught: codeClosed routes the row to
+		// "needs-close-docs-pr" below regardless of this flag.
+		const quietDraftIsExpected = isDraft && appPRNumber && !codeMerged && !codeClosed
+		const staleFlag =
+			daysSinceActivity !== null && daysSinceActivity > 30 && !quietDraftIsExpected
 
 		// §5b — primary lifecycle category, first match wins.
 		//
-		// Triage (label/milestone) is checked before "needs review" so a
-		// partially-triaged draft (e.g. milestone set but label missing)
-		// still surfaces the missing piece instead of jumping straight to
-		// "review this docs PR".
+		// Triage (milestone) is checked before "needs review" so an
+		// un-milestoned PR still surfaces the missing piece instead of
+		// jumping straight to "review this docs PR".
 		let category
 		if (codeClosed) {
 			category = "needs-close-docs-pr"
@@ -1549,9 +1626,7 @@ async function main() {
 				else if (daysSinceReview >= FOLLOWUP_DAYS) category = "needs-followup"
 				else category = "blocked-no-code-pr"
 			}
-		} else if (isDraft && (!hasLabel || !effectiveHasMilestone)) {
-			category = "needs-label-and-milestone"
-		} else if (!isDraft && !effectiveHasMilestone) {
+		} else if (!effectiveHasMilestone) {
 			category = "needs-milestone"
 		} else if (appPRNumber && codeMerged) {
 			// The remind/follow-up/escalate clock no longer waits on a formal
@@ -1608,6 +1683,23 @@ async function main() {
 		// is showing, instead of being lost.
 		const reviewPendingFlag = appPRNumber && codeMerged && !operatorReviewDone
 
+		// §3b — when this docs PR actually became reviewable, not when it was
+		// opened. Promptless opens docs PRs as drafts while the code PR is
+		// still open and marks them ready the moment it merges — for those,
+		// "opened N days ago" undercounts nothing but overstates how long a
+		// maintainer could have acted, so the real ready_for_review event date
+		// is preferred. Falls back to codeMergedDate (belt-and-braces, in case
+		// the event is missing but the merge date is known) and then to
+		// createdAt for PRs opened directly ready-for-review — the old
+		// workflow, and community PRs — which never fire that event at all.
+		const readyForReviewDate = readyForReviewAt ? new Date(readyForReviewAt) : null
+		const readyDate = readyForReviewDate || codeMergedDate || new Date(pr.created_at)
+		const readyDateSource = readyForReviewDate
+			? "ready_for_review"
+			: codeMergedDate
+				? "code_merged"
+				: "created"
+
 		// Already pinged the code author (on either PR), and the fact isn't
 		// already narrated by the category's own metaLine text above (the
 		// post-merge remind/follow-up/escalate categories all name the ping
@@ -1625,6 +1717,8 @@ async function main() {
 			url: pr.html_url,
 			docsAuthor: pr.user.login,
 			createdAt: pr.created_at,
+			readyDate,
+			readyDateSource,
 			isDraft,
 			hasLabel,
 			hasBackportLabel,
@@ -1673,6 +1767,8 @@ async function main() {
 			removeLabelFlag,
 			finalReviewActionable,
 			backportLabelFlag,
+			staleDraftFlag,
+			prematureReadyFlag,
 			isDependabotPR,
 			isManualDependencyBackport,
 			needsRebaseFlag,
@@ -1740,7 +1836,6 @@ const ACTIONABLE_CATEGORIES = new Set([
 	"needs-remind-code-author",
 	"needs-check-author-response",
 	"needs-operator-review",
-	"needs-label-and-milestone",
 	"needs-milestone",
 ])
 
@@ -1764,6 +1859,7 @@ function isNeedTodayRow(pr) {
 		pr.removeLabelFlag ||
 		pr.backportLabelFlag ||
 		pr.needsRebaseFlag ||
+		pr.staleDraftFlag ||
 		pr.codeMilestoneAdvisoryFlag ||
 		// The code PR merged and nobody's formally reviewed the docs PR yet —
 		// without this, a row whose category is otherwise quiet (monitoring,
@@ -1777,20 +1873,22 @@ function isNeedTodayRow(pr) {
 	)
 }
 
-// A brand-new PR still missing its label/milestone — ordinarily not urgent
-// (see isBringForwardRow below), *unless* its linked code PR has already
-// merged. Once the code is out, the docs PR shouldn't linger in triage on
-// its own schedule — someone needs to add the milestone and get eyes on the
-// content promptly so the docs can follow the release closely, so this pulls
-// it into Need-today instead. A standalone PR (no linked code PR) or one
-// whose code PR is still open has no such deadline pressure and stays
-// untouched by this.
+// A brand-new PR still missing its milestone — ordinarily not urgent (see
+// isBringForwardRow below), *unless* the docs can actually land now, in
+// which case it shouldn't linger in triage on its own schedule: someone
+// needs to add the milestone and get eyes on the content promptly.
+//
+// "Can land now" is two cases, not one. The obvious one is a PR out of
+// draft — it's reviewable this minute. The second is a PR still *in* draft
+// whose code PR has already merged: that's Promptless's automation having
+// failed to mark it ready (see staleDraftFlag), and it's the case that most
+// needs a human. Testing !isDraft alone would send exactly those rows to
+// Bring it forward and bury the bot failure, so codeMerged has to count too.
+//
+// A draft whose code PR is genuinely still open has no deadline pressure
+// and stays untouched by this.
 function isUrgentTriageRow(pr) {
-	return (
-		(pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") &&
-		pr.appPRNumber &&
-		pr.codeMerged
-	)
+	return pr.category === "needs-milestone" && (!pr.isDraft || pr.codeMerged)
 }
 
 // A docs PR still waiting on your review, but its linked code PR hasn't
@@ -1810,7 +1908,7 @@ function isPendingCodeReviewRow(pr) {
 // rather than buried in — or missing entirely from — the urgent list. Carved
 // out of what would otherwise be Need-today (never out of Waiting or
 // Monitoring, which stay as they are): brand-new PRs still needing their
-// first label/milestone (unless isUrgentTriageRow says otherwise), a review
+// first milestone (unless isUrgentTriageRow says otherwise), a review
 // that's on hold for a code PR that hasn't merged yet, and anything stale.
 // An approval never qualifies on its own, however "clean" the row otherwise
 // looks — once something is approved, merging it is the whole point, and
@@ -1818,8 +1916,7 @@ function isPendingCodeReviewRow(pr) {
 // (see finalReviewActionable in isNeedTodayRow).
 function isBringForwardRow(pr) {
 	return (
-		((pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") &&
-			!isUrgentTriageRow(pr)) ||
+		(pr.category === "needs-milestone" && !isUrgentTriageRow(pr)) ||
 		isPendingCodeReviewRow(pr) ||
 		pr.staleFlag
 	)
@@ -1829,7 +1926,7 @@ function isBringForwardRow(pr) {
 // they're listed: new PRs to triage, then reviews on hold for their code PR,
 // then stale.
 function bringForwardRank(pr) {
-	if (pr.category === "needs-label-and-milestone" || pr.category === "needs-milestone") return 0
+	if (pr.category === "needs-milestone") return 0
 	if (pr.staleFlag) return 2
 	if (isPendingCodeReviewRow(pr)) return 0.5
 	return 1
@@ -1881,6 +1978,8 @@ function statusSignature(pr) {
 		pr.backportLabelFlag,
 		pr.needsRebaseFlag,
 		pr.rebaseWinsOverBackport,
+		pr.staleDraftFlag,
+		pr.prematureReadyFlag,
 		pr.reviewPendingFlag,
 		pr.staleFlag,
 		pr.handedBack,
@@ -1928,12 +2027,11 @@ function categorySeverity(pr) {
 			return "serious"
 		case "needs-remind-code-author":
 		case "needs-check-author-response":
-		// New PRs still needing a label/milestone land in Bring it forward
-		// (see isBringForwardRow) — unless their code PR has already merged
+		// New PRs still needing a milestone land in Bring it forward (see
+		// isBringForwardRow) — unless they're ready for review, not a draft
 		// (isUrgentTriageRow), in which case they're here in Need-today
 		// instead. Either way something genuinely needs doing, so it's "act",
 		// not "triage".
-		case "needs-label-and-milestone":
 		case "needs-milestone":
 			return "act"
 		case "needs-operator-review":
@@ -1945,11 +2043,16 @@ function categorySeverity(pr) {
 		case "blocked-no-code-pr":
 			return "triage"
 		default:
+			// Every flag that can promote a row in isNeedTodayRow has to be
+			// listed here too, or a row promoted by that flag alone renders
+			// data-sev="none": no edge colour, and hidden by every priority
+			// filter tab.
 			return pr.finalReviewActionable ||
 				pr.removeLabelFlag ||
 				pr.backportLabelFlag ||
 				pr.needsRebaseFlag ||
-				pr.reviewPendingFlag
+				pr.reviewPendingFlag ||
+				pr.staleDraftFlag
 				? "act"
 				: "none"
 	}
@@ -1972,10 +2075,10 @@ function severityFor(pr) {
 
 // Only ever called on rows that already passed !isBringForwardRow, so
 // staleFlag and a clean approval never reach here — they've moved to Bring
-// it forward entirely. The two triage categories usually go with them too,
-// except when isUrgentTriageRow pulled one into Need-today for having a
-// merged code PR; those fall through to the default rank at the bottom,
-// since nothing here names them specifically. Likewise, needs-operator-review
+// it forward entirely. The needs-milestone category usually goes with them
+// too, except when isUrgentTriageRow pulled it into Need-today for being
+// out of draft; those fall through to the default rank at the bottom, since
+// nothing here names them specifically. Likewise, needs-operator-review
 // only reaches here when it's a standalone PR (isPendingCodeReviewRow already
 // sent every linked-but-still-open one to Bring it forward) — draft or not.
 function sortRank(pr) {
@@ -2164,9 +2267,10 @@ function buildClock(pr) {
 			return pr.pingEverSent
 				? { big: "—", sub: `quiet ${pr.daysSinceOperatorTouch}d — ping again` }
 				: { big: "—", sub: "no reminder sent yet" }
-		case "needs-operator-review":
-			return { big: "—", sub: `opened ${daysAgoText(new Date(pr.createdAt))}` }
-		case "needs-label-and-milestone":
+		case "needs-operator-review": {
+			const verb = pr.readyDateSource === "ready_for_review" ? "ready" : "opened"
+			return { big: "—", sub: `${verb} ${daysAgoText(pr.readyDate)}` }
+		}
 		case "needs-milestone":
 			return { big: "New", sub: "needs triage" }
 		case "blocked-no-code-pr":
@@ -2226,11 +2330,11 @@ function reviewNowChip(pr) {
 }
 
 // The red first-touch nudge — shared by needs-remind-code-author (the
-// category built entirely around this ask) and the two triage categories
-// below, whose "add milestone/label" chips otherwise take priority even
-// when the code PR is also sitting there un-pinged (see isUrgentTriageRow).
-// Same chip either way, so a maintainer landing on a merged-but-untriaged
-// docs PR isn't missing that nobody's said anything to the code author yet.
+// category built entirely around this ask) and the needs-milestone category
+// below, whose "add milestone" chip otherwise takes priority even when the
+// code PR is also sitting there un-pinged (see isUrgentTriageRow). Same chip
+// either way, so a maintainer landing on a merged-but-untriaged docs PR
+// isn't missing that nobody's said anything to the code author yet.
 function remindCodeAuthorChip(pr) {
 	if (pr.staleFlag) return null
 	return {
@@ -2272,32 +2376,23 @@ function chipsFor(pr) {
 		case "needs-operator-review":
 			chips.push(reviewNowChip(pr))
 			break
-		case "needs-label-and-milestone":
-			if (!pr.hasLabel) chips.push({ cls: "setup", text: `Add ${PENDING_LABEL} label` })
+		case "needs-milestone":
 			// Dependency bumps (and their hand-made backports) don't get a
 			// docs milestone — see effectiveHasMilestone.
 			if (!pr.hasMilestone && !pr.isDependabotPR && !pr.isManualDependencyBackport)
 				chips.push({ cls: "setup", text: "Add milestone" })
 			// Review shouldn't wait on triage finishing — a maintainer can
 			// (and should) start reading the content the moment the PR
-			// shows up, in parallel with adding the label/milestone. Skipped
+			// shows up, in parallel with adding the milestone. Skipped
 			// when reviewPendingFlag already covers it below with the more
 			// specific "code PR merged" wording, or when a maintainer has
 			// already reviewed — asking again would just be noise.
 			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
-			// The code PR merged and landed this row in Need-today (see
-			// isUrgentTriageRow) purely for missing triage — but if on top of
-			// that nobody's ever pinged the code author either, that's worth
-			// surfacing too rather than waiting for the milestone to get
-			// added before the remind chain even starts.
-			if (pr.appPRNumber && pr.codeMerged && !pr.pingEverSent) {
-				const remind = remindCodeAuthorChip(pr)
-				if (remind) chips.push(remind)
-			}
-			break
-		case "needs-milestone":
-			chips.push({ cls: "setup", text: "Add milestone" })
-			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
+			// A row lands here in Need-today once it's out of draft (see
+			// isUrgentTriageRow) purely for missing its milestone — but if on
+			// top of that nobody's ever pinged the code author either, that's
+			// worth surfacing too rather than waiting for the milestone to
+			// get added before the remind chain even starts.
 			if (pr.appPRNumber && pr.codeMerged && !pr.pingEverSent) {
 				const remind = remindCodeAuthorChip(pr)
 				if (remind) chips.push(remind)
@@ -2357,6 +2452,9 @@ function chipsFor(pr) {
 	}
 	if (pr.removeLabelFlag) {
 		chips.push({ cls: "finish", text: `Remove ${PENDING_LABEL} label` })
+	}
+	if (pr.staleDraftFlag) {
+		chips.push({ cls: "finish", text: "Code PR merged — mark ready for review" })
 	}
 	if (pr.backportLabelFlag) {
 		chips.push({ cls: "setup", text: `Add ${BACKPORT_LABEL} label` })
@@ -2558,6 +2656,13 @@ function waitingChipsFor(pr) {
 	}
 	const reviewInProgress = reviewInProgressChip(pr)
 	if (reviewInProgress) chips.push(reviewInProgress)
+
+	if (pr.prematureReadyFlag) {
+		chips.push({
+			cls: "muted",
+			text: `Marked ready, but code PR #${pr.appPRNumber} is still open — validate if it was marked ready early`,
+		})
+	}
 
 	chips.push(...approvalChips(pr))
 	return chips
@@ -3014,9 +3119,7 @@ function generateHTML(prData, { operatorUsername }) {
 		waitingSub = "you've done your part"
 	}
 
-	const newTriageCount = bringForward.filter(
-		(p) => p.category === "needs-label-and-milestone" || p.category === "needs-milestone",
-	).length
+	const newTriageCount = bringForward.filter((p) => p.category === "needs-milestone").length
 	const pendingReviewCount = bringForward.filter((p) => isPendingCodeReviewRow(p)).length
 	const bringForwardStaleCount = bringForward.filter((p) => p.staleFlag).length
 	const bringForwardBits = []
@@ -3048,7 +3151,11 @@ function generateHTML(prData, { operatorUsername }) {
 			"Triage",
 			"A draft PR waiting on its code PR, or a standalone PR waiting on its author.",
 		],
-		["stale", "🕸 Stale", "No activity on the PR for 30+ days."],
+		[
+			"stale",
+			"🕸 Stale",
+			"Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.",
+		],
 	]
 	const sevCounts = { critical: 0, serious: 0, act: 0, triage: 0 }
 	for (const p of needToday) {
@@ -4842,7 +4949,7 @@ function generateGuideHTML({ now }) {
     <div class="swatch-row"><span class="swatch-bar pale"></span> Pale — nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
 
     <div class="sample-row"><span class="pill open">Open</span> A badge like this is a fact, not an action. It names the linked code PR's own state — Open, Merged, or Closed.</div>
-    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. This is usually true while the linked code PR hasn't merged yet — once the code merges, the docs PR is normally marked ready for review.</div>
+    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open — Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
     <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is — see below.</div>
   </section>
 
@@ -4853,15 +4960,15 @@ function generateGuideHTML({ now }) {
     <table class="guide-table">
       <thead><tr><th scope="col">Color</th><th scope="col">Meaning</th></tr></thead>
       <tbody>
-        <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone, or — if it's a draft — the pending-merge label too.</td></tr>
+        <tr><td><span class="chip setup">Setup &amp; triage</span></td><td>A brand-new PR that still needs a milestone.</td></tr>
         <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
-        <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, or an approval that's ready to go.</td></tr>
+        <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, marking a docs PR ready after its code PR merged, or an approval that's ready to go.</td></tr>
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
-        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, or someone's looked but hasn't approved yet.</td></tr>
+        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
         <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed — its linked code PR was closed without merging.</td></tr>
-        <tr><td><span class="chip stale">🕸 Stale</span></td><td>No activity for 30+ days, on either PR. Just a heads-up — it doesn't change which group the row is in.</td></tr>
+        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
   </section>
@@ -4877,7 +4984,7 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="dot serious"></span> <b>Serious</b></td><td>7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</td></tr>
         <tr><td><span class="dot act"></span> <b>Act</b></td><td>Something needs doing: review, remind, merge, or add a label.</td></tr>
         <tr><td><span class="dot triage"></span> <b>Triage</b></td><td>A draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</td></tr>
-        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened here in 30+ days, no matter what else is going on with the PR.</td></tr>
+        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
 
@@ -4891,16 +4998,20 @@ function generateGuideHTML({ now }) {
     <div class="scenario">
       <h3>A new docs PR opens</h3>
       <ol>
-        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR is not yet labeled or milestoned.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add milestone</span></div>
+        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR does not have a milestone yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add milestone</span></div>
           In Bring it forward — nothing urgent yet.
         </li>
-        <li>Once it's labeled and milestoned, it just waits on the code PR.
+        <li>Once it has a milestone, it just waits on the code PR.
           <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
           Quiet — you can read it early if you like, but there's no rush.
         </li>
         <li>If the linked code PR is already merged, Promptless creates a PR. There's no waiting-on-code step here — it skips straight to the reminder flow below.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
+        </li>
+        <li>Occasionally the code PR merges but the docs PR stays a draft — Promptless normally flips it within seconds, so this means its automation didn't fire. The row waits ${STALE_DRAFT_HOURS} hours before saying so, to give the bot time.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
+          Mark the PR ready for review on GitHub by hand. Everything else then carries on as normal.
         </li>
       </ol>
     </div>
@@ -4963,7 +5074,7 @@ function generateGuideHTML({ now }) {
     <div class="scenario">
       <h3>Dependabot opens a dependency-bump PR</h3>
       <div class="note">A bump PR doesn't get a docs milestone — that requirement is skipped entirely for these. It always needs porting to older maintained branches too, even when it's opened straight against the latest one.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add pending-pr-merge label</span><span class="chip setup">Add needs-backport label</span><span class="chip act">${BUMP_DEPENDENCY_LABEL}</span></div>
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip act">${BUMP_DEPENDENCY_LABEL}</span></div>
         Don't add a milestone to these. The blue tag is just an FYI — it doesn't ask you to do anything.
       </div>
     </div>
@@ -5010,7 +5121,7 @@ function generateGuideHTML({ now }) {
       <h3>Nothing happens for a month</h3>
       <div class="note">
         <div class="see"><span class="lbl">You'll see</span><span class="chip stale">🕸 Stale</span></div>
-        Just a heads-up that nothing's moved in 30+ days. It doesn't change which group the row is in, or remove any other tag.
+        Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock. It doesn't change which group the row is in, or remove any other tag.
       </div>
     </div>
   </section>
