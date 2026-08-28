@@ -4925,6 +4925,18 @@ function generateGuideHTML({ now }) {
   footer a{color:var(--ink-2);font-weight:600}
   footer a:hover{color:var(--accent)}
 
+  .back-to-top{
+    position:fixed;bottom:22px;right:22px;z-index:20;
+    width:42px;height:42px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--ring);box-shadow:var(--shadow);
+    color:var(--ink-2);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;visibility:hidden;transform:translateY(8px);
+    transition:opacity .15s,transform .15s,visibility .15s,border-color .15s;
+  }
+  .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
+
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
       transition-duration:.01ms !important;scroll-behavior:auto !important}
@@ -5185,6 +5197,8 @@ function generateGuideHTML({ now }) {
   </footer>
 </div>
 
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
 <script>
   document.querySelectorAll('[data-updated-iso]').forEach(function(el){
     el.textContent = new Date(el.getAttribute('data-updated-iso')).toLocaleString('en-US', {
@@ -5199,6 +5213,22 @@ function generateGuideHTML({ now }) {
     const next = cur === 'dark' ? 'light' : 'dark';
     r.setAttribute('data-theme', next);
     try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
+  }
+
+  // ---- back to top ----
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const scrollBehavior = reduceMotion ? 'auto' : 'smooth';
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', function(){
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: scrollBehavior });
+      backToTop.blur();
+      document.querySelector('h1').setAttribute('tabindex', '-1');
+      document.querySelector('h1').focus();
+    });
   }
 </script>
 </body>
