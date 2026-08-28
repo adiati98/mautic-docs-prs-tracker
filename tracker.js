@@ -1265,6 +1265,15 @@ async function main() {
 			(r) => isApprovalLike(r) && !operatorLogins.has(r.user.login.toLowerCase()),
 		)
 		const approvedByNonOperator = nonOperatorApprovals.length > 0
+		// Latest approval from someone who isn't an operator — the code PR
+		// author, or any other outside reviewer. An operator's own approval
+		// only vouches for wording/style (see computeOperatorReviewDate), not
+		// content accuracy, so it's this date — not lastApprovalDate below —
+		// that the reminder report (buildReminderGroups) treats as "someone
+		// outside the team actually confirmed this is right."
+		const lastNonOperatorApprovalDate = latestDate(
+			nonOperatorApprovals.map((r) => new Date(r.submitted_at)),
+		)
 		// Any unrevoked-or-dismissed approval that isn't the PR author
 		// approving their own work — GitHub blocks self-approval for everyone
 		// except one admin exception, so in practice this exclusion only ever
@@ -1746,6 +1755,7 @@ async function main() {
 			operatorApproved,
 			approverLogins,
 			lastApprovalDate,
+			lastNonOperatorApprovalDate,
 			noteSinceApprovalFlag,
 			docsAuthorPingDate,
 			docsAuthorPingActor,
@@ -2888,12 +2898,17 @@ const REMINDER_ELIGIBLE_CATEGORIES = new Set([
 // (or there's no approval at all yet). An approval doesn't retroactively
 // erase an earlier tag that's still unanswered, but it does settle things
 // once nothing's tagged them since. Whichever happened last wins.
+//
+// The approval that "wins" here has to be a non-operator one — an
+// operator's own approval only vouches for wording/style, not content
+// accuracy, so it can't be what quiets a still-unanswered tag to the code
+// author (see lastNonOperatorApprovalDate above).
 function hasOutstandingDocsPing(pr) {
 	return (
 		pr.pingEverSent &&
 		(pr.lastPingSource === "docs" || pr.lastPingSource === "review-request") &&
 		pr.lastPingActor !== PROMPTLESS &&
-		(!pr.lastApprovalDate || pr.lastPingDate > pr.lastApprovalDate)
+		(!pr.lastNonOperatorApprovalDate || pr.lastPingDate > pr.lastNonOperatorApprovalDate)
 	)
 }
 
@@ -2961,11 +2976,15 @@ function buildReminderGroups(prData) {
 		if (pr.appPRNumber && pr.appPRAuthor) {
 			if (!pr.codeMerged) continue
 			if (!REMINDER_ELIGIBLE_CATEGORIES.has(pr.category)) continue
-			// Approved, with nothing tagging the code author since — the docs
-			// PR is essentially ready, nothing left to ask them for. If a tag
-			// *did* land after the approval, hasOutstandingDocsPing keeps it
-			// in (via the "respond" mark) instead of excluding it here.
-			if (pr.lastApprovalDate && !hasOutstandingDocsPing(pr)) continue
+			// Approved by someone outside the team, with nothing tagging the
+			// code author since — the docs PR is essentially ready, nothing
+			// left to ask them for. If a tag *did* land after the approval,
+			// hasOutstandingDocsPing keeps it in (via the "respond" mark)
+			// instead of excluding it here. An operator's own approval
+			// doesn't count for this — it only vouches for wording/style, not
+			// content accuracy, so it can't be what closes out the code
+			// author's own reminder.
+			if (pr.lastNonOperatorApprovalDate && !hasOutstandingDocsPing(pr)) continue
 			remindLogin = pr.appPRAuthor
 			mark = reminderMark(pr)
 		} else {
