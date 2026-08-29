@@ -12131,7 +12131,7 @@
   },
   "mautic/developer-documentation-new#634": {
     "docsUpdatedAt": "2026-08-26T23:20:59Z",
-    "codeUpdatedAt": "2026-08-28T18:12:08Z",
+    "codeUpdatedAt": "2026-08-29T17:07:39Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -12217,7 +12217,8 @@
         "body": ""
       }
     ],
-    "rawReviewRequests": []
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#633": {
     "docsUpdatedAt": "2026-08-26T21:57:42Z",
