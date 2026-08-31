@@ -96,7 +96,7 @@ Every run writes `data/pr-cache.json` (committed, not gitignored). It's keyed by
 
 `.github/workflows/update-tracker.yml` runs the tracker on a schedule, commits the updated report and cache back to the repo, and publishes the dashboard to GitHub Pages. All times below are Central European local time.
 
-- **Every 30 minutes, ~9am–9pm, Monday–Friday** — a regular run, reusing the cache.
+- **Hourly, ~9am–9pm, Monday–Friday** — a regular run, reusing the cache.
 - **~10am and ~9pm, Saturday and Sunday** — two runs a day on weekends.
 - **~Midnight Monday** — one full refetch a week, ignoring the cache to correct any drift.
 
