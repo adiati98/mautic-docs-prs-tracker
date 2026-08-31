@@ -9,7 +9,7 @@ on:
     # during the DST transition weeks themselves (late Mar / late Oct),
     # instead of for half the year - accepted tradeoff for an internal tool.
     #
-    # Every mark below sits at :07/:37, not :00/:30. GitHub Actions runs
+    # Every mark below sits at :07, not :00/:30. GitHub Actions runs
     # scheduled workflows best-effort and de-prioritizes them under load, and
     # :00/:30 are the most oversubscribed minutes platform-wide (everyone's
     # default cron), which was causing runs to land 30-60+ min late. Offsetting
@@ -17,13 +17,32 @@ on:
     # is used org-wide and needs to actually be near-live, not just eventually
     # consistent.
     #
-    # Incremental update, every half hour, ~9am-9pm CE time, Mon-Fri. Split
-    # into two rules so the window closes exactly at 9pm (a single "9-21"
-    # hour range with :07/:37 minutes would run over into 9:37pm).
-    - cron: "7,37 7-18 * 4-10 1-5" # CEST: ~9am-9pm = 7-19 UTC
-    - cron: "7 19 * 4-10 1-5"
-    - cron: "7,37 8-19 * 11,12,1,2,3 1-5" # CET: ~9am-9pm = 8-20 UTC
-    - cron: "7 20 * 11,12,1,2,3 1-5"
+    # Incremental update, hourly, ~9am-9pm CE time, Mon-Fri.
+    #
+    # This was every half hour (26 marks a weekday) until 31 Aug 2026. From
+    # 27 Aug 2026 GitHub started delivering only 1-3 of those 26, down from a
+    # steady 11-15/day over the three weeks before, with some runs landing
+    # 7+ hours late (02:18 and 03:32 UTC, hours after the 19:07 UTC window
+    # closed). Nothing on this side changed: cron valid, no failures since
+    # 17 Aug, runs finish in 1-4 min so the concurrency group never blocks
+    # anything, public repo so no minutes limit.
+    #
+    # The one pattern in the data: the low-frequency weekend rules below
+    # (2-3 marks/day) were delivered in full all month, while the
+    # high-frequency weekday rules were dropped. That is consistent with
+    # GitHub throttling frequent schedules harder - not documented policy, so
+    # treat it as a hypothesis. Halving the ask to 13 marks tests it, and
+    # costs nothing while only 1-3 are arriving anyway. Hourly, not 2-hourly,
+    # because a 2-hour-stale report lets two maintainers pick up the same PR
+    # without seeing each other's claim.
+    #
+    # Revisit ~9 Sep 2026: if delivery is back to ~10+/day, keep this. If it
+    # is still 1-3, GitHub's scheduler is not usable here and the trigger
+    # should move to an external timer calling workflow_dispatch. Either way,
+    # if the schedule changes again, update the note in README.md's
+    # Automation section too.
+    - cron: "7 7-19 * 4-10 1-5" # CEST: ~9am-9pm = 7-19 UTC
+    - cron: "7 8-20 * 11,12,1,2,3 1-5" # CET: ~9am-9pm = 8-20 UTC
     # Weekend: two incremental check-ins each day (Sat and Sun), ~10am and
     # ~9pm CE time - same cadence both days.
     - cron: "7 8 * 4-10 6,0" # CEST: ~10am = 8 UTC, ~9pm = 19 UTC

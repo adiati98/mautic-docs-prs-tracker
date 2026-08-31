@@ -457,10 +457,24 @@ function tryExtractAppPR(text, sourceRepo) {
 	// same-repo matches and keep scanning rather than returning the first
 	// one, so a genuine code PR mentioned later in the body still gets
 	// found.
-	const explicitRepoPattern = /mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/gi
+	//
+	// Two spellings carry a repo + number, and both are scanned in one pass so
+	// document order still decides which wins (see extractAppPR's note on
+	// "first PR number mentioned" being this project's real convention):
+	//
+	//   mautic/<repo>#123                          shorthand
+	//   https://github.com/mautic/<repo>/pull/123  full link
+	//
+	// The link form is what Promptless writes under "Trigger Events" when it
+	// renders the reference as a markdown link — the visible text is then
+	// "mautic/mautic: <title>" with the number only inside the URL, which the
+	// shorthand pattern alone cannot see.
+	const explicitRepoPattern =
+		/https?:\/\/github\.com\/mautic\/([a-z0-9-]+)\/pull\/(\d+)|mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/gi
 	for (const match of text.matchAll(explicitRepoPattern)) {
-		const repo = `mautic/${match[1]}`
-		if (repo !== sourceRepo) return { repo, number: match[2] }
+		const repo = `mautic/${match[1] ?? match[3]}`
+		const number = match[2] ?? match[4]
+		if (repo !== sourceRepo) return { repo, number }
 	}
 
 	let match = text.match(/mautic\s+PR\s*#(\d+)/i)
