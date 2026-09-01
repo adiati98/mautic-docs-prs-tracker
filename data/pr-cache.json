@@ -13982,7 +13982,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#939": {
-    "docsUpdatedAt": "2026-09-01T19:18:18Z",
+    "docsUpdatedAt": "2026-09-01T19:30:34Z",
     "codeUpdatedAt": "2026-09-01T18:29:43Z",
     "rawDocsReviews": [
       {
@@ -14046,6 +14046,20 @@
         },
         "created_at": "2026-09-01T19:18:18Z",
         "body": "Thanks, @adiati98 — on it. We'll investigate the mautic/mautic source behind the Share form to confirm the correct term for the flagged line (docs/campaigns/exporting_campaigns.rst:58), fix the Vale warning accordingly, and address the other review suggestions. We'll follow up here once the fixes are pushed."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-01T19:21:50Z",
+        "body": "Update: we confirmed against the mautic/mautic source (PR #15904) that the Share form's submit button is literally labeled **Publish to Marketplace**, so **Publish** is the accurate term for the flagged line. The Vale finding is a false positive — the rule maps the activate/deactivate sense of \"publish\" to Active/Turn On, which doesn't apply to a button named **Publish to Marketplace**. We're finalizing the fix on the branch and will follow up once pushed."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-01T19:30:34Z",
+        "body": "Thanks for the review, @adiati98. We confirmed the button labels against the Mautic 7.x source (PR #15904): the Campaign **Share** form's actions are **Publish to Marketplace** and **Download ZIP**, so we've updated the page to use the exact **Publish to Marketplace** label rather than the bare word \"Publish\". Because that label is the button's own name (not the entity-activation sense the linter checks for), we fenced those two action bullets with the docs' standard `.. vale off` / `.. vale on` markers, which clears the Vale warning you flagged on line 58. The fix is pushed to this PR (commit `5d66c263`). Ready for another look."
       }
     ],
     "rawCodeComments": [
