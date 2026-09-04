@@ -12523,7 +12523,7 @@
     "readyForReviewAt": "2026-06-05T08:00:34Z"
   },
   "mautic/user-documentation#542": {
-    "docsUpdatedAt": "2026-09-04T11:41:10Z",
+    "docsUpdatedAt": "2026-09-04T11:49:33Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [],
     "rawDocsComments": [
@@ -12589,6 +12589,13 @@
         },
         "created_at": "2026-09-04T11:41:10Z",
         "body": "Update: I'm preparing the new PR now — cherry-picking Tom's commits so his authorship is preserved, then applying the finalized borderless recaptures and the Lifecycle image placement fix on top. I'll close #943 and link the new PR here once it's up."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T11:49:33Z",
+        "body": "Done, @adiati98 — as you asked, we've preserved Tom's original commits (cherry-picked so he keeps authorship credit) and opened a fresh PR, **[#945](https://github.com/mautic/user-documentation/pull/945)**, that finishes the work on top of them: the Stages screenshots are recaptured cleanly without the red border @tommairs flagged, and the Lifecycle dashboard-widget image is placed after its paragraph to match the page's convention. Prose is unchanged and Vale passes.\n\nWe've closed #943 in favor of #945. #945 is currently a draft — mark it ready for review whenever you'd like."
       }
     ],
     "rawCodeComments": [],
@@ -16854,8 +16861,8 @@
     ],
     "readyForReviewAt": null
   },
-  "mautic/user-documentation#943": {
-    "docsUpdatedAt": "2026-09-04T09:36:09Z",
+  "mautic/user-documentation#945": {
+    "docsUpdatedAt": "2026-09-04T11:47:24Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -16863,7 +16870,7 @@
           "login": "promptless-for-oss"
         },
         "state": "COMMENTED",
-        "submitted_at": "2026-09-04T09:36:08Z",
+        "submitted_at": "2026-09-04T11:47:24Z",
         "body": ""
       }
     ],
