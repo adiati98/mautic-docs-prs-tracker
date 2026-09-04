@@ -4427,6 +4427,8 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   .intro ul,.intro ol{margin:0 0 8px 20px}
   .intro li{margin:3px 0}
   .intro-sections li{margin:5px 0}
+  .intro-sections a{text-decoration:underline}
+  .intro-sections a:hover b{color:var(--accent)}
 
   .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
   .toc a{
