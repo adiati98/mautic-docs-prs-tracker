@@ -15320,7 +15320,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#939": {
-    "docsUpdatedAt": "2026-09-04T09:34:20Z",
+    "docsUpdatedAt": "2026-09-04T18:34:43Z",
     "codeUpdatedAt": "2026-09-01T18:29:43Z",
     "rawDocsReviews": [
       {
@@ -15370,6 +15370,38 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-02T12:31:09Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-04T17:05:54Z",
+        "body": "Verified the diff against both rounds of feedback - corrections all applied correctly. LGTM."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T17:37:32Z",
+        "body": "@promptless-for-oss please address the suggestions."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T17:48:01Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T18:04:51Z",
+        "body": "@promptless-for-oss please address the Vale errors and warnings."
       }
     ],
     "rawDocsComments": [
@@ -15456,6 +15488,48 @@
         },
         "created_at": "2026-09-02T12:52:29Z",
         "body": "Pushed (SHA `3beed786`). Both of your reviews are applied, verified against the 7.x source:\n\n**Rate & Review** (`docs/marketplace/marketplace.rst`): removed from the Context menu list; **Submitting a review** now describes it as a standalone star-icon button on the Plugin detail page that opens the Plugin's own page on marketplace.mautic.org in a new browser tab (not a redirect to the site root). The docs never referenced marketplace-api.mautic.org, so no edit was needed there.\n\n**Publish to Marketplace** (`docs/campaigns/exporting_campaigns.rst`): now lists five required fields (**Name**, **Vendor Name**, **Package Version**, **Headline**, **Description**, with the 100-character description minimum), plus optional Keywords, Works with, Languages, a Banner Image, and the image gallery with ALT text. A per-item disposition is in the PR description.\n\nOne note on the red **build** check: it's not from this branch. It fails at the checklinks step on pre-existing parse errors in files this PR doesn't touch (`campaign_builder.rst:97`, `importing_campaigns.rst:94`) and a couple of unreachable external links; the one link this branch adds (semver.org) resolves fine and `exporting_campaigns.rst` parses cleanly. Flagging in case it's worth a separate fix, but it isn't blocking on the content here."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T17:39:04Z",
+        "body": "Thanks @adiati98 — we're on it. Addressing the three review suggestions (hyphen instead of parentheses, active voice, and the 'Reviews panel' capitalization) on this branch now, and will re-run Vale before pushing."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T17:40:35Z",
+        "body": "Update: all three suggestions are scoped and being applied on this branch — parentheses → hyphen for the version example, the character-limit bullet rewritten in active voice, and 'Reviews panel' lowercased to 'reviews panel'. Running Vale and pushing shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T17:49:40Z",
+        "body": "Thanks @adiati98 — all three points are addressed on this branch.\n\n- **Package Version example** now uses a hyphen instead of parentheses.\n- **Headline** field is now described in active voice (\"must be 60 characters or fewer\"), parallel to the Description bullet.\n- **\"Reviews panel\" capitalization**: the capital R is correct — it matches the product's own UI, where the panel heading is rendered from the `marketplace.reviews` label, which reads \"Reviews\". We've left it capitalized.\n\nVale passes on the changed lines."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T18:06:21Z",
+        "body": "Thanks @adiati98 — on it. We're running Vale against the changed RST files, and we'll push fixes for the flagged errors and warnings to this branch shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T18:17:35Z",
+        "body": "Update: we reproduced the Vale annotations locally. They're four `Mautic.FeatureList` suggestions on the changed lines, flagging \"Plugin detail page\", \"Plugin's own page\", and \"Share form\". These are false positives — a Plugin listing page and the Share form aren't the Mautic **Landing Page** / **Form** features — so we're rewording those phrases rather than capitalizing them. Pushing the fixes shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T18:34:43Z",
+        "body": "@adiati98 done — the Vale findings are addressed and pushed to this PR (commit `19a05d6c`).\n\nThe `prose` CI check itself was already passing; the items flagged are reviewdog's inline Vale annotations, and all four on this PR's changed lines were `Mautic.FeatureList` false positives. The flagged \"page\"/\"form\" refer to a Plugin's detail screen, its marketplace listing, and the Campaign Share screen — not the Mautic **Landing Page** or **Form** features — so capitalizing them would have been inaccurate. We reworded instead:\n\n- `marketplace.rst`: \"Plugin detail page\" → \"Plugin's detail view\", \"own page\" → \"own listing\"\n- `exporting_campaigns.rst`: \"Share form\" → \"Share screen\" (×2), plus the dependent \"in the form\" → \"on the Share screen\"\n\nVale now reports zero findings on the lines this PR adds or changes. Two out-of-scope annotations (the `github` xref and the \"Exporting Campaigns\" heading) sit on pre-existing 7.2 lines this PR never touched, so we left them unchanged."
       }
     ],
     "rawCodeComments": [
