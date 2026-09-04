@@ -8362,15 +8362,63 @@
     "readyForReviewAt": "2026-09-02T06:59:46Z"
   },
   "mautic/user-documentation#915": {
-    "docsUpdatedAt": "2026-09-01T18:55:08Z",
+    "docsUpdatedAt": "2026-09-04T13:38:31Z",
     "codeUpdatedAt": "2026-09-01T06:46:35Z",
     "rawDocsReviews": [
       {
         "user": {
           "login": "RCheesley"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-08-14T19:25:38Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T13:17:11Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T13:25:16Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T13:25:17Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T13:25:18Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T13:25:19Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T13:25:20Z",
         "body": ""
       }
     ],
@@ -8381,6 +8429,20 @@
         },
         "created_at": "2026-08-14T19:25:41Z",
         "body": "Just a reminder: I review PR comments by default. If you want me to ignore a specific comment, start it with `aside` or `/aside`."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T13:17:51Z",
+        "body": "Thanks @adiati98 — good catch. The two steps aren't duplicates: the first picks the entity *type* (e.g. Email vs. Form) and the second picks the specific entity of that type. I'll reword them so that distinction is clear and push the update to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T13:26:41Z",
+        "body": "@adiati98 good question — the two steps aren't duplicates, so I reworded them for clarity rather than merging them. The first step picks the entity **type** (the kind of thing you're adding — Email, Form, Campaign, and so on), which only appears when you can edit more than one type. The second step then picks the **specific entity** of that type to add to the Project.\n\nThe steps now read:\n\n> If you can edit more than one entity type, choose the entity type you want to add, such as Email, Form, or Campaign.\n> Select the specific entity of that type to add to the Project.\n\nPushed to this PR in place. Vale passes clean."
       }
     ],
     "rawCodeComments": [
@@ -9949,10 +10011,50 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#880": {
-    "docsUpdatedAt": "2026-09-04T09:46:22Z",
+    "docsUpdatedAt": "2026-09-04T13:06:10Z",
     "codeUpdatedAt": "2026-09-04T09:21:57Z",
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T12:37:45Z",
+        "body": "@promptless-for-oss if 'zip' here is file type, please change it to uppercase: ZIP for consistency. "
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T12:47:17Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-04T12:47:18Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T12:39:04Z",
+        "body": "Thanks @adiati98 — good catch. We're updating the file-type references from 'zip' to uppercase 'ZIP' for consistency and will push the change to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-04T12:48:36Z",
+        "body": "Done, @adiati98 — capitalized the file-type references to 'ZIP' throughout docs/themes/manage_themes.rst (5 occurrences on lines 70 and 74). None were literal `.zip` filenames, so all were safe to uppercase. Pushed to this PR (`9cc845cd`)."
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -12521,118 +12623,6 @@
       }
     ],
     "readyForReviewAt": "2026-06-05T08:00:34Z"
-  },
-  "mautic/user-documentation#542": {
-    "docsUpdatedAt": "2026-09-04T11:49:33Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "tommairs"
-        },
-        "created_at": "2025-11-07T19:07:35Z",
-        "body": "Hold on this.  I am going to update the images to remove the red boarder."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-01-15T09:17:19Z",
-        "body": "Hi @tommairs,\r\n\r\nI'm checking in here. How's the progress going? Do you need any help?"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-09-04T08:52:19Z",
-        "body": "@promptless-for-oss can you pick this up?"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-04T08:53:17Z",
-        "body": "Thanks @adiati98 — picking this up. We'll finish the Stages screenshot update (including recapturing the images cleanly without the red border that @tommairs flagged) and check the accompanying stages.rst changes against the style guide. We'll report back here with the outcome."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-04T08:59:02Z",
-        "body": "Quick update: we've confirmed the scope here — refreshing the Stages page images (Stages.png, switch-stage.png, stage-dashboard.png) and the new Lifecycle dashboard-widget image at the Mautic 5.2 UI, along with the small stages.rst image/paragraph addition. We're recapturing the screenshots now (light mode, clean frames without the stray border @tommairs flagged) and will report back with the result."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-04T09:38:07Z",
-        "body": "Picked this up, @adiati98. Since we don't have write access to @tommairs's fork branch, we opened a fresh PR against `5.2` that finishes the work: **[#943](https://github.com/mautic/user-documentation/pull/943)**.\n\nIt recaptures the Stages, \"Change contact's stage\", and \"Stages in time\" screenshots cleanly at the Mautic 5.2 UI — light mode, without the red border @tommairs flagged — and adds the missing Lifecycle dashboard-widget image. The prose is unchanged and Vale passes. #943 is currently a draft, ready to be marked for review whenever you'd like.\n\nThis PR (#542) can be closed in favor of #943. Thanks for flagging it!"
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-09-04T11:34:14Z",
-        "body": "@promptless-for-oss as there's a new PR created, I'm in favor for cherry-picking Tom's commits so he can get the credit and fix the rest there. That said, please close #943 and create a new PR."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-04T11:35:13Z",
-        "body": "Thanks — I've picked up the request to update the Stages.png screenshot on this PR and I'm working on it now. I'll follow up here with the updated image."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-04T11:41:10Z",
-        "body": "Update: I'm preparing the new PR now — cherry-picking Tom's commits so his authorship is preserved, then applying the finalized borderless recaptures and the Lifecycle image placement fix on top. I'll close #943 and link the new PR here once it's up."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-04T11:49:33Z",
-        "body": "Done, @adiati98 — as you asked, we've preserved Tom's original commits (cherry-picked so he keeps authorship credit) and opened a fresh PR, **[#945](https://github.com/mautic/user-documentation/pull/945)**, that finishes the work on top of them: the Stages screenshots are recaptured cleanly without the red border @tommairs flagged, and the Lifecycle dashboard-widget image is placed after its paragraph to match the page's convention. Prose is unchanged and Vale passes.\n\nWe've closed #943 in favor of #945. #945 is currently a draft — mark it ready for review whenever you'd like."
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "tommairs"
-        },
-        "created_at": "2025-11-05T00:00:36Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "tommairs"
-        },
-        "created_at": "2025-11-05T00:00:37Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "tommairs"
-        },
-        "created_at": "2025-11-05T00:00:37Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
   },
   "mautic/user-documentation#341": {
     "docsUpdatedAt": "2026-03-18T01:34:51Z",
@@ -16817,66 +16807,6 @@
         "body": ""
       }
     ],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#944": {
-    "docsUpdatedAt": "2026-09-04T11:42:17Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-09-04T11:42:16Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-09-04T11:42:17Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-09-04T11:42:17Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#945": {
-    "docsUpdatedAt": "2026-09-04T11:47:24Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-09-04T11:47:24Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   }
