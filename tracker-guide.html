@@ -97,7 +97,11 @@
 
   .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
 
-  .jump-nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+  .jump-nav{
+    display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px;
+    position:sticky;top:0;z-index:5;background:var(--page);
+    padding:10px 0;border-bottom:1px solid var(--ring);
+  }
   .jump-nav a{
     border:1px solid var(--ring);background:var(--surface);border-radius:999px;
     padding:4px 12px;font-size:12px;color:var(--ink-2);text-decoration:none;
@@ -105,7 +109,7 @@
   .jump-nav a:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));text-decoration:none}
 
   section.guide-sec{margin:40px 0}
-  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:16px}
+  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:64px}
   .guide-sec > p.sec-lede{color:var(--ink-2);font-size:13px;margin-bottom:16px}
   .guide-sec p{color:var(--ink-2);font-size:13.5px;margin:8px 0}
 
@@ -272,7 +276,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker — Guide</h1>
-    <span class="updated" data-updated-iso="2026-09-03T19:45:08.550Z">Updated Thu, Sep 3, 7:45 PM</span>
+    <span class="updated" data-updated-iso="2026-09-04T08:32:22.503Z">Updated Fri, Sep 4, 8:32 AM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -423,6 +427,7 @@
       <h3>Someone approves the docs PR</h3>
       <ol>
         <li>A docs PR is only merged once the code PR's author has approved it — either a formal GitHub review, or a clear approval left as a comment.</li>
+        <li>A formal GitHub review is picked up automatically. A comment-only approval isn't — add the <code>content-approved</code> label as soon as you see one, so the tracker knows the code PR author's part is done. Once the label is there, the row drops out of the code-author reminders and settles into <b>Monitoring</b> (or straight into <b>Need you today</b> for final review, if the code PR already merged).</li>
         <li>If the code PR has already merged, the row stays in <b>Need you today</b>.
           <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> You need to do final review — check the grammar and wordings — and approve the PR. Leave a comment and tag the <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
@@ -516,7 +521,7 @@
   </section>
 
   <footer>
-    <div>Generated on <span data-updated-iso="2026-09-03T19:45:08.550Z">Thu, Sep 3, 7:45 PM</span></div>
+    <div>Generated on <span data-updated-iso="2026-09-04T08:32:22.503Z">Fri, Sep 4, 8:32 AM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
