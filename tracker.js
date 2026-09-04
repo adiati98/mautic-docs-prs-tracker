@@ -1279,6 +1279,15 @@ async function main() {
 			(r) => isApprovalLike(r) && !operatorLogins.has(r.user.login.toLowerCase()),
 		)
 		const approvedByNonOperator = nonOperatorApprovals.length > 0
+		// The content-approved label isn't only a record of a formal review
+		// that later got dismissed (see needsContentApprovedLabelFlag below) —
+		// a maintainer also applies it when the code PR author approves the
+		// content in a plain comment instead of a formal GitHub review, which
+		// devApproved/approvedByNonOperator never see. Either way the label
+		// means the same thing: someone outside the team has signed off on the
+		// content, so it counts exactly like devApproved/approvedByNonOperator
+		// wherever those gate the code-author clock.
+		const contentApprovedSignal = devApproved || approvedByNonOperator || hasContentApprovedLabel
 		// Latest approval from someone who isn't an operator — the code PR
 		// author, or any other outside reviewer. An operator's own approval
 		// only vouches for wording/style (see computeOperatorReviewDate), not
@@ -1425,7 +1434,7 @@ async function main() {
 		// on their own — every code PR eventually merges or closes.
 		let removeLabelFlag = codeMerged && hasLabel
 		let finalReviewActionable = appPRNumber
-			? approvedByNonOperator && codeMerged
+			? contentApprovedSignal && codeMerged
 			: hasQualifyingApproval
 		// Just a label check — no clock, no "since when". You put the label on
 		// (or a bot did); this just makes sure it doesn't go unnoticed.
@@ -1563,8 +1572,7 @@ async function main() {
 		} else if (
 			escalationRequest &&
 			(!appPRNumber || codeMerged) &&
-			!devApproved &&
-			!approvedByNonOperator
+			!contentApprovedSignal
 		) {
 			// Only treat an escalation as "live" once the code PR has merged (or
 			// there's no code PR at all). Escalating while the code PR is still
@@ -1679,7 +1687,9 @@ async function main() {
 			// final sign-off, so a non-maintainer approval is a strong,
 			// independent signal that content-wise this is done. No more
 			// nudging; it settles into monitoring like a normal reply would.
-			if (devApproved || approvedByNonOperator) {
+			// The content-approved label carries the same weight when it's the
+			// only record of that sign-off (see contentApprovedSignal above).
+			if (contentApprovedSignal) {
 				category = "monitoring"
 			} else if (!pingEverSent) {
 				category = "needs-remind-code-author"
@@ -1787,6 +1797,7 @@ async function main() {
 			operatorReviewActor,
 			devApproved,
 			approvedByNonOperator,
+			contentApprovedSignal,
 			hasQualifyingApproval,
 			operatorApproved,
 			approverLogins,
@@ -2543,6 +2554,10 @@ function approvalChips(pr) {
 				? { cls: "finish", text: `Approved by ${names} — ready to merge` }
 				: { cls: "finish", text: `Approved by ${names}` },
 		)
+	} else if (pr.hasContentApprovedLabel) {
+		// No formal GitHub review at all — the label is the only record that
+		// the code PR author approved the content (e.g. in a plain comment).
+		chips.push({ cls: "finish", text: `${CONTENT_APPROVED_LABEL} label — content approved` })
 	}
 	// The approval fact above no longer waits on this label — it's just a
 	// nudge to make GitHub's own state agree with it: add the label so the
@@ -4412,6 +4427,8 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   .intro ul,.intro ol{margin:0 0 8px 20px}
   .intro li{margin:3px 0}
   .intro-sections li{margin:5px 0}
+  .intro-sections a{text-decoration:underline}
+  .intro-sections a:hover b{color:var(--accent)}
 
   .toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
   .toc a{
@@ -4787,7 +4804,11 @@ function generateGuideHTML({ now }) {
 
   .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
 
-  .jump-nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+  .jump-nav{
+    display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px;
+    position:sticky;top:0;z-index:5;background:var(--page);
+    padding:10px 0;border-bottom:1px solid var(--ring);
+  }
   .jump-nav a{
     border:1px solid var(--ring);background:var(--surface);border-radius:999px;
     padding:4px 12px;font-size:12px;color:var(--ink-2);text-decoration:none;
@@ -4795,7 +4816,7 @@ function generateGuideHTML({ now }) {
   .jump-nav a:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));text-decoration:none}
 
   section.guide-sec{margin:40px 0}
-  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:16px}
+  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:64px}
   .guide-sec > p.sec-lede{color:var(--ink-2);font-size:13px;margin-bottom:16px}
   .guide-sec p{color:var(--ink-2);font-size:13.5px;margin:8px 0}
 
@@ -5113,6 +5134,7 @@ function generateGuideHTML({ now }) {
       <h3>Someone approves the docs PR</h3>
       <ol>
         <li>A docs PR is only merged once the code PR's author has approved it — either a formal GitHub review, or a clear approval left as a comment.</li>
+        <li>A formal GitHub review is picked up automatically. A comment-only approval isn't — add the <code>${CONTENT_APPROVED_LABEL}</code> label as soon as you see one, so the tracker knows the code PR author's part is done. Once the label is there, the row drops out of the code-author reminders and settles into <b>Monitoring</b> (or straight into <b>Need you today</b> for final review, if the code PR already merged).</li>
         <li>If the code PR has already merged, the row stays in <b>Need you today</b>.
           <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> You need to do final review — check the grammar and wordings — and approve the PR. Leave a comment and tag the <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
