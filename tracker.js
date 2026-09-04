@@ -4802,7 +4802,11 @@ function generateGuideHTML({ now }) {
 
   .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
 
-  .jump-nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px}
+  .jump-nav{
+    display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px;
+    position:sticky;top:0;z-index:5;background:var(--page);
+    padding:10px 0;border-bottom:1px solid var(--ring);
+  }
   .jump-nav a{
     border:1px solid var(--ring);background:var(--surface);border-radius:999px;
     padding:4px 12px;font-size:12px;color:var(--ink-2);text-decoration:none;
@@ -4810,7 +4814,7 @@ function generateGuideHTML({ now }) {
   .jump-nav a:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring));text-decoration:none}
 
   section.guide-sec{margin:40px 0}
-  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:16px}
+  .guide-sec h2{font-size:17px;font-weight:650;margin-bottom:6px;letter-spacing:-.01em;scroll-margin-top:64px}
   .guide-sec > p.sec-lede{color:var(--ink-2);font-size:13px;margin-bottom:16px}
   .guide-sec p{color:var(--ink-2);font-size:13.5px;margin:8px 0}
 
