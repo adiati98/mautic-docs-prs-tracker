@@ -8834,7 +8834,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#911": {
-    "docsUpdatedAt": "2026-08-14T19:32:44Z",
+    "docsUpdatedAt": "2026-09-05T18:38:49Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -8906,6 +8906,16 @@
         "created_at": "2026-08-01T05:23:41Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-05T18:38:49Z",
+        "requested_reviewer": {
+          "login": "RCheesley"
         },
         "requested_team": null
       }
@@ -9961,156 +9971,6 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-08-01T00:22:08Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#883": {
-    "docsUpdatedAt": "2026-09-05T09:17:01Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-09-05T07:29:51Z",
-        "body": "@promptless-for-oss please address the suggestions.\n\nAdding to that:\n\n- For consistency, change the image name. We use lowercase and underscore to split words. For example: `stages.png`, `stage_dashboard.png`. Please remember this rule for the future.\n- Please create an image of the Lifecycle. Look at branch 5.2 as reference. "
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-09-05T08:03:38Z",
-        "body": ""
-      }
-    ],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:31:43Z",
-        "body": "Thanks for the review, @adiati98 — on it. We'll replace and reposition the `switch-stage.png` image, rename the images to the lowercase-with-underscores convention, and add the Lifecycle image using branch 5.2 as reference, then push the updates to this branch."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:34:59Z",
-        "body": "Update: we've mapped out all four items — replacing and repositioning the **Change contact's stage** image, renaming the touched images to the lowercase-with-underscores convention, and adding a fresh Lifecycle widget image captured against Mautic 7.1, using branch 5.2 as the reference. Working through them now."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:50:42Z",
-        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:52:56Z",
-        "body": "Update: all four changes are pushed to this branch. The images are renamed to the lowercase-with-underscores convention (`stages.png`, `stage_dashboard.png`, `switch_stage.png`), the **Change contact's stage** image is replaced with your attached one and moved to right after step 3, and a new `lifecycle.png` captured from Mautic 7.1.3 (matching the 5.2 Lifecycle reference) is added. Vale is clean on `stages.rst`. Ready for another look."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:54:12Z",
-        "body": "Thanks @adiati98 — I've pushed all four requested changes to this PR:\n\n- Renamed the Stages images to the lowercase/underscore convention (`stages.png`, `stage_dashboard.png`, `switch_stage.png`), and I'll keep to that convention going forward.\n- Replaced the switch-stage image with the **Change contact's stage** image you attached, and moved its directive to immediately after step 3.\n- Added a new Lifecycle widget screenshot, captured from Mautic 7.1.3 and using branch 5.2 as the reference for what it shows.\n\nThe prose is unchanged and Vale passes cleanly.\n\nOne heads-up on the red CI check: the `build` failure isn't from this PR. It's the link checker (`make checklinks`) hitting a dead external link — `https://developer.twitter.com/...` — in `docs/plugins/social_login.rst`, which was already failing on this branch before these changes and affects all PRs against it. We'll raise that separately."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T08:05:07Z",
-        "body": "Thanks @adiati98 — got it. We'll add `:width: 600` to that image directive and update this PR shortly."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T08:06:29Z",
-        "body": "Confirmed the target — the `switch_stage.png` image directive. Adding `:width: 600` to it now and updating this PR."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T08:09:28Z",
-        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T08:10:55Z",
-        "body": "Done, @adiati98 — added `:width: 600` to the `switch_stage.png` image directive and pushed to this PR. This was an image-directive option change only; no prose or step changes."
-      },
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-09-05T09:06:08Z",
-        "body": "@promptless-for-oss please create a PR to cherry-pick the changes here for 7.2 branch."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:07:27Z",
-        "body": "Thanks @adiati98 — on it. I'm preparing a PR to bring these Stages image updates to the `7.2` branch, and I'll follow up here with the link once it's open."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:10:04Z",
-        "body": "Quick update: I've confirmed these image changes apply cleanly to the `7.2` branch — the Stages sections they touch match, and 7.2's other differences don't conflict. Preparing the PR now."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:17:01Z",
-        "body": "@adiati98 done — I've opened a PR that cherry-picks these Stages image updates onto the `7.2` branch: https://github.com/mautic/user-documentation/pull/948\n\nIt's an image-only replication of the changes here (renamed screenshots, the \"Change contact's stage\" modal moved to after step 3, and the new Lifecycle image), applied cleanly on top of 7.2's current content."
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-08-01T00:12:17Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-08-01T00:12:17Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-08-01T00:12:17Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
         },
@@ -15951,96 +15811,6 @@
       }
     ],
     "rawReviewRequests": [],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#948": {
-    "docsUpdatedAt": "2026-09-05T09:17:14Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:17:14Z",
-        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:16:22Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:16:22Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T09:16:22Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#947": {
-    "docsUpdatedAt": "2026-09-05T07:58:20Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:58:20Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:58:20Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-05T07:58:20Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
     "readyForReviewAt": null
   }
 }
