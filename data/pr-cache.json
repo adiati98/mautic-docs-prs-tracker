@@ -9939,10 +9939,32 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#884": {
-    "docsUpdatedAt": "2026-08-01T00:22:08Z",
+    "docsUpdatedAt": "2026-09-06T11:42:06Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-06T11:38:21Z",
+        "body": "@promptless-for-oss please:\r\n\r\n- Rename the images\r\n- Move `switch_stage.png` to after the instructions\r\n- Inspect the images, add a missing image, and update the images with 7.0 UI if needed.\r\n\r\nLook at PR #883 as reference. "
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T11:39:26Z",
+        "body": "Thanks for the review! I'm working on these now — renaming the images, moving `switch_stage.png` to after the instructions, and inspecting/updating the screenshots for the 7.0 UI (including adding the missing one), using #883 as the reference. I'll push the updates to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T11:42:06Z",
+        "body": "Quick update: I've mapped out the changes against #883 — renaming the three images to the lowercase/underscore convention, moving `switch_stage.png` to after the numbered steps, and adding the missing Lifecycle dashboard-widget screenshot. Working on capturing the new 7.0 image now."
+      }
+    ],
     "rawCodeComments": [],
     "rawCodeReviews": [],
     "rawReviewRequests": [
@@ -11891,7 +11913,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#712": {
-    "docsUpdatedAt": "2026-08-14T19:39:48Z",
+    "docsUpdatedAt": "2026-09-06T09:00:22Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -11957,6 +11979,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-14T19:22:06Z",
         "body": "## Pull request overview\n\nCopilot reviewed 13 out of 13 changed files in this pull request and generated no new comments.\n\n\n\n\n<details>\n<summary>Suppressed comments (10)</summary>\n\n**docs/utm_tags/utm_tags_landing_pages.rst:16**\n* This section nests a second `.. note::` inside another note, which is redundant and can render oddly in Sphinx. Use a single note block.\n```\n.. note::\n\n   .. note::\n\n   Landing Pages have no settings, fields, or toggles for UTM parameters. If asked where to configure UTM tags for a Landing Page, the answer is always in the link that brings visitors to the Landing Page.\n```\n**docs/utm_tags/utm_tags_forms.rst:43**\n* The example uses `utm_medium=Email`, but later the doc explains `utm_medium=email`. UTM values are typically case-sensitive in analytics tooling, so the example should match the recommended lowercase value.\n```\n      https://example.com/landing-Page?utm_source=newsletter&utm_medium=Email&utm_campaign=spring_sale_2026\n```\n**docs/utm_tags/utm_tags_forms.rst:61**\n* Avoid leaving `TODO` markers in merged docs. If a screenshot isn’t included in this PR, replace with a neutral comment (or remove) and track the screenshot separately.\n```\n.. TODO: add screenshot - Contact timeline showing a \"UTM tags recorded\" entry with populated UTM fields and a FORMID reference\n```\n**docs/utm_tags/utm_tags_emails.rst:31**\n* This step refers to an “inside this block”, but the instructions are for an Email. This can confuse readers (blocks apply to DWC, not Emails).\n```\n#. Fill in the UTM fields you want to apply to links inside this block:\n```\n**docs/utm_tags/utm_tags_emails.rst:44**\n* The example URL uses `utm_medium=Email`, but the surrounding text recommends `utm_medium=email`. Use the lowercase value for consistency and to avoid case-sensitive analytics mismatches.\n```\n      https://example.com/promo?utm_source=newsletter&utm_medium=Email&utm_campaign=spring_sale_2026\n```\n**docs/utm_tags/utm_tags_asset_downloads.rst:21**\n* The example URL uses `utm_medium=Email`, but the description immediately below states `utm_medium=email`. Use lowercase in the example for consistency (and to match common analytics expectations).\n```\n   https://example.com/Asset/your-file?utm_source=newsletter&utm_medium=Email&utm_campaign=spring_sale_2026\n```\n**docs/utm_tags/utm_tags_segment_filters.rst:40**\n* Inline literal for `utm_content` is missing a closing double-backtick, which breaks the RST inline-code formatting for this bullet.\n```\n   * ``utm_content`\n```\n**docs/utm_tags/utm_tags_forms.rst:19**\n* Wording issue: “Open the Form and the edit details” is ungrammatical; it should be “edit its details”.\n```\n#. Open the Form and the edit details:\n```\n**docs/utm_tags/utm_tags_emails.rst:23**\n* Wording issue: “Open the Email and the edit details” is ungrammatical; it should be “edit its details”.\n\nThis issue also appears on line 31 of the same file.\n```\n#. Open the Email and the edit details:\n```\n**docs/utm_tags/utm_tags_overview.rst:145**\n* The API payload keys here use inconsistent casing (``User_agent``) and a different spelling than is commonly used for the HTTP header (referer). If the actual endpoint expects ``referer`` and ``user_agent`` (lowercase), this line will mislead API users; please align with the real request schema.\n```\n* ``POST /contacts/{id}/utm/add``: accepts the full UTM payload - all five tags, plus ``url``, ``referrer``, and ``User_agent``\n```\n</details>\n\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-06T08:18:49Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -12092,6 +12122,41 @@
         },
         "created_at": "2026-08-14T19:39:48Z",
         "body": "Thanks @RCheesley — I've reviewed this PR against our documentation standards and worked through all of Copilot's comments. Overall it's in good shape: Vale is clean (0 errors; the 2 remaining warnings are proper-noun false positives on headings containing 'Email' and 'Landing Pages'). Two of Copilot's flags are genuine accuracy bugs I confirmed against Mautic's 7.0 source. Here's the full disposition plus a few additional findings.\n\n**Copilot comments:**\n- ✅ Nested `.. note::` inside a note (`landing_pages.rst:12–16`) — collapse to one note block.\n- ✅ \"UTM - Urchin Tracking Module - are\" (`overview.rst:6`) — reword to \"UTM tags - Urchin Tracking Module - are\".\n- ✅ DWC cross-ref says UTM applies to \"links and Form submissions\" (`components/dynamic_web_content.rst:98`) — the DWC page documents link tagging only; narrow to \"links\".\n- ✅ `utm_medium=Email` → `utm_medium=email` in three example URLs (`asset_downloads.rst:21`, `forms.rst:43`, `emails.rst:44`) — each contradicts its own surrounding prose; analytics treats medium case-sensitively.\n- ✅ \"links inside this block\" on an Email step (`emails.rst:31`) — change \"block\" → \"Email\".\n- ✅ Missing closing backtick on ``utm_content`` (`segment_filters.rst:40`) — real RST render break.\n- ✅ \"Open the Form/Email and the edit details\" (`forms.rst:19`, `emails.rst:23`) — \"and edit its details\".\n- ✅ **Accuracy (source-verified)** — API payload keys (`overview.rst:145`): `referrer` → `referer` and `User_agent` → `user_agent` (Mautic's `UtmTag::getFieldSetterList()` uses lowercase `user_agent`, `referer`).\n- ⏸️ Leftover `.. TODO` screenshot marker (`forms.rst:61`) — it's an RST comment that renders nothing, and issue #925 already tracks the screenshot; your call whether to drop the line now.\n- ➖ `utm_medium` casing on `landing_pages.rst:25` — already lowercase at head, no action.\n\n**Additional findings beyond Copilot:**\n- Same \"and edit its details\" grammar fix on `dynamic_web_content.rst:19`.\n- Action-label casing: standardize to the product's actual label **Record UTM Tags** (capital T) at `forms.rst:8` and `:59`, matching `forms.rst:29` and `asset_downloads.rst:50`.\n- `campaign_conditions.rst:8` and `:44` use single-quoted 'yes'/'no'/'No' path names; make them bold **Yes**/**No** to match line 34 and the bold-UI-label convention.\n- `emails.rst:8` mixes hosts in one sentence: normalize `https://yoursite.com/promo` → `example.com` (low priority).\n- `dynamic_web_content.rst:56` final sentence is missing its terminal period.\n\nOne heads-up on mechanics: because this PR's branch lives on Anderson's personal fork, Promptless can't push these edits into it directly — the same limitation Ayu hit earlier. So either the author/maintainer applies the list above manually, or I can open a fresh PR against `7.0` with all of these applied — just let me know which you'd prefer."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T08:20:22Z",
+        "body": "Thanks for the review — we're on it. We're researching how UTM tags work in Mautic (how they're configured and applied) so this page covers the feature at the right depth, and we'll follow up here with the updated docs."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T08:29:59Z",
+        "body": "Update: we've confirmed the page content against Mautic 7.0 and decoded the two asks — the missing Contact-timeline screenshot showing a recorded UTM tags entry, and the contribution requirements (screenshot for the visual change, linking the work to an issue, and a clean Vale run). We're preparing the screenshot and cleaning up the remaining review nits now."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T08:50:11Z",
+        "body": "@adiati98 done — here's the screenshot and the requirements follow-up.\n\n**Screenshot:** Added the Contact History timeline showing the expanded **UTM tags recorded** entry with all five UTM values and the Form ID, captured on a fresh Mautic 7.0.2 instance (matching this PR's 7.0 base) by submitting a Form with the **Record UTM Tags** action. It replaces the leftover `.. TODO: add screenshot` marker on the Forms UTM page (tracked by #925).\n\n**Review nits cleared** in the same change:\n- Collapsed the note that was nested inside another note.\n- Fixed the malformed `utm_content` inline literal (missing backtick).\n- Lowercased three example URLs from `utm_medium=Email` to `utm_medium=email` to match the surrounding prose.\n\nVale passes on every changed file.\n\nSince this PR is on a fork we can't push to, the changes are prepared on branch `promptless/utm-tags-712-screenshot-requirements` (built on top of this PR's head). The incremental delta is 6 files — `git diff 0b6de56c..7a2e61cb` — ready to apply onto #712.\n\nOne remaining requirement: @andersonjeccel, the **Linked issue** section of this PR is still empty — please add a reference to #925 (the screenshot-tracking issue)."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-06T08:59:40Z",
+        "body": "@promptless-for-oss would merging this PR also merges `promptless/utm-tags-712-screenshot-requirements` branch?"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T09:00:22Z",
+        "body": "@adiati98 No — merging this PR only merges its own head branch (`docs-for-utm-tags`) into 7.0. `promptless/utm-tags-712-screenshot-requirements` is a separate branch with no PR of its own; it's just built on top of this PR's commits so the screenshot + fixes apply cleanly. Merging #712 won't bring it in.\n\nTo include our changes, either apply that 6-file delta onto this PR's branch before merging (the incremental diff is `git diff 0b6de56c..7a2e61cb`), or merge #712 first and we can open a follow-up PR against 7.0 with just those changes. Happy to do whichever you prefer."
       }
     ],
     "rawCodeComments": [],
