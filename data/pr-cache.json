@@ -5902,7 +5902,7 @@
   },
   "mautic/developer-documentation-new#531": {
     "docsUpdatedAt": "2026-06-26T19:04:29Z",
-    "codeUpdatedAt": "2026-08-10T11:23:32Z",
+    "codeUpdatedAt": "2026-09-06T17:43:29Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -6069,6 +6069,13 @@
         },
         "created_at": "2026-08-10T11:23:32Z",
         "body": "Would it be possible to merge this to 7.2?"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-06T17:43:29Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.7% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -8242,7 +8249,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#918": {
-    "docsUpdatedAt": "2026-09-02T06:59:54Z",
+    "docsUpdatedAt": "2026-09-06T18:35:13Z",
     "codeUpdatedAt": "2026-09-01T06:42:08Z",
     "rawDocsReviews": [
       {
@@ -9938,69 +9945,6 @@
     ],
     "readyForReviewAt": null
   },
-  "mautic/user-documentation#884": {
-    "docsUpdatedAt": "2026-09-06T11:42:06Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-09-06T11:38:21Z",
-        "body": "@promptless-for-oss please:\r\n\r\n- Rename the images\r\n- Move `switch_stage.png` to after the instructions\r\n- Inspect the images, add a missing image, and update the images with 7.0 UI if needed.\r\n\r\nLook at PR #883 as reference. "
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-06T11:39:26Z",
-        "body": "Thanks for the review! I'm working on these now — renaming the images, moving `switch_stage.png` to after the instructions, and inspecting/updating the screenshots for the 7.0 UI (including adding the missing one), using #883 as the reference. I'll push the updates to this PR shortly."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-09-06T11:42:06Z",
-        "body": "Quick update: I've mapped out the changes against #883 — renaming the three images to the lowercase/underscore convention, moving `switch_stage.png` to after the numbered steps, and adding the missing Lifecycle dashboard-widget screenshot. Working on capturing the new 7.0 image now."
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-08-01T00:22:08Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-08-01T00:22:08Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-08-01T00:22:08Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
   "mautic/user-documentation#880": {
     "docsUpdatedAt": "2026-09-04T13:06:10Z",
     "codeUpdatedAt": "2026-09-04T09:21:57Z",
@@ -11540,7 +11484,7 @@
   },
   "mautic/user-documentation#768": {
     "docsUpdatedAt": "2026-06-25T10:57:25Z",
-    "codeUpdatedAt": "2026-08-10T11:23:32Z",
+    "codeUpdatedAt": "2026-09-06T17:43:29Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -11661,6 +11605,13 @@
         },
         "created_at": "2026-08-10T11:23:32Z",
         "body": "Would it be possible to merge this to 7.2?"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-06T17:43:29Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.7% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -11913,7 +11864,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#712": {
-    "docsUpdatedAt": "2026-09-06T09:00:22Z",
+    "docsUpdatedAt": "2026-09-06T18:29:41Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
@@ -11987,6 +11938,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-06T08:18:49Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-06T17:43:39Z",
+        "body": "@promptless-for-oss please address copilot suggestions here."
       }
     ],
     "rawDocsComments": [
@@ -12157,6 +12116,27 @@
         },
         "created_at": "2026-09-06T09:00:22Z",
         "body": "@adiati98 No — merging this PR only merges its own head branch (`docs-for-utm-tags`) into 7.0. `promptless/utm-tags-712-screenshot-requirements` is a separate branch with no PR of its own; it's just built on top of this PR's commits so the screenshot + fixes apply cleanly. Merging #712 won't bring it in.\n\nTo include our changes, either apply that 6-file delta onto this PR's branch before merging (the incremental diff is `git diff 0b6de56c..7a2e61cb`), or merge #712 first and we can open a follow-up PR against 7.0 with just those changes. Happy to do whichever you prefer."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T17:45:33Z",
+        "body": "Thanks @adiati98 — on it. I'm working through the Copilot review suggestions on this PR (the example URL casing, the nested note, the leftover TODO marker, the RST/backtick and wording fixes, and the API payload key casing) and will push the changes to this branch. I'll follow up here once they're in."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T17:53:25Z",
+        "body": "Update: I've gone through the full Copilot review — 8 items across 6 UTM files (the nested note, the `utm_medium=Email`→`email` example fixes, the leftover TODO marker, the \"inside this block\" and \"edit its details\" wording, the missing backtick on `utm_content`, and a couple of small grammar fixes). For the API payload item I checked the Mautic source: the endpoint actually accepts `user_agent` (lowercase) and `referer` (single r), so I'll correct both in the overview. Applying the changes now and will push to this branch. Note: the separate request to add the contact-timeline screenshot needs the product running locally, so I'll handle that separately rather than in this pass."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-06T18:29:41Z",
+        "body": "Thanks @adiati98 — I've worked through all of GitHub Copilot's review suggestions on this PR. Since this is your and @andersonjeccel's PR (on the contributor's fork), I can't push onto the `docs-for-utm-tags` branch directly — per your earlier note that Promptless applies changes manually here. So here are the fixes, itemized for you to apply:\n\n**`docs/utm_tags/utm_tags_landing_pages.rst`** — collapse the `.. note::` that was nested inside another `.. note::` into a single note block.\n\n**`docs/utm_tags/utm_tags_segment_filters.rst`** — fix the malformed inline literal: `` ``utm_content` `` → `` ``utm_content`` `` (missing closing backtick).\n\n**Example URL casing** — lowercase `utm_medium=Email` → `utm_medium=email` in the example URLs, so they match the recommended lowercase value in the surrounding text (case-sensitive in analytics tooling). Affects `utm_tags_asset_downloads.rst`, `utm_tags_forms.rst`, and `utm_tags_emails.rst`.\n\n**Grammar** — `docs/utm_tags/utm_tags_forms.rst` and `utm_tags_emails.rst`: \"Open the Form/Email and the edit details\" → \"Open the Form/Email and edit its details\".\n\n**`docs/utm_tags/utm_tags_emails.rst`** — change \"links inside this block\" to \"links in the Email\" (the \"block\" phrasing applies to Dynamic Web Content, not Emails).\n\n**`docs/utm_tags/utm_tags_overview.rst` (intro)** — fix the singular/plural agreement in the opening sentence.\n\n**`docs/utm_tags/utm_tags_overview.rst` (REST API bullet)** — Copilot flagged the payload key casing. I verified the real request schema against the Mautic source (`UtmTag::getFieldSetterList`): the endpoint's accepted keys are `` ``referer`` `` (single \"r\", matching the HTTP `Referer` header) and `` ``user_agent`` `` (lowercase). So `` ``referrer`` ``/`` ``User_agent`` `` were both corrected, with a short note added so the single-r spelling isn't mistaken for a typo.\n\n**`docs/components/dynamic_web_content.rst`** — narrowed the UTM description to link tagging only.\n\nSeparately, on your request to add the timeline screenshot (issue #925): that's captured (against Mautic 7.0.2) and included with these changes in `utm_tags_forms.rst`.\n\nVale passes on every changed file. All of the above is staged together on our side and ready to copy into this PR — happy to hand it over in whatever form is easiest for you; just let me know."
       }
     ],
     "rawCodeComments": [],
@@ -15707,7 +15687,7 @@
   },
   "mautic/user-documentation#941": {
     "docsUpdatedAt": "2026-09-04T07:17:44Z",
-    "codeUpdatedAt": "2026-09-04T08:24:13Z",
+    "codeUpdatedAt": "2026-09-06T12:18:27Z",
     "rawDocsReviews": [
       {
         "user": {
