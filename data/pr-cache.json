@@ -164,7 +164,7 @@
     "readyForReviewAt": "2026-09-04T09:38:30Z"
   },
   "mautic/developer-documentation-new#660": {
-    "docsUpdatedAt": "2026-09-07T13:27:46Z",
+    "docsUpdatedAt": "2026-09-07T13:29:25Z",
     "codeUpdatedAt": "2026-09-04T09:06:52Z",
     "rawDocsReviews": [
       {
@@ -287,6 +287,13 @@
         },
         "created_at": "2026-09-07T13:06:42Z",
         "body": "Thanks @adiati98 — on it. We'll apply your style fixes (hyphens instead of parentheses and em dashes, `#.` for the ordered list, and active voice) and push an update to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-07T13:29:25Z",
+        "body": "Thanks for the review, @adiati98! I've addressed all the requested changes in `docs/plugin_extensions/emails.rst` and swept the rest of the diff for the same issues so nothing's left to re-flag:\n\n- **Hyphen instead of parentheses**: replaced the parenthetical asides in the \"Rendering custom tokens\" sentence and in the three \"Undefined constant\" notes with spaced hyphens.\n- **Hyphen instead of em dash**: the em dash in the send/display note is now a hyphen.\n- **`#.` instead of numbers**: the monitored-inbox ordered list now uses `#.` on all three items.\n- **Active instead of passive voice**: rewrote items 2 and 3 of that list - \"Mautic dispatches this event during the execution of the `mautic:email:fetch` command. Use it to inject search criteria for the desired messages.\" and \"This event parses the messages that the command fetched.\"\n\nCode blocks, class names, constants, and the `Error: Undefined constant` string are unchanged, and Vale passes with no new violations."
       }
     ],
     "rawCodeComments": [
@@ -11298,7 +11305,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#918": {
-    "docsUpdatedAt": "2026-09-07T13:12:02Z",
+    "docsUpdatedAt": "2026-09-07T14:26:03Z",
     "codeUpdatedAt": "2026-09-01T06:42:08Z",
     "rawDocsReviews": [
       {
@@ -11355,6 +11362,20 @@
         },
         "created_at": "2026-09-02T06:58:26Z",
         "body": "@adiati98 The Vale warnings on the changed lines are resolved. The flagged terms are all lowercase words that can't be capitalized — they sit inside verbatim product labels (**Change contact's stage**, **Remove existing stage**) and inside `:ref:` cross-reference targets that must match their existing lowercase anchors, so capitalizing would either misquote the UI or break the docs build.\n\nFollowing the repo's established convention for exactly this case, we wrapped just those two lines (the Points page bullet and the Stages page sentence) in `.. vale off` / `.. vale on` fences. No wording, labels, or link targets changed, and Vale now passes on the changed lines. Pushed to this branch. The remaining findings in these files are on pre-existing lines the PR didn't touch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-07T14:15:48Z",
+        "body": "Thanks for the review, @adiati98! Good catch on the sentence ending in a colon that doesn't lead into steps. We're reworking that so it flows into the following paragraph, and will push the update to this PR shortly."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-07T14:26:03Z",
+        "body": "Thanks for the review, @adiati98 — good catch. You're right that ending that sentence with a colon set readers up to expect a step list right below it. I've reworked the intro paragraph of \"Moving Contacts between Stages\" so it now ends as a plain statement (after the link to Contact triggers) and flows into the conceptual paragraph, letting the existing \"In any Campaign where you want to have Contacts move between new Stages:\" lead-in introduce the numbered steps. The change is pushed to the PR."
       }
     ],
     "rawCodeComments": [
