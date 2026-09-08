@@ -10955,7 +10955,7 @@
     "readyForReviewAt": "2026-09-02T18:08:31Z"
   },
   "mautic/user-documentation#919": {
-    "docsUpdatedAt": "2026-09-04T09:57:02Z",
+    "docsUpdatedAt": "2026-09-08T05:00:54Z",
     "codeUpdatedAt": "2026-09-01T06:39:33Z",
     "rawDocsReviews": [
       {
@@ -11021,6 +11021,30 @@
         "state": "COMMENTED",
         "submitted_at": "2026-08-31T18:04:53Z",
         "body": "@promptless-for-oss please address the Vale warnings."
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-08T03:44:25Z",
+        "body": "Looks good overall."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-08T03:58:22Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-08T04:59:21Z",
+        "body": "LGTM!"
       }
     ],
     "rawDocsComments": [
@@ -11065,6 +11089,20 @@
         },
         "created_at": "2026-08-31T18:23:08Z",
         "body": "Thanks @adiati98 — done. The Vale (reviewdog) findings on the changed line in `docs/campaigns/troubleshooting_campaigns.rst` are cleared: wrapped the `Visits a Page` decision label in inline code (matching the convention in `focus_items.rst`) and reworded \"different page hits\" to \"different visited URLs\". No behavior change, and `docs/points/points_troubleshooting.rst` needed no edit (no findings on its changed lines). Pushed to this branch — ready for another look."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-08T03:46:04Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/919#pullrequestreview-5137090150)\n\nThanks for reviewing, @shinde-rahul — glad it looks good overall!\n\n<!-- promptless-comment:v1:fa61cadf-cb37-46af-8a84-97c897b7d37b -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-08T05:00:54Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/919#pullrequestreview-5137477672)\n\nThanks for the review, @shinde-rahul — appreciate it!\n\n<!-- promptless-comment:v1:4eb269d3-5026-43f1-ab3e-f667ad67e5af -->"
       }
     ],
     "rawCodeComments": [
@@ -11305,7 +11343,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#918": {
-    "docsUpdatedAt": "2026-09-07T14:26:03Z",
+    "docsUpdatedAt": "2026-09-08T05:00:08Z",
     "codeUpdatedAt": "2026-09-01T06:42:08Z",
     "rawDocsReviews": [
       {
@@ -11338,6 +11376,54 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-09-07T13:12:02Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-09-08T03:31:46Z",
+        "body": "Looks good overall. I have suggested a small wording update to make the Stage movement, removal, and timeline behavior clearer.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-08T03:41:23Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-08T03:43:04Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-08T04:56:02Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-08T04:56:32Z",
+        "body": "Changes look good to me."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-08T04:59:36Z",
         "body": ""
       }
     ],
@@ -11376,6 +11462,20 @@
         },
         "created_at": "2026-09-07T14:26:03Z",
         "body": "Thanks for the review, @adiati98 — good catch. You're right that ending that sentence with a colon set readers up to expect a step list right below it. I've reworked the intro paragraph of \"Moving Contacts between Stages\" so it now ends as a plain statement (after the link to Contact triggers) and flows into the conceptual paragraph, letting the existing \"In any Campaign where you want to have Contacts move between new Stages:\" lead-in introduce the numbered steps. The change is pushed to the PR."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-08T03:43:15Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/918#pullrequestreview-5137023453)\n\nThanks for the review, @shinde-rahul! We've applied your inline wording suggestion for the **Change contact's stage** bullet, which clarifies the Stage movement, removal, and timeline behavior as you noted. Ready for another look whenever you have a moment.\n\n<!-- promptless-comment:v1:d5e8479c-23fe-4a93-96bc-f189104baca4 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-08T05:00:08Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/918#pullrequestreview-5137463317)\n\nThanks for the review, @shinde-rahul — much appreciated!\n\n<!-- promptless-comment:v1:8cb7a6c5-ddb3-4857-9478-a8a173f8ca97 -->"
       }
     ],
     "rawCodeComments": [
