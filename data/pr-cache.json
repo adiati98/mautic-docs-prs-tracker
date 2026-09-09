@@ -10167,7 +10167,7 @@
   },
   "mautic/developer-documentation-new#297": {
     "docsUpdatedAt": "2026-07-08T20:12:15Z",
-    "codeUpdatedAt": "2026-07-03T14:14:03Z",
+    "codeUpdatedAt": "2026-09-09T18:39:45Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -10252,6 +10252,13 @@
         },
         "created_at": "2026-03-11T12:08:57Z",
         "body": "@turanalmammadov please review the requests for changes above, and the docs. You'll also need to take a look at the failing tests and resolve the conflict. If you need any help with any of this please don't hesitate to ask. Thanks!"
+      },
+      {
+        "user": {
+          "login": "redbullpeter"
+        },
+        "created_at": "2026-09-09T18:39:45Z",
+        "body": "Hi @turanalmammadov, apologies for the overlap. I picked up #15030 and only found this PR afterwards. I have opened https://github.com/mautic/mautic/pull/17318 against `7.2`.\r\n\r\nTwo things I ran into, in case they are useful if you carry on with this one. The PHPStan failure here turned out to be the bug itself: `$newValue` can never be `null` at that point, because `$data[$alias] ?? ''` maps null to `''` a few lines above, so the `null` half was quietly matching `0`, `0.0` and `false`. Making both halves strict then breaks `testUpdatesContactCampaignActionWithBooleanFields`, since a campaign \"No change\" for a boolean arrives as `false`. Writing it out as `'' === $newValue || false === $newValue` satisfies both.\r\n\r\nThe other thing is that `LeadModel` on its own does not reach `PATCH`: `CustomFieldsApiControllerTrait::setCustomFieldValues()` strips numeric zeros before the model runs.\r\n\r\nYour PR and @notz's analysis in the issue thread are what pointed me at the root cause, and I have credited you both. Happy for you to take anything useful from mine."
       }
     ],
     "rawCodeReviews": [
