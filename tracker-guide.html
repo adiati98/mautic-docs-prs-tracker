@@ -276,7 +276,7 @@
 
   <div class="top">
     <h1>Docs PR Tracker — Guide</h1>
-    <span class="updated" data-updated-iso="2026-09-10T19:35:03.935Z">Updated Thu, Sep 10, 7:35 PM</span>
+    <span class="updated" data-updated-iso="2026-09-10T20:12:19.076Z">Updated Thu, Sep 10, 8:12 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -446,9 +446,28 @@
     </div>
 
     <div class="scenario">
+      <h3>The docs PR is on the wrong branch</h3>
+      <div class="note">The docs PR targets a different branch than the linked code PR says it should.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add needs-rebase label</span></div>
+        The code repo decides where a docs change belongs. The tool reads the code PR's milestone first — <code>7.3.0-rc</code> counts as 7.3. If the code PR has no milestone, it uses the code PR's branch instead: a release branch like <code>7.2</code> means the docs PR should target 7.2, while a dev-line branch like <code>7.x</code> means the version after the newest one already cut from that line, so with 7.0/7.1/7.2 branched off, <code>7.x</code> means 7.3.
+        <div class="see"><span class="lbl">Do this</span>Retarget the docs PR onto the branch named in the chip, and add the <code>needs-rebase</code> label so the state is visible on GitHub too.</div>
+        This is a retarget, <em>not</em> a backport — the change isn't in the branch the PR currently points at, so there's nothing to copy onward from there yet. That's why the "Add needs-backport label" chip is hidden while this one is showing; it comes back once the PR is on the right branch. If the milestone on the docs PR disagrees too, the chip says so and names the version both should be.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>The branch the docs PR needs doesn't exist yet</h3>
+      <div class="note">The docs PR belongs on a branch that hasn't been created in the docs repo — for example the code PR is on <code>8.x</code> and 8.0 has been cut on the code side, so the docs need an 8.1 branch that isn't there.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Create branch 8.1 in the docs repo first</span><span class="chip setup">Add needs-rebase label</span></div>
+        A PR can't point at a branch that doesn't exist, so create the branch in the docs repo first, then retarget the PR onto it.
+      </div>
+    </div>
+
+    <div class="scenario">
       <h3>The docs PR needs a backport</h3>
       <div class="note">The PR targets a release branch other than the one it should update (say, it targets 7.1 but 7.2 also needs the fix — or vice versa).
         <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
+        Docs branches don't merge forward — every version branch is its own copy — so the row names <em>every</em> branch above this one that still needs the change, e.g. <em>"targets 7.2 — also needs 7.3 and 8.0"</em>. Work through the whole list; copying to the newest one only is how the branches in between get missed. The list comes from branch numbers alone, so treat it as a checklist to confirm, not proof each one needs the change.
         Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it too — this can be newer or older branches than the one this PR targets, depending on which release branches need the update. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
       </div>
     </div>
@@ -521,7 +540,7 @@
   </section>
 
   <footer>
-    <div>Generated on <span data-updated-iso="2026-09-10T19:35:03.935Z">Thu, Sep 10, 7:35 PM</span></div>
+    <div>Generated on <span data-updated-iso="2026-09-10T20:12:19.076Z">Thu, Sep 10, 8:12 PM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
