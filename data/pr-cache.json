@@ -1,6 +1,6 @@
 {
   "mautic/developer-documentation-new#661": {
-    "docsUpdatedAt": "2026-09-09T16:53:30Z",
+    "docsUpdatedAt": "2026-09-10T04:37:23Z",
     "codeUpdatedAt": "2026-09-07T10:51:19Z",
     "rawDocsReviews": [
       {
@@ -164,7 +164,7 @@
     "readyForReviewAt": "2026-09-04T09:38:30Z"
   },
   "mautic/developer-documentation-new#660": {
-    "docsUpdatedAt": "2026-09-09T16:53:28Z",
+    "docsUpdatedAt": "2026-09-10T04:37:10Z",
     "codeUpdatedAt": "2026-09-04T09:06:52Z",
     "rawDocsReviews": [
       {
@@ -413,7 +413,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#658": {
-    "docsUpdatedAt": "2026-09-09T16:53:26Z",
+    "docsUpdatedAt": "2026-09-10T05:00:55Z",
     "codeUpdatedAt": "2026-09-01T14:29:30Z",
     "rawDocsReviews": [
       {
@@ -511,6 +511,38 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-07T10:56:18Z",
         "body": "@promptless-for-oss we use active instead of passive voice. Please fix any passive voice accordingly."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T04:43:50Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T04:44:15Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T04:46:35Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T05:00:55Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -597,7 +629,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#653": {
-    "docsUpdatedAt": "2026-09-09T16:53:24Z",
+    "docsUpdatedAt": "2026-09-10T04:44:16Z",
     "codeUpdatedAt": "2026-09-01T11:33:45Z",
     "rawDocsReviews": [
       {
@@ -787,7 +819,7 @@
     "readyForReviewAt": "2026-09-02T18:00:09Z"
   },
   "mautic/developer-documentation-new#652": {
-    "docsUpdatedAt": "2026-09-09T16:53:22Z",
+    "docsUpdatedAt": "2026-09-10T05:03:21Z",
     "codeUpdatedAt": "2026-09-01T12:13:41Z",
     "rawDocsReviews": [
       {
@@ -931,7 +963,7 @@
     "readyForReviewAt": "2026-09-02T18:00:53Z"
   },
   "mautic/developer-documentation-new#650": {
-    "docsUpdatedAt": "2026-09-09T16:53:21Z",
+    "docsUpdatedAt": "2026-09-10T05:00:19Z",
     "codeUpdatedAt": "2026-09-01T09:54:11Z",
     "rawDocsReviews": [
       {
@@ -1035,7 +1067,7 @@
     "readyForReviewAt": "2026-09-02T18:01:23Z"
   },
   "mautic/developer-documentation-new#649": {
-    "docsUpdatedAt": "2026-09-09T16:53:19Z",
+    "docsUpdatedAt": "2026-09-10T09:27:57Z",
     "codeUpdatedAt": "2026-09-01T10:55:45Z",
     "rawDocsReviews": [
       {
@@ -1241,7 +1273,7 @@
     "readyForReviewAt": "2026-09-02T18:02:45Z"
   },
   "mautic/developer-documentation-new#648": {
-    "docsUpdatedAt": "2026-09-09T16:53:17Z",
+    "docsUpdatedAt": "2026-09-10T09:20:24Z",
     "codeUpdatedAt": "2026-09-01T06:21:14Z",
     "rawDocsReviews": [
       {
@@ -1362,7 +1394,7 @@
           "login": "promptless-for-oss"
         },
         "created_at": "2026-09-02T07:32:00Z",
-        "body": "Done @adiati98 — reworded \"This will expose...\" to \"This exposes...\" in `docs/mauticjs_api/tracking_script.rst` (the only use of 'will' in the diff). Pushed to this PR branch and Vale is clean. Ready for another look."
+        "body": "Done @adiati98 ��� reworded \"This will expose...\" to \"This exposes...\" in `docs/mauticjs_api/tracking_script.rst` (the only use of 'will' in the diff). Pushed to this PR branch and Vale is clean. Ready for another look."
       }
     ],
     "rawCodeComments": [
@@ -1433,7 +1465,7 @@
     "readyForReviewAt": "2026-09-02T18:03:07Z"
   },
   "mautic/developer-documentation-new#647": {
-    "docsUpdatedAt": "2026-09-09T16:53:15Z",
+    "docsUpdatedAt": "2026-09-10T09:26:33Z",
     "codeUpdatedAt": "2026-09-01T07:49:53Z",
     "rawDocsReviews": [
       {
@@ -1648,7 +1680,7 @@
     "readyForReviewAt": "2026-09-02T18:03:27Z"
   },
   "mautic/developer-documentation-new#646": {
-    "docsUpdatedAt": "2026-09-09T16:53:12Z",
+    "docsUpdatedAt": "2026-09-10T09:30:13Z",
     "codeUpdatedAt": "2026-09-01T06:58:18Z",
     "rawDocsReviews": [
       {
@@ -1823,7 +1855,7 @@
     "readyForReviewAt": "2026-09-02T18:03:47Z"
   },
   "mautic/developer-documentation-new#645": {
-    "docsUpdatedAt": "2026-09-09T16:53:10Z",
+    "docsUpdatedAt": "2026-09-10T09:30:30Z",
     "codeUpdatedAt": "2026-09-04T07:09:11Z",
     "rawDocsReviews": [
       {
@@ -1995,7 +2027,7 @@
     "readyForReviewAt": "2026-09-02T18:04:01Z"
   },
   "mautic/developer-documentation-new#644": {
-    "docsUpdatedAt": "2026-09-09T16:53:08Z",
+    "docsUpdatedAt": "2026-09-10T09:30:49Z",
     "codeUpdatedAt": "2026-09-04T07:10:11Z",
     "rawDocsReviews": [
       {
@@ -2219,7 +2251,7 @@
     "readyForReviewAt": "2026-09-02T18:04:21Z"
   },
   "mautic/developer-documentation-new#643": {
-    "docsUpdatedAt": "2026-09-09T16:53:06Z",
+    "docsUpdatedAt": "2026-09-10T09:31:30Z",
     "codeUpdatedAt": "2026-08-31T13:41:42Z",
     "rawDocsReviews": [
       {
@@ -2430,7 +2462,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#642": {
-    "docsUpdatedAt": "2026-09-09T16:53:03Z",
+    "docsUpdatedAt": "2026-09-10T09:31:50Z",
     "codeUpdatedAt": "2026-08-31T11:52:52Z",
     "rawDocsReviews": [
       {
@@ -2636,7 +2668,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#634": {
-    "docsUpdatedAt": "2026-09-09T16:53:01Z",
+    "docsUpdatedAt": "2026-09-10T09:32:30Z",
     "codeUpdatedAt": "2026-09-04T07:06:09Z",
     "rawDocsReviews": [
       {
@@ -2872,7 +2904,7 @@
     "readyForReviewAt": "2026-09-02T18:04:35Z"
   },
   "mautic/developer-documentation-new#633": {
-    "docsUpdatedAt": "2026-09-09T16:57:09Z",
+    "docsUpdatedAt": "2026-09-10T09:29:24Z",
     "codeUpdatedAt": "2026-09-04T07:07:18Z",
     "rawDocsReviews": [
       {
@@ -2954,6 +2986,62 @@
         "state": "APPROVED",
         "submitted_at": "2026-09-04T07:35:41Z",
         "body": "LGTM"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T04:40:02Z",
+        "body": "@promptless-for-oss please address the Vale errors and warnings."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T04:59:19Z",
+        "body": "@promptless-for-oss for all paragpraph starting with \"Since Mautic 8 ...\" in all files except `event_listeners.rst`, add them as note admonition"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T05:13:24Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T05:13:27Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T05:13:29Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T05:13:32Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-10T09:29:24Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -2984,6 +3072,48 @@
         },
         "created_at": "2026-09-02T08:11:13Z",
         "body": "Thanks — the Vale errors and warnings are fixed. The findings all traced to one false positive: Vale was reading the lowercase word \"plugins\" inside the `:ref:` cross-reference *path* (`plugins/event_listeners:Available events`) as the Mautic **Plugin** feature name. I added an explicit `.. _available events:` label to the \"Available events\" section and repointed the four cross-references (on the tracking-script, maintenance, UI-extension, and config/routing pages) to that label, so the target no longer contains that word. The visible link text and destination are unchanged, and a full Sphinx build confirms all four links still resolve to the \"Available events\" section with no undefined- or duplicate-label warnings. The only other Vale findings on these files sit on pre-existing lines outside this PR's diff, so I left them untouched. You may need to re-run the reviewdog Vale check on the new commit to see it pass."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T04:41:28Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5162780515)\n\nThanks — on it. We're reviewing the Vale errors and warnings on the changed files and will push fixes shortly.\n\n<!-- promptless-comment:v1:b9f1cc90-1873-4d2a-b297-109ca574a4eb -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T04:50:14Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5162780515)\n\nUpdate: we ran Vale on the changed files and found two findings on the lines this PR adds — a term-casing error in a `:ref:` path and a heading-capitalization warning. Fixing both and updating the suggestion now.\n\n<!-- promptless-comment:v1:a8a9aa03-4554-4987-aa09-c116dfeef1ff -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T04:59:40Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5162907080)\n\nThanks — on it. We'll convert each \"Since Mautic 8 ...\" paragraph into a `note` admonition in all changed files except `event_listeners.rst`, and roll it into the same suggestion update.\n\n<!-- promptless-comment:v1:986a11f1-8002-4186-a014-6b6d0abde39a -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T05:01:25Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5162907080)\n\nUpdate: we located four \"Since Mautic 8 ...\" sentences to convert — in `maintenance.rst`, `ui.rst`, `tracking_script.rst`, and `config.rst` (`event_listeners.rst` excluded as requested). Converting each into a `note` admonition and updating the suggestion now.\n\n<!-- promptless-comment:v1:9828b1f0-74b8-487e-be99-645dbf2a65ef -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T05:15:38Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5162780515)\n\nDone. We fixed the two Vale findings on the lines this PR adds: the term-casing error in the `:ref:` path on `tracking_script.rst` and the heading-capitalization warning on `event_listeners.rst`. Vale now runs clean on the changed lines, and the fix is pushed to PR #633.\n\n<!-- promptless-comment:v1:c32c201d-68fb-42f6-a84e-f560ae445bb7 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T05:15:40Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5162907080)\n\nDone. We converted each \"Since Mautic 8 ...\" paragraph into a `note` admonition across the changed files except `event_listeners.rst` — in `maintenance.rst`, `ui.rst`, `tracking_script.rst`, and `config.rst`. The change is pushed to PR #633 and Vale runs clean.\n\n<!-- promptless-comment:v1:2d535f90-cf58-4d43-a089-439e65913d2a -->"
       }
     ],
     "rawCodeComments": [
@@ -3121,7 +3251,7 @@
     "readyForReviewAt": "2026-09-02T18:04:55Z"
   },
   "mautic/developer-documentation-new#631": {
-    "docsUpdatedAt": "2026-09-07T11:42:29Z",
+    "docsUpdatedAt": "2026-09-10T11:57:24Z",
     "codeUpdatedAt": "2026-09-04T07:01:21Z",
     "rawDocsReviews": [
       {
@@ -3340,6 +3470,27 @@
         },
         "created_at": "2026-09-07T11:42:29Z",
         "body": "Done, @adiati98. I've converted both method descriptions to active voice on `docs/plugin_extensions/campaigns.rst`:\n\n- **`wasConditionSatisfied()`** — \"It returns `TRUE` when the listener called `pass()`, and `FALSE` when the listener called `fail()` or called neither method.\"\n- **`wasDecisionApplicable()`** — \"Returns whether the Decision was applicable. It returns `TRUE` when the listener called `setAsApplicable()`, and `FALSE` otherwise.\"\n\nBoth now name the listener as the actor calling `pass()`/`fail()`/`setAsApplicable()`, and the `TRUE`/`FALSE` return semantics are unchanged. The change is pushed to the branch and the PR description records the before/after wording.\n\nOne note: our publishing account couldn't re-request your review through GitHub (it's a fork contributor without push access to the base repo), so please re-review at your convenience."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T11:06:29Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T11:06:57Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/631#issuecomment-5617686141)\n\nThanks @adiati98 — on it. We're rebasing this branch onto 8.0 and will confirm here once it's done.\n\n<!-- promptless-comment:v1:8d0bc171-43d2-4e8a-b91c-f46b6126955a -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T11:12:02Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/631#issuecomment-5617686141)\n\nDone, @adiati98 — this PR now targets the **8.0** branch as requested. The documented change is unchanged (the two new method entries, `wasConditionSatisfied()` and `wasDecisionApplicable()`, +14 lines on `campaigns.rst`) and Vale is clean.\n\nOne note on method: our fork's publishing account can't force-push a rewritten branch history, so we performed the rebase by moving the PR's base branch from `7.2` to `8.0`. Since `8.0` and `7.2` currently point at the same commit, the resulting diff is identical to what you reviewed. Please merge or re-review at your convenience — our fork-based account can't trigger GitHub's re-request-review button on your repo.\n\n<!-- promptless-comment:v1:e2c9e15e-1766-468e-99ec-36fa41f3930c -->"
       }
     ],
     "rawCodeComments": [
@@ -3410,7 +3561,7 @@
     "readyForReviewAt": "2026-09-02T18:05:16Z"
   },
   "mautic/developer-documentation-new#630": {
-    "docsUpdatedAt": "2026-09-07T11:31:49Z",
+    "docsUpdatedAt": "2026-09-10T10:21:37Z",
     "codeUpdatedAt": "2026-09-04T06:59:14Z",
     "rawDocsReviews": [
       {
@@ -3465,7 +3616,7 @@
         "user": {
           "login": "escopecz"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-09-04T11:15:57Z",
         "body": ""
       }
@@ -3505,6 +3656,27 @@
         },
         "created_at": "2026-09-04T11:18:47Z",
         "body": "Thanks @escopecz — understood, we won't merge this now. We're reviewing the branch targeting for this Mautic 8 change and will make sure it lands on the right branch before merge."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T10:15:48Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:17:09Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/630#issuecomment-5616982093)\n\nThanks @adiati98 — on it. I'll rebase this PR onto the 8.0 branch and follow up here once it's done.\n\n<!-- promptless-comment:v1:d1bee0cd-7c45-4399-8738-71d8cca97eea -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:21:37Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/630#issuecomment-5616982093)\n\nDone, @adiati98 — PR #630 is now based on `8.0`. The retarget was conflict-free (`8.0` and `7.2` currently point at the same commit, so the diff is unchanged) and it reports mergeable. Vale passes on `docs/plugins/mvc.rst` with no new findings. Ready for review on `8.0`.\n\n<!-- promptless-comment:v1:a7b0e932-c16d-493c-9146-bfc04bf4a0d1 -->"
       }
     ],
     "rawCodeComments": [
@@ -3622,7 +3794,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#629": {
-    "docsUpdatedAt": "2026-09-07T11:32:58Z",
+    "docsUpdatedAt": "2026-09-10T12:02:22Z",
     "codeUpdatedAt": "2026-09-04T06:57:44Z",
     "rawDocsReviews": [
       {
@@ -3681,6 +3853,20 @@
         },
         "created_at": "2026-08-23T12:04:10Z",
         "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T11:57:51Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T12:02:22Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/629#issuecomment-5618306674)\n\nDone — I've retargeted this PR onto the `8.0` branch as requested. Because `7.2` and `8.0` currently point to the same commit, the change applied cleanly with no conflicts: the PR is mergeable against `8.0`, still touches only the two intended files, and both the prose (Vale) and build checks are green. It's ready for your review.\n\n<!-- promptless-comment:v1:9fdd37c2-29e3-4482-9ece-1a094dfe1ecd -->"
       }
     ],
     "rawCodeComments": [
@@ -3800,7 +3986,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#627": {
-    "docsUpdatedAt": "2026-09-07T12:22:14Z",
+    "docsUpdatedAt": "2026-09-10T11:58:39Z",
     "codeUpdatedAt": "2026-09-04T06:56:39Z",
     "rawDocsReviews": [
       {
@@ -3881,6 +4067,48 @@
         },
         "created_at": "2026-09-07T12:22:14Z",
         "body": "Thanks @adiati98 — I've addressed the Vale review on this PR. The three flagged capitalizations that are intentionally correct — the `:ref:` cross-reference path segments (`plugins/config`, `plugins/autowiring:Autowiring`) — are now wrapped in `.. vale off`/`.. vale on` as you asked, without changing any capitalization, and I rephrased one passive sentence to active voice. Those three errors/warnings now clear.\n\nOne finding can't be cleared this way: the `plugins/` path in the `// plugins/HelloWorldBundle/Config/config.php` code comment. That token is a genuine lowercase filesystem path (matching the convention used across the developer docs), but `.. vale off`/`.. vale on` doesn't suppress alerts *inside* code blocks — even wrapping the whole file in a vale-off region leaves it flagged, because it's triggered by a Vale/RST parsing quirk involving unrelated content further down the page. Clearing it would need a repo-level change (scoping the `Vale.Terms`/`Mautic` rules to skip code blocks, or a vocabulary adjustment) rather than an in-page edit. Happy to open a separate change for that if you'd like — just let me know.\n\nOne note: our publishing account couldn't re-request your review through GitHub (it's a fork contributor without push access to the base repo), so please re-review at your convenience."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T10:13:23Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T11:04:58Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T11:06:27Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/627#issuecomment-5616943644)\n\nThanks @adiati98 — on it. We're rebasing this branch onto 8.0 and will confirm here once it's done.\n\n<!-- promptless-comment:v1:62937ec1-c1de-4d93-8c17-af985fde0f17 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T11:06:30Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/627#issuecomment-5617668817)\n\nThanks @adiati98 — on it. We're rebasing this branch onto 8.0 and will confirm here once it's done.\n\n<!-- promptless-comment:v1:f29ccc6b-4308-4318-ab0c-e578c2b778f9 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T11:12:28Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/627#issuecomment-5616943644)\n\nDone, @adiati98 — this PR now targets the **8.0** branch as requested. No prose changed: the reviewed content is byte-identical (one file, `docs/plugins/config.rst`, +95/−0) and the PR is mergeable pending review.\n\nOne note on method: our fork's publishing account can't force-push a rewritten branch history, so we performed the rebase by moving the PR's base branch from `7.2` to `8.0`. Since `8.0` and `7.2` currently point at the same commit, the resulting diff is identical to what you reviewed. Please merge or re-review at your convenience — our fork-based account can't trigger GitHub's re-request-review button on your repo.\n\n<!-- promptless-comment:v1:c83b3b21-802e-4b1a-9e56-171c5677a87a -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T11:12:31Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/627#issuecomment-5617668817)\n\nDone, @adiati98 — this PR now targets the **8.0** branch as requested. No prose changed: the reviewed content is byte-identical (one file, `docs/plugins/config.rst`, +95/−0) and the PR is mergeable pending review.\n\nOne note on method: our fork's publishing account can't force-push a rewritten branch history, so we performed the rebase by moving the PR's base branch from `7.2` to `8.0`. Since `8.0` and `7.2` currently point at the same commit, the resulting diff is identical to what you reviewed. Please merge or re-review at your convenience — our fork-based account can't trigger GitHub's re-request-review button on your repo.\n\n<!-- promptless-comment:v1:dd9bb110-64fb-46bc-acae-fd6463714571 -->"
       }
     ],
     "rawCodeComments": [
@@ -3980,7 +4208,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#626": {
-    "docsUpdatedAt": "2026-09-02T08:19:59Z",
+    "docsUpdatedAt": "2026-09-10T11:58:54Z",
     "codeUpdatedAt": "2026-08-20T11:14:54Z",
     "rawDocsReviews": [
       {
@@ -4015,6 +4243,27 @@
         },
         "created_at": "2026-08-20T14:59:43Z",
         "body": "All good :+1: "
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T10:15:18Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:16:45Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/626#issuecomment-5616974619)\n\nThanks @adiati98 — on it. I'll rebase this PR onto the 8.0 branch and follow up here once it's done.\n\n<!-- promptless-comment:v1:a4231754-cfb1-442b-b48c-a2f0fdd30062 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:22:01Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/626#issuecomment-5616974619)\n\nDone, @adiati98 — PR #626 now targets `8.0`. The retarget was conflict-free (`8.0` and `7.2` currently point at the same commit, so the diff is unchanged — the same three files) and GitHub reports it mergeable, with no new Vale findings on the changed lines. One note: I retargeted the base rather than rewriting history to a single commit, since the push proxy rejects non-fast-forward pushes; the diff is still exactly the three intended one-line changes. If you'd specifically like a squashed history, let me know. Ready for another review.\n\n<!-- promptless-comment:v1:39065744-354a-4de2-92b0-30ec2dc235f7 -->"
       }
     ],
     "rawCodeComments": [
@@ -4078,7 +4327,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#625": {
-    "docsUpdatedAt": "2026-09-07T11:36:46Z",
+    "docsUpdatedAt": "2026-09-10T12:00:36Z",
     "codeUpdatedAt": "2026-08-25T06:59:56Z",
     "rawDocsReviews": [
       {
@@ -4159,6 +4408,41 @@
         },
         "created_at": "2026-09-02T08:21:12Z",
         "body": "Addressed the review feedback on PR #625. The one automated lint suggestion in scope was a Vale active-voice warning on the `methodCalls` line I changed, so I rewrote \"Define methods to call after the service is instantiated\" to the active-voice \"Define methods to call after Mautic instantiates the service\" — Vale is now clean on that line. The other three changed files (`permissions.rst`, `security.rst`, `api.rst`) had no lint findings on their changed lines, and the remaining Vale warnings elsewhere in `config.rst` sit on pre-existing, unchanged lines outside this PR's scope. The update is pushed to the existing PR — nothing new to open.\n\nIf by \"the suggestions\" you meant specific line-level comments rather than the automated lint annotations, I don't see any on this PR — could you point me to them and I'll address them right away?"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-10T10:17:33Z",
+        "body": "@promptless-for-oss please rebase to 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:17:56Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/625#issuecomment-5617007426)\n\nThanks @adiati98 — on it. I'll rebase this PR onto the 8.0 branch and follow up here once it's done.\n\n<!-- promptless-comment:v1:a80a96f7-9781-4522-a24e-1e0d04831cb7 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:20:06Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/625#issuecomment-5617007426)\n\n@adiati98 I'd like to rebase this onto `8.0`, but that branch doesn't exist yet in `mautic/developer-documentation-new` — the remote only has `3.x`, `5.x`, `6.0`, `7.0`, `7.1`, `7.2` (default), and `7.3`. Since the source change merged into `mautic/mautic` `8.x`, `8.0` is the correct target, so this just needs the `8.0` branch to be created in this repo first. Could you create `8.0` (or tell me which existing branch should serve as the 8.0 base)? Once it exists I'll rebase and retarget the PR right away.\n\n<!-- promptless-comment:v1:606dde46-113c-4882-bccf-08fba7c56280 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:20:42Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/625#issuecomment-5617007426)\n\nCorrection to my previous comment — please disregard that request. The `8.0` branch does exist here (I was reading a stale local mirror). No action needed on your end; I'm rebasing and retargeting the PR onto `8.0` now and will confirm once it's done. Apologies for the noise!\n\n<!-- promptless-comment:v1:dcada450-6c2c-4954-aa9b-d58ee7387d69 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-10T10:25:13Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/625#issuecomment-5617007426)\n\nDone, @adiati98 — PR #625 now targets `8.0`. The retarget was conflict-free (`8.0`, `7.3`, and `7.2` currently point at the same commit, so the diff is unchanged — the same four files, +6/−6, FQCN changes only) and GitHub reports it mergeable. Vale passes with no findings on any line this PR changes. Ready for review on `8.0`.\n\n<!-- promptless-comment:v1:c1306de3-4812-449f-8457-f6f123f08793 -->"
       }
     ],
     "rawCodeComments": [
@@ -16158,6 +16442,96 @@
         "requested_team": null
       }
     ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#969": {
+    "docsUpdatedAt": "2026-09-09T23:16:59Z",
+    "codeUpdatedAt": "2026-09-09T23:18:29Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:47Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:49Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:51Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:53Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:54Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:56Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:16:58Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-09T23:17:00Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-09T22:58:19Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17323) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1 New issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17323&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17323&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17323&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17323&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17323&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17323)\n\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-09T23:18:29Z",
+        "body": "### Promptless documentation updates\n\n- [Document broadened Email link validation (relative, query-only, scheme-less, and space-containing URLs)](https://app.gopromptless.ai/suggestions/375f6f7b-f144-4c65-96b9-29d3385675c8) updates the Emails page's \"Link validation\" section to reflect the newly accepted `href` forms and notes the forms that still fail. [Docs PR](https://github.com/mautic/user-documentation/pull/969)"
+      }
+    ],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [],
     "readyForReviewAt": null
   }
 }
