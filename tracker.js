@@ -51,6 +51,10 @@ const BUMP_DEPENDENCY_LABEL =
 // PR authorship).
 const DEPENDABOT_LOGIN = "dependabot[bot]"
 const RELEASE_BRANCH_PATTERN = /^\d+\.\d+$/
+// Mautic's unreleased line for a major version — work sits on "7.x" until
+// "7.3" is cut off it, so a code PR here has no version of its own yet (see
+// nextMinorForDevLine).
+const DEV_LINE_BRANCH_PATTERN = /^(\d+)\.x$/
 const FOLLOWUP_DAYS = 7
 const ESCALATE_DAYS = 14
 // Promptless marks a docs PR ready for review within seconds of its code PR
@@ -349,7 +353,9 @@ function cacheHit(entry, docsUpdatedAt, codeUpdatedAt) {
 	return entry.docsUpdatedAt === docsUpdatedAt && entry.codeUpdatedAt === codeUpdatedAt
 }
 
-// Latest version-pattern branch per repo, fetched once and cached.
+// Version-pattern branches per repo, fetched once and cached. Both docs repos
+// and the code repo are queried through here, so a repo's branch list costs at
+// most one request per run no matter how many PRs reference it.
 const branchCache = new Map()
 
 function compareVersions(a, b) {
@@ -363,24 +369,28 @@ function compareVersions(a, b) {
 	return 0
 }
 
-async function getLatestReleaseBranch(repo) {
+// Every "X.Y" branch in a repo. A fetch failure caches an empty list rather
+// than retrying per PR — callers treat "no branches known" as "say nothing",
+// so a transient API error degrades into silence instead of a wrong verdict.
+async function getReleaseBranches(repo) {
 	if (branchCache.has(repo)) return branchCache.get(repo)
-	let latest = null
+	let versioned = []
 	try {
 		const branches = await fetchAllPages(`https://api.github.com/repos/${repo}/branches`)
-		const versioned = branches
+		versioned = branches
 			.map((b) => b.name)
 			.filter((name) => RELEASE_BRANCH_PATTERN.test(name))
-		if (versioned.length > 0) {
-			latest = versioned.reduce((max, name) =>
-				compareVersions(name, max) > 0 ? name : max,
-			)
-		}
 	} catch (e) {
 		console.error(`Error fetching branches for ${repo}:`, e.message)
 	}
-	branchCache.set(repo, latest)
-	return latest
+	branchCache.set(repo, versioned)
+	return versioned
+}
+
+async function getLatestReleaseBranch(repo) {
+	const versioned = await getReleaseBranches(repo)
+	if (versioned.length === 0) return null
+	return versioned.reduce((max, name) => (compareVersions(name, max) > 0 ? name : max))
 }
 
 function targetsOlderBranch(baseBranch, latestReleaseBranch) {
@@ -394,6 +404,28 @@ function milestoneVersion(title) {
 	if (!title) return null
 	const m = title.match(/\d+\.\d+/)
 	return m ? m[0] : null
+}
+
+// A code PR on a dev-line branch ("7.x") has no released version of its own —
+// it lands in whatever comes after the newest version already cut from that
+// line. So with 7.0/7.1/7.2 branched off, "7.x" is the future 7.3, and the
+// docs should target 7.3 too. A line with nothing cut from it yet ("8.x" while
+// no 8.Y exists) is heading for its own X.0.
+//
+// releaseBranches is the *code* repo's branch list — the code repo decides
+// where a change actually lives, so it's the only reliable input here. An
+// empty list (fetch failed, see getReleaseBranches) yields X.0, which is
+// correct for a genuinely fresh major line and harmless otherwise: the caller
+// only reports a mismatch, and a wrong guess here would be visible as an
+// obviously-off version rather than a silent bad retarget.
+function nextMinorForDevLine(devLineBranch, releaseBranches) {
+	const m = devLineBranch.match(DEV_LINE_BRANCH_PATTERN)
+	if (!m) return null
+	const major = m[1]
+	const sameLine = releaseBranches.filter((b) => b.startsWith(`${major}.`))
+	if (sameLine.length === 0) return `${major}.0`
+	const highest = sameLine.reduce((max, b) => (compareVersions(b, max) > 0 ? b : max))
+	return `${major}.${Number(highest.split(".")[1]) + 1}`
 }
 
 // A PR targeting an older branch than its own milestone isn't a genuine
@@ -1079,8 +1111,24 @@ async function main() {
 		const hasMilestone = pr.milestone != null
 		const milestoneTitle = pr.milestone ? pr.milestone.title : null
 		const baseBranch = pr.base.ref
+		// Docs branches never merge forward — each version branch is its own
+		// copy of the documentation — so "newest branch in this docs repo" is
+		// what decides whether a change still needs copying onward, and is a
+		// separate question from which branch the PR belongs on (see
+		// codeExpectedBranch below).
+		const docsReleaseBranches = await getReleaseBranches(pr.sourceRepo)
 		const latestReleaseBranch = await getLatestReleaseBranch(pr.sourceRepo)
 		const olderBranch = targetsOlderBranch(baseBranch, latestReleaseBranch)
+		// Every branch the change still has to be copied onto, not just the
+		// newest one — a PR on 7.2 with 7.3 and 8.0 above it needs both, and
+		// naming only 8.0 is how 7.3 gets forgotten. Derived from branch
+		// numbers alone, so it's a checklist to work through, not proof any
+		// of them actually need the change (the guide says as much).
+		const newerDocsBranches = RELEASE_BRANCH_PATTERN.test(baseBranch)
+			? docsReleaseBranches
+					.filter((b) => compareVersions(b, baseBranch) > 0)
+					.sort(compareVersions)
+			: []
 
 		// Dependency bumps don't map to a docs milestone the way content
 		// changes do, so milestone triage is skipped for them entirely (see
@@ -1123,6 +1171,7 @@ async function main() {
 		let codeUpdatedAt = null
 		let codeMilestoneTitle = null
 		let codeBaseBranch = null
+		let codeReleaseBranches = []
 
 		if (appPRData) {
 			appPRRepo = appPRData.repo
@@ -1136,7 +1185,64 @@ async function main() {
 			codeUpdatedAt = codePR.updatedAt
 			codeMilestoneTitle = codePR.milestoneTitle
 			codeBaseBranch = codePR.baseBranch
+			codeReleaseBranches = await getReleaseBranches(appPRRepo)
 		}
+
+		// Where this docs PR *should* land. The code repo decides — a docs
+		// milestone that disagrees is the thing that's wrong (see
+		// docsMilestoneWrongFlag), not the branch we derive here.
+		//
+		// The code PR's milestone wins when it has one: it's the most explicit
+		// statement of intent, and it can be a patch/pre-release title like
+		// "7.1.1" or "7.1.0-rc" at any point, before or after the code PR
+		// merges, so milestoneVersion() normalizes it down to "X.Y". A patch
+		// milestone deliberately aimed at an older line therefore beats the
+		// branch arithmetic below, which is the intended precedence.
+		//
+		// With no milestone (e.g. Promptless opens the docs PR the moment the
+		// code PR lands, before triage), fall back to the code PR's own base
+		// branch: a release branch ("7.1") names its version directly, while a
+		// dev-line branch ("7.x") means the version after the newest one cut
+		// from that line (see nextMinorForDevLine). Anything else — a feature
+		// branch, "main" — names no version at all, so stay silent.
+		const codeMilestoneBranch = milestoneVersion(codeMilestoneTitle)
+		const codeExpectedFromBaseBranch = codeMilestoneBranch === null && codeBaseBranch !== null
+		const codeExpectedBranch =
+			codeMilestoneBranch !== null
+				? codeMilestoneBranch
+				: codeBaseBranch === null
+					? null
+					: RELEASE_BRANCH_PATTERN.test(codeBaseBranch)
+						? codeBaseBranch
+						: nextMinorForDevLine(codeBaseBranch, codeReleaseBranches)
+		const docsMilestoneBranch = milestoneVersion(milestoneTitle)
+		// The docs PR sits on a different branch than the code says it should.
+		// That's a retarget, not a backport: the change isn't in the branch
+		// it's pointing at, so copying it onward from there makes no sense
+		// (see rebaseWinsOverBackport). Applies in both directions — too old
+		// and too new are equally wrong.
+		const wrongBranchFlag =
+			!codeClosed && codeExpectedBranch !== null && codeExpectedBranch !== baseBranch
+		// Can't retarget onto a branch that doesn't exist — the branch has to
+		// be cut in the docs repo first. Only meaningful alongside
+		// wrongBranchFlag, since a PR already sitting on the expected branch
+		// proves that branch exists.
+		const expectedBranchMissingFlag =
+			wrongBranchFlag && !docsReleaseBranches.includes(codeExpectedBranch)
+		// The label is how maintainers mark a wrong-branch PR on GitHub, and
+		// the tracker only ever asks for it — it never applies it itself (the
+		// Mautic repos are read-only here). Once the label is on, the "Needs
+		// rebase" chip covers it, so the ask stands down.
+		const needsRebaseLabelFlag = wrongBranchFlag && !hasNeedsRebaseLabel
+		// The docs milestone disagrees with the code repo. Tracked separately
+		// from the branch because the two lag independently — a maintainer can
+		// fix one and forget the other.
+		const docsMilestoneWrongFlag =
+			!codeClosed &&
+			codeExpectedBranch !== null &&
+			docsMilestoneBranch !== null &&
+			docsMilestoneBranch !== codeExpectedBranch
+		const codeMilestoneAdvisoryFlag = wrongBranchFlag || docsMilestoneWrongFlag
 
 		// Raw lists keep the bots (needed by the community detector); the human
 		// lists drive all the participant logic (reviews, pings, responses).
@@ -1439,13 +1545,20 @@ async function main() {
 		// Just a label check — no clock, no "since when". You put the label on
 		// (or a bot did); this just makes sure it doesn't go unnoticed.
 		let needsRebaseFlag = hasNeedsRebaseLabel
-		// If the PR is already flagged as needing a rebase AND its milestone
-		// doesn't match the branch it's targeting, the branch itself is wrong
-		// — rebase wins, so neither the backport-label suggestion nor the
-		// "backport, then merge" framing below should sit alongside it; both
-		// would contradict "the branch needs fixing first."
+		// The PR is on the wrong branch, so neither the backport-label
+		// suggestion nor the "backport, then merge" framing below should sit
+		// alongside it: copying a change onward from a branch it doesn't
+		// belong on contradicts "the branch needs fixing first."
+		//
+		// wrongBranchFlag is the tracker working this out itself from the code
+		// repo, so it no longer waits for a human to notice and apply
+		// needs-rebase. The older label-driven path stays as a second trigger:
+		// it reads the docs PR's *own* milestone, so it still catches a PR
+		// whose code PR link is missing or unparseable, where no expected
+		// branch can be derived at all.
 		let rebaseWinsOverBackport =
-			needsRebaseFlag && backportContradictsMilestone(baseBranch, milestoneTitle)
+			wrongBranchFlag ||
+			(needsRebaseFlag && backportContradictsMilestone(baseBranch, milestoneTitle))
 		// Dependabot bump PRs always need porting to older maintained branches,
 		// even one opened straight against the latest release branch — unlike
 		// a content PR, there's no "this only ever targets one branch" case
@@ -1502,45 +1615,6 @@ async function main() {
 		// it still wins over this and keeps its own chip.
 		const standaloneOperatorReady =
 			finalReviewActionable && !appPRNumber && operatorApproved && !backportModifierActive
-
-		// Mautic release branches are always "X.Y" — but a code PR's
-		// milestone (the actual source of truth for where a docs PR should
-		// eventually land) can be set to a patch/pre-release title like
-		// "7.1.1" or "7.1.0-rc" at any point, before or after the code PR
-		// merges. milestoneVersion() already normalizes those down to "X.Y".
-		// When no milestone is set yet (e.g. Promptless opens the docs PR
-		// the moment the code PR lands, before triage), fall back to the
-		// code PR's own base branch: a real release branch (e.g. "7.1")
-		// names a specific version directly, while a dev-line branch (e.g.
-		// "7.x" — doesn't match RELEASE_BRANCH_PATTERN) has no version of
-		// its own and means "whatever's next", i.e. the docs repo's current
-		// latest release branch, not its default branch.
-		//
-		// If that disagrees with either the docs PR's current target branch
-		// or its own milestone, that's worth an early heads-up — before
-		// anyone's manually caught it and applied needs-rebase, which is
-		// when this stands down instead of piling on.
-		const codeMilestoneBranch = milestoneVersion(codeMilestoneTitle)
-		const codeExpectedFromBaseBranch = codeMilestoneBranch === null && codeBaseBranch !== null
-		const codeExpectedBranch =
-			codeMilestoneBranch !== null
-				? codeMilestoneBranch
-				: codeBaseBranch === null
-					? null
-					: RELEASE_BRANCH_PATTERN.test(codeBaseBranch)
-						? codeBaseBranch
-						: latestReleaseBranch
-		const docsMilestoneBranch = milestoneVersion(milestoneTitle)
-		const codeMilestoneBranchMismatch =
-			codeExpectedBranch !== null && codeExpectedBranch !== baseBranch
-		const codeMilestoneDocsMismatch =
-			codeExpectedBranch !== null &&
-			docsMilestoneBranch !== null &&
-			docsMilestoneBranch !== codeExpectedBranch
-		const codeMilestoneAdvisoryFlag =
-			!codeClosed &&
-			!needsRebaseFlag &&
-			(codeMilestoneBranchMismatch || codeMilestoneDocsMismatch)
 
 		// Plain inactivity signal — nothing has happened on either PR (docs
 		// or linked code) for 30+ days. Independent of category, so it can
@@ -1659,12 +1733,12 @@ async function main() {
 			}
 		} else if (
 			!effectiveHasMilestone &&
-			!(appPRNumber && codeMerged && !codeMilestoneBranchMismatch)
+			!(appPRNumber && codeMerged && !wrongBranchFlag)
 		) {
 			// A missing milestone blocks triage-first the way it always has —
 			// *except* when the code PR has already merged and its branch
 			// already lines up with where the docs PR is actually targeted
-			// (codeMilestoneBranchMismatch). In that case an operator simply
+			// (wrongBranchFlag). In that case an operator simply
 			// forgetting to file the milestone isn't a reason to hold up the
 			// code author's review: the milestone doesn't change what they'd
 			// be reviewing. A real branch mismatch still blocks, since
@@ -1784,6 +1858,7 @@ async function main() {
 			milestoneTitle,
 			baseBranch,
 			latestReleaseBranch,
+			newerDocsBranches,
 			targetsOlderBranch: olderBranch,
 			appPRRepo,
 			appPRNumber,
@@ -1838,9 +1913,11 @@ async function main() {
 			codeExpectedBranch,
 			codeExpectedFromBaseBranch,
 			docsMilestoneBranch,
-			codeMilestoneBranchMismatch,
-			codeMilestoneDocsMismatch,
+			wrongBranchFlag,
+			expectedBranchMissingFlag,
+			docsMilestoneWrongFlag,
 			codeMilestoneAdvisoryFlag,
+			needsRebaseLabelFlag,
 			daysSinceActivity,
 			staleFlag,
 			category,
@@ -2238,12 +2315,12 @@ function metaLine(pr) {
 			if (pr.hasMilestone && pr.milestoneTitle)
 				parts.push(`milestone <b>${escapeHtml(pr.milestoneTitle)}</b>`)
 			if (pr.backportLabelFlag)
-				parts.push(`targets <b>${escapeHtml(pr.baseBranch)}</b>, no backport label`)
+				parts.push(`${backportTargetsText(pr)} · no backport label`)
 			break
 		case "needs-milestone":
 			if (pr.backportLabelFlag)
 				parts.push(
-					`targets <b>${escapeHtml(pr.baseBranch)}</b> (latest ${escapeHtml(pr.latestReleaseBranch || "—")}) · no milestone, no backport label`,
+					`${backportTargetsText(pr)} · no milestone, no backport label`,
 				)
 			break
 		case "blocked-no-code-pr":
@@ -2273,12 +2350,16 @@ function metaLine(pr) {
 	// this prose line never was.
 	if (pr.backportModifierActive) {
 		parts.push(
-			`targets <b>${escapeHtml(pr.baseBranch)}</b> (latest is <b>${escapeHtml(pr.latestReleaseBranch || "—")}</b>)`,
+			backportTargetsText(pr),
 		)
 	}
 	if (pr.rebaseWinsOverBackport) {
+		// codeExpectedBranch is absent when only the older label-driven path
+		// fired (no parseable code PR), and the docs PR's own milestone is
+		// then the only thing naming a destination.
+		const shouldBe = pr.codeExpectedBranch || pr.milestoneTitle
 		parts.push(
-			`targets <b>${escapeHtml(pr.baseBranch)}</b>, milestone <b>${escapeHtml(pr.milestoneTitle)}</b> — wrong branch, not a backport`,
+			`targets <b>${escapeHtml(pr.baseBranch)}</b>, should be <b>${escapeHtml(shouldBe || "—")}</b> — wrong branch, not a backport`,
 		)
 	}
 
@@ -2409,6 +2490,17 @@ function chipsFor(pr) {
 	if (pr.needsRebaseFlag) chips.push({ cls: "manual", text: "Needs rebase" })
 	const codeMilestone = codeMilestoneAdvisoryChip(pr)
 	if (codeMilestone) chips.push(codeMilestone)
+	// The branch has to exist before the PR can point at it, so this ask
+	// comes before the label ask below.
+	if (pr.expectedBranchMissingFlag) {
+		chips.push({
+			cls: "setup",
+			text: `Create branch ${escapeHtml(pr.codeExpectedBranch)} in the docs repo first`,
+		})
+	}
+	if (pr.needsRebaseLabelFlag) {
+		chips.push({ cls: "setup", text: `Add ${NEEDS_REBASE_LABEL} label` })
+	}
 	// Independent of category (see missingMilestoneFlag) — covers both the
 	// plain needs-milestone row and the branch-match carve-out that lets a
 	// merged, un-milestoned PR proceed straight into the remind chain below
@@ -2576,6 +2668,26 @@ function approvalChips(pr) {
 	return chips
 }
 
+// Names every branch the change still has to reach, not just the newest one:
+// a PR on 7.2 with 7.3 and 8.0 above it needs both, and naming only the newest
+// is how the ones in between get missed.
+//
+// Falls back to the plain "targets X" when there's nothing above it — a
+// dependabot bump opened straight against the newest branch still gets a
+// backport ask, but its copies go to *older* maintained branches, which this
+// list deliberately doesn't try to guess (see the guide's bump scenario).
+function backportTargetsText(pr) {
+	const target = `targets <b>${escapeHtml(pr.baseBranch)}</b>`
+	const newer = pr.newerDocsBranches || []
+	if (newer.length === 0) return target
+	const names = newer.map((b) => `<b>${escapeHtml(b)}</b>`)
+	const list =
+		names.length === 1
+			? names[0]
+			: `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`
+	return `${target} — also needs ${list}`
+}
+
 // No activity on either PR for 30+ days — a plain inactivity signal, not
 // tied to any category, so it can flag a row even when nothing else does.
 function staleChip(pr) {
@@ -2583,33 +2695,38 @@ function staleChip(pr) {
 	return { cls: "stale", text: `🕸 Stale — ${pr.daysSinceActivity}d quiet` }
 }
 
-// An early, automatic heads-up that the code PR's milestone — or, absent
-// one, its base branch — doesn't match where the docs PR currently sits,
-// before anyone's noticed and manually applied needs-rebase (see
-// codeMilestoneAdvisoryFlag). Names whichever of branch/milestone is
-// actually out of step, since either can lag independently.
+// Names where the docs PR should be and how the tracker knows, so the row
+// carries the destination branch rather than just "something's off". Kept
+// visible even once needs-rebase is applied — the label says a branch is
+// wrong, only this says which branch to move to.
+//
+// Reports branch and milestone separately because they lag independently: a
+// maintainer can retarget the PR and forget the milestone, or vice versa.
 function codeMilestoneAdvisoryChip(pr) {
 	if (!pr.codeMilestoneAdvisoryFlag) return null
-	const code = escapeHtml(pr.codeExpectedBranch)
+	const expected = escapeHtml(pr.codeExpectedBranch)
 	const docs = escapeHtml(pr.docsMilestoneBranch)
+	// Why we believe that version — a milestone someone set, or arithmetic on
+	// the code PR's dev-line branch. Worth showing: the second is a
+	// derivation, and a maintainer may want to sanity-check it.
 	const source = pr.codeExpectedFromBaseBranch
-		? `Code PR has no milestone and targets ${escapeHtml(pr.codeBaseBranch)} — next is ${code}`
-		: `Code PR milestone is ${code}`
-	if (pr.codeMilestoneBranchMismatch && pr.codeMilestoneDocsMismatch) {
+		? `code PR has no milestone and targets ${escapeHtml(pr.codeBaseBranch)}`
+		: `code PR milestone ${expected}`
+	if (pr.wrongBranchFlag && pr.docsMilestoneWrongFlag) {
 		return {
 			cls: "manual",
-			text: `${source} — docs targets ${escapeHtml(pr.baseBranch)} and is milestoned ${docs}, both should follow`,
+			text: `Wrong branch — docs targets ${escapeHtml(pr.baseBranch)} and is milestoned ${docs}, both should be ${expected} (${source})`,
 		}
 	}
-	if (pr.codeMilestoneBranchMismatch) {
+	if (pr.wrongBranchFlag) {
 		return {
 			cls: "manual",
-			text: `${source} — docs targets ${escapeHtml(pr.baseBranch)}, check destination branch`,
+			text: `Wrong branch — docs targets ${escapeHtml(pr.baseBranch)}, should be ${expected} (${source})`,
 		}
 	}
 	return {
 		cls: "manual",
-		text: `${source} — docs is milestoned ${docs}, update it`,
+		text: `Docs milestone is ${docs}, should be ${expected} (${source})`,
 	}
 }
 
@@ -5153,9 +5270,28 @@ function generateGuideHTML({ now }) {
     </div>
 
     <div class="scenario">
+      <h3>The docs PR is on the wrong branch</h3>
+      <div class="note">The docs PR targets a different branch than the linked code PR says it should.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
+        The code repo decides where a docs change belongs. The tool reads the code PR's milestone first — <code>7.3.0-rc</code> counts as 7.3. If the code PR has no milestone, it uses the code PR's branch instead: a release branch like <code>7.2</code> means the docs PR should target 7.2, while a dev-line branch like <code>7.x</code> means the version after the newest one already cut from that line, so with 7.0/7.1/7.2 branched off, <code>7.x</code> means 7.3.
+        <div class="see"><span class="lbl">Do this</span>Retarget the docs PR onto the branch named in the chip, and add the <code>${NEEDS_REBASE_LABEL}</code> label so the state is visible on GitHub too.</div>
+        This is a retarget, <em>not</em> a backport — the change isn't in the branch the PR currently points at, so there's nothing to copy onward from there yet. That's why the "Add ${BACKPORT_LABEL} label" chip is hidden while this one is showing; it comes back once the PR is on the right branch. If the milestone on the docs PR disagrees too, the chip says so and names the version both should be.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>The branch the docs PR needs doesn't exist yet</h3>
+      <div class="note">The docs PR belongs on a branch that hasn't been created in the docs repo — for example the code PR is on <code>8.x</code> and 8.0 has been cut on the code side, so the docs need an 8.1 branch that isn't there.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Create branch 8.1 in the docs repo first</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
+        A PR can't point at a branch that doesn't exist, so create the branch in the docs repo first, then retarget the PR onto it.
+      </div>
+    </div>
+
+    <div class="scenario">
       <h3>The docs PR needs a backport</h3>
       <div class="note">The PR targets a release branch other than the one it should update (say, it targets 7.1 but 7.2 also needs the fix — or vice versa).
         <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
+        Docs branches don't merge forward — every version branch is its own copy — so the row names <em>every</em> branch above this one that still needs the change, e.g. <em>"targets 7.2 — also needs 7.3 and 8.0"</em>. Work through the whole list; copying to the newest one only is how the branches in between get missed. The list comes from branch numbers alone, so treat it as a checklist to confirm, not proof each one needs the change.
         Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it too — this can be newer or older branches than the one this PR targets, depending on which release branches need the update. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
       </div>
     </div>
@@ -5273,7 +5409,7 @@ function generateGuideHTML({ now }) {
 	fs.writeFileSync("tracker-guide.html", html)
 }
 
-module.exports = { main }
+module.exports = { main, nextMinorForDevLine }
 
 if (require.main === module) {
 	main().catch((err) => {
