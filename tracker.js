@@ -1422,13 +1422,22 @@ async function main() {
 		// in any band, regardless of category, and regardless of whether
 		// GitHub currently shows it as a live approval or a dismissed one.
 		const approverLogins = [...new Set(qualifyingApprovals.map((r) => r.user.login))]
-		// Logins whose qualifying approval is currently DISMISSED on GitHub —
-		// named on the "Add content-approved label" reminder chip (see
-		// approvalChips) so a maintainer knows who to credit when they add the
-		// label to make GitHub's own state agree with the tracker's.
+		// Logins whose approval is currently DISMISSED on GitHub — named on the
+		// "Add content-approved label" reminder chip (see approvalChips) so a
+		// maintainer knows who to credit when they add the label to make
+		// GitHub's own state agree with the tracker's.
+		//
+		// Scoped to non-operator approvals on purpose. An operator's review
+		// only covers style, grammar and wording, never whether the content is
+		// technically right, so an operator's dismissed approval is not a
+		// record of content approval and must never ask for that label. Only
+		// the code PR author, the core team, or another outside reviewer can
+		// give content approval.
 		const dismissedApproverLogins = [
 			...new Set(
-				qualifyingApprovals.filter((r) => r.state === "DISMISSED").map((r) => r.user.login),
+				nonOperatorApprovals
+					.filter((r) => r.state === "DISMISSED" && r.user.login !== pr.user.login)
+					.map((r) => r.user.login),
 			),
 		]
 		const needsContentApprovedLabelFlag =
@@ -4320,7 +4329,7 @@ function rowTags(pr) {
 	// they get even spacing whether inline or wrapped onto their own lines.
 	let html = ""
 	if (isHandbackLive(pr))
-		html += `<span class="tag back">↩ Core team passed this back to you</span>`
+		html += `<span class="tag back">↩ Core Team passed this back to you</span>`
 	else if (pr.category === "waiting-escalation-response")
 		html += `<span class="tag esc">Needs your review — escalated to Core Team</span>`
 	if (pr.staleFlag) html += `<span class="tag stale">Stale</span>`
@@ -5262,9 +5271,9 @@ function generateGuideHTML({ now }) {
     <div class="scenario">
       <h3>An approval gets reset by new commits</h3>
       <ol>
-        <li>Whenever someone approves the docs PR, add the <code>${CONTENT_APPROVED_LABEL}</code> label right away. That way, if the approval later gets dismissed, there's already a record that the content itself was approved.</li>
+        <li>Whenever someone outside the Education Team approves the docs PR — the code PR author, the Core Team, or another outside reviewer — add the <code>${CONTENT_APPROVED_LABEL}</code> label right away. That way, if the approval later gets dismissed, there's already a record that the content itself was approved. An Education Team approval only covers style, grammar and wording, so it never needs this label.</li>
         <li>GitHub automatically dismisses approvals the moment new commits land.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Content approved by X — review dismissed</span></div>
+          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add ${CONTENT_APPROVED_LABEL} label — X’s review was dismissed</span></div>
         </li>
       </ol>
     </div>
