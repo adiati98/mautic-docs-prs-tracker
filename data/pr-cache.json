@@ -2251,7 +2251,7 @@
     "readyForReviewAt": "2026-09-02T18:04:21Z"
   },
   "mautic/developer-documentation-new#643": {
-    "docsUpdatedAt": "2026-09-10T09:31:30Z",
+    "docsUpdatedAt": "2026-09-11T05:44:03Z",
     "codeUpdatedAt": "2026-08-31T13:41:42Z",
     "rawDocsReviews": [
       {
@@ -2370,6 +2370,13 @@
         },
         "created_at": "2026-09-03T12:04:17Z",
         "body": "Thanks for the review, @TomasVotruba — good call. We've consolidated the repeated \"constant → event class\" explanation in the Campaign plugin docs into a single statement of the logic followed by one scannable table (`CampaignEvents::CAMPAIGN_ON_BUILD` → `CampaignBuilderEvent::class`), so the replacement is easy to find in one place and the table can grow a row per event.\n\nOne scoping note: because this PR is tied to a single source PR (mautic/mautic#17161) under the one-docs-PR-per-source-PR convention, its table covers the Campaign event this PR owns; the same change is landing across a series of sibling docs PRs (one per bundle/source PR). If you'd prefer a single cross-bundle table on a shared page (e.g. `docs/plugins/event_listeners.rst`) over per-bundle tables, we're glad to coordinate that as a follow-up rather than merge those separate PRs' content together here — just let us know."
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T05:44:03Z",
+        "body": "/aside \r\n\r\n@TomasVotruba Promptless has made a new change based on your last comment. Can you please review it? Thank you!"
       }
     ],
     "rawCodeComments": [
@@ -2904,7 +2911,7 @@
     "readyForReviewAt": "2026-09-02T18:04:35Z"
   },
   "mautic/developer-documentation-new#633": {
-    "docsUpdatedAt": "2026-09-10T16:08:43Z",
+    "docsUpdatedAt": "2026-09-11T05:01:40Z",
     "codeUpdatedAt": "2026-09-04T07:07:18Z",
     "rawDocsReviews": [
       {
@@ -3321,6 +3328,16 @@
         "created_at": "2026-09-02T18:04:56Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T05:01:40Z",
+        "requested_reviewer": {
+          "login": "escopecz"
         },
         "requested_team": null
       }
@@ -4620,7 +4637,7 @@
     "readyForReviewAt": "2026-09-02T18:07:44Z"
   },
   "mautic/developer-documentation-new#623": {
-    "docsUpdatedAt": "2026-09-10T12:58:07Z",
+    "docsUpdatedAt": "2026-09-11T05:34:32Z",
     "codeUpdatedAt": "2026-09-04T06:53:53Z",
     "rawDocsReviews": [
       {
@@ -4761,7 +4778,7 @@
     "readyForReviewAt": "2026-09-02T18:08:00Z"
   },
   "mautic/developer-documentation-new#622": {
-    "docsUpdatedAt": "2026-09-10T12:59:20Z",
+    "docsUpdatedAt": "2026-09-11T05:34:48Z",
     "codeUpdatedAt": "2026-09-04T06:52:42Z",
     "rawDocsReviews": [
       {
@@ -4986,7 +5003,7 @@
     "readyForReviewAt": "2026-09-02T18:08:10Z"
   },
   "mautic/developer-documentation-new#621": {
-    "docsUpdatedAt": "2026-09-10T12:57:32Z",
+    "docsUpdatedAt": "2026-09-11T05:35:09Z",
     "codeUpdatedAt": "2026-09-04T06:51:27Z",
     "rawDocsReviews": [
       {
@@ -5089,7 +5106,7 @@
     "readyForReviewAt": "2026-09-01T19:10:23Z"
   },
   "mautic/developer-documentation-new#619": {
-    "docsUpdatedAt": "2026-09-10T12:59:14Z",
+    "docsUpdatedAt": "2026-09-11T05:37:24Z",
     "codeUpdatedAt": "2026-09-04T06:50:08Z",
     "rawDocsReviews": [
       {
@@ -5214,7 +5231,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#618": {
-    "docsUpdatedAt": "2026-09-10T12:56:57Z",
+    "docsUpdatedAt": "2026-09-11T05:37:46Z",
     "codeUpdatedAt": "2026-09-04T06:46:30Z",
     "rawDocsReviews": [
       {
@@ -5324,7 +5341,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#617": {
-    "docsUpdatedAt": "2026-09-10T13:01:53Z",
+    "docsUpdatedAt": "2026-09-11T05:38:03Z",
     "codeUpdatedAt": "2026-09-04T06:45:45Z",
     "rawDocsReviews": [
       {
@@ -6006,7 +6023,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#613": {
-    "docsUpdatedAt": "2026-09-10T13:56:56Z",
+    "docsUpdatedAt": "2026-09-11T08:02:14Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -6069,9 +6086,73 @@
         "user": {
           "login": "escopecz"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-09-10T13:56:34Z",
         "body": "Good 👍 "
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T07:45:38Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T07:46:04Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T08:01:23Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T08:01:25Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T08:01:28Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T08:01:30Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T08:01:32Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T08:02:14Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -6116,6 +6197,27 @@
         },
         "created_at": "2026-09-10T13:56:56Z",
         "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#pullrequestreview-5167998745)\n\nThanks for the review! Glad this looks good.\n\n<!-- promptless-comment:v1:bf203ae6-4419-4423-9191-0a1862ea9e48 -->"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T07:00:29Z",
+        "body": "@promptless-for-oss please create a PR to cherry-pick the changes here for 8.0 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:01:47Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#issuecomment-5630719571)\n\n<!-- promptless-comment-body:v1:2e8d43d3-2788-4820-a803-aa1a3b9c00b7 -->\n\nOn it — I'll port these changes into a separate PR targeting the 8.0 branch and follow up here with the link.\n\n<!-- promptless-comment:v1:2e8d43d3-2788-4820-a803-aa1a3b9c00b7 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:06:12Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#issuecomment-5630719571)\n\n<!-- promptless-comment-body:v1:94650580-1d37-4aae-bc54-74338dccd7a4 -->\n\nDone — I've cherry-picked these changes into a separate PR targeting the 8.0 branch: https://github.com/mautic/developer-documentation-new/pull/666\n\nIt's an identical +45-line addition to `docs/themes/getting_started.rst`, based on 8.0. This PR (#613) stays on 7.3 unchanged.\n\n<!-- promptless-comment:v1:94650580-1d37-4aae-bc54-74338dccd7a4 -->"
       }
     ],
     "rawCodeComments": [
@@ -6316,7 +6418,7 @@
     "readyForReviewAt": "2026-09-10T12:22:41Z"
   },
   "mautic/developer-documentation-new#612": {
-    "docsUpdatedAt": "2026-09-10T12:59:17Z",
+    "docsUpdatedAt": "2026-09-11T05:41:14Z",
     "codeUpdatedAt": "2026-08-17T13:21:34Z",
     "rawDocsReviews": [
       {
@@ -10812,7 +10914,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#932": {
-    "docsUpdatedAt": "2026-09-05T06:59:21Z",
+    "docsUpdatedAt": "2026-09-11T07:04:38Z",
     "codeUpdatedAt": "2026-09-01T17:19:33Z",
     "rawDocsReviews": [
       {
@@ -11090,7 +11192,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#920": {
-    "docsUpdatedAt": "2026-09-10T13:02:22Z",
+    "docsUpdatedAt": "2026-09-11T05:38:51Z",
     "codeUpdatedAt": "2026-09-04T06:50:08Z",
     "rawDocsReviews": [
       {
@@ -11230,7 +11332,7 @@
     "readyForReviewAt": "2026-09-02T18:08:31Z"
   },
   "mautic/user-documentation#915": {
-    "docsUpdatedAt": "2026-09-05T06:57:38Z",
+    "docsUpdatedAt": "2026-09-11T07:32:40Z",
     "codeUpdatedAt": "2026-09-01T06:46:35Z",
     "rawDocsReviews": [
       {
@@ -11491,7 +11593,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#913": {
-    "docsUpdatedAt": "2026-09-10T13:00:44Z",
+    "docsUpdatedAt": "2026-09-11T07:44:27Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -11503,7 +11605,29 @@
         "body": ""
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T07:33:52Z",
+        "body": "@promptless-for-oss please rebase to 7.3 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:36:27Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/913#issuecomment-5631053801)\n\n<!-- promptless-comment-body:v1:3360a3f6-a58c-4116-ad7d-136d8d538069 -->\n\nGot it — rebasing this onto the 7.3 branch now. I'll follow up here once the PR is re-targeted.\n\n<!-- promptless-comment:v1:3360a3f6-a58c-4116-ad7d-136d8d538069 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:44:27Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/913#issuecomment-5631053801)\n\n<!-- promptless-comment-body:v1:38bfdab7-de7c-426b-b5f6-9f218dd5343c -->\n\nDone — this PR (#913) now targets the 7.3 branch. The diff is unchanged and it's open and mergeable.\n\n<!-- promptless-comment:v1:38bfdab7-de7c-426b-b5f6-9f218dd5343c -->"
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -11685,6 +11809,16 @@
         "created_at": "2026-09-10T13:00:25Z",
         "requested_reviewer": {
           "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T07:34:10Z",
+        "requested_reviewer": {
+          "login": "escopecz"
         },
         "requested_team": null
       }
@@ -16212,6 +16346,237 @@
     ],
     "rawCodeReviews": [],
     "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#666": {
+    "docsUpdatedAt": "2026-09-11T07:45:05Z",
+    "codeUpdatedAt": "2026-09-09T07:44:02Z",
+    "rawDocsReviews": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T07:35:21Z",
+        "body": "@promptless-for-oss please rebase to 7.3 branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:36:29Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/666#issuecomment-5631068735)\n\n<!-- promptless-comment-body:v1:23cef600-3d2a-40ce-9cb3-83b6e173d1d4 -->\n\nGot it — rebasing this onto the 7.3 branch now. I'll follow up here once the PR is re-targeted.\n\n<!-- promptless-comment:v1:23cef600-3d2a-40ce-9cb3-83b6e173d1d4 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:44:30Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/666#issuecomment-5631068735)\n\n<!-- promptless-comment-body:v1:10e89eb8-d844-49db-bada-e38f0ad24e25 -->\n\nDone — this PR (#666) now targets the 7.3 branch. The diff is unchanged and it's open and mergeable.\n\n<!-- promptless-comment:v1:10e89eb8-d844-49db-bada-e38f0ad24e25 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:45:05Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/666#issuecomment-5631068735)\n\n<!-- promptless-comment-body:v1:583bb257-8527-4329-9454-bbf0ae03dc5c -->\n\nOne thing to flag now that this is on 7.3: PR #666 and the already-open PR #613 (\"Document the themeable email-validation.html.twig template\") now target the same 7.3 branch with a byte-identical diff — they're exact duplicates. You'll probably want to keep just one and close the other. Happy to close whichever you prefer — just let me know.\n\n<!-- promptless-comment:v1:583bb257-8527-4329-9454-bbf0ae03dc5c -->"
+      }
+    ],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-06T07:21:09Z",
+        "body": "@patrykgruszka we couldn't come up with a simpler way. It's similar to MFA. You cannot rely only on the information provided by the link. You need to combine it with an information only the contact would know. Ideas are welcome."
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "created_at": "2026-08-10T06:48:59Z",
+        "body": "How should this work with one-click unsubscribe? That flow must rely only on the URL, and it currently runs before the email and hash are validated. It therefore seems possible to bypass the new form with a crafted one-click POST.\r\n\r\nI don't see an option how we could keep RFC 8058 working while also requiring information that is not included in the unsubscribe link."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-10T14:59:27Z",
+        "body": "@patrykgruszka great catch! Yes, the one click unsubscribe handling should also validate the email and email hash. Those params were always part of that header so there is no issue. Just added the validation in the last commit.\r\n\r\nAs far as I know there is no report that email header links are being published the same as the normal content unsubscribe links. So with that in mind we should be fine here."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-12T09:09:42Z",
+        "body": "I guess we can make it configurable, but shouldn't the default be the secure option?\r\n\r\n@RCheesley @ekkeguembel @jos0405 @npracht and others, would you care to share your opinion on this extra unsubscribe step?"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-25T13:35:47Z",
+        "body": "I'll merge this PR tomorrow as it has 3 approvals and the conversation has stopped for 2 weeks now.\r\n\r\nThe configuration option can always be added if it turns out a dealbreaker for someone. I believe this is the right way how to ensure no contact won't get its email address published and gets unsubscribed or resubscribed by anyone who finds an email link online which is an actual use case from the real world that we are solving here.\r\n\r\nAnd I saw this same workflow on services I'm unsubscribing from. I always thought this workflow is dumb but it turns out it has meaning.\r\n\r\nThe one click unsubscribe header isn't a problem here. The headers aren't being published as far as I know. They are even being automatically stripped when forwarding an email."
+      },
+      {
+        "user": {
+          "login": "codecov[bot]"
+        },
+        "created_at": "2026-08-25T13:56:38Z",
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `91.07143%` with `20 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 72.38%. Comparing base ([`caa0ad1`](https://app.codecov.io/gh/mautic/mautic/commit/caa0ad1bc5ea2cbcdf6c4becceb3be2d51be2d0f?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`254583c`](https://app.codecov.io/gh/mautic/mautic/commit/254583cd6e9c4c7816cb30d02834eaf69b429f65?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 16 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | 87.50% | [18 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | 91.66% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | 88.88% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16870/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16870      +/-   ##\n============================================\n+ Coverage     72.32%   72.38%   +0.06%     \n- Complexity    39498    39538      +40     \n============================================\n  Files          2530     2533       +3     \n  Lines        146133   146287     +154     \n============================================\n+ Hits         105684   105884     +200     \n+ Misses        40449    40403      -46     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/EmailBundle/Event/EmailSendEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEvent%2FEmailSendEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnQvRW1haWxTZW5kRXZlbnQucGhw) | `86.40% <ø> (ø)` | |\n| [...es/EmailBundle/EventListener/BuilderSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FBuilderSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9CdWlsZGVyU3Vic2NyaWJlci5waHA=) | `98.18% <100.00%> (+0.02%)` | :arrow_up: |\n| [...ndles/EmailBundle/EventListener/PageSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FPageSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9QYWdlU3Vic2NyaWJlci5waHA=) | `81.81% <100.00%> (+0.86%)` | :arrow_up: |\n| [app/bundles/EmailBundle/Form/Type/ConfigType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FConfigType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL0NvbmZpZ1R5cGUucGhw) | `100.00% <100.00%> (ø)` | |\n| [...undles/EmailBundle/Form/Type/ValidateEmailType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FValidateEmailType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL1ZhbGlkYXRlRW1haWxUeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [app/bundles/EmailBundle/Model/EmailModel.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FModel%2FEmailModel.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvTW9kZWwvRW1haWxNb2RlbC5waHA=) | `64.55% <100.00%> (+0.50%)` | :arrow_up: |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | `91.66% <91.66%> (ø)` | |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | `88.88% <88.88%> (ø)` | |\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | `78.55% <87.50%> (+12.22%)` | :arrow_up: |\n\n... and [2 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16870/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-08-26T14:48:25Z",
+        "body": "I'll pause on the merge and implement the config option here."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-09-04T09:13:24Z",
+        "body": "@rohitp19 can you please retest also with the new config option?"
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "created_at": "2026-09-09T05:06:14Z",
+        "body": "Thank you @escopecz!, tested by toggeling the feature flag, it is working as expected."
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-09T06:59:46Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [23 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [5.1% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870)\n\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-09T07:44:01Z",
+        "body": "### Promptless documentation updates\n\n- [Document email address validation step for unsubscribe and resubscribe](https://app.gopromptless.ai/suggestions/3a45fe69-27fc-4347-bb38-4b6080ced6e8) documents the new email-confirmation workflow for unsubscribe/resubscribe links and the new global **Require email validation for unsubscribe** setting. [Docs PR](https://github.com/mautic/user-documentation/pull/913)\n- [Document the themeable email-validation.html.twig template](https://app.gopromptless.ai/suggestions/3b438968-aac2-4208-afa9-99add6c855b0) documents the new themeable `email-validation.html.twig` template and how to style it in a custom theme. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/613)"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-05T11:13:59Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-08-05T11:15:15Z",
+        "body": "Please address the inline finding before merge."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-05T12:43:21Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "dongilbert"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-05T15:17:46Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-08-06T07:08:46Z",
+        "body": "Personally, re-entering my email makes me feel like unsubscribing is being made unnecessarily difficult. Do you see other ways to harden the security without making the process less user-friendly?"
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-08-12T08:44:48Z",
+        "body": "Since one-click unsubscribe already relies on the signed URL alone, could we make the email verification configurable? The default flow could remain frictionless, while installations concerned about unsubscribe links being published could enable the verification step."
+      },
+      {
+        "user": {
+          "login": "rohitp19"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-14T07:47:33Z",
+        "body": "Thanks @escopecz! It is working as expected (All steps to test are passed).\n"
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-08-14T07:48:28Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "rohitpavaskar"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-09T05:05:19Z",
+        "body": ""
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:05:37Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:05:37Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T07:05:37Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T07:35:41Z",
+        "requested_reviewer": {
+          "login": "escopecz"
+        },
+        "requested_team": null
+      }
+    ],
     "readyForReviewAt": null
   }
 }
