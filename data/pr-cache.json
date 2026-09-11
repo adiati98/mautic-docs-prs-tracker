@@ -2911,7 +2911,7 @@
     "readyForReviewAt": "2026-09-02T18:04:35Z"
   },
   "mautic/developer-documentation-new#633": {
-    "docsUpdatedAt": "2026-09-11T05:01:40Z",
+    "docsUpdatedAt": "2026-09-11T09:48:35Z",
     "codeUpdatedAt": "2026-09-04T07:07:18Z",
     "rawDocsReviews": [
       {
@@ -3105,6 +3105,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-10T16:08:43Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-11T09:47:42Z",
+        "body": "Good 👍 "
       }
     ],
     "rawDocsComments": [
@@ -3198,6 +3206,13 @@
         },
         "created_at": "2026-09-10T16:08:23Z",
         "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#issuecomment-5621377161)\n\nAll of @escopecz's comments have been addressed in commit fce3f16: reduced the class-name event-dispatch section, replaced the constant-file (`*Events.php`) discovery instruction with `bin/console debug:event-dispatcher`, deleted the in-page migration table in favor of a link to the UPGRADE-8.0.md guide, dropped the un-converted-events caveat, and removed the unnecessary inline code comment in the tracking-script example. Vale runs clean on the changed files.\n\n<!-- promptless-comment:v1:74ded0a6-ecd0-4be3-a46d-9bc8b735f2e8 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T09:48:35Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/633#pullrequestreview-5177291339)\n\n<!-- promptless-comment-body:v1:f69646b7-28a2-4914-9302-ae276fe85663 -->\n\nThanks for reviewing! Glad it looks good.\n\n<!-- promptless-comment:v1:f69646b7-28a2-4914-9302-ae276fe85663 -->"
       }
     ],
     "rawCodeComments": [
@@ -6023,7 +6038,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#613": {
-    "docsUpdatedAt": "2026-09-11T08:02:14Z",
+    "docsUpdatedAt": "2026-09-11T08:54:25Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -6218,6 +6233,34 @@
         },
         "created_at": "2026-09-11T07:06:12Z",
         "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#issuecomment-5630719571)\n\n<!-- promptless-comment-body:v1:94650580-1d37-4aae-bc54-74338dccd7a4 -->\n\nDone — I've cherry-picked these changes into a separate PR targeting the 8.0 branch: https://github.com/mautic/developer-documentation-new/pull/666\n\nIt's an identical +45-line addition to `docs/themes/getting_started.rst`, based on 8.0. This PR (#613) stays on 7.3 unchanged.\n\n<!-- promptless-comment:v1:94650580-1d37-4aae-bc54-74338dccd7a4 -->"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-11T08:44:56Z",
+        "body": "@promptless-for-oss please apply the changes as well to #666."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T08:47:02Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#issuecomment-5631830558)\n\n<!-- promptless-comment-body:v1:88de0403-52a7-4677-acf9-e21959524aab -->\n\nThanks, @adiati98 — on it. We're bringing #666 (the 8.0 port) in line with the current approved state of this PR, including the Vale fixes, the cross-reference correction, and the template resolution-order wording. We'll follow up here once the update is pushed.\n\n<!-- promptless-comment:v1:88de0403-52a7-4677-acf9-e21959524aab -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T08:50:48Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#issuecomment-5631830558)\n\n<!-- promptless-comment-body:v1:d50d58ee-3da2-4ab5-ba73-0ea1d186536e -->\n\nQuick update, @adiati98: checking the current state of #666, it already carries the Vale terminology fixes and the template resolution-order correction. The only outstanding delta from this PR is the cross-reference fix, which we're applying to #666 now and then re-running Vale. We'll confirm here once it's pushed.\n\n<!-- promptless-comment:v1:d50d58ee-3da2-4ab5-ba73-0ea1d186536e -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T08:54:25Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/613#issuecomment-5631830558)\n\n<!-- promptless-comment-body:v1:8b7ed99e-688b-4f8a-8002-6e692f61fe49 -->\n\nDone, @adiati98 — the cross-reference fix is now applied to #666, so its changed content matches the approved state of this PR. Vale is clean on the changed lines. #666 is ready for another look whenever you have a moment.\n\n<!-- promptless-comment:v1:8b7ed99e-688b-4f8a-8002-6e692f61fe49 -->"
       }
     ],
     "rawCodeComments": [
@@ -10076,7 +10119,7 @@
   },
   "mautic/developer-documentation-new#310": {
     "docsUpdatedAt": "2026-06-09T08:32:08Z",
-    "codeUpdatedAt": "2026-09-10T14:26:37Z",
+    "codeUpdatedAt": "2026-09-11T11:40:04Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -10371,7 +10414,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-10T14:26:36Z",
+        "created_at": "2026-09-11T11:40:04Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [32 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n"
       }
     ],
@@ -10501,7 +10544,7 @@
   },
   "mautic/developer-documentation-new#297": {
     "docsUpdatedAt": "2026-07-08T20:12:15Z",
-    "codeUpdatedAt": "2026-09-09T18:39:45Z",
+    "codeUpdatedAt": "2026-09-11T11:20:59Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -10593,6 +10636,13 @@
         },
         "created_at": "2026-09-09T18:39:45Z",
         "body": "Hi @turanalmammadov, apologies for the overlap. I picked up #15030 and only found this PR afterwards. I have opened https://github.com/mautic/mautic/pull/17318 against `7.2`.\r\n\r\nTwo things I ran into, in case they are useful if you carry on with this one. The PHPStan failure here turned out to be the bug itself: `$newValue` can never be `null` at that point, because `$data[$alias] ?? ''` maps null to `''` a few lines above, so the `null` half was quietly matching `0`, `0.0` and `false`. Making both halves strict then breaks `testUpdatesContactCampaignActionWithBooleanFields`, since a campaign \"No change\" for a boolean arrives as `false`. Writing it out as `'' === $newValue || false === $newValue` satisfies both.\r\n\r\nThe other thing is that `LeadModel` on its own does not reach `PATCH`: `CustomFieldsApiControllerTrait::setCustomFieldValues()` strips numeric zeros before the model runs.\r\n\r\nYour PR and @notz's analysis in the issue thread are what pointed me at the root cause, and I have credited you both. Happy for you to take anything useful from mine."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-09-11T11:20:53Z",
+        "body": "Closing in favour of https://github.com/mautic/mautic/pull/17318. Please review and test https://github.com/mautic/mautic/pull/17318 to get this resolved."
       }
     ],
     "rawCodeReviews": [
@@ -11593,7 +11643,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#913": {
-    "docsUpdatedAt": "2026-09-11T07:44:27Z",
+    "docsUpdatedAt": "2026-09-11T09:42:15Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -11602,6 +11652,78 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-09-09T07:40:50Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:25:43Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:38:57Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:38:59Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:39:02Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:39:04Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:39:07Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:39:09Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:42:15Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-11T09:42:18Z",
         "body": ""
       }
     ],
@@ -11626,6 +11748,13 @@
         },
         "created_at": "2026-09-11T07:44:27Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/913#issuecomment-5631053801)\n\n<!-- promptless-comment-body:v1:38bfdab7-de7c-426b-b5f6-9f218dd5343c -->\n\nDone — this PR (#913) now targets the 7.3 branch. The diff is unchanged and it's open and mergeable.\n\n<!-- promptless-comment:v1:38bfdab7-de7c-426b-b5f6-9f218dd5343c -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T09:39:35Z",
+        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
       }
     ],
     "rawCodeComments": [
@@ -11669,7 +11798,7 @@
           "login": "codecov[bot]"
         },
         "created_at": "2026-08-25T13:56:38Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `91.07143%` with `20 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 72.38%. Comparing base ([`caa0ad1`](https://app.codecov.io/gh/mautic/mautic/commit/caa0ad1bc5ea2cbcdf6c4becceb3be2d51be2d0f?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`254583c`](https://app.codecov.io/gh/mautic/mautic/commit/254583cd6e9c4c7816cb30d02834eaf69b429f65?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 16 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | 87.50% | [18 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | 91.66% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | 88.88% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16870/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16870      +/-   ##\n============================================\n+ Coverage     72.32%   72.38%   +0.06%     \n- Complexity    39498    39538      +40     \n============================================\n  Files          2530     2533       +3     \n  Lines        146133   146287     +154     \n============================================\n+ Hits         105684   105884     +200     \n+ Misses        40449    40403      -46     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/EmailBundle/Event/EmailSendEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEvent%2FEmailSendEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnQvRW1haWxTZW5kRXZlbnQucGhw) | `86.40% <ø> (ø)` | |\n| [...es/EmailBundle/EventListener/BuilderSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FBuilderSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9CdWlsZGVyU3Vic2NyaWJlci5waHA=) | `98.18% <100.00%> (+0.02%)` | :arrow_up: |\n| [...ndles/EmailBundle/EventListener/PageSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FPageSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9QYWdlU3Vic2NyaWJlci5waHA=) | `81.81% <100.00%> (+0.86%)` | :arrow_up: |\n| [app/bundles/EmailBundle/Form/Type/ConfigType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FConfigType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL0NvbmZpZ1R5cGUucGhw) | `100.00% <100.00%> (ø)` | |\n| [...undles/EmailBundle/Form/Type/ValidateEmailType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FValidateEmailType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL1ZhbGlkYXRlRW1haWxUeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [app/bundles/EmailBundle/Model/EmailModel.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FModel%2FEmailModel.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvTW9kZWwvRW1haWxNb2RlbC5waHA=) | `64.55% <100.00%> (+0.50%)` | :arrow_up: |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | `91.66% <91.66%> (ø)` | |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | `88.88% <88.88%> (ø)` | |\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | `78.55% <87.50%> (+12.22%)` | :arrow_up: |\n\n... and [2 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16870/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `91.07143%` with `20 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 72.38%. Comparing base ([`caa0ad1`](https://app.codecov.io/gh/mautic/mautic/commit/caa0ad1bc5ea2cbcdf6c4becceb3be2d51be2d0f?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`254583c`](https://app.codecov.io/gh/mautic/mautic/commit/254583cd6e9c4c7816cb30d02834eaf69b429f65?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 16 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | 87.50% | [18 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | 91.66% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | 88.88% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16870/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16870      +/-   ##\n============================================\n+ Coverage     72.32%   72.38%   +0.06%     \n- Complexity    39498    39538      +40     \n============================================\n  Files          2530     2533       +3     \n  Lines        146133   146287     +154     \n============================================\n+ Hits         105684   105884     +200     \n+ Misses        40449    40403      -46     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/EmailBundle/Event/EmailSendEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEvent%2FEmailSendEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnQvRW1haWxTZW5kRXZlbnQucGhw) | `86.40% <ø> (ø)` | |\n| [...es/EmailBundle/EventListener/BuilderSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FBuilderSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9CdWlsZGVyU3Vic2NyaWJlci5waHA=) | `98.18% <100.00%> (+0.02%)` | :arrow_up: |\n| [...ndles/EmailBundle/EventListener/PageSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FPageSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9QYWdlU3Vic2NyaWJlci5waHA=) | `81.81% <100.00%> (+0.86%)` | :arrow_up: |\n| [app/bundles/EmailBundle/Form/Type/ConfigType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FConfigType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL0NvbmZpZ1R5cGUucGhw) | `100.00% <100.00%> (��)` | |\n| [...undles/EmailBundle/Form/Type/ValidateEmailType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FValidateEmailType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL1ZhbGlkYXRlRW1haWxUeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [app/bundles/EmailBundle/Model/EmailModel.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FModel%2FEmailModel.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvTW9kZWwvRW1haWxNb2RlbC5waHA=) | `64.55% <100.00%> (+0.50%)` | :arrow_up: |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | `91.66% <91.66%> (ø)` | |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | `88.88% <88.88%> (ø)` | |\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | `78.55% <87.50%> (+12.22%)` | :arrow_up: |\n\n... and [2 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16870/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
       },
       {
         "user": {
@@ -14839,7 +14968,7 @@
   },
   "mautic/user-documentation#697": {
     "docsUpdatedAt": "2026-08-13T09:37:44Z",
-    "codeUpdatedAt": "2026-09-10T14:26:37Z",
+    "codeUpdatedAt": "2026-09-11T11:40:04Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -15102,7 +15231,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-10T14:26:36Z",
+        "created_at": "2026-09-11T11:40:04Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [32 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=15926&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=15926&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4.6% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=15926&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=15926)\n\n"
       }
     ],
@@ -16260,7 +16389,7 @@
   },
   "mautic/user-documentation#969": {
     "docsUpdatedAt": "2026-09-09T23:16:59Z",
-    "codeUpdatedAt": "2026-09-09T23:18:29Z",
+    "codeUpdatedAt": "2026-09-11T10:39:39Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -16349,9 +16478,18 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#666": {
-    "docsUpdatedAt": "2026-09-11T07:45:05Z",
+    "docsUpdatedAt": "2026-09-11T09:22:36Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
-    "rawDocsReviews": [],
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-11T09:21:15Z",
+        "body": "Good 👍 "
+      }
+    ],
     "rawDocsComments": [
       {
         "user": {
@@ -16380,6 +16518,13 @@
         },
         "created_at": "2026-09-11T07:45:05Z",
         "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/666#issuecomment-5631068735)\n\n<!-- promptless-comment-body:v1:583bb257-8527-4329-9454-bbf0ae03dc5c -->\n\nOne thing to flag now that this is on 7.3: PR #666 and the already-open PR #613 (\"Document the themeable email-validation.html.twig template\") now target the same 7.3 branch with a byte-identical diff — they're exact duplicates. You'll probably want to keep just one and close the other. Happy to close whichever you prefer — just let me know.\n\n<!-- promptless-comment:v1:583bb257-8527-4329-9454-bbf0ae03dc5c -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-11T09:22:36Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/666#pullrequestreview-5177044383)\n\n<!-- promptless-comment-body:v1:3b8e7f41-8e42-4a22-a819-9883f96dc069 -->\n\nThanks for the review! Glad it looks good — we'll leave it ready for merge.\n\n<!-- promptless-comment:v1:3b8e7f41-8e42-4a22-a819-9883f96dc069 -->"
       }
     ],
     "rawCodeComments": [
