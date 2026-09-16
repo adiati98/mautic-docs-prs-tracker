@@ -1,6 +1,7 @@
 {
 	"name": "mautic-docs-prs-tracker",
 	"private": true,
+	"license": "MIT",
 	"scripts": {
 		"start": "node tracker.js",
 		"tracker": "node tracker.js"
