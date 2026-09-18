@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs PR Tracker — Guide</title>
+<title>Guidelines</title>
 <script>
   (function(){
     try {
@@ -275,8 +275,8 @@
 <div class="wrap">
 
   <div class="top">
-    <h1>Docs PR Tracker — Guide</h1>
-    <span class="updated" data-updated-iso="2026-09-18T09:52:06.163Z">Updated Fri, Sep 18, 11:52 AM</span>
+    <h1>Guidelines</h1>
+    <span class="updated" data-updated-iso="2026-09-18T12:47:32.287Z">Updated Fri, Sep 18, 2:47 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -309,11 +309,11 @@
       </div>
       <div class="band waiting">
         <div class="band-name">Waiting on others or for code PR to merge</div>
-        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a Draft while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
+        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a <b>Draft</b> while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
       </div>
       <div class="band monitor">
         <div class="band-name">Monitoring</div>
-        <div class="band-desc">The author replied and you've already answered back — a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to Need you today asking you to check in again.</div>
+        <div class="band-desc">The author replied and you've already answered back - a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to <b>Need you today</b> asking you to check in again.</div>
       </div>
     </div>
   </section>
@@ -322,16 +322,16 @@
     <h2>Reading a row</h2>
     <p class="sec-lede">Every row uses the same three visual signals, in this order: a colored bar on the left, a badge, and one or more colored tags.</p>
 
-    <div class="swatch-row"><span class="swatch-bar critical"></span> Red — overdue, act on this first.</div>
-    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange — due soon.</div>
-    <div class="swatch-row"><span class="swatch-bar act"></span> Blue — something to do.</div>
-    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey — needs your review.</div>
-    <div class="swatch-row"><span class="swatch-bar finish"></span> Green — approved and ready to merge.</div>
-    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale — nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
+    <div class="swatch-row"><span class="swatch-bar critical"></span> Red: overdue, act on this first.</div>
+    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange: due soon.</div>
+    <div class="swatch-row"><span class="swatch-bar act"></span> Blue: something to do.</div>
+    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey: needs your review.</div>
+    <div class="swatch-row"><span class="swatch-bar finish"></span> Green: approved and ready to merge.</div>
+    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale: nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
 
-    <div class="sample-row"><span class="pill open">Open</span> A badge like this is a fact, not an action. It names the linked code PR's own state — Open, Merged, or Closed.</div>
-    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open — Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
-    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is — see below.</div>
+    <div class="sample-row"><span class="pill open">Open</span> <span>A badge like this is a fact, not an action. It names the linked code PR's own state - <b>Open</b>, <b>Merged</b>, or <b>Closed</b>.</span></div>
+    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open - Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
+    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is - see below.</div>
   </section>
 
   <section class="guide-sec" id="colors">
@@ -348,8 +348,8 @@
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
         <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
-        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed — its linked code PR was closed without merging.</td></tr>
-        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
+        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed - its linked code PR was closed without merging.</td></tr>
+        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
   </section>
@@ -365,11 +365,11 @@
         <tr><td><span class="dot serious"></span> <b>Serious</b></td><td>7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</td></tr>
         <tr><td><span class="dot act"></span> <b>Act</b></td><td>Something needs doing: review, remind, merge, or add a label.</td></tr>
         <tr><td><span class="dot triage"></span> <b>Triage</b></td><td>A draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</td></tr>
-        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
+        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
 
-    <p>Critical, Serious, and Triage only narrow "Need you today" — picking one hides the other three groups. Act and Stale work differently: they show up across every group instead, since Bring it forward has actionable and stale rows of its own.</p>
+    <p><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> only narrow <b>Need you today</b> - picking one hides the other three groups. <b>Act</b> and <b>Stale</b> work differently: they show up across every group instead, since <b>Bring it forward</b> has actionable and stale rows of its own.</p>
   </section>
 
   <section class="guide-sec" id="scenarios">
@@ -379,20 +379,13 @@
     <div class="scenario">
       <h3>A new docs PR opens</h3>
       <ol>
-        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR does not have a milestone yet.
+        <li>If the linked code PR is still open, Promptless creates a <b>Draft</b> PR. The PR does not have a milestone yet.
           <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add milestone</span></div>
-          In Bring it forward - nothing urgent yet.
+          There's nothing urgent yet. Once it has a milestone, it just waits on the code PR to merge.
         </li>
-        <li>Once it has a milestone, it just waits on the code PR to merge.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
-          Quiet - you can review it early if you like, but there's no rush.
-        </li>
-        <li>If the linked code PR has already merged, Promptless creates a PR. Remind the code PR author to review the docs PR.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
-        </li>
-        <li>Occasionally, the code PR merges but the docs PR stays a draft.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
-          Mark the PR ready for review on GitHub by hand.
+        <li>
+          <div class="see"><span class="lbl">You'll also see</span><span class="chip muted">Review this docs PR</span></div>
+          You can review it early if you like, but there's no rush.
         </li>
       </ol>
     </div>
@@ -400,7 +393,11 @@
     <div class="scenario">
       <h3>The code PR has merged</h3>
       <ol>
-        <li>
+        <li>If the linked code PR had already merged, Promptless opens a docs PR. If the docs PR was a <b>Draft</b> and the code PR merges while it's waiting, Promptless marks it ready on its own.
+          Occasionally, Promptless's automation doesn't fire, and it stays a draft. If it's still a draft:
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
+          Mark it ready for review on GitHub by hand, then continue below.
+          Once it's out of draft:
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
           This is your cue to comment on the <b>code PR</b>, tag the author, and ask them to review the docs PR's content.
         </li>
@@ -431,26 +428,23 @@
         <li>If the code PR has already merged, the row stays in <b>Need you today</b>.
           <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> Do a final review - check the grammar and wording - and approve the PR. Leave a comment and tag <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
-        <li>If the code PR is still open (the docs PR is usually still a Draft at this point), the tracker just notes the approval for now - docs don't merge ahead of code.</li>
+        <li>If the code PR is still open (the docs PR is usually still a <b>Draft</b> at this point), the tracker just notes the approval for now - docs don't merge ahead of code.</li>
       </ol>
     </div>
 
     <div class="scenario">
       <h3>New commits reset an approval</h3>
-      <ol>
-        <li>Whenever someone outside the Education Team approves the docs PR (the code PR author, the Core Team, or another outside reviewer), add the <code>content-approved</code> label right away. An Education Team approval only covers style, grammar and wording, so it never needs this label.</li>
-        <li>GitHub automatically dismisses approvals the moment new commits land.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add content-approved label — X’s review was dismissed</span></div>
-        </li>
-      </ol>
+      <div class="note">If you haven't already added the content-approved label and GitHub automatically dismissed the approval the moment new commits land:
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add content-approved label — X’s review was dismissed</span></div>
+        Add the <code>content-approved</code> label.
+      </div>
     </div>
 
     <div class="scenario">
       <h3>The docs PR is on the wrong branch</h3>
       <div class="note">The docs PR targets a different branch than the linked code PR says it should.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add needs-rebase label</span></div>
-        The code repo decides where a docs change belongs.
-        <div class="see"><span class="lbl">Do this</span>If the docs PR is still a Draft, add the <code>needs-rebase</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.</div>
+        If it's still a <b>Draft</b>, add the <code>needs-rebase</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.
       </div>
     </div>
 
@@ -459,19 +453,29 @@
       <div class="note">The PR targets a version branch other than the one it should update.
         <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
         Apply an update from an older version branch to the newer branches too. The row names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Work through the whole list.
-        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>.
+        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to [branch] branch</code>.
       </div>
     </div>
 
     <div class="scenario">
       <h3>A docs PR backported onto a second branch</h3>
-      <div class="note">Backport means cherry-picking the same changes from one branch onto another - for example, copying the reviewed 7.3 PR onto <code>8.0</code>. The backport doesn't need its own milestone or its own review - both belong to the original PR, so acting on the original is what moves this row forward. The original's own row shows <span class="chip backport">Backported to #970</span> so you can see it has a copy elsewhere.
-        <div class="see"><span class="lbl">You'll see, before anyone's asked the code author about the original</span><span class="chip backport">Backported from #913 · 7.3 → 8.0</span><span class="chip manual">Ask code PR author to review #913</span></div>
-        <div class="see"><span class="lbl">You'll see, after the code author's been asked about the original</span><span class="chip muted">Waiting on #913's code PR author to reply</span></div>
-        <div class="see"><span class="lbl">Do this</span>Act on the original PR (#913 here), not this one. This row updates on its own once the original is approved and merged.</div>
-        <div class="see"><span class="lbl">You'll see, once the original merges</span><span class="chip finish">Merge — content already approved via #913</span></div>
-        <div class="see"><span class="lbl">Do this</span>Merge it - no separate review needed. To ask Promptless for a backport, comment: <code>@promptless-for-oss please create a PR to cherry-pick the changes here for [branch] branch.</code></div>
-      </div>
+      <ol>
+        <li>Backport means cherry-picking the same changes from one branch onto another - for example, copying the reviewed 7.3 PR onto <code>8.0</code>. The backport doesn't need its own milestone or its own review - both belong to the original PR, so acting on the original is what moves this row forward. The original's own row shows <span class="chip backport">Backported to #970</span> so you can see it has a copy elsewhere.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip backport">Backported from #913 · 7.3 → 8.0</span></div>
+        </li>
+        <li>Nobody's asked the code author about the original yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Ask code PR author to review #913</span></div>
+          Act on the original PR (#913 in the example), not the backported one. This row updates on its own once the original is approved and merged.
+        </li>
+        <li>The code author's been asked about the original, no reply yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Waiting on #913's code PR author to reply</span></div>
+        </li>
+        <li>The original merges.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Merge — content already approved via #913</span></div>
+          Merge it - no separate review needed.
+        </li>
+      </ol>
+      <p>To ask Promptless for a backport, comment: <code>@promptless-for-oss please create a PR to cherry-pick the changes here for [branch] branch.</code></p>
     </div>
 
     <div class="scenario">
@@ -523,18 +527,18 @@
 
   <section class="guide-sec" id="reminders-page">
     <h2>The reminders page</h2>
-    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR Review Reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
-    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page — nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
+    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR review reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
+    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page - nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
   </section>
 
   <section class="guide-sec" id="checklist">
     <h2>Your checklist</h2>
     <p class="sec-lede">Every row you can act on has a checkbox for your own tracking.</p>
-    <p>Checking it off is saved to <b>your own browser only</b> — nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A "Hide checked rows" switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
+    <p>Checking it off is saved to <b>your own browser only</b> - nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A <b>Hide checked rows</b> switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
   </section>
 
   <footer>
-    <div>Generated on <span data-updated-iso="2026-09-18T09:52:06.163Z">Fri, Sep 18, 11:52 AM</span></div>
+    <div>Generated on <span data-updated-iso="2026-09-18T12:47:32.287Z">Fri, Sep 18, 2:47 PM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
   </footer>
 </div>

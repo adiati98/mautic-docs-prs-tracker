@@ -3693,12 +3693,12 @@ function generateHTML(prData, { operatorUsername }) {
 		[
 			"critical",
 			"Critical",
-			`You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate.`,
+			`You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet - escalate.`,
 		],
 		[
 			"serious",
 			"Serious",
-			`You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting on your reply — follow up.`,
+			`You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting on your reply - follow up.`,
 		],
 		["act", "Act", "Something needs doing now: review, remind, merge, or add a label."],
 		[
@@ -3709,7 +3709,7 @@ function generateHTML(prData, { operatorUsername }) {
 		[
 			"stale",
 			"🕸 Stale",
-			"Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.",
+			"Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.",
 		],
 	]
 	const sevCounts = { critical: 0, serious: 0, act: 0, triage: 0 }
@@ -3761,7 +3761,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Need you today</h2><span class="count">${needToday.length}</span>
       <span class="chk-progress" data-state="zero">0/${needToday.length} checked</span>
-      <span class="hint">actions only you can take — most urgent first</span>
+      <span class="hint">actions only you can take - most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${needToday.map(renderNeedTodayRow).join("")}
@@ -3782,7 +3782,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Bring it forward</h2><span class="count">${bringForward.length}</span>
       <span class="chk-progress" data-state="zero">0/${bringForward.length} checked</span>
-      <span class="hint">not urgent — new PRs to triage, reviews on hold for their code PR, anything gone quiet</span>
+      <span class="hint">not urgent - new PRs to triage, reviews on hold for their code PR, anything gone quiet</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${bringForward.map(renderNeedTodayRow).join("")}
@@ -3797,7 +3797,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Waiting on others or for code PR to merge</h2><span class="count">${waiting.length}</span>
       <span class="chk-progress" data-state="zero">0/${waiting.length} checked</span>
-      <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
+      <span class="hint">the ball is in someone else's court - the tracker watches the clock</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${waiting.map(renderWaitingRow).join("")}
@@ -3811,12 +3811,12 @@ function generateHTML(prData, { operatorUsername }) {
   <section class="band-secondary" data-band="monitoring">
     <div class="sec-head">
       <h2>Monitoring</h2><span class="count">${monitoring.length}</span>
-      <span class="hint">healthy — collapsed by default</span>
+      <span class="hint">healthy - collapsed by default</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
       <details class="mon">
-        <summary><span class="tw">▶</span> ${monitoring.length} PR${monitoring.length === 1 ? "" : "s"} in a normal back-and-forth — already handled, nothing to do</summary>
+        <summary><span class="tw">▶</span> ${monitoring.length} PR${monitoring.length === 1 ? "" : "s"} in a normal back-and-forth - already handled, nothing to do</summary>
         ${monitoring.map(renderMonitoringRow).join("\n        ")}
       </details>
     </div>
@@ -4314,7 +4314,7 @@ function generateHTML(prData, { operatorUsername }) {
   <div class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
-    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
+    <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
@@ -4341,12 +4341,12 @@ function generateHTML(prData, { operatorUsername }) {
     <button class="tile" data-goto="monitoring" type="button">
       <div class="num">${monitoring.length}</div>
       <div><div class="lbl">Monitoring</div>
-      <div class="sub">already handled — nothing to do</div></div>
+      <div class="sub">already handled - nothing to do</div></div>
     </button>
   </div>
 ${searchBar}
 ${filterBar}
-  <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down — everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> — worth keeping open in its own tab.</p>
+  <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down - everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> - worth keeping open in its own tab.</p>
 ${needTodaySection}
 ${bringForwardSection}
 ${waitingSection}
@@ -4765,7 +4765,7 @@ function renderEscalationSection(escalations) {
 	// live, so an author reply in the last hour may not have landed here yet;
 	// this reminds the dev team to glance at the PR before diving in.
 	return `
-    <div class="coord-note">🕒 As of the last update, these authors hadn't replied. If one has since, the PR will be removed from here on the next refresh — <b>open the PR before you review</b>, just in case.</div>
+    <div class="coord-note">🕒 As of the last update, these authors hadn't replied. If one has since, the PR will be removed from here on the next refresh - <b>open the PR before you review</b>, just in case.</div>
     <table>
       <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Escalated to</th></tr></thead>
       <tbody>${rows}</tbody>
@@ -4790,7 +4790,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 			: ""
 	const authorSection =
 		groups.length === 0
-			? `<div class="empty">Nothing to remind any code author about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
+			? `<div class="empty">Nothing to remind any code author about right now - every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
 			: `${tocHtml}\n${groups.map(renderAuthorGroup).join("")}`
 	const escalationSection =
 		escalations.length === 0
@@ -4813,7 +4813,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs PR Review Reminders</title>
+<title>Docs PR review reminders</title>
 <script>
   (function(){
     try {
@@ -5061,10 +5061,10 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 <div class="wrap">
 
   <div class="top">
-    <h1>Docs PR Review Reminders</h1>
+    <h1>Docs PR review reminders</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
-    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
+    <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
@@ -5078,14 +5078,14 @@ function generateReminderHTML({ groups, escalations }, { now }) {
     </ol>
     <p class="intro-lead">Using this list:</p>
     <ul>
-      <li>Use the links above to jump straight to a section — <b>Core Team</b>, section 2 is your queue.</li>
+      <li>Use the links above to jump straight to a section - <b>Core Team</b>, section 2 is your queue.</li>
       <li>Under <b>Code PR author reminders</b>, click your name to jump to your own items.</li>
-      <li>Check a box to track your progress — it saves to <b>your own browser</b> only. The list updates when the tracker runs on schedule.</li>
+      <li>Check a box to track your progress - it saves to <b>your own browser</b> only. The list updates when the tracker runs on schedule.</li>
     </ul>
     <p class="intro-lead">To review a PR:</p>
     <ol>
       <li>Open the PR's <b>Files changed</b> tab, then use <b>Review changes → Submit review</b> to approve it or request changes.</li>
-      <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines — then <b>Submit review</b> when you're done.</li>
+      <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines - then <b>Submit review</b> when you're done.</li>
     </ol>
   </div>
   <main id="main-content">
@@ -5195,7 +5195,7 @@ function generateGuideHTML({ now }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs PR Tracker — Guide</title>
+<title>Guidelines</title>
 <script>
   (function(){
     try {
@@ -5467,7 +5467,7 @@ function generateGuideHTML({ now }) {
 <div class="wrap">
 
   <div class="top">
-    <h1>Docs PR Tracker — Guide</h1>
+    <h1>Guidelines</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
@@ -5501,11 +5501,11 @@ function generateGuideHTML({ now }) {
       </div>
       <div class="band waiting">
         <div class="band-name">Waiting on others or for code PR to merge</div>
-        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a Draft while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
+        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a <b>Draft</b> while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
       </div>
       <div class="band monitor">
         <div class="band-name">Monitoring</div>
-        <div class="band-desc">The author replied and you've already answered back — a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to Need you today asking you to check in again.</div>
+        <div class="band-desc">The author replied and you've already answered back - a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to <b>Need you today</b> asking you to check in again.</div>
       </div>
     </div>
   </section>
@@ -5514,16 +5514,16 @@ function generateGuideHTML({ now }) {
     <h2>Reading a row</h2>
     <p class="sec-lede">Every row uses the same three visual signals, in this order: a colored bar on the left, a badge, and one or more colored tags.</p>
 
-    <div class="swatch-row"><span class="swatch-bar critical"></span> Red — overdue, act on this first.</div>
-    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange — due soon.</div>
-    <div class="swatch-row"><span class="swatch-bar act"></span> Blue — something to do.</div>
-    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey — needs your review.</div>
-    <div class="swatch-row"><span class="swatch-bar finish"></span> Green — approved and ready to merge.</div>
-    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale — nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
+    <div class="swatch-row"><span class="swatch-bar critical"></span> Red: overdue, act on this first.</div>
+    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange: due soon.</div>
+    <div class="swatch-row"><span class="swatch-bar act"></span> Blue: something to do.</div>
+    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey: needs your review.</div>
+    <div class="swatch-row"><span class="swatch-bar finish"></span> Green: approved and ready to merge.</div>
+    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale: nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
 
-    <div class="sample-row"><span class="pill open">Open</span> A badge like this is a fact, not an action. It names the linked code PR's own state — Open, Merged, or Closed.</div>
-    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open — Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
-    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is — see below.</div>
+    <div class="sample-row"><span class="pill open">Open</span> <span>A badge like this is a fact, not an action. It names the linked code PR's own state - <b>Open</b>, <b>Merged</b>, or <b>Closed</b>.</span></div>
+    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open - Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
+    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is - see below.</div>
   </section>
 
   <section class="guide-sec" id="colors">
@@ -5540,8 +5540,8 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
         <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
-        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed — its linked code PR was closed without merging.</td></tr>
-        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
+        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed - its linked code PR was closed without merging.</td></tr>
+        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
   </section>
@@ -5557,11 +5557,11 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="dot serious"></span> <b>Serious</b></td><td>7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</td></tr>
         <tr><td><span class="dot act"></span> <b>Act</b></td><td>Something needs doing: review, remind, merge, or add a label.</td></tr>
         <tr><td><span class="dot triage"></span> <b>Triage</b></td><td>A draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</td></tr>
-        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
+        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
 
-    <p>Critical, Serious, and Triage only narrow "Need you today" — picking one hides the other three groups. Act and Stale work differently: they show up across every group instead, since Bring it forward has actionable and stale rows of its own.</p>
+    <p><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> only narrow <b>Need you today</b> - picking one hides the other three groups. <b>Act</b> and <b>Stale</b> work differently: they show up across every group instead, since <b>Bring it forward</b> has actionable and stale rows of its own.</p>
   </section>
 
   <section class="guide-sec" id="scenarios">
@@ -5571,20 +5571,13 @@ function generateGuideHTML({ now }) {
     <div class="scenario">
       <h3>A new docs PR opens</h3>
       <ol>
-        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR does not have a milestone yet.
+        <li>If the linked code PR is still open, Promptless creates a <b>Draft</b> PR. The PR does not have a milestone yet.
           <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add milestone</span></div>
-          In Bring it forward - nothing urgent yet.
+          There's nothing urgent yet. Once it has a milestone, it just waits on the code PR to merge.
         </li>
-        <li>Once it has a milestone, it just waits on the code PR to merge.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
-          Quiet - you can review it early if you like, but there's no rush.
-        </li>
-        <li>If the linked code PR has already merged, Promptless creates a PR. Remind the code PR author to review the docs PR.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
-        </li>
-        <li>Occasionally, the code PR merges but the docs PR stays a draft.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
-          Mark the PR ready for review on GitHub by hand.
+        <li>
+          <div class="see"><span class="lbl">You'll also see</span><span class="chip muted">Review this docs PR</span></div>
+          You can review it early if you like, but there's no rush.
         </li>
       </ol>
     </div>
@@ -5592,7 +5585,11 @@ function generateGuideHTML({ now }) {
     <div class="scenario">
       <h3>The code PR has merged</h3>
       <ol>
-        <li>
+        <li>If the linked code PR had already merged, Promptless opens a docs PR. If the docs PR was a <b>Draft</b> and the code PR merges while it's waiting, Promptless marks it ready on its own.
+          Occasionally, Promptless's automation doesn't fire, and it stays a draft. If it's still a draft:
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
+          Mark it ready for review on GitHub by hand, then continue below.
+          Once it's out of draft:
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
           This is your cue to comment on the <b>code PR</b>, tag the author, and ask them to review the docs PR's content.
         </li>
@@ -5623,26 +5620,23 @@ function generateGuideHTML({ now }) {
         <li>If the code PR has already merged, the row stays in <b>Need you today</b>.
           <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> Do a final review - check the grammar and wording - and approve the PR. Leave a comment and tag <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
-        <li>If the code PR is still open (the docs PR is usually still a Draft at this point), the tracker just notes the approval for now - docs don't merge ahead of code.</li>
+        <li>If the code PR is still open (the docs PR is usually still a <b>Draft</b> at this point), the tracker just notes the approval for now - docs don't merge ahead of code.</li>
       </ol>
     </div>
 
     <div class="scenario">
       <h3>New commits reset an approval</h3>
-      <ol>
-        <li>Whenever someone outside the Education Team approves the docs PR (the code PR author, the Core Team, or another outside reviewer), add the <code>${CONTENT_APPROVED_LABEL}</code> label right away. An Education Team approval only covers style, grammar and wording, so it never needs this label.</li>
-        <li>GitHub automatically dismisses approvals the moment new commits land.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add ${CONTENT_APPROVED_LABEL} label — X’s review was dismissed</span></div>
-        </li>
-      </ol>
+      <div class="note">If you haven't already added the content-approved label and GitHub automatically dismissed the approval the moment new commits land:
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add ${CONTENT_APPROVED_LABEL} label — X’s review was dismissed</span></div>
+        Add the <code>${CONTENT_APPROVED_LABEL}</code> label.
+      </div>
     </div>
 
     <div class="scenario">
       <h3>The docs PR is on the wrong branch</h3>
       <div class="note">The docs PR targets a different branch than the linked code PR says it should.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
-        The code repo decides where a docs change belongs.
-        <div class="see"><span class="lbl">Do this</span>If the docs PR is still a Draft, add the <code>${NEEDS_REBASE_LABEL}</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.</div>
+        If it's still a <b>Draft</b>, add the <code>${NEEDS_REBASE_LABEL}</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.
       </div>
     </div>
 
@@ -5651,19 +5645,29 @@ function generateGuideHTML({ now }) {
       <div class="note">The PR targets a version branch other than the one it should update.
         <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
         Apply an update from an older version branch to the newer branches too. The row names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Work through the whole list.
-        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>.
+        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to [branch] branch</code>.
       </div>
     </div>
 
     <div class="scenario">
       <h3>A docs PR backported onto a second branch</h3>
-      <div class="note">Backport means cherry-picking the same changes from one branch onto another - for example, copying the reviewed 7.3 PR onto <code>8.0</code>. The backport doesn't need its own milestone or its own review - both belong to the original PR, so acting on the original is what moves this row forward. The original's own row shows <span class="chip backport">Backported to #970</span> so you can see it has a copy elsewhere.
-        <div class="see"><span class="lbl">You'll see, before anyone's asked the code author about the original</span><span class="chip backport">Backported from #913 · 7.3 → 8.0</span><span class="chip manual">Ask code PR author to review #913</span></div>
-        <div class="see"><span class="lbl">You'll see, after the code author's been asked about the original</span><span class="chip muted">Waiting on #913's code PR author to reply</span></div>
-        <div class="see"><span class="lbl">Do this</span>Act on the original PR (#913 here), not this one. This row updates on its own once the original is approved and merged.</div>
-        <div class="see"><span class="lbl">You'll see, once the original merges</span><span class="chip finish">Merge — content already approved via #913</span></div>
-        <div class="see"><span class="lbl">Do this</span>Merge it - no separate review needed. To ask Promptless for a backport, comment: <code>@promptless-for-oss please create a PR to cherry-pick the changes here for [branch] branch.</code></div>
-      </div>
+      <ol>
+        <li>Backport means cherry-picking the same changes from one branch onto another - for example, copying the reviewed 7.3 PR onto <code>8.0</code>. The backport doesn't need its own milestone or its own review - both belong to the original PR, so acting on the original is what moves this row forward. The original's own row shows <span class="chip backport">Backported to #970</span> so you can see it has a copy elsewhere.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip backport">Backported from #913 · 7.3 → 8.0</span></div>
+        </li>
+        <li>Nobody's asked the code author about the original yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Ask code PR author to review #913</span></div>
+          Act on the original PR (#913 in the example), not the backported one. This row updates on its own once the original is approved and merged.
+        </li>
+        <li>The code author's been asked about the original, no reply yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Waiting on #913's code PR author to reply</span></div>
+        </li>
+        <li>The original merges.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Merge — content already approved via #913</span></div>
+          Merge it - no separate review needed.
+        </li>
+      </ol>
+      <p>To ask Promptless for a backport, comment: <code>@promptless-for-oss please create a PR to cherry-pick the changes here for [branch] branch.</code></p>
     </div>
 
     <div class="scenario">
@@ -5715,14 +5719,14 @@ function generateGuideHTML({ now }) {
 
   <section class="guide-sec" id="reminders-page">
     <h2>The reminders page</h2>
-    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR Review Reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
-    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page — nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
+    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR review reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
+    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page - nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
   </section>
 
   <section class="guide-sec" id="checklist">
     <h2>Your checklist</h2>
     <p class="sec-lede">Every row you can act on has a checkbox for your own tracking.</p>
-    <p>Checking it off is saved to <b>your own browser only</b> — nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A "Hide checked rows" switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
+    <p>Checking it off is saved to <b>your own browser only</b> - nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A <b>Hide checked rows</b> switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
   </section>
 
   <footer>
