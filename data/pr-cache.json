@@ -146,7 +146,7 @@
   },
   "mautic/developer-documentation-new#667": {
     "docsUpdatedAt": "2026-09-12T02:57:14Z",
-    "codeUpdatedAt": "2026-09-18T11:43:28Z",
+    "codeUpdatedAt": "2026-09-18T12:56:02Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -225,17 +225,17 @@
       },
       {
         "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-09-18T11:13:31Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [13 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1.7% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361)\n\n"
-      },
-      {
-        "user": {
           "login": "escopecz"
         },
         "created_at": "2026-09-18T11:43:28Z",
         "body": "@matbcvo let me know when this is ready to re-review. I can see some comments are still pending. There is also a conflict now."
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-18T12:56:02Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [13 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1.7% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -17344,7 +17344,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#970": {
-    "docsUpdatedAt": "2026-09-16T17:29:46Z",
+    "docsUpdatedAt": "2026-09-18T12:54:01Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -17441,6 +17441,20 @@
         },
         "created_at": "2026-09-16T17:29:46Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/970#pullrequestreview-5225808134)\n\n<!-- promptless-comment-body:v1:86d23d88-aece-4fb7-bbbf-6219758965a2 -->\n\nAddressed — I've worked through the Vale findings on the changed lines: fixed the passive-voice hit on the validation paragraph (\"the message was sent to\" → \"Mautic sent the message to\") and cleared the parentheses finding via the hyphen edit above. The remaining suggestions on these lines are false positives I've left intentionally: the \"use Landing Page\" hits fall on generic destination pages (the validation page, the unsubscribe page, the page-not-found error), not the Landing Page feature, and the others are inside verbatim quoted system messages that need to stay exact.\n\nOne note: I applied your feedback but the tooling couldn't auto re-request your review — our contributor account doesn't have that permission on this upstream repo, so you'll see the new commit on the PR rather than a fresh review request.\n\n<!-- promptless-comment:v1:86d23d88-aece-4fb7-bbbf-6219758965a2 -->"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T12:51:31Z",
+        "body": "@promptless-for-oss apply the latest changes to #913 "
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T12:54:01Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/970#issuecomment-5730245886)\n\n<!-- promptless-comment-body:v1:8087876c-9281-4c3c-8e96-e1272058853e -->\n\nGot it — I'll bring this 8.0 backport in line with the latest reviewed changes on #913. I'll follow up here once the branch is updated.\n\n<!-- promptless-comment:v1:8087876c-9281-4c3c-8e96-e1272058853e -->"
       }
     ],
     "rawCodeComments": [
