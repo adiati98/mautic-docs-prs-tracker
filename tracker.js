@@ -481,6 +481,162 @@ function extractReferencedPRNumber(sourceRepo, text) {
 	return null
 }
 
+// ---------------------------------------------------------------------------
+// Deliberate docs backports
+//
+// A maintainer can ask Promptless to cherry-pick an already-reviewed docs PR
+// onto a second maintained branch (e.g. the reviewed 7.3 PR copied onto 8.0).
+// The copy targets a branch the *code* PR never named, so without the
+// detection below the tracker reads it as a mis-targeted PR and asks for a
+// retarget plus the needs-rebase label — the opposite of what the maintainer
+// just asked for. There's no backport label in these repos and no fixed title
+// wording, so three independent signals are accepted, weakest last:
+//
+//   1. the body/title names the parent PR in backport language
+//      ("Backport of ... (#913)", "backported from #913", "cherry-pick #913")
+//   2. the title carries a branch suffix — "(8.0 backport)", "(8.0)" —
+//      naming the branch the PR actually targets
+//   3. nothing at all: the title is identical to the parent's, bar any such
+//      suffix
+//
+// Every signal is only a way to *find* a candidate parent. What makes it a
+// backport is the verification in findBackportParent: the parent has to be a
+// real PR in the same docs repo, sitting on the branch the code PR says the
+// change belongs on. So a PR that is genuinely on the wrong branch can't
+// silence the warning just by mentioning a number.
+// ---------------------------------------------------------------------------
+
+// "… (8.0 backport)", "… (backport 8.0)", "… (8.0)", "… [8.0]" — the trailing
+// marker maintainers and Promptless use to tell two otherwise identical PRs
+// apart. Captures the branch name so the caller can check it against the
+// branch the PR really targets; a suffix naming some other branch is not
+// evidence about this PR.
+const BACKPORT_TITLE_SUFFIX_PATTERN =
+	/[\s—-]*[([](?:backport\s+)?([\w.]+)(?:\s+backport)?[)\]]\s*$/i
+
+function backportTitleSuffixBranch(title) {
+	const m = (title || "").match(BACKPORT_TITLE_SUFFIX_PATTERN)
+	return m ? m[1] : null
+}
+
+// The title with that marker removed, so the copy and its parent compare
+// equal. Whitespace and case are normalized too — a hand-retyped title often
+// differs by no more than that.
+function normalizeTitleForBackportMatch(title) {
+	return (title || "")
+		.replace(BACKPORT_TITLE_SUFFIX_PATTERN, "")
+		.trim()
+		.replace(/\s+/g, " ")
+		.toLowerCase()
+}
+
+// Backport language pointing at a same-repo PR number. Deliberately looser
+// than extractReferencedPRNumber: Promptless writes whole sentences between
+// the word and the number ("Backport of the reviewed unsubscribe/resubscribe
+// documentation (#913) onto the 8.0 branch"), so a bounded run of non-"#"
+// characters is allowed in between. Stops at the first "#" so the number
+// captured is always the first one after the backport word.
+// Bare "#123" is GitHub's same-repo shorthand, so it's read as-is. But a
+// PR body can also mention a *different* repo's PR right next to backport
+// wording (e.g. "cherry-picks the documentation for mautic/mautic#16849"),
+// where the "#16849" is the code repo's number, not this docs repo's. The
+// lookbehind rejects any "#" glued directly onto a word or a "/" — the shape
+// a repo-qualified reference always has — so only a genuinely bare "#123"
+// matches here. Cross-repo mentions are still readable, just via the URL
+// pattern below, which checks the repo explicitly instead of guessing from
+// punctuation.
+const BACKPORT_REFERENCE_WORD_PATTERN =
+	/\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b[^#\n]{0,150}(?<![\w/])#(\d+)/i
+
+// Same backport wording, but pointing at a full GitHub URL instead of a bare
+// "#123" — only matched when the URL's repo is this docs PR's own repo, so a
+// link to the *code* PR right next to the same wording (as in the #16849
+// example above) is never mistaken for the docs backport's parent.
+function backportReferenceUrlPattern(sourceRepo) {
+	const repoEscaped = escapeRegExp(sourceRepo)
+	return new RegExp(
+		`\\b(?:backport(?:ed|s|ing)?|cherry[-\\s]?pick(?:ed|s|ing)?)\\b[^\\n]{0,150}?github\\.com/${repoEscaped}/pull/(\\d+)`,
+		"i",
+	)
+}
+
+function extractBackportParentNumber(text, sourceRepo) {
+	if (!text) return null
+	let m = text.match(BACKPORT_REFERENCE_WORD_PATTERN)
+	if (m) return Number(m[1])
+	m = text.match(backportReferenceUrlPattern(sourceRepo))
+	if (m) return Number(m[1])
+	return null
+}
+
+// Signal 3's lookup: PRs in the same repo whose title matches this one's.
+// The parent is usually merged and closed by the time a backport exists, so
+// it isn't in this run's open-PR data — hence the search call. GitHub's
+// search is word-based rather than exact, so it only narrows the field; the
+// caller still compares normalized titles itself. Failures return [] so a
+// search outage can only cost a detection, never invent one.
+async function searchPRsByTitle(repo, title) {
+	const words = title.replace(/["\\]/g, " ").trim()
+	if (words.length < 12) return []
+	const q = `repo:${repo} type:pr in:title "${words}"`
+	try {
+		const res = await makeRequest(
+			`https://api.github.com/search/issues?q=${encodeURIComponent(q)}&per_page=20`,
+		)
+		return res.items || []
+	} catch (e) {
+		console.error(`Error searching ${repo} for backport parent:`, e.message)
+		return []
+	}
+}
+
+// Finds the PR this one was cherry-picked from, or null. Candidates come from
+// the three signals above; each is confirmed against the real PR before it
+// counts, so the caller can treat a non-null result as "this branch is
+// deliberate" without further checks.
+//
+// expectedBranch is where the code PR says the change belongs — the branch
+// the *parent* should be sitting on. Requiring that (rather than just "some
+// other branch") is what keeps a genuinely mis-targeted PR from suppressing
+// its own warning.
+async function findBackportParent({ repo, number, title, body, baseBranch, expectedBranch }) {
+	if (!expectedBranch || baseBranch === expectedBranch) return null
+
+	const confirm = async (candidate) => {
+		if (!candidate || candidate === number) return null
+		const parent = await fetchCodePR(repo, candidate)
+		if (parent.baseBranch !== expectedBranch) return null
+		// merged/mergedAt come along for free from the same fetch — no extra
+		// call — and let the caller tell "parent is done" from "parent is
+		// still being reviewed" without re-fetching it later.
+		return { number: candidate, branch: parent.baseBranch, merged: parent.merged, mergedAt: parent.mergedAt }
+	}
+
+	// Signal 1 — an explicit reference wins outright: it names the parent, so
+	// there's nothing to guess at.
+	const referenced = extractBackportParentNumber(`${title}\n${body || ""}`, repo)
+	const byReference = await confirm(referenced)
+	if (byReference) return byReference
+
+	// Signals 2 and 3 share one lookup. A title suffix naming this PR's own
+	// branch says "this copy is intentional" but not what it was copied from,
+	// and an unmarked copy says neither — both are answered by finding a
+	// same-titled PR on the expected branch. Without a suffix the title has to
+	// match exactly, which is the whole of signal 3's evidence.
+	const suffixBranch = backportTitleSuffixBranch(title)
+	const marked = suffixBranch !== null && suffixBranch === baseBranch
+	const normalized = normalizeTitleForBackportMatch(title)
+	if (!normalized) return null
+	const matches = await searchPRsByTitle(repo, marked ? normalized : title)
+	for (const item of matches) {
+		if (item.number === number) continue
+		if (normalizeTitleForBackportMatch(item.title) !== normalized) continue
+		const confirmed = await confirm(item.number)
+		if (confirmed) return confirmed
+	}
+	return null
+}
+
 function tryExtractAppPR(text, sourceRepo) {
 	// A docs PR's own repo is never the linked *code* PR's repo — a
 	// "mautic/user-documentation#N" mention inside a user-documentation PR
@@ -1221,8 +1377,27 @@ async function main() {
 		// it's pointing at, so copying it onward from there makes no sense
 		// (see rebaseWinsOverBackport). Applies in both directions — too old
 		// and too new are equally wrong.
-		const wrongBranchFlag =
+		//
+		// Unless it's a deliberate cherry-pick of an already-reviewed docs PR
+		// onto a second maintained branch (see findBackportParent). The copy
+		// targets a branch the code PR never named, so it looks identical to a
+		// mis-targeted PR from the outside — the only thing that tells them
+		// apart is a parent PR sitting on the branch the code PR did name. The
+		// lookup runs only for PRs that would otherwise be flagged, so an
+		// ordinary run makes no extra calls for it.
+		const mismatchedBranch =
 			!codeClosed && codeExpectedBranch !== null && codeExpectedBranch !== baseBranch
+		const backportParent = mismatchedBranch
+			? await findBackportParent({
+					repo: pr.sourceRepo,
+					number: pr.number,
+					title: pr.title,
+					body: pr.body,
+					baseBranch,
+					expectedBranch: codeExpectedBranch,
+				})
+			: null
+		const wrongBranchFlag = mismatchedBranch && backportParent === null
 		// Can't retarget onto a branch that doesn't exist — the branch has to
 		// be cut in the docs repo first. Only meaningful alongside
 		// wrongBranchFlag, since a PR already sitting on the expected branch
@@ -1237,11 +1412,18 @@ async function main() {
 		// The docs milestone disagrees with the code repo. Tracked separately
 		// from the branch because the two lag independently — a maintainer can
 		// fix one and forget the other.
+		//
+		// A confirmed backport has two defensible milestones — the release the
+		// change was written for (its parent's, i.e. codeExpectedBranch) or the
+		// release this copy lands in (its own branch) — and no convention picks
+		// between them, so either is accepted rather than nagging about a
+		// choice the tracker can't make.
 		const docsMilestoneWrongFlag =
 			!codeClosed &&
 			codeExpectedBranch !== null &&
 			docsMilestoneBranch !== null &&
-			docsMilestoneBranch !== codeExpectedBranch
+			docsMilestoneBranch !== codeExpectedBranch &&
+			!(backportParent !== null && docsMilestoneBranch === baseBranch)
 		const codeMilestoneAdvisoryFlag = wrongBranchFlag || docsMilestoneWrongFlag
 
 		// Raw lists keep the bots (needed by the community detector); the human
@@ -1551,6 +1733,13 @@ async function main() {
 		let finalReviewActionable = appPRNumber
 			? contentApprovedSignal && codeMerged
 			: hasQualifyingApproval
+		// A confirmed backport of an already-merged parent carries the same
+		// reviewed text, so it doesn't need its own separate content review —
+		// force it ready regardless of what this PR's own (likely nonexistent)
+		// reviews say. Not merged yet: the parent might still change under
+		// review, so this PR waits instead (see the category override below).
+		const backportParentMerged = backportParent !== null && backportParent.merged
+		if (backportParentMerged) finalReviewActionable = true
 		// Just a label check — no clock, no "since when". You put the label on
 		// (or a bot did); this just makes sure it doesn't go unnoticed.
 		let needsRebaseFlag = hasNeedsRebaseLabel
@@ -1579,7 +1768,11 @@ async function main() {
 			!hasBackportLabel &&
 			!rebaseWinsOverBackport &&
 			!isPurposeBuiltForBranch(pr.title, baseBranch, pr.user.login) &&
-			!isManualDependencyBackport
+			!isManualDependencyBackport &&
+			// A confirmed cherry-pick of another docs PR *is* the backport, so
+			// asking for the label on top of it would be redundant — same
+			// reasoning as the two exclusions above.
+			backportParent === null
 		// Promptless should have flipped this out of draft the moment the code
 		// PR merged (see STALE_DRAFT_HOURS) — still a draft this long after
 		// means the bot's automation didn't fire, and a human needs to mark it
@@ -1806,12 +1999,26 @@ async function main() {
 			category = "monitoring"
 		}
 
+		// A confirmed backport waits on its *parent*, not on its own clock —
+		// the parent's row already carries the real ask (review, follow-up,
+		// escalate); redoing that chain here would just be asking twice for
+		// the same thing. Skipped when this PR's own linked code PR was
+		// abandoned (codeClosed already routed it to needs-close-docs-pr
+		// above, and that's a fact about this PR, independent of the parent),
+		// and once the parent's merged, where finalReviewActionable above
+		// already promoted this PR straight to ready-to-merge instead.
+		if (backportParent !== null && !backportParentMerged && !codeClosed) {
+			category = "waiting-backport-parent"
+		}
+
 		// Independent flag: the code PR merged but you haven't formally
 		// reviewed the docs PR yet. The clock above no longer waits on that
 		// (see the comment above), so this just keeps "you still haven't
 		// reviewed it" visible as its own chip alongside whatever the clock
-		// is showing, instead of being lost.
-		const reviewPendingFlag = appPRNumber && codeMerged && !operatorReviewDone
+		// is showing, instead of being lost. Suppressed for a confirmed
+		// backport — its content review happens on the parent, not here.
+		const reviewPendingFlag =
+			appPRNumber && codeMerged && !operatorReviewDone && backportParent === null
 
 		// Independent flag: the milestone is still missing, but that no
 		// longer blocked the category above (see the branch-match carve-out
@@ -1819,7 +2026,10 @@ async function main() {
 		// silently going unfiled. Whenever the category *is* still
 		// needs-milestone, this and that are the same fact, so the chip only
 		// needs to render once regardless of which case triggered it.
-		const missingMilestoneFlag = !effectiveHasMilestone
+		// Suppressed for a confirmed backport — the milestone belongs to the
+		// parent, which is where the code PR's milestone/branch logic already
+		// points; asking for one here would just be asking for a duplicate.
+		const missingMilestoneFlag = !effectiveHasMilestone && backportParent === null
 
 		// §3b — when this docs PR actually became reviewable, not when it was
 		// opened. Promptless opens docs PRs as drafts while the code PR is
@@ -1908,6 +2118,11 @@ async function main() {
 			remindedWhileOpen,
 			removeLabelFlag,
 			finalReviewActionable,
+			backportReadyToMerge: backportParentMerged,
+			backportParentApproved: null,
+			backportChildNumbers: [],
+			backportChildBranches: [],
+			outstandingNewerBranches: newerDocsBranches,
 			backportLabelFlag,
 			staleDraftFlag,
 			prematureReadyFlag,
@@ -1923,6 +2138,8 @@ async function main() {
 			codeExpectedFromBaseBranch,
 			docsMilestoneBranch,
 			wrongBranchFlag,
+			backportParentNumber: backportParent ? backportParent.number : null,
+			backportParentBranch: backportParent ? backportParent.branch : null,
 			expectedBranchMissingFlag,
 			docsMilestoneWrongFlag,
 			codeMilestoneAdvisoryFlag,
@@ -1946,6 +2163,8 @@ async function main() {
 		if (!liveKeys.has(key)) delete cache[key]
 	}
 	saveCache(cache)
+
+	resolveBackportRelationships(prData)
 
 	const failNote = fetchFailures > 0 ? `, ${fetchFailures} fetch failed (kept prior)` : ""
 	const skippedNote =
@@ -2133,6 +2352,11 @@ function statusSignature(pr) {
 		pr.needsContentApprovedLabelFlag,
 		pr.community.lit ? pr.community.waitingOnKind : null,
 		pr.codeMilestoneAdvisoryFlag,
+		pr.backportParentNumber,
+		pr.backportParentApproved,
+		pr.backportReadyToMerge,
+		pr.backportChildNumbers,
+		pr.outstandingNewerBranches,
 		pr.hasLabel,
 		pr.hasMilestone,
 		pr.codeMerged,
@@ -2441,6 +2665,8 @@ function buildClock(pr) {
 		}
 		case "waiting-code-pr-merge":
 			return { big: "—", sub: "waiting for the code PR to merge" }
+		case "waiting-backport-parent":
+			return { big: "—", sub: `waiting on #${pr.backportParentNumber}` }
 	}
 
 	// Primary category isn't itself actionable, but a flag is lit.
@@ -2497,6 +2723,12 @@ function chipsFor(pr) {
 	const leadingStale = staleChip(pr)
 	if (leadingStale) chips.push(leadingStale)
 	if (pr.needsRebaseFlag) chips.push({ cls: "manual", text: "Needs rebase" })
+	const backportFrom = docsBackportChip(pr)
+	if (backportFrom) chips.push(backportFrom)
+	const backportChildren = backportChildrenChip(pr)
+	if (backportChildren) chips.push(backportChildren)
+	const backportParentStatus = backportParentStatusChip(pr)
+	if (backportParentStatus) chips.push(backportParentStatus)
 	const codeMilestone = codeMilestoneAdvisoryChip(pr)
 	if (codeMilestone) chips.push(codeMilestone)
 	// The branch has to exist before the PR can point at it, so this ask
@@ -2603,9 +2835,14 @@ function chipsFor(pr) {
 
 	if (pr.finalReviewActionable && !pr.standaloneOperatorReady) {
 		chips.push(
-			pr.backportModifierActive
-				? { cls: "backport", text: "Final review · backport, then merge" }
-				: { cls: "finish", text: "Final review, then merge" },
+			pr.backportReadyToMerge
+				? {
+						cls: "finish",
+						text: `Merge — content already approved via #${pr.backportParentNumber}`,
+					}
+				: pr.backportModifierActive
+					? { cls: "backport", text: "Final review · backport, then merge" }
+					: { cls: "finish", text: "Final review, then merge" },
 		)
 	}
 	if (pr.removeLabelFlag) {
@@ -2687,7 +2924,11 @@ function approvalChips(pr) {
 // list deliberately doesn't try to guess (see the guide's bump scenario).
 function backportTargetsText(pr) {
 	const target = `targets <b>${escapeHtml(pr.baseBranch)}</b>`
-	const newer = pr.newerDocsBranches || []
+	// Branches a confirmed backport already covers (see
+	// resolveBackportRelationships) are crossed off here, not just left on
+	// the raw newerDocsBranches list — otherwise this would keep asking for
+	// a branch that already has an open PR targeting it.
+	const newer = pr.outstandingNewerBranches ?? pr.newerDocsBranches ?? []
 	if (newer.length === 0) return target
 	const names = newer.map((b) => `<b>${escapeHtml(b)}</b>`)
 	const list =
@@ -2695,6 +2936,108 @@ function backportTargetsText(pr) {
 			? names[0]
 			: `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`
 	return `${target} — also needs ${list}`
+}
+
+// Says why this PR sits on a branch the code PR never named, so the row reads
+// as settled rather than as a missing "Wrong branch" warning. Shown wherever
+// that warning would have been, and on quiet rows too — a maintainer glancing
+// at two near-identical PRs needs to see which one is the copy.
+function docsBackportChip(pr) {
+	if (!pr.backportParentNumber) return null
+	return {
+		cls: "backport",
+		text: `Backported from #${pr.backportParentNumber} · ${escapeHtml(pr.backportParentBranch)} → ${escapeHtml(pr.baseBranch)}`,
+	}
+}
+
+// Runs once, after every PR in this sweep has its own fields settled — a
+// "waiting-backport-parent" row (see the category override in main()) needs
+// to know how its *parent* is doing, and the parent is almost always another
+// PR this same run already processed (same repo, same open-PR sweep), so
+// this is a lookup against the finished prData, not a fetch. A parent not
+// found here (already merged and gone from the open list, or closed) just
+// leaves backportParentApproved at its default null, which the chip below
+// renders as a generic fallback.
+// Also builds the reverse link: a parent PR that has one or more confirmed
+// backports gets its own child numbers attached (see backportChildNumbers
+// below), so its row can say so even though it never went through
+// findBackportParent itself.
+function resolveBackportRelationships(prData) {
+	const byKey = new Map(prData.map((pr) => [cacheKey(pr.sourceRepo, pr.number), pr]))
+	for (const pr of prData) {
+		if (!pr.backportParentNumber) continue
+		const parent = byKey.get(cacheKey(pr.sourceRepo, pr.backportParentNumber))
+		if (parent) {
+			parent.backportChildNumbers.push(pr.number)
+			parent.backportChildBranches.push(pr.baseBranch)
+		}
+		if (pr.category !== "waiting-backport-parent" || !parent) continue
+		if (parent.finalReviewActionable) {
+			pr.backportParentApproved = "ready"
+		} else if (parent.category === "needs-remind-code-author") {
+			// Nobody has pinged the code author about the parent yet — a real
+			// ask, worth surfacing as one.
+			pr.backportParentApproved = "author"
+		} else if (
+			REMINDER_ELIGIBLE_CATEGORIES.has(parent.category) ||
+			parent.category === "needs-check-author-response"
+		) {
+			// Every other category in the code-author family only exists
+			// *after* a ping already went out (see main()'s category logic) —
+			// so this is "already asked, now waiting," not a fresh ask.
+			pr.backportParentApproved = "author-waiting"
+		} else {
+			pr.backportParentApproved = "reviewer"
+		}
+	}
+
+	// Second pass, once every child is registered on its parent (a parent
+	// can have more than one, so this can't be decided mid-loop above): a
+	// branch this PR still needed to reach can be crossed off the checklist
+	// the moment a confirmed backport already targets it — no need to wait
+	// for a human to notice and ask again. Only crosses off what a real
+	// backport PR actually confirms; anything not yet backported keeps
+	// asking, same as before.
+	for (const pr of prData) {
+		pr.outstandingNewerBranches = pr.newerDocsBranches.filter(
+			(b) => !pr.backportChildBranches.includes(b),
+		)
+		if (pr.newerDocsBranches.length > 0 && pr.outstandingNewerBranches.length === 0) {
+			pr.backportLabelFlag = false
+			pr.backportModifierActive = false
+		}
+	}
+}
+
+// Redirects attention to the parent instead of asking the same question
+// twice — the parent's own row already carries the real ask/follow-up/
+// escalate chain (see the category override in main()), so this is
+// informational, not a fresh nudge belonging to this row.
+function backportParentStatusChip(pr) {
+	if (pr.category !== "waiting-backport-parent") return null
+	const n = pr.backportParentNumber
+	switch (pr.backportParentApproved) {
+		case "author":
+			return { cls: "manual", text: `Ask code PR author to review #${n}` }
+		case "author-waiting":
+			// Already pinged (see resolveBackportRelationships) — this is a
+			// status, not a fresh ask, so it reads as a wait rather than an
+			// imperative.
+			return { cls: "muted", text: `Waiting on #${n}'s code PR author to reply` }
+		case "ready":
+			return { cls: "muted", text: `Waiting on #${n} to merge` }
+		default:
+			return { cls: "manual", text: `Review #${n}` }
+	}
+}
+
+// The reverse of docsBackportChip — shown on the *parent's* own row so a
+// maintainer looking at the original PR can see it already has one or more
+// copies elsewhere, instead of only ever learning that from the copy's side.
+function backportChildrenChip(pr) {
+	if (!pr.backportChildNumbers || pr.backportChildNumbers.length === 0) return null
+	const list = pr.backportChildNumbers.map((n) => `#${n}`).join(", ")
+	return { cls: "backport", text: `Backported to ${list}` }
 }
 
 // No activity on either PR for 30+ days — a plain inactivity signal, not
@@ -2792,7 +3135,13 @@ function remindedOpenChip(pr) {
 		}
 	}
 	if (pr.remindedWhileOpen) {
-		return { cls: "muted", text: "✅ Reminded code PR author" }
+		// A backport child links to the same code PR as its parent, so a
+		// reminder picked up here could just as easily belong to the parent's
+		// own ask — naming the parent keeps that from reading as if this PR
+		// had its own, separate reminder sent about it.
+		return pr.backportParentNumber
+			? { cls: "muted", text: `✅ Reminded code PR author through #${pr.backportParentNumber}` }
+			: { cls: "muted", text: "✅ Reminded code PR author" }
 	}
 	return null
 }
@@ -2826,6 +3175,12 @@ function waitingChipsFor(pr) {
 	const chips = []
 	const stale = staleChip(pr)
 	if (stale) chips.push(stale)
+	const backportFrom = docsBackportChip(pr)
+	if (backportFrom) chips.push(backportFrom)
+	const backportChildren = backportChildrenChip(pr)
+	if (backportChildren) chips.push(backportChildren)
+	const backportParentStatus = backportParentStatusChip(pr)
+	if (backportParentStatus) chips.push(backportParentStatus)
 	const community = communityChip(pr)
 	if (community) chips.push(community)
 	if (pr.category === "waiting-escalation-response") {
@@ -2926,9 +3281,13 @@ function renderMonitoringRow(pr) {
 	// waiting on the author for something unrelated (community), still need
 	// a formal review, or just be stale, none of which the day-count above
 	// captures on its own.
-	const overlayChipObjs = [staleChip(pr), remindedOpenChip(pr), ...approvalChips(pr)].filter(
-		Boolean,
-	)
+	const overlayChipObjs = [
+		staleChip(pr),
+		docsBackportChip(pr),
+		backportChildrenChip(pr),
+		remindedOpenChip(pr),
+		...approvalChips(pr),
+	].filter(Boolean)
 	const overlayChips = overlayChipObjs
 		.map((c) => `<span class="chip ${c.cls}">${c.text}</span>`)
 		.join("")
@@ -3334,12 +3693,12 @@ function generateHTML(prData, { operatorUsername }) {
 		[
 			"critical",
 			"Critical",
-			`You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet — escalate.`,
+			`You reminded the code author ${ESCALATE_DAYS}+ days ago and it's still quiet - escalate.`,
 		],
 		[
 			"serious",
 			"Serious",
-			`You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting on your reply — follow up.`,
+			`You reminded the code author ${FOLLOWUP_DAYS}–${ESCALATE_DAYS} days ago, or someone's waiting on your reply - follow up.`,
 		],
 		["act", "Act", "Something needs doing now: review, remind, merge, or add a label."],
 		[
@@ -3350,7 +3709,7 @@ function generateHTML(prData, { operatorUsername }) {
 		[
 			"stale",
 			"🕸 Stale",
-			"Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.",
+			"Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.",
 		],
 	]
 	const sevCounts = { critical: 0, serious: 0, act: 0, triage: 0 }
@@ -3402,7 +3761,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Need you today</h2><span class="count">${needToday.length}</span>
       <span class="chk-progress" data-state="zero">0/${needToday.length} checked</span>
-      <span class="hint">actions only you can take — most urgent first</span>
+      <span class="hint">actions only you can take - most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${needToday.map(renderNeedTodayRow).join("")}
@@ -3423,7 +3782,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Bring it forward</h2><span class="count">${bringForward.length}</span>
       <span class="chk-progress" data-state="zero">0/${bringForward.length} checked</span>
-      <span class="hint">not urgent — new PRs to triage, reviews on hold for their code PR, anything gone quiet</span>
+      <span class="hint">not urgent - new PRs to triage, reviews on hold for their code PR, anything gone quiet</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${bringForward.map(renderNeedTodayRow).join("")}
@@ -3438,7 +3797,7 @@ function generateHTML(prData, { operatorUsername }) {
     <div class="sec-head">
       <h2>Waiting on others or for code PR to merge</h2><span class="count">${waiting.length}</span>
       <span class="chk-progress" data-state="zero">0/${waiting.length} checked</span>
-      <span class="hint">the ball is in someone else's court — the tracker watches the clock</span>
+      <span class="hint">the ball is in someone else's court - the tracker watches the clock</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">${waiting.map(renderWaitingRow).join("")}
@@ -3452,12 +3811,12 @@ function generateHTML(prData, { operatorUsername }) {
   <section class="band-secondary" data-band="monitoring">
     <div class="sec-head">
       <h2>Monitoring</h2><span class="count">${monitoring.length}</span>
-      <span class="hint">healthy — collapsed by default</span>
+      <span class="hint">healthy - collapsed by default</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
       <details class="mon">
-        <summary><span class="tw">▶</span> ${monitoring.length} PR${monitoring.length === 1 ? "" : "s"} in a normal back-and-forth — already handled, nothing to do</summary>
+        <summary><span class="tw">▶</span> ${monitoring.length} PR${monitoring.length === 1 ? "" : "s"} in a normal back-and-forth - already handled, nothing to do</summary>
         ${monitoring.map(renderMonitoringRow).join("\n        ")}
       </details>
     </div>
@@ -3955,7 +4314,7 @@ function generateHTML(prData, { operatorUsername }) {
   <div class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
-    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
+    <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
@@ -3982,12 +4341,12 @@ function generateHTML(prData, { operatorUsername }) {
     <button class="tile" data-goto="monitoring" type="button">
       <div class="num">${monitoring.length}</div>
       <div><div class="lbl">Monitoring</div>
-      <div class="sub">already handled — nothing to do</div></div>
+      <div class="sub">already handled - nothing to do</div></div>
     </button>
   </div>
 ${searchBar}
 ${filterBar}
-  <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down — everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> — worth keeping open in its own tab.</p>
+  <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down - everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> - worth keeping open in its own tab.</p>
 ${needTodaySection}
 ${bringForwardSection}
 ${waitingSection}
@@ -4406,7 +4765,7 @@ function renderEscalationSection(escalations) {
 	// live, so an author reply in the last hour may not have landed here yet;
 	// this reminds the dev team to glance at the PR before diving in.
 	return `
-    <div class="coord-note">🕒 As of the last update, these authors hadn't replied. If one has since, the PR will be removed from here on the next refresh — <b>open the PR before you review</b>, just in case.</div>
+    <div class="coord-note">🕒 As of the last update, these authors hadn't replied. If one has since, the PR will be removed from here on the next refresh - <b>open the PR before you review</b>, just in case.</div>
     <table>
       <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Escalated to</th></tr></thead>
       <tbody>${rows}</tbody>
@@ -4431,7 +4790,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 			: ""
 	const authorSection =
 		groups.length === 0
-			? `<div class="empty">Nothing to remind any code author about right now — every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
+			? `<div class="empty">Nothing to remind any code author about right now - every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
 			: `${tocHtml}\n${groups.map(renderAuthorGroup).join("")}`
 	const escalationSection =
 		escalations.length === 0
@@ -4454,7 +4813,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs PR Review Reminders</title>
+<title>Docs PR review reminders</title>
 <script>
   (function(){
     try {
@@ -4702,10 +5061,10 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 <div class="wrap">
 
   <div class="top">
-    <h1>Docs PR Review Reminders</h1>
+    <h1>Docs PR review reminders</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
-    <a class="nav-link" href="tracker-guide.html">📖 Guide</a>
+    <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   </div>
@@ -4719,14 +5078,14 @@ function generateReminderHTML({ groups, escalations }, { now }) {
     </ol>
     <p class="intro-lead">Using this list:</p>
     <ul>
-      <li>Use the links above to jump straight to a section — <b>Core Team</b>, section 2 is your queue.</li>
+      <li>Use the links above to jump straight to a section - <b>Core Team</b>, section 2 is your queue.</li>
       <li>Under <b>Code PR author reminders</b>, click your name to jump to your own items.</li>
-      <li>Check a box to track your progress — it saves to <b>your own browser</b> only. The list updates when the tracker runs on schedule.</li>
+      <li>Check a box to track your progress - it saves to <b>your own browser</b> only. The list updates when the tracker runs on schedule.</li>
     </ul>
     <p class="intro-lead">To review a PR:</p>
     <ol>
       <li>Open the PR's <b>Files changed</b> tab, then use <b>Review changes → Submit review</b> to approve it or request changes.</li>
-      <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines — then <b>Submit review</b> when you're done.</li>
+      <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines - then <b>Submit review</b> when you're done.</li>
     </ol>
   </div>
   <main id="main-content">
@@ -4836,7 +5195,7 @@ function generateGuideHTML({ now }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs PR Tracker — Guide</title>
+<title>Guidelines</title>
 <script>
   (function(){
     try {
@@ -5108,7 +5467,7 @@ function generateGuideHTML({ now }) {
 <div class="wrap">
 
   <div class="top">
-    <h1>Docs PR Tracker — Guide</h1>
+    <h1>Guidelines</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
@@ -5123,7 +5482,7 @@ function generateGuideHTML({ now }) {
     <a href="#reading-a-row">Reading a row</a>
     <a href="#colors">Tag colors</a>
     <a href="#priority">Priority filter</a>
-    <a href="#scenarios">Common scenarios</a>
+    <a href="#scenarios">Docs review workflow</a>
     <a href="#reminders-page">Reminders page</a>
     <a href="#checklist">Your checklist</a>
   </nav>
@@ -5142,11 +5501,11 @@ function generateGuideHTML({ now }) {
       </div>
       <div class="band waiting">
         <div class="band-name">Waiting on others or for code PR to merge</div>
-        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a Draft while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
+        <div class="band-desc">You've done your part. Either the code PR hasn't merged yet (the docs PR is usually still a <b>Draft</b> while that's true), you've already sent a reminder, or you've escalated and are waiting for a reply.</div>
       </div>
       <div class="band monitor">
         <div class="band-name">Monitoring</div>
-        <div class="band-desc">The author replied and you've already answered back — a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to Need you today asking you to check in again.</div>
+        <div class="band-desc">The author replied and you've already answered back - a normal conversation is happening. This group is collapsed by default (click to expand it), but if one of its conversations goes quiet for a week, that row moves over to <b>Need you today</b> asking you to check in again.</div>
       </div>
     </div>
   </section>
@@ -5155,16 +5514,16 @@ function generateGuideHTML({ now }) {
     <h2>Reading a row</h2>
     <p class="sec-lede">Every row uses the same three visual signals, in this order: a colored bar on the left, a badge, and one or more colored tags.</p>
 
-    <div class="swatch-row"><span class="swatch-bar critical"></span> Red — overdue, act on this first.</div>
-    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange — due soon.</div>
-    <div class="swatch-row"><span class="swatch-bar act"></span> Blue — something to do.</div>
-    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey — needs your review.</div>
-    <div class="swatch-row"><span class="swatch-bar finish"></span> Green — approved and ready to merge.</div>
-    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale — nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
+    <div class="swatch-row"><span class="swatch-bar critical"></span> Red: overdue, act on this first.</div>
+    <div class="swatch-row"><span class="swatch-bar serious"></span> Orange: due soon.</div>
+    <div class="swatch-row"><span class="swatch-bar act"></span> Blue: something to do.</div>
+    <div class="swatch-row"><span class="swatch-bar triage"></span> Dark grey: needs your review.</div>
+    <div class="swatch-row"><span class="swatch-bar finish"></span> Green: approved and ready to merge.</div>
+    <div class="swatch-row"><span class="swatch-bar pale"></span> Pale: nothing to do right now, it's on someone else, no matter what state the code PR or the docs PR itself is in.</div>
 
-    <div class="sample-row"><span class="pill open">Open</span> A badge like this is a fact, not an action. It names the linked code PR's own state — Open, Merged, or Closed.</div>
-    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open — Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
-    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is — see below.</div>
+    <div class="sample-row"><span class="pill open">Open</span> <span>A badge like this is a fact, not an action. It names the linked code PR's own state - <b>Open</b>, <b>Merged</b>, or <b>Closed</b>.</span></div>
+    <div class="sample-row"><span class="pill draft">Draft</span> A separate badge for the docs PR itself: it's still a GitHub draft. The docs PR is a draft while its linked code PR is still open - Promptless marks it ready for review automatically once the code PR merges. If you see this badge on a PR whose code PR has already merged, that automatic step didn't happen and someone needs to mark the PR ready by hand.</div>
+    <div class="sample-row"><span class="chip act">Review this docs PR</span> A colored tag like this is an action for you. Its color tells you what kind of task it is - see below.</div>
   </section>
 
   <section class="guide-sec" id="colors">
@@ -5178,11 +5537,11 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
         <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, marking a docs PR ready after its code PR merged, or an approval that's ready to go.</td></tr>
-        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge — see the backport scenario below.</td></tr>
+        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
         <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
-        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed — its linked code PR was closed without merging.</td></tr>
-        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
+        <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed - its linked code PR was closed without merging.</td></tr>
+        <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
   </section>
@@ -5198,47 +5557,44 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="dot serious"></span> <b>Serious</b></td><td>7 to 13 days of silence since a reminder, or someone's waiting directly on your reply. Send a follow-up.</td></tr>
         <tr><td><span class="dot act"></span> <b>Act</b></td><td>Something needs doing: review, remind, merge, or add a label.</td></tr>
         <tr><td><span class="dot triage"></span> <b>Triage</b></td><td>A draft PR still waiting on its code PR, or a standalone PR waiting on its own author.</td></tr>
-        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock.</td></tr>
+        <tr><td><span class="dot stale"></span> <b>Stale</b></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
     </table>
 
-    <p>Critical, Serious, and Triage only narrow "Need you today" — picking one hides the other three groups. Act and Stale work differently: they show up across every group instead, since Bring it forward has actionable and stale rows of its own.</p>
+    <p><b>Critical</b>, <b>Serious</b>, and <b>Triage</b> only narrow <b>Need you today</b> - picking one hides the other three groups. <b>Act</b> and <b>Stale</b> work differently: they show up across every group instead, since <b>Bring it forward</b> has actionable and stale rows of its own.</p>
   </section>
 
   <section class="guide-sec" id="scenarios">
-    <h2>Common scenarios</h2>
-    <p class="sec-lede">Concrete walk-throughs of how a docs PR moves through the board, start to finish.</p>
+    <h2>Docs review workflow</h2>
+    <p class="sec-lede">A walk-through of how docs review works, start to finish.</p>
 
     <div class="scenario">
       <h3>A new docs PR opens</h3>
       <ol>
-        <li>If the linked code PR is still open, Promptless creates a Draft PR. The PR does not have a milestone yet.
+        <li>If the linked code PR is still open, Promptless creates a <b>Draft</b> PR. The PR does not have a milestone yet.
           <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add milestone</span></div>
-          In Bring it forward — nothing urgent yet.
+          There's nothing urgent yet. Once it has a milestone, it just waits on the code PR to merge.
         </li>
-        <li>Once it has a milestone, it just waits on the code PR.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
-          Quiet — you can read it early if you like, but there's no rush.
-        </li>
-        <li>If the linked code PR is already merged, Promptless creates a PR. There's no waiting-on-code step here — it skips straight to the reminder flow below.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
-        </li>
-        <li>Occasionally the code PR merges but the docs PR stays a draft — Promptless normally flips it within seconds, so this means its automation didn't fire. The row waits ${STALE_DRAFT_HOURS} hours before saying so, to give the bot time.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
-          Mark the PR ready for review on GitHub by hand. Everything else then carries on as normal.
+        <li>
+          <div class="see"><span class="lbl">You'll also see</span><span class="chip muted">Review this docs PR</span></div>
+          You can review it early if you like, but there's no rush.
         </li>
       </ol>
     </div>
 
     <div class="scenario">
-      <h3>The code PR merges and nobody informs the code PR author to review the docs PR yet</h3>
+      <h3>The code PR has merged</h3>
       <ol>
-        <li>
+        <li>If the linked code PR had already merged, Promptless opens a docs PR. If the docs PR was a <b>Draft</b> and the code PR merges while it's waiting, Promptless marks it ready on its own.
+          Occasionally, Promptless's automation doesn't fire, and it stays a draft. If it's still a draft:
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Code PR merged — mark ready for review</span></div>
+          Mark it ready for review on GitHub by hand, then continue below.
+          Once it's out of draft:
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge1">Ask code PR author to review content — code PR merged</span></div>
           This is your cue to comment on the <b>code PR</b>, tag the author, and ask them to review the docs PR's content.
         </li>
         <li>The row moves to <strong>Waiting on others</strong>.
-          You've done your part — nothing more to do here until the author replies or time passes.
+          You've done your part - nothing more to do here until the author replies or time passes.
         </li>
         <li>7 days pass, still no reply.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge2">Send a follow-up</span></div>
@@ -5257,67 +5613,68 @@ function generateGuideHTML({ now }) {
     </div>
 
     <div class="scenario">
-      <h3>Someone approves the docs PR</h3>
+      <h3>Someone approves the docs PR content</h3>
       <ol>
-        <li>A docs PR is only merged once the code PR's author has approved it — either a formal GitHub review, or a clear approval left as a comment.</li>
-        <li>A formal GitHub review is picked up automatically. A comment-only approval isn't — add the <code>${CONTENT_APPROVED_LABEL}</code> label as soon as you see one, so the tracker knows the code PR author's part is done. Once the label is there, the row drops out of the code-author reminders and settles into <b>Monitoring</b> (or straight into <b>Need you today</b> for final review, if the code PR already merged).</li>
+        <li>The docs PR only merges once the code PR's author, a Core Team member, or a content reviewer approves it - either with a formal GitHub review or a clear approval left as a comment.</li>
+        <li>Add the <code>${CONTENT_APPROVED_LABEL}</code> label as soon as someone approves the content - whether it's a formal GitHub review or a comment. A new commit automatically dismisses the approval, so the label keeps a record that the code PR author approved the content.</li>
         <li>If the code PR has already merged, the row stays in <b>Need you today</b>.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> You need to do final review — check the grammar and wordings — and approve the PR. Leave a comment and tag the <code>mautic/education-team-leaders</code> to merge the PR.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Final review, then merge</span></div> Do a final review - check the grammar and wording - and approve the PR. Leave a comment and tag <code>mautic/education-team-leaders</code> to merge the PR.
         </li>
-        <li>If the code PR is still open (the docs PR is usually still a Draft at this point), the approval is just noted for now — docs don't merge ahead of code.</li>
+        <li>If the code PR is still open (the docs PR is usually still a <b>Draft</b> at this point), the tracker just notes the approval for now - docs don't merge ahead of code.</li>
       </ol>
     </div>
 
     <div class="scenario">
-      <h3>An approval gets reset by new commits</h3>
-      <ol>
-        <li>Whenever someone outside the Education Team approves the docs PR — the code PR author, the Core Team, or another outside reviewer — add the <code>${CONTENT_APPROVED_LABEL}</code> label right away. That way, if the approval later gets dismissed, there's already a record that the content itself was approved. An Education Team approval only covers style, grammar and wording, so it never needs this label.</li>
-        <li>GitHub automatically dismisses approvals the moment new commits land.
-          <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add ${CONTENT_APPROVED_LABEL} label — X’s review was dismissed</span></div>
-        </li>
-      </ol>
+      <h3>New commits reset an approval</h3>
+      <div class="note">If you haven't already added the content-approved label and GitHub automatically dismissed the approval the moment new commits land:
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add ${CONTENT_APPROVED_LABEL} label — X’s review was dismissed</span></div>
+        Add the <code>${CONTENT_APPROVED_LABEL}</code> label.
+      </div>
     </div>
 
     <div class="scenario">
       <h3>The docs PR is on the wrong branch</h3>
       <div class="note">The docs PR targets a different branch than the linked code PR says it should.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
-        The code repo decides where a docs change belongs. The tool reads the code PR's milestone first — <code>7.3.0-rc</code> counts as 7.3. If the code PR has no milestone, it uses the code PR's branch instead: a release branch like <code>7.2</code> means the docs PR should target 7.2, while a dev-line branch like <code>7.x</code> means the version after the newest one already cut from that line, so with 7.0/7.1/7.2 branched off, <code>7.x</code> means 7.3.
-        <div class="see"><span class="lbl">Do this</span>Retarget the docs PR onto the branch named in the chip, and add the <code>${NEEDS_REBASE_LABEL}</code> label so the state is visible on GitHub too.</div>
-        This is a retarget, <em>not</em> a backport — the change isn't in the branch the PR currently points at, so there's nothing to copy onward from there yet. That's why the "Add ${BACKPORT_LABEL} label" chip is hidden while this one is showing; it comes back once the PR is on the right branch. If the milestone on the docs PR disagrees too, the chip says so and names the version both should be.
-      </div>
-    </div>
-
-    <div class="scenario">
-      <h3>The branch the docs PR needs doesn't exist yet</h3>
-      <div class="note">The docs PR belongs on a branch that hasn't been created in the docs repo — for example the code PR is on <code>8.x</code> and 8.0 has been cut on the code side, so the docs need an 8.1 branch that isn't there.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Create branch 8.1 in the docs repo first</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
-        A PR can't point at a branch that doesn't exist, so create the branch in the docs repo first, then retarget the PR onto it.
+        If it's still a <b>Draft</b>, add the <code>${NEEDS_REBASE_LABEL}</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.
       </div>
     </div>
 
     <div class="scenario">
       <h3>The docs PR needs a backport</h3>
-      <div class="note">The PR targets a release branch other than the one it should update (say, it targets 7.1 but 7.2 also needs the fix — or vice versa).
+      <div class="note">The PR targets a version branch other than the one it should update.
         <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
-        Docs branches don't merge forward — every version branch is its own copy — so the row names <em>every</em> branch above this one that still needs the change, e.g. <em>"targets 7.2 — also needs 7.3 and 8.0"</em>. Work through the whole list; copying to the newest one only is how the branches in between get missed. The list comes from branch numbers alone, so treat it as a checklist to confirm, not proof each one needs the change.
-        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it too — this can be newer or older branches than the one this PR targets, depending on which release branches need the update. For example: <code>@promptless-for-oss please cherry-pick the changes to 7.2</code>. The tool only checks whether this PR itself targets an older branch than the latest; it doesn't confirm the cherry-pick actually happened, so treat the tag as a reminder to do it, not proof it's done.
+        Apply an update from an older version branch to the newer branches too. The row names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Work through the whole list.
+        Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to [branch] branch</code>.
       </div>
     </div>
 
     <div class="scenario">
-      <h3>Dependabot opens a dependency-bump PR</h3>
-      <div class="note">A bump PR doesn't get a docs milestone — that requirement is skipped entirely for these. It always needs porting to older maintained branches too, even when it's opened straight against the latest one.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip act">${BUMP_DEPENDENCY_LABEL}</span></div>
-        Don't add a milestone to these. The blue tag is just an FYI — it doesn't ask you to do anything.
-      </div>
+      <h3>A docs PR backported onto a second branch</h3>
+      <ol>
+        <li>Backport means cherry-picking the same changes from one branch onto another - for example, copying the reviewed 7.3 PR onto <code>8.0</code>. The backport doesn't need its own milestone or its own review - both belong to the original PR, so acting on the original is what moves this row forward. The original's own row shows <span class="chip backport">Backported to #970</span> so you can see it has a copy elsewhere.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip backport">Backported from #913 · 7.3 → 8.0</span></div>
+        </li>
+        <li>Nobody's asked the code author about the original yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Ask code PR author to review #913</span></div>
+          Act on the original PR (#913 in the example), not the backported one. This row updates on its own once the original is approved and merged.
+        </li>
+        <li>The code author's been asked about the original, no reply yet.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Waiting on #913's code PR author to reply</span></div>
+        </li>
+        <li>The original merges.
+          <div class="see"><span class="lbl">You'll see</span><span class="chip finish">Merge — content already approved via #913</span></div>
+          Merge it - no separate review needed.
+        </li>
+      </ol>
+      <p>To ask Promptless for a backport, comment: <code>@promptless-for-oss please create a PR to cherry-pick the changes here for [branch] branch.</code></p>
     </div>
 
     <div class="scenario">
-      <h3>Someone hand-ports a dependency bump to an older branch</h3>
-      <div class="note">Rather than waiting on Promptless, a maintainer cherry-picks a dependabot bump onto an older release branch by hand — titling the PR after the original bump with a <code>— branch X.Y</code> suffix matching the branch it targets, e.g. <em>"chore(deps): bump rstcheck from 6.2.5 to 6.3.0 in /docs — branch 7.0"</em> against base branch 7.0.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Review this docs PR</span></div>
-        No "Add milestone" or "Add needs-backport label" chip — the tool recognizes this PR title/branch pairing as the backport itself, so both would be redundant.
+      <h3>The branch the docs PR needs doesn't exist yet</h3>
+      <div class="note">The docs PR belongs on a branch that doesn't exist yet in the docs repo - for example, the code PR is on <code>8.x</code>, and the code repo already released branch 8.0, so the docs need an 8.1 branch that isn't there.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Create branch 8.1 in the docs repo first</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
+        A PR can't point at a branch that doesn't exist, so create the branch in the docs repo first, then retarget the PR onto it.
       </div>
     </div>
 
@@ -5326,11 +5683,11 @@ function generateGuideHTML({ now }) {
       <ol>
         <li>After an escalation, the Core Team asks the code author to review or confirm something themselves rather than answering it directly.
           <div class="see"><span class="lbl">You'll see</span><span class="chip muted">↩ Core Team passed back to author</span></div>
-          It's no longer the Core Team's turn — the row rejoins the normal reminder flow, waiting on the code author again.
+          It's no longer the Core Team's turn. We're waiting on the code author's review again.
         </li>
         <li>7 days pass with no reply from the author.
           <div class="see"><span class="lbl">You'll see</span><span class="chip nudge2">Send a follow-up</span></div>
-          This row won't escalate to the Core Team a second time — it keeps asking for follow-ups until the author replies or it goes stale.
+          This row won't escalate to the Core Team a second time. It keeps asking for follow-ups until the author replies or it goes stale.
         </li>
       </ol>
     </div>
@@ -5339,7 +5696,7 @@ function generateGuideHTML({ now }) {
       <h3>Someone else jumps into the conversation</h3>
       <div class="note">A contributor or another maintainer leaves a comment and nobody's replied yet.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">👀 X is waiting on Y</span></div>
-        Orange and sorted high if it's waiting on you; otherwise it's just there so you can keep an eye on it.
+        The tracker shows this in orange and sorts it high if it's waiting on you; otherwise, it just sits there so you can keep an eye on it.
       </div>
     </div>
 
@@ -5347,7 +5704,7 @@ function generateGuideHTML({ now }) {
       <h3>The linked code PR gets closed instead of merged</h3>
       <div class="note">
         <div class="see"><span class="lbl">You'll see</span><span class="chip dismiss">Close this docs PR</span></div>
-        The documented change no longer applies. This outranks everything else showing on that row.
+        The documented change no longer applies. Close the PR with a comment such as: <code>Closing this PR as the code PR is closed.</code>
       </div>
     </div>
 
@@ -5355,21 +5712,21 @@ function generateGuideHTML({ now }) {
       <h3>Nothing happens for a month</h3>
       <div class="note">
         <div class="see"><span class="lbl">You'll see</span><span class="chip stale">🕸 Stale</span></div>
-        Nothing has happened on the docs PR or its linked code PR for 30+ days — activity on either one resets the clock. It doesn't change which group the row is in, or remove any other tag.
+        Nothing has happened on the docs PR or its linked code PR for 30+ days.
       </div>
     </div>
   </section>
 
   <section class="guide-sec" id="reminders-page">
     <h2>The reminders page</h2>
-    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR Review Reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
-    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page — nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
+    <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR review reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
+    <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page - nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
   </section>
 
   <section class="guide-sec" id="checklist">
     <h2>Your checklist</h2>
     <p class="sec-lede">Every row you can act on has a checkbox for your own tracking.</p>
-    <p>Checking it off is saved to <b>your own browser only</b> — nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A "Hide checked rows" switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
+    <p>Checking it off is saved to <b>your own browser only</b> - nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A <b>Hide checked rows</b> switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
   </section>
 
   <footer>
@@ -5418,7 +5775,14 @@ function generateGuideHTML({ now }) {
 	fs.writeFileSync("tracker-guide.html", html)
 }
 
-module.exports = { main, nextMinorForDevLine }
+module.exports = {
+	main,
+	nextMinorForDevLine,
+	backportTitleSuffixBranch,
+	normalizeTitleForBackportMatch,
+	extractBackportParentNumber,
+	findBackportParent,
+}
 
 if (require.main === module) {
 	main().catch((err) => {
