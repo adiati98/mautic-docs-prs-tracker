@@ -1,7 +1,7 @@
 {
   "mautic/developer-documentation-new#668": {
-    "docsUpdatedAt": "2026-09-14T10:17:20Z",
-    "codeUpdatedAt": "2026-09-14T10:17:16Z",
+    "docsUpdatedAt": "2026-09-18T19:09:21Z",
+    "codeUpdatedAt": "2026-09-18T18:45:01Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -66,6 +66,14 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-13T20:38:21Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T19:09:21Z",
+        "body": "LGTM"
       }
     ],
     "rawDocsComments": [
@@ -98,6 +106,13 @@
         },
         "created_at": "2026-09-13T20:24:50Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17365) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [23 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17365&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17365&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17365&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17365&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17365&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17365)\n\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:45:01Z",
+        "body": "Hi @TomasVotruba,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/developer-documentation-new/pull/668"
       }
     ],
     "rawCodeReviews": [
@@ -1066,8 +1081,8 @@
     "readyForReviewAt": "2026-09-04T09:38:30Z"
   },
   "mautic/developer-documentation-new#660": {
-    "docsUpdatedAt": "2026-09-10T04:37:10Z",
-    "codeUpdatedAt": "2026-09-04T09:06:52Z",
+    "docsUpdatedAt": "2026-09-18T18:38:50Z",
+    "codeUpdatedAt": "2026-09-18T19:09:38Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -1226,6 +1241,20 @@
         },
         "created_at": "2026-09-03T20:22:24Z",
         "body": "Just rebased"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:39:51Z",
+        "body": "Hi @TomasVotruba,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/developer-documentation-new/pull/660"
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-09-18T19:09:38Z",
+        "body": "I'm on it :+1: "
       }
     ],
     "rawCodeReviews": [
@@ -1270,8 +1299,39 @@
         "body": "Ok, not a big deal. Plugins using this event will need an update either way 👍 "
       }
     ],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:38:44Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:38:44Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:38:44Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T18:38:43Z"
   },
   "mautic/developer-documentation-new#658": {
     "docsUpdatedAt": "2026-09-10T05:00:55Z",
@@ -11098,7 +11158,7 @@
     "readyForReviewAt": "2026-06-05T07:51:31Z"
   },
   "mautic/developer-documentation-new#297": {
-    "docsUpdatedAt": "2026-07-08T20:12:15Z",
+    "docsUpdatedAt": "2026-09-18T18:43:46Z",
     "codeUpdatedAt": "2026-09-11T11:20:59Z",
     "rawDocsReviews": [
       {
@@ -11154,6 +11214,27 @@
         },
         "created_at": "2026-06-25T15:46:27Z",
         "body": "@promptless-for-oss please rebase this to the 7.2 branch"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:32:52Z",
+        "body": "@promptless-for-oss based on [this comment](https://github.com/mautic/mautic/pull/15900#issuecomment-5633671488), the code PR for this docs PR is closed, in favor of https://github.com/mautic/mautic/pull/17318. Can you please re-check? Either create a new PR or make adjustment, whichever best."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T18:35:33Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/297#issuecomment-5734489502)\n\n<!-- promptless-comment-body:v1:3edbec14-1b15-469b-b774-0eb016c48cf9 -->\n\nThanks for the flag — understood that mautic/mautic #15900 is now closed in favor of #17318, so this docs update needs re-checking against the replacement PR. We're re-verifying it against #17318 now and will follow up here with an adjusted or fresh docs update, or an explanation if it turns out no change is needed.\n\n<!-- promptless-comment:v1:3edbec14-1b15-469b-b774-0eb016c48cf9 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T18:43:46Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/297#issuecomment-5734489502)\n\n<!-- promptless-comment-body:v1:b295f3f9-2635-4c13-842a-a6e4ad8f7d24 -->\n\nThanks for the pointer — we re-checked against `mautic/mautic` #17318 and don't think a docs change is warranted, so we're leaving this PR closed.\n\n#17318 is a broader, more careful version of #15900's fix (it also covers the PATCH/controller path and the string `\"0\"` case, and deliberately keeps boolean `false` as empty), but the behavior it delivers to API developers is the same: a contact custom-field value of `0` (integer or string) that was previously dropped now saves, while `''` and `null` stay empty. Strict comparison was the intended behavior since 2017 and was only reverted by mistake in early 2024, so this restores already-expected behavior rather than changing anything the docs state — the REST API contact docs never said `0` was dropped or treated as empty, and their empty-value example is the blank string `''`, which already implies a real value like `0` saves. That's consistent with your team's earlier call on #15986 (\"The triggered PR fixes bugs for an existing feature. No docs needed.\").\n\nThat said, it's your call — if you'd still like a short clarifying note that `0` counts as a valid value for numeric contact fields, we're happy to raise a fresh PR against the dev-docs `7.2` branch.\n\n<!-- promptless-comment:v1:b295f3f9-2635-4c13-842a-a6e4ad8f7d24 -->"
       }
     ],
     "rawCodeComments": [
@@ -18622,8 +18703,8 @@
     "readyForReviewAt": "2026-09-18T07:38:05Z"
   },
   "mautic/user-documentation#983": {
-    "docsUpdatedAt": "2026-09-18T07:47:47Z",
-    "codeUpdatedAt": "2026-09-18T07:47:43Z",
+    "docsUpdatedAt": "2026-09-18T18:59:08Z",
+    "codeUpdatedAt": "2026-09-18T18:49:45Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18632,9 +18713,32 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-17T18:39:14Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T18:50:28Z",
+        "body": "@promptless-for-oss please address the Vale errors and warnings."
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T18:50:56Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/983#pullrequestreview-5251420823)\n\n<!-- promptless-comment-body:v1:442d0171-5004-4ff4-ad85-42f5063d5b38 -->\n\nThanks — on it. We're reviewing the Vale errors and warnings on this PR and will push fixes to this branch, then follow up here once it's clean.\n\n<!-- promptless-comment:v1:442d0171-5004-4ff4-ad85-42f5063d5b38 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T18:59:08Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/983#pullrequestreview-5251420823)\n\n<!-- promptless-comment-body:v1:c06b8ac2-8d7d-4707-a2d1-0b3d592942a9 -->\n\nThanks for the review — we've addressed the Vale finding on the changed lines. The diff-scoped reviewdog check reported a single `Vale.Terms` error (\"Use 'Unpublish' instead of 'unpublish'\"), which we fixed by capitalizing that word to `Unpublish` (Mautic's accepted vocabulary treats it as a proper-noun action term). Vale now passes clean on the changed file's diff, with no errors or warnings. The other `Mautic.FeatureList` suggestions elsewhere in `assets.rst` are pre-existing, sit outside this PR's diff, and are suggestion-level rather than errors/warnings, so we left them unchanged here.\n\n<!-- promptless-comment:v1:c06b8ac2-8d7d-4707-a2d1-0b3d592942a9 -->"
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -18649,6 +18753,13 @@
         },
         "created_at": "2026-09-17T18:40:12Z",
         "body": "### Promptless documentation updates\n\n- [Clarify that deleting an Asset permanently deletes its stored file](https://app.gopromptless.ai/suggestions/c0a71541-9fbb-49da-88ec-afce5d430588) updates the \"Deleting an Asset\" section to note that deleting an Asset permanently deletes its locally stored file, while a remote-referenced Asset loses only its Mautic record. [Docs PR](https://github.com/mautic/user-documentation/pull/983)"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:49:45Z",
+        "body": "Hi @andersonjeccel,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/user-documentation/pull/983"
       }
     ],
     "rawCodeReviews": [
@@ -18696,8 +18807,8 @@
     "readyForReviewAt": "2026-09-18T07:47:46Z"
   },
   "mautic/user-documentation#982": {
-    "docsUpdatedAt": "2026-09-18T07:46:13Z",
-    "codeUpdatedAt": "2026-09-18T07:46:09Z",
+    "docsUpdatedAt": "2026-09-18T18:51:37Z",
+    "codeUpdatedAt": "2026-09-18T18:51:20Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18755,6 +18866,13 @@
         },
         "created_at": "2026-09-17T18:33:51Z",
         "body": "### Promptless documentation updates\n\n- [Document User deletion consequences on the Managing Users page](https://app.gopromptless.ai/suggestions/6640346f-87b1-4a22-90ec-6f10e039f05a) adds a \"Deleting a User\" section covering single and bulk delete and warning that deletion is permanent — leaving assigned Contacts and Companies unassigned and removing the User's API access tokens and scheduled Contact exports. [Docs PR](https://github.com/mautic/user-documentation/pull/982)"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:51:20Z",
+        "body": "Hi @andersonjeccel,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/user-documentation/pull/982"
       }
     ],
     "rawCodeReviews": [
@@ -19017,8 +19135,8 @@
     "readyForReviewAt": "2026-09-18T07:44:53Z"
   },
   "mautic/developer-documentation-new#683": {
-    "docsUpdatedAt": "2026-09-18T09:58:13Z",
-    "codeUpdatedAt": "2026-09-18T10:03:50Z",
+    "docsUpdatedAt": "2026-09-18T19:12:00Z",
+    "codeUpdatedAt": "2026-09-18T18:42:17Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -19059,6 +19177,22 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-17T19:38:44Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T18:43:51Z",
+        "body": "@promptless-for-oss please address the Vale warnings."
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T19:12:00Z",
+        "body": "LGTM"
       }
     ],
     "rawDocsComments": [
@@ -19068,6 +19202,20 @@
         },
         "created_at": "2026-09-17T19:46:09Z",
         "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T18:44:48Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/683#pullrequestreview-5251361099)\n\n<!-- promptless-comment-body:v1:7ae28aad-9a0e-453d-8ad8-f0f387462bf2 -->\n\nThanks — on it. We're reviewing the Vale warnings on this PR and will push fixes to this branch, then follow up here once it's clean.\n\n<!-- promptless-comment:v1:7ae28aad-9a0e-453d-8ad8-f0f387462bf2 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T18:56:07Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/developer-documentation-new/pull/683#pullrequestreview-5251361099)\n\n<!-- promptless-comment-body:v1:26666e74-97ff-4b8e-9815-505d5e0d7b06 -->\n\nThanks for the review — we've addressed the Vale warnings and pushed the fix. All five were `Mautic.FeatureList` false positives: the rule was flagging lowercase feature words (`campaigns`, `channels`, `emails`, `forms`, `points`) that appear inside `:doc:` cross-reference *paths*. Those path segments have to stay lowercase to match the real target filenames, so capitalizing them would break the links — the correct fix is to exempt just those reference lines, which we did by extending each line's already-adjacent `.. vale off` block to cover it (matching this page's existing convention). No documentation wording changed. Vale now reports 0 errors, 0 warnings, and 0 suggestions on the changed files under the project's own config, so the CI Vale check should pass on the new commit.\n\n<!-- promptless-comment:v1:26666e74-97ff-4b8e-9815-505d5e0d7b06 -->"
       }
     ],
     "rawCodeComments": [
@@ -19091,6 +19239,13 @@
         },
         "created_at": "2026-09-18T07:50:25Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17438) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17438&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17438&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17438&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17438&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17438&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17438)\n\n"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:42:17Z",
+        "body": "Hi @TomasVotruba,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/developer-documentation-new/pull/683"
       }
     ],
     "rawCodeReviews": [
@@ -19271,8 +19426,8 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#985": {
-    "docsUpdatedAt": "2026-09-18T09:46:43Z",
-    "codeUpdatedAt": "2026-09-18T09:46:51Z",
+    "docsUpdatedAt": "2026-09-18T18:58:43Z",
+    "codeUpdatedAt": "2026-09-18T18:47:06Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -19280,6 +19435,38 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-09-17T19:21:31Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T18:48:57Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T18:49:32Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T18:56:41Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T18:58:43Z",
         "body": ""
       }
     ],
@@ -19291,6 +19478,13 @@
         },
         "created_at": "2026-09-17T19:22:49Z",
         "body": "### Promptless documentation updates\n\n- [Document the Clone action on the Report details view](https://app.gopromptless.ai/suggestions/76d4330e-7a6c-45d6-9812-87c18c2d91ca) notes that the **Clone** action is now available from the Report details actions menu (not only the Reports list drop-down), gated on the create-Report permission. [Docs PR](https://github.com/mautic/user-documentation/pull/985)"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-18T18:47:06Z",
+        "body": "Hi @andersonjeccel,\r\n\r\nPromptless created a PR based on the changes in this PR. Can you please review the contents and see if they're align with your changes? TIA! ✨ \r\n\r\nhttps://github.com/mautic/user-documentation/pull/985"
       }
     ],
     "rawCodeReviews": [
