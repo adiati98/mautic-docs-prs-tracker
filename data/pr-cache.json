@@ -146,7 +146,7 @@
   },
   "mautic/developer-documentation-new#667": {
     "docsUpdatedAt": "2026-09-12T02:57:14Z",
-    "codeUpdatedAt": "2026-09-17T21:15:41Z",
+    "codeUpdatedAt": "2026-09-18T06:48:55Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -199,8 +199,8 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-17T18:46:04Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [11 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [1 Accepted issue](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1.7% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361)\n\n"
+        "created_at": "2026-09-18T06:48:55Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [12 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17361&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17361&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1.7% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17361&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17361)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -402,6 +402,30 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-09-17T20:19:57Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "biozshock"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-09-17T22:27:15Z",
+        "body": "Few minor type-hint findings. And a question regarding the overridden QueryBuilder."
+      },
+      {
+        "user": {
+          "login": "matbcvo"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-17T23:30:02Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "patrykgruszka"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-18T06:25:33Z",
         "body": ""
       }
     ],
@@ -17737,7 +17761,7 @@
   },
   "mautic/developer-documentation-new#678": {
     "docsUpdatedAt": "2026-09-17T08:11:50Z",
-    "codeUpdatedAt": "2026-09-17T21:09:37Z",
+    "codeUpdatedAt": "2026-09-18T07:52:22Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -17844,7 +17868,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-17T21:09:36Z",
+        "created_at": "2026-09-18T07:52:22Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17399) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [21 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17399&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17399&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17399&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17399&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17399&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17399)\n\n"
       }
     ],
@@ -18181,7 +18205,7 @@
   },
   "mautic/developer-documentation-new#683": {
     "docsUpdatedAt": "2026-09-17T19:46:10Z",
-    "codeUpdatedAt": "2026-09-17T21:09:00Z",
+    "codeUpdatedAt": "2026-09-18T07:50:26Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18252,7 +18276,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-17T21:09:00Z",
+        "created_at": "2026-09-18T07:50:25Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17438) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17438&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17438&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17438&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17438&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17438&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17438)\n\n"
       }
     ],
@@ -18262,7 +18286,7 @@
   },
   "mautic/developer-documentation-new#682": {
     "docsUpdatedAt": "2026-09-17T17:48:52Z",
-    "codeUpdatedAt": "2026-09-17T21:06:57Z",
+    "codeUpdatedAt": "2026-09-18T07:50:21Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18373,7 +18397,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-17T21:06:57Z",
+        "created_at": "2026-09-18T07:50:21Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17426) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17426&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17426&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17426&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17426&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17426&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17426)\n\n"
       }
     ],
@@ -18383,7 +18407,7 @@
   },
   "mautic/user-documentation#987": {
     "docsUpdatedAt": "2026-09-17T19:49:11Z",
-    "codeUpdatedAt": "2026-09-17T19:50:50Z",
+    "codeUpdatedAt": "2026-09-18T07:42:18Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18434,6 +18458,13 @@
         },
         "created_at": "2026-09-17T19:50:50Z",
         "body": "### Promptless documentation updates\n\n- [Document the Never logged in quick filter for the Users list](https://app.gopromptless.ai/suggestions/0bcf0797-c0dd-44fa-8c65-9c7b43009fa5) adds a \"Filtering Users who have never logged in\" section to the Managing Users page and lists `is:never_logged_in` among the Users search filters. [Docs PR](https://github.com/mautic/user-documentation/pull/987)"
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-09-18T07:42:07Z",
+        "body": "Please check the failed tests."
       }
     ],
     "rawCodeReviews": [],
@@ -18578,8 +18609,8 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#983": {
-    "docsUpdatedAt": "2026-09-17T18:39:14Z",
-    "codeUpdatedAt": "2026-09-17T18:40:12Z",
+    "docsUpdatedAt": "2026-09-18T07:47:47Z",
+    "codeUpdatedAt": "2026-09-18T07:47:43Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18607,13 +18638,53 @@
         "body": "### Promptless documentation updates\n\n- [Clarify that deleting an Asset permanently deletes its stored file](https://app.gopromptless.ai/suggestions/c0a71541-9fbb-49da-88ec-afce5d430588) updates the \"Deleting an Asset\" section to note that deleting an Asset permanently deletes its locally stored file, while a remote-referenced Asset loses only its Mautic record. [Docs PR](https://github.com/mautic/user-documentation/pull/983)"
       }
     ],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T07:47:23Z",
+        "body": "👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:47:47Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:47:47Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:47:47Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T07:47:46Z"
   },
   "mautic/user-documentation#982": {
-    "docsUpdatedAt": "2026-09-17T18:32:34Z",
-    "codeUpdatedAt": "2026-09-17T18:33:51Z",
+    "docsUpdatedAt": "2026-09-18T07:46:13Z",
+    "codeUpdatedAt": "2026-09-18T07:46:09Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18673,13 +18744,53 @@
         "body": "### Promptless documentation updates\n\n- [Document User deletion consequences on the Managing Users page](https://app.gopromptless.ai/suggestions/6640346f-87b1-4a22-90ec-6f10e039f05a) adds a \"Deleting a User\" section covering single and bulk delete and warning that deletion is permanent — leaving assigned Contacts and Companies unassigned and removing the User's API access tokens and scheduled Contact exports. [Docs PR](https://github.com/mautic/user-documentation/pull/982)"
       }
     ],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T07:45:48Z",
+        "body": "👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:46:13Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:46:13Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:46:13Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T07:46:12Z"
   },
   "mautic/user-documentation#981": {
-    "docsUpdatedAt": "2026-09-17T18:31:53Z",
-    "codeUpdatedAt": "2026-09-17T18:33:02Z",
+    "docsUpdatedAt": "2026-09-18T07:53:22Z",
+    "codeUpdatedAt": "2026-09-18T07:44:04Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18707,13 +18818,53 @@
         "body": "### Promptless documentation updates\n\n- [Warn that deleting a Point Group also deletes its Contact scores](https://app.gopromptless.ai/suggestions/41a0eed7-dca8-4b8f-b384-8e0cdfff947f) adds a warning to the Point Groups page (Points > Manage Groups) that deleting a Point Group also permanently deletes the Contact scores in that group and can't be undone. [Docs PR](https://github.com/mautic/user-documentation/pull/981)"
       }
     ],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T07:43:41Z",
+        "body": "👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:44:07Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:44:08Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:44:08Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T07:44:07Z"
   },
   "mautic/user-documentation#980": {
-    "docsUpdatedAt": "2026-09-17T18:29:09Z",
-    "codeUpdatedAt": "2026-09-17T18:30:22Z",
+    "docsUpdatedAt": "2026-09-18T07:43:10Z",
+    "codeUpdatedAt": "2026-09-18T07:43:06Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18734,13 +18885,53 @@
         "body": "### Promptless documentation updates\n\n- [Note that deleting a Report stops its scheduled Emails](https://app.gopromptless.ai/suggestions/a45225f9-2fce-4822-b0b7-18d8f1f15f30) expands the Delete option in the Reports page's \"Report options\" section to note that deleting a Report also stops any Emails it has scheduled. [Docs PR](https://github.com/mautic/user-documentation/pull/980)"
       }
     ],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T07:42:44Z",
+        "body": "👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:43:10Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:43:10Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:43:10Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T07:43:09Z"
   },
   "mautic/user-documentation#979": {
-    "docsUpdatedAt": "2026-09-17T18:26:28Z",
-    "codeUpdatedAt": "2026-09-17T18:28:28Z",
+    "docsUpdatedAt": "2026-09-18T07:44:54Z",
+    "codeUpdatedAt": "2026-09-18T07:44:50Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18768,13 +18959,53 @@
         "body": "### Promptless documentation updates\n\n- [Clarify that deleting a Segment doesn't delete its Contacts](https://app.gopromptless.ai/suggestions/63863557-9504-4ac1-8b17-2ebe7ab225a4) adds a note to the Manage Segments \"Deleting or deactivating a Segment\" section explaining that deleting a Segment doesn't delete its Contacts — it only removes them from the Segment. [Docs PR](https://github.com/mautic/user-documentation/pull/979)"
       }
     ],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [],
-    "readyForReviewAt": null
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T07:44:30Z",
+        "body": "👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:44:54Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:44:54Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:44:54Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T07:44:53Z"
   },
   "mautic/user-documentation#978": {
-    "docsUpdatedAt": "2026-09-17T17:46:37Z",
-    "codeUpdatedAt": "2026-09-17T17:48:33Z",
+    "docsUpdatedAt": "2026-09-18T07:38:06Z",
+    "codeUpdatedAt": "2026-09-18T07:38:01Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18810,7 +19041,74 @@
         "body": "### Promptless documentation updates\n\n- [Warn that deleting a Point Trigger removes its event configuration and trigger history](https://app.gopromptless.ai/suggestions/13721fd9-90d4-4282-849b-6a7eab57d07c) adds a warning to the Points documentation that deleting a Point Trigger permanently removes its event configuration and trigger history and can't be undone. [Docs PR](https://github.com/mautic/user-documentation/pull/978)"
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-18T07:37:33Z",
+        "body": "True 👍 "
+      }
+    ],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:38:05Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:38:06Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T07:38:06Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": "2026-09-18T07:38:05Z"
+  },
+  "mautic/developer-documentation-new#684": {
+    "docsUpdatedAt": "2026-09-18T07:53:37Z",
+    "codeUpdatedAt": "2026-09-18T07:51:19Z",
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-18T07:27:48Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17456) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17456&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17456&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17456&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17456&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17456&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17456)\n\n"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-09-18T07:50:43Z",
+        "body": "@TomasVotruba can you please keep updating the updating doc? I think it could save a bunch of tokens for plugin developers if they'd just point their agent to that doc and ask to update to Mautic 8."
+      }
+    ],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   }
