@@ -17344,7 +17344,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#970": {
-    "docsUpdatedAt": "2026-09-18T12:54:01Z",
+    "docsUpdatedAt": "2026-09-18T13:00:59Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -17455,6 +17455,13 @@
         },
         "created_at": "2026-09-18T12:54:01Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/970#issuecomment-5730245886)\n\n<!-- promptless-comment-body:v1:8087876c-9281-4c3c-8e96-e1272058853e -->\n\nGot it — I'll bring this 8.0 backport in line with the latest reviewed changes on #913. I'll follow up here once the branch is updated.\n\n<!-- promptless-comment:v1:8087876c-9281-4c3c-8e96-e1272058853e -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-18T13:00:59Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/970#issuecomment-5730245886)\n\n<!-- promptless-comment-body:v1:cf5751d0-5998-49d1-8e00-44c0ec025948 -->\n\n**Blocked — one thing needed from you**\n\nBefore I change anything: applying #913's current content onto this 8.0 backport would revert your own review on #970. The branches differ only in four spots in `emails.rst` where #970 is already ahead of #913 — the active-voice rewording, the clearer phrasing in place of \"see below\", and the hyphen instead of parentheses — and #913 has had no newer unsubscribe change since it was last reviewed, so there's nothing newer on #913 to carry over.\n\nNeed: Confirm the direction — should I instead bring #913 up to #970's reviewed wording so the two converge, or is there a specific newer change you'd like applied here?\nNext: Once you confirm, I'll make the change and follow up in this thread.\n\n<!-- promptless-comment:v1:cf5751d0-5998-49d1-8e00-44c0ec025948 -->"
       }
     ],
     "rawCodeComments": [
