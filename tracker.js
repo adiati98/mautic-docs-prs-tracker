@@ -4011,7 +4011,7 @@ function generateHTML(prData, { operatorUsername }) {
   .sec-head .hint{font-size:12px;color:var(--ink-3)}
   .chk-progress{
     display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 8px;
-    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-3);
+    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-2);
   }
   /* Some checked but not all - same accent used for "Act" chips elsewhere. */
   .chk-progress[data-state="partial"]{
@@ -4076,7 +4076,7 @@ function generateHTML(prData, { operatorUsername }) {
   }
   .chip.nudge2{
     background:color-mix(in srgb, var(--critical) 17%, var(--surface));
-    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    color:color-mix(in srgb, var(--critical) 68%, var(--ink));
     border-color:color-mix(in srgb, var(--critical) 42%, transparent);
   }
   .chip.nudge3{
@@ -4156,7 +4156,7 @@ function generateHTML(prData, { operatorUsername }) {
   .when .days.good{color:var(--good-ink)}
   .when .days.warn{color:color-mix(in srgb, var(--warning) 45%, var(--ink))}
   .when .sub{font-size:11px;color:var(--ink-3);margin-top:1px}
-  .when .sub.warn{color:color-mix(in srgb, var(--warning) 40%, var(--ink-2));font-weight:600}
+  .when .sub.warn{color:color-mix(in srgb, var(--warning) 25%, var(--ink-2));font-weight:600}
   .meter{
     width:84px;height:4px;border-radius:2px;background:var(--line);
     margin:5px 0 0 auto;overflow:hidden;
@@ -4321,15 +4321,15 @@ function generateHTML(prData, { operatorUsername }) {
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
   ${nextUpdateNoticeHtml(now)}
+  </header>
 
   <main id="main-content">
   <div class="stats">
@@ -4949,7 +4949,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   th,td{padding:8px 12px;text-align:left;font-size:13px;border-top:1px solid var(--line)}
   th{
     background:color-mix(in srgb, var(--ink) 3%, var(--surface));font-size:11px;
-    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);font-weight:600;border-top:none;
+    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-2);font-weight:600;border-top:none;
   }
   tbody tr:first-child td{border-top:none}
   td.chk{width:36px;text-align:center}
@@ -5071,16 +5071,17 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Docs PR review reminders</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
   ${nextUpdateNoticeHtml(now)}
+  </header>
 
+  <main id="main-content">
   <div class="intro">
     <p class="intro-lead">You can find two sections on this page:</p>
     <ol class="intro-sections">
@@ -5099,7 +5100,6 @@ function generateReminderHTML({ groups, escalations }, { now }) {
       <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines - then <b>Submit review</b> when you're done.</li>
     </ol>
   </div>
-  <main id="main-content">
 ${bodyHtml}
   </main>
   <footer>
@@ -5298,7 +5298,15 @@ function generateGuideHTML({ now }) {
   }
   .icon-btn svg{display:block}
 
+  .skip-link{
+    position:absolute;top:-40px;left:8px;z-index:100;
+    background:var(--surface);color:var(--ink);border:1px solid var(--ring);
+    border-radius:6px;padding:8px 14px;font-size:13px;text-decoration:none;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px}
   .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
+  .lede a,.guide-sec p a{text-decoration:underline}
 
   .jump-nav{
     display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px;
@@ -5374,7 +5382,7 @@ function generateGuideHTML({ now }) {
   }
   .chip.nudge2{
     background:color-mix(in srgb, var(--critical) 17%, var(--surface));
-    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    color:color-mix(in srgb, var(--critical) 68%, var(--ink));
     border-color:color-mix(in srgb, var(--critical) 42%, transparent);
   }
   .chip.nudge3{
@@ -5486,17 +5494,19 @@ function generateGuideHTML({ now }) {
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Guidelines</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
+  </header>
 
+  <main id="main-content">
   <p class="lede">Everything about how the dashboard sorts and labels docs PRs: the four groups, what a row's colors and tags mean, and how a docs PR typically moves from opening to merged.</p>
 
   <nav class="jump-nav">
@@ -5751,6 +5761,7 @@ function generateGuideHTML({ now }) {
     <p>Checking it off is saved to <b>your own browser only</b> - nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A <b>Hide checked rows</b> switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
   </section>
 
+  </main>
   <footer>
     <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
