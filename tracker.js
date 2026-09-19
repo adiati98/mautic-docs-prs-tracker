@@ -653,12 +653,16 @@ function tryExtractAppPR(text, sourceRepo) {
 	//   mautic/<repo>#123                          shorthand
 	//   https://github.com/mautic/<repo>/pull/123  full link
 	//
+	// The shorthand may also be wrapped in inline code, as Promptless does in
+	// prose: "`mautic/mautic` PR #17444". The optional backtick after the repo
+	// name lets that spelling match too.
+	//
 	// The link form is what Promptless writes under "Trigger Events" when it
 	// renders the reference as a markdown link — the visible text is then
 	// "mautic/mautic: <title>" with the number only inside the URL, which the
 	// shorthand pattern alone cannot see.
 	const explicitRepoPattern =
-		/https?:\/\/github\.com\/mautic\/([a-z0-9-]+)\/pull\/(\d+)|mautic\/([a-z0-9-]+)\s*(?:PR\s*)?#(\d+)/gi
+		/https?:\/\/github\.com\/mautic\/([a-z0-9-]+)\/pull\/(\d+)|mautic\/([a-z0-9-]+)`?\s*(?:PR\s*)?#(\d+)/gi
 	for (const match of text.matchAll(explicitRepoPattern)) {
 		const repo = `mautic/${match[1] ?? match[3]}`
 		const number = match[2] ?? match[4]
