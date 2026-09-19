@@ -9699,7 +9699,7 @@
   },
   "mautic/developer-documentation-new#531": {
     "docsUpdatedAt": "2026-09-19T11:29:11Z",
-    "codeUpdatedAt": "2026-09-17T19:05:46Z",
+    "codeUpdatedAt": "2026-09-19T12:58:51Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -9892,7 +9892,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-16T18:56:48Z",
+        "created_at": "2026-09-19T12:58:51Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1.2% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265)\n\n"
       }
     ],
@@ -12752,7 +12752,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#913": {
-    "docsUpdatedAt": "2026-09-19T11:50:21Z",
+    "docsUpdatedAt": "2026-09-19T18:57:26Z",
     "codeUpdatedAt": "2026-09-09T07:44:02Z",
     "rawDocsReviews": [
       {
@@ -12882,6 +12882,62 @@
         "state": "COMMENTED",
         "submitted_at": "2026-09-19T11:48:37Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T17:30:49Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T17:33:34Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T17:47:41Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T18:17:49Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T18:22:34Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T18:30:49Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-19T18:30:52Z",
+        "body": ""
       }
     ],
     "rawDocsComments": [
@@ -12968,6 +13024,27 @@
         },
         "created_at": "2026-09-19T11:50:21Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/913#pullrequestreview-5255607271)\n\n<!-- promptless-comment-body:v1:b04d9205-f8aa-41b2-b53c-12cc8a4e59de -->\n\nDone — the Vale warnings on the changed lines are now cleared and PR #913 is clean under the project's Vale config. Where the warnings were the `Mautic.FeatureList` suggestion on genuinely generic wording, I reworded our own prose to drop the unnecessary \"validation page\" references — the dedicated paragraph and the `:ref:` cross-reference already explain the step. Where they fell on text we quote verbatim from the product (the 'Confirm your email address' page title, the exact mismatch error, the **Require email validation for unsubscribe** setting label, 'Record not found.', and `HTTP 404`), I wrapped those blocks in `.. vale off`/`.. vale on` — the same convention already used elsewhere in this repo — so the annotations clear while the product's exact wording and its citations stay intact.\n\nI kept this aligned with the 8.0 backport #970 (identical wording), and none of the earlier review fixes (active voice, \"described later in this section\", hyphens) were disturbed. Ready for another look.\n\n<!-- promptless-comment:v1:b04d9205-f8aa-41b2-b53c-12cc8a4e59de -->"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-09-19T18:37:55Z",
+        "body": "@promptless-for-oss apply the link fix to #970 "
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-19T18:39:20Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/913#issuecomment-5744411224)\n\n<!-- promptless-comment-body:v1:914ce022-7177-4110-b55e-c03a26837d3a -->\n\nUnderstood — you'd like the link fix from #970 applied to this PR. I'm looking into what changed there now and will follow up in this thread once the fix is in.\n\n<!-- promptless-comment:v1:914ce022-7177-4110-b55e-c03a26837d3a -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-19T18:57:26Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/913#issuecomment-5744411224)\n\n<!-- promptless-comment-body:v1:76cc0d52-ac89-430b-a196-a73f1bf75713 -->\n\nDone — the link fix is now applied to #970. In `docs/configuration/settings.rst`, the **Require email validation for unsubscribe** bullet now uses the `:ref:` cross-reference to the Unsubscribing section (the same form you approved here on #913) instead of the whole-page `:doc:` reference, so #913 and #970 read the same at that spot.\n\nOne heads-up on #970: the red CI check there isn't from this change. The `make html` build passes and the new `:ref:` resolves correctly — the failure is the separate `make checklinks` step timing out on an unrelated HubSpot URL and flagging some pre-existing external redirects in pages this change doesn't touch. A re-run should clear the transient timeout.\n\n<!-- promptless-comment:v1:76cc0d52-ac89-430b-a196-a73f1bf75713 -->"
       }
     ],
     "rawCodeComments": [
@@ -15836,7 +15913,7 @@
   },
   "mautic/user-documentation#768": {
     "docsUpdatedAt": "2026-09-15T11:11:44Z",
-    "codeUpdatedAt": "2026-09-17T19:05:46Z",
+    "codeUpdatedAt": "2026-09-19T12:58:51Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -15983,7 +16060,7 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-16T18:56:48Z",
+        "created_at": "2026-09-19T12:58:51Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16265&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16265&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [1.2% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16265&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16265)\n\n"
       }
     ],
@@ -17755,8 +17832,8 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#970": {
-    "docsUpdatedAt": "2026-09-19T11:50:25Z",
-    "codeUpdatedAt": "2026-09-09T07:44:02Z",
+    "docsUpdatedAt": "2026-09-19T18:50:36Z",
+    "codeUpdatedAt": null,
     "rawDocsReviews": [
       {
         "user": {
@@ -17916,161 +17993,17 @@
         },
         "created_at": "2026-09-19T11:50:25Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/970#pullrequestreview-5255601879)\n\n<!-- promptless-comment-body:v1:d9fcbc2e-0b26-4b99-b7d0-3e8e9c4b4071 -->\n\nDone — the Vale warnings on the changed lines are now cleared and PR #970 is clean under the project's Vale config. Where the warnings were the `Mautic.FeatureList` suggestion on genuinely generic wording, I reworded our own prose to drop the unnecessary \"validation page\" references — the dedicated paragraph and the `:ref:` cross-reference already explain the step. Where they fell on text we quote verbatim from the product (the 'Confirm your email address' page title, the exact mismatch error, the **Require email validation for unsubscribe** setting label, 'Record not found.', and `HTTP 404`), I wrapped those blocks in `.. vale off`/`.. vale on` — the same convention already used elsewhere in this repo — so the annotations clear while the product's exact wording stays intact.\n\nI kept this aligned with the primary PR #913 (identical wording), and the 8.0-specific `data-mautic-disable-tracking` note was preserved. Ready for another look.\n\n<!-- promptless-comment:v1:d9fcbc2e-0b26-4b99-b7d0-3e8e9c4b4071 -->"
-      }
-    ],
-    "rawCodeComments": [
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-08-06T07:21:09Z",
-        "body": "@patrykgruszka we couldn't come up with a simpler way. It's similar to MFA. You cannot rely only on the information provided by the link. You need to combine it with an information only the contact would know. Ideas are welcome."
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "created_at": "2026-08-10T06:48:59Z",
-        "body": "How should this work with one-click unsubscribe? That flow must rely only on the URL, and it currently runs before the email and hash are validated. It therefore seems possible to bypass the new form with a crafted one-click POST.\r\n\r\nI don't see an option how we could keep RFC 8058 working while also requiring information that is not included in the unsubscribe link."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-08-10T14:59:27Z",
-        "body": "@patrykgruszka great catch! Yes, the one click unsubscribe handling should also validate the email and email hash. Those params were always part of that header so there is no issue. Just added the validation in the last commit.\r\n\r\nAs far as I know there is no report that email header links are being published the same as the normal content unsubscribe links. So with that in mind we should be fine here."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-08-12T09:09:42Z",
-        "body": "I guess we can make it configurable, but shouldn't the default be the secure option?\r\n\r\n@RCheesley @ekkeguembel @jos0405 @npracht and others, would you care to share your opinion on this extra unsubscribe step?"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-08-25T13:35:47Z",
-        "body": "I'll merge this PR tomorrow as it has 3 approvals and the conversation has stopped for 2 weeks now.\r\n\r\nThe configuration option can always be added if it turns out a dealbreaker for someone. I believe this is the right way how to ensure no contact won't get its email address published and gets unsubscribed or resubscribed by anyone who finds an email link online which is an actual use case from the real world that we are solving here.\r\n\r\nAnd I saw this same workflow on services I'm unsubscribing from. I always thought this workflow is dumb but it turns out it has meaning.\r\n\r\nThe one click unsubscribe header isn't a problem here. The headers aren't being published as far as I know. They are even being automatically stripped when forwarding an email."
-      },
-      {
-        "user": {
-          "login": "codecov[bot]"
-        },
-        "created_at": "2026-08-25T13:56:38Z",
-        "body": "## [Codecov](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) Report\n:x: Patch coverage is `91.07143%` with `20 lines` in your changes missing coverage. Please review.\n:white_check_mark: Project coverage is 72.38%. Comparing base ([`caa0ad1`](https://app.codecov.io/gh/mautic/mautic/commit/caa0ad1bc5ea2cbcdf6c4becceb3be2d51be2d0f?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)) to head ([`254583c`](https://app.codecov.io/gh/mautic/mautic/commit/254583cd6e9c4c7816cb30d02834eaf69b429f65?dropdown=coverage&el=desc&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)).\n:warning: Report is 16 commits behind head on 7.x.\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Patch % | Lines |\n|---|---|---|\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | 87.50% | [18 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | 91.66% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | 88.88% | [1 Missing :warning: ](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) |\n\n<details><summary>Additional details and impacted files</summary>\n\n\n\n[![Impacted file tree graph](https://app.codecov.io/gh/mautic/mautic/pull/16870/graphs/tree.svg?width=650&height=150&src=pr&token=JJAV4AZFpm&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n\n```diff\n@@             Coverage Diff              @@\n##                7.x   #16870      +/-   ##\n============================================\n+ Coverage     72.32%   72.38%   +0.06%     \n- Complexity    39498    39538      +40     \n============================================\n  Files          2530     2533       +3     \n  Lines        146133   146287     +154     \n============================================\n+ Hits         105684   105884     +200     \n+ Misses        40449    40403      -46     \n```\n\n| [Files with missing lines](https://app.codecov.io/gh/mautic/mautic/pull/16870?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic) | Coverage Δ | |\n|---|---|---|\n| [app/bundles/EmailBundle/Event/EmailSendEvent.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEvent%2FEmailSendEvent.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnQvRW1haWxTZW5kRXZlbnQucGhw) | `86.40% <ø> (ø)` | |\n| [...es/EmailBundle/EventListener/BuilderSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FBuilderSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9CdWlsZGVyU3Vic2NyaWJlci5waHA=) | `98.18% <100.00%> (+0.02%)` | :arrow_up: |\n| [...ndles/EmailBundle/EventListener/PageSubscriber.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FEventListener%2FPageSubscriber.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRXZlbnRMaXN0ZW5lci9QYWdlU3Vic2NyaWJlci5waHA=) | `81.81% <100.00%> (+0.86%)` | :arrow_up: |\n| [app/bundles/EmailBundle/Form/Type/ConfigType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FConfigType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL0NvbmZpZ1R5cGUucGhw) | `100.00% <100.00%> (��)` | |\n| [...undles/EmailBundle/Form/Type/ValidateEmailType.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FForm%2FType%2FValidateEmailType.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvRm9ybS9UeXBlL1ZhbGlkYXRlRW1haWxUeXBlLnBocA==) | `100.00% <100.00%> (ø)` | |\n| [app/bundles/EmailBundle/Model/EmailModel.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FModel%2FEmailModel.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvTW9kZWwvRW1haWxNb2RlbC5waHA=) | `64.55% <100.00%> (+0.50%)` | :arrow_up: |\n| [...les/EmailBundle/Helper/EmailAddressLinkMatcher.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FHelper%2FEmailAddressLinkMatcher.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvSGVscGVyL0VtYWlsQWRkcmVzc0xpbmtNYXRjaGVyLnBocA==) | `91.66% <91.66%> (ø)` | |\n| [...dle/Validator/EmailAddressMatchesLinkValidator.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FValidator%2FEmailAddressMatchesLinkValidator.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvVmFsaWRhdG9yL0VtYWlsQWRkcmVzc01hdGNoZXNMaW5rVmFsaWRhdG9yLnBocA==) | `88.88% <88.88%> (ø)` | |\n| [...undles/EmailBundle/Controller/PublicController.php](https://app.codecov.io/gh/mautic/mautic/pull/16870?src=pr&el=tree&filepath=app%2Fbundles%2FEmailBundle%2FController%2FPublicController.php&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic#diff-YXBwL2J1bmRsZXMvRW1haWxCdW5kbGUvQ29udHJvbGxlci9QdWJsaWNDb250cm9sbGVyLnBocA==) | `78.55% <87.50%> (+12.22%)` | :arrow_up: |\n\n... and [2 files with indirect coverage changes](https://app.codecov.io/gh/mautic/mautic/pull/16870/indirect-changes?src=pr&el=tree-more&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=mautic)\n</details>\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-08-26T14:48:25Z",
-        "body": "I'll pause on the merge and implement the config option here."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "created_at": "2026-09-04T09:13:24Z",
-        "body": "@rohitp19 can you please retest also with the new config option?"
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "created_at": "2026-09-09T05:06:14Z",
-        "body": "Thank you @escopecz!, tested by toggeling the feature flag, it is working as expected."
-      },
-      {
-        "user": {
-          "login": "sonarqubecloud[bot]"
-        },
-        "created_at": "2026-09-09T06:59:46Z",
-        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [23 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16870&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16870&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [5.1% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16870&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16870)\n\n"
       },
       {
         "user": {
           "login": "promptless-for-oss"
         },
-        "created_at": "2026-09-09T07:44:01Z",
-        "body": "### Promptless documentation updates\n\n- [Document email address validation step for unsubscribe and resubscribe](https://app.gopromptless.ai/suggestions/3a45fe69-27fc-4347-bb38-4b6080ced6e8) documents the new email-confirmation workflow for unsubscribe/resubscribe links and the new global **Require email validation for unsubscribe** setting. [Docs PR](https://github.com/mautic/user-documentation/pull/913)\n- [Document the themeable email-validation.html.twig template](https://app.gopromptless.ai/suggestions/3b438968-aac2-4208-afa9-99add6c855b0) documents the new themeable `email-validation.html.twig` template and how to style it in a custom theme. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/613)"
+        "created_at": "2026-09-19T18:50:36Z",
+        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
       }
     ],
-    "rawCodeReviews": [
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-08-05T11:13:59Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-08-05T11:15:15Z",
-        "body": "Please address the inline finding before merge."
-      },
-      {
-        "user": {
-          "login": "escopecz"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-08-05T12:43:21Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "dongilbert"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-08-05T15:17:46Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "CHANGES_REQUESTED",
-        "submitted_at": "2026-08-06T07:08:46Z",
-        "body": "Personally, re-entering my email makes me feel like unsubscribing is being made unnecessarily difficult. Do you see other ways to harden the security without making the process less user-friendly?"
-      },
-      {
-        "user": {
-          "login": "patrykgruszka"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-08-12T08:44:48Z",
-        "body": "Since one-click unsubscribe already relies on the signed URL alone, could we make the email verification configurable? The default flow could remain frictionless, while installations concerned about unsubscribe links being published could enable the verification step."
-      },
-      {
-        "user": {
-          "login": "rohitp19"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-08-14T07:47:33Z",
-        "body": "Thanks @escopecz! It is working as expected (All steps to test are passed).\n"
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-08-14T07:48:28Z",
-        "body": ""
-      },
-      {
-        "user": {
-          "login": "rohitpavaskar"
-        },
-        "state": "APPROVED",
-        "submitted_at": "2026-09-09T05:05:19Z",
-        "body": ""
-      }
-    ],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
     "rawReviewRequests": [
       {
         "actor": {
