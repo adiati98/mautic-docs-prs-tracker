@@ -2480,7 +2480,7 @@ function codePRClause(pr) {
 	if (!pr.appPRNumber) return "No linked code PR"
 	const pillCls = pr.codeClosed ? "closed" : pr.codeMerged ? "merged" : "open"
 	const pillText = pr.codeClosed ? "Closed" : pr.codeMerged ? "Merged" : "Open"
-	return `Code PR <a href="${pr.appPRUrl}" target="_blank">#${pr.appPRNumber}</a> <span class="pill ${pillCls}">${pillText}</span>`
+	return `Code PR <a href="${pr.appPRUrl}" target="_blank" rel="noopener noreferrer">#${pr.appPRNumber}</a> <span class="pill ${pillCls}">${pillText}</span>`
 }
 
 // Whether the switch below already names the docs PR's own author for this
@@ -3234,7 +3234,7 @@ function renderNeedTodayRow(pr) {
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
-          <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
+          <div class="title"><a href="${pr.url}" target="_blank" rel="noopener noreferrer" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
           <div class="meta">${metaLine(pr)}</div>
           <div class="chips">${chipsHtml}</div>
         </div>
@@ -3257,7 +3257,7 @@ function renderWaitingRow(pr) {
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
-          <div class="title"><a href="${pr.url}" target="_blank" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
+          <div class="title"><a href="${pr.url}" target="_blank" rel="noopener noreferrer" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
           <div class="meta">${metaLine(pr)}</div>
           ${chipsHtml}
         </div>
@@ -3269,7 +3269,7 @@ function renderMonitoringRow(pr) {
 	const pillCls = pr.codeClosed ? "closed" : pr.codeMerged ? "merged" : "open"
 	const pillText = pr.codeClosed ? "Closed" : pr.codeMerged ? "Merged" : "Open"
 	const codePart = pr.appPRNumber
-		? `<span class="code">Code PR <a href="${pr.appPRUrl}" target="_blank">#${pr.appPRNumber}</a> <span class="pill ${pillCls}">${pillText}</span></span>`
+		? `<span class="code">Code PR <a href="${pr.appPRUrl}" target="_blank" rel="noopener noreferrer">#${pr.appPRNumber}</a> <span class="pill ${pillCls}">${pillText}</span></span>`
 		: `<span class="code">No linked code PR</span>`
 	// Day count since the operator's last reply — resurfaces as a reminder
 	// prompt once it reaches FOLLOWUP_DAYS (see the category logic in main()).
@@ -3300,7 +3300,7 @@ function renderMonitoringRow(pr) {
 	const search = escapeHtml(
 		searchBlobFor(pr, [...overlayChipObjs, reviewPendingChip].filter(Boolean)),
 	)
-	return `<div class="mon-row" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-search="${search}"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${codePart} <span class="why">${dayText}</span>${reviewChip}${overlayChips}</div>`
+	return `<div class="mon-row" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-search="${search}"><a href="${pr.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${codePart} <span class="why">${dayText}</span>${reviewChip}${overlayChips}</div>`
 }
 
 function formatUpdated(date) {
@@ -3585,7 +3585,7 @@ function buildEscalationList(prData) {
 // api-library or other repos), or a plain "none" when there's no link.
 function codePRLink(pr) {
 	return pr.appPRNumber
-		? `<a href="${pr.appPRUrl}" target="_blank">${escapeHtml(pr.appPRRepo)} #${pr.appPRNumber}</a>`
+		? `<a href="${pr.appPRUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(pr.appPRRepo)} #${pr.appPRNumber}</a>`
 		: `<span class="none">No linked code PR</span>`
 }
 
@@ -3734,7 +3734,7 @@ function generateHTML(prData, { operatorUsername }) {
 		`<button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">${needToday.length}</span></button>`,
 		...PRIORITY_TABS.map(
 			([v, label, tip]) =>
-				`<button class="ftab" data-f="pri" data-v="${v}" aria-pressed="false" title="${escapeHtml(tip)}">${label} <span class="fc">${sevCounts[v]}</span></button>`,
+				`<span class="tipwrap"><button class="ftab" data-f="pri" data-v="${v}" aria-pressed="false" aria-describedby="tip-${v}">${label} <span class="fc">${sevCounts[v]}</span></button><span class="tip" id="tip-${v}" role="tooltip">${escapeHtml(tip)}</span></span>`,
 		),
 	].join("")
 	const searchBar = `
@@ -3962,6 +3962,16 @@ function generateHTML(prData, { operatorUsername }) {
   .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
   .back-to-top:hover{border-color:color-mix(in srgb, var(--accent) 40%, var(--ring))}
 
+  .tipwrap{position:relative;display:inline-block}
+  .tip{
+    position:absolute;left:0;top:calc(100% + 6px);z-index:20;width:max-content;max-width:260px;
+    padding:6px 9px;border-radius:8px;background:var(--ink);color:var(--page);
+    font-size:12px;line-height:1.4;font-weight:400;text-transform:none;letter-spacing:0;
+    opacity:0;visibility:hidden;pointer-events:none;
+  }
+  .tipwrap:hover .tip,.tipwrap:has(:focus-visible) .tip{opacity:1;visibility:visible}
+  body:has(.tipwrap:hover) .tipwrap:not(:hover) .tip{opacity:0;visibility:hidden}
+  a[target="_blank"]::after{content:"";content:"" / " (opens in a new tab)"}
   .sr-only{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
     clip:rect(0,0,0,0);white-space:nowrap;border:0;
@@ -4001,7 +4011,7 @@ function generateHTML(prData, { operatorUsername }) {
   .sec-head .hint{font-size:12px;color:var(--ink-3)}
   .chk-progress{
     display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 8px;
-    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-3);
+    background:color-mix(in srgb, var(--ink) 7%, transparent);color:var(--ink-2);
   }
   /* Some checked but not all - same accent used for "Act" chips elsewhere. */
   .chk-progress[data-state="partial"]{
@@ -4066,7 +4076,7 @@ function generateHTML(prData, { operatorUsername }) {
   }
   .chip.nudge2{
     background:color-mix(in srgb, var(--critical) 17%, var(--surface));
-    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    color:color-mix(in srgb, var(--critical) 68%, var(--ink));
     border-color:color-mix(in srgb, var(--critical) 42%, transparent);
   }
   .chip.nudge3{
@@ -4107,7 +4117,7 @@ function generateHTML(prData, { operatorUsername }) {
   /* optional / already-done — same gray as the triage row edge */
   .chip.muted{
     background:color-mix(in srgb, var(--ink-3) 12%, var(--surface));
-    color:var(--ink-3);
+    color:color-mix(in srgb, var(--ink-3) 75%, var(--ink));
     border-color:color-mix(in srgb, var(--ink-3) 30%, transparent);
   }
   .chip.stale{
@@ -4141,12 +4151,12 @@ function generateHTML(prData, { operatorUsername }) {
 
   .when{text-align:right;min-width:96px}
   .when .days{font-size:15px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .when .days.critical{color:var(--critical)}
+  .when .days.critical{color:color-mix(in srgb, var(--critical) 76%, var(--ink))}
   .when .days.serious{color:color-mix(in srgb, var(--serious) 70%, var(--ink))}
   .when .days.good{color:var(--good-ink)}
   .when .days.warn{color:color-mix(in srgb, var(--warning) 45%, var(--ink))}
   .when .sub{font-size:11px;color:var(--ink-3);margin-top:1px}
-  .when .sub.warn{color:color-mix(in srgb, var(--warning) 40%, var(--ink-2));font-weight:600}
+  .when .sub.warn{color:color-mix(in srgb, var(--warning) 25%, var(--ink-2));font-weight:600}
   .meter{
     width:84px;height:4px;border-radius:2px;background:var(--line);
     margin:5px 0 0 auto;overflow:hidden;
@@ -4269,7 +4279,7 @@ function generateHTML(prData, { operatorUsername }) {
   .search-summary{
     flex-basis:100%;font-size:12px;color:var(--ink-3);
   }
-  .search-summary.no-results{color:var(--critical);font-weight:600}
+  .search-summary.no-results{color:color-mix(in srgb, var(--critical) 76%, var(--ink));font-weight:600}
   mark.search-hit{
     background:color-mix(in srgb, var(--warning) 55%, transparent);color:inherit;
     border-radius:2px;padding:0 1px;
@@ -4311,15 +4321,15 @@ function generateHTML(prData, { operatorUsername }) {
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   ${nextUpdateNoticeHtml(now)}
+  </header>
 
   <main id="main-content">
   <div class="stats">
@@ -4354,7 +4364,7 @@ ${monitoringSection}
   </main>
   <footer>
     <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> as <code>${escapeHtml(operatorUsername)}</code></div>
-    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
 
@@ -4522,7 +4532,7 @@ ${monitoringSection}
       const val = tab.getAttribute('data-v');
       filterState[dim] = val;
       document.body.setAttribute(dim === 'repo' ? 'data-frepo' : 'data-fpri', val);
-      tab.parentElement.querySelectorAll('.ftab').forEach(function(t){
+      tab.closest('.fbar').querySelectorAll('.ftab').forEach(function(t){
         const isActive = t === tab;
         t.classList.toggle('active', isActive);
         t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
@@ -4718,7 +4728,7 @@ function renderAuthorGroup(group) {
 			return `
         <tr data-key="${escapeHtml(key)}" data-status="${status}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
-          <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
+          <td data-label="Docs PR"><a href="${pr.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}</td>
           <td data-label="Code PR">${codePRLink(pr)}</td>
           <td data-label="Mark"><span class="marks">${markHtml}${rowTags(pr)}</span></td>
         </tr>`
@@ -4727,7 +4737,7 @@ function renderAuthorGroup(group) {
 	return `
   <section class="author-group" id="author-${escapeHtml(anchor)}">
     <div class="author-head">
-      <h3><a href="https://github.com/${escapeHtml(group.author)}" target="_blank">@${escapeHtml(group.author)}</a></h3>
+      <h3><a href="https://github.com/${escapeHtml(group.author)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(group.author)}</a></h3>
       <span class="author-progress">0/${group.items.length} checked</span>
     </div>
     <table>
@@ -4753,7 +4763,7 @@ function renderEscalationSection(escalations) {
 			return `
         <tr data-key="${escapeHtml(key)}" data-status="${status}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
-          <td data-label="Docs PR"><a href="${pr.url}" target="_blank">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${pr.staleFlag ? ` <span class="tag stale">Stale</span>` : ""}</td>
+          <td data-label="Docs PR"><a href="${pr.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${pr.staleFlag ? ` <span class="tag stale">Stale</span>` : ""}</td>
           <td data-label="Code PR">${codePRLink(pr)}</td>
           <td data-label="Escalated to"><span class="tag esc">${escapeHtml(targets)}</span> <span class="ago">escalated ${escapeHtml(daysAgoText(pr.escalationRequest.date))}</span></td>
         </tr>`
@@ -4939,7 +4949,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   th,td{padding:8px 12px;text-align:left;font-size:13px;border-top:1px solid var(--line)}
   th{
     background:color-mix(in srgb, var(--ink) 3%, var(--surface));font-size:11px;
-    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);font-weight:600;border-top:none;
+    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-2);font-weight:600;border-top:none;
   }
   tbody tr:first-child td{border-top:none}
   td.chk{width:36px;text-align:center}
@@ -4948,6 +4958,7 @@ function generateReminderHTML({ groups, escalations }, { now }) {
   input[type=checkbox]{width:16px;height:16px;cursor:pointer}
   input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
+  a[target="_blank"]::after{content:"";content:"" / " (opens in a new tab)"}
   .sr-only{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
     clip:rect(0,0,0,0);white-space:nowrap;border:0;
@@ -5060,16 +5071,17 @@ function generateReminderHTML({ groups, escalations }, { now }) {
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Docs PR review reminders</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   ${nextUpdateNoticeHtml(now)}
+  </header>
 
+  <main id="main-content">
   <div class="intro">
     <p class="intro-lead">You can find two sections on this page:</p>
     <ol class="intro-sections">
@@ -5088,12 +5100,11 @@ function generateReminderHTML({ groups, escalations }, { now }) {
       <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines - then <b>Submit review</b> when you're done.</li>
     </ol>
   </div>
-  <main id="main-content">
 ${bodyHtml}
   </main>
   <footer>
     <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${totalItems} author reminder${totalItems === 1 ? "" : "s"} · ${escalations.length} escalated</div>
-    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
 
@@ -5287,7 +5298,15 @@ function generateGuideHTML({ now }) {
   }
   .icon-btn svg{display:block}
 
+  .skip-link{
+    position:absolute;top:-40px;left:8px;z-index:100;
+    background:var(--surface);color:var(--ink);border:1px solid var(--ring);
+    border-radius:6px;padding:8px 14px;font-size:13px;text-decoration:none;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px}
   .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
+  .lede a,.guide-sec p a{text-decoration:underline}
 
   .jump-nav{
     display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px;
@@ -5363,7 +5382,7 @@ function generateGuideHTML({ now }) {
   }
   .chip.nudge2{
     background:color-mix(in srgb, var(--critical) 17%, var(--surface));
-    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    color:color-mix(in srgb, var(--critical) 68%, var(--ink));
     border-color:color-mix(in srgb, var(--critical) 42%, transparent);
   }
   .chip.nudge3{
@@ -5402,7 +5421,7 @@ function generateGuideHTML({ now }) {
   }
   .chip.muted{
     background:color-mix(in srgb, var(--ink-3) 12%, var(--surface));
-    color:var(--ink-3);
+    color:color-mix(in srgb, var(--ink-3) 75%, var(--ink));
     border-color:color-mix(in srgb, var(--ink-3) 30%, transparent);
   }
   .chip.stale{
@@ -5422,11 +5441,22 @@ function generateGuideHTML({ now }) {
   .scenario > p,.scenario > .note{margin:10px 0;font-size:13.5px;color:var(--ink-2);line-height:1.55}
   .scenario .see{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
   .scenario .see .lbl{
-    font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
-    color:var(--ink-3);margin-right:2px;
+    font-size:12px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--ink-2);margin-right:2px;
   }
 
+  .tipwrap{position:relative;display:inline-block}
+  .tip{
+    position:absolute;left:0;top:calc(100% + 6px);z-index:20;width:max-content;max-width:260px;
+    padding:6px 9px;border-radius:8px;background:var(--ink);color:var(--page);
+    font-size:12px;line-height:1.4;font-weight:400;text-transform:none;letter-spacing:0;
+    opacity:0;visibility:hidden;pointer-events:none;
+  }
+  .tipwrap:hover .tip,.tipwrap:has(:focus-visible) .tip{opacity:1;visibility:visible}
+  body:has(.tipwrap:hover) .tipwrap:not(:hover) .tip{opacity:0;visibility:hidden}
+  a[target="_blank"]::after{content:"";content:"" / " (opens in a new tab)"}
   abbr.gloss{text-decoration:none;border-bottom:1px dotted var(--ink-3);cursor:help}
+  abbr.gloss:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   .guide-table{width:100%;border-collapse:collapse;margin:14px 0}
   .guide-table th,.guide-table td{
@@ -5464,17 +5494,19 @@ function generateGuideHTML({ now }) {
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Guidelines</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </header>
 
+  <main id="main-content">
   <p class="lede">Everything about how the dashboard sorts and labels docs PRs: the four groups, what a row's colors and tags mean, and how a docs PR typically moves from opening to merged.</p>
 
   <nav class="jump-nav">
@@ -5537,7 +5569,7 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
         <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, marking a docs PR ready after its code PR merged, or an approval that's ready to go.</td></tr>
-        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
+        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <span class="tipwrap"><abbr class="gloss" tabindex="0" aria-describedby="tip-backported">backported</abbr><span class="tip" id="tip-backported" role="tooltip">Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.</span></span> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
         <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
         <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed - its linked code PR was closed without merging.</td></tr>
@@ -5729,9 +5761,10 @@ function generateGuideHTML({ now }) {
     <p>Checking it off is saved to <b>your own browser only</b> - nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A <b>Hide checked rows</b> switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
   </section>
 
+  </main>
   <footer>
     <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span></div>
-    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
 
