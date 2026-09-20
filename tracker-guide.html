@@ -95,7 +95,15 @@
   }
   .icon-btn svg{display:block}
 
+  .skip-link{
+    position:absolute;top:-40px;left:8px;z-index:100;
+    background:var(--surface);color:var(--ink);border:1px solid var(--ring);
+    border-radius:6px;padding:8px 14px;font-size:13px;text-decoration:none;
+    transition:top .15s;
+  }
+  .skip-link:focus{top:8px}
   .lede{color:var(--ink-2);font-size:14px;margin:14px 0 8px}
+  .lede a,.guide-sec p a{text-decoration:underline}
 
   .jump-nav{
     display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 8px;
@@ -171,7 +179,7 @@
   }
   .chip.nudge2{
     background:color-mix(in srgb, var(--critical) 17%, var(--surface));
-    color:color-mix(in srgb, var(--critical) 76%, var(--ink));
+    color:color-mix(in srgb, var(--critical) 68%, var(--ink));
     border-color:color-mix(in srgb, var(--critical) 42%, transparent);
   }
   .chip.nudge3{
@@ -210,7 +218,7 @@
   }
   .chip.muted{
     background:color-mix(in srgb, var(--ink-3) 12%, var(--surface));
-    color:var(--ink-3);
+    color:color-mix(in srgb, var(--ink-3) 75%, var(--ink));
     border-color:color-mix(in srgb, var(--ink-3) 30%, transparent);
   }
   .chip.stale{
@@ -230,11 +238,22 @@
   .scenario > p,.scenario > .note{margin:10px 0;font-size:13.5px;color:var(--ink-2);line-height:1.55}
   .scenario .see{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
   .scenario .see .lbl{
-    font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
-    color:var(--ink-3);margin-right:2px;
+    font-size:12px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--ink-2);margin-right:2px;
   }
 
+  .tipwrap{position:relative;display:inline-block}
+  .tip{
+    position:absolute;left:0;top:calc(100% + 6px);z-index:20;width:max-content;max-width:260px;
+    padding:6px 9px;border-radius:8px;background:var(--ink);color:var(--page);
+    font-size:12px;line-height:1.4;font-weight:400;text-transform:none;letter-spacing:0;
+    opacity:0;visibility:hidden;pointer-events:none;
+  }
+  .tipwrap:hover .tip,.tipwrap:has(:focus-visible) .tip{opacity:1;visibility:visible}
+  body:has(.tipwrap:hover) .tipwrap:not(:hover) .tip{opacity:0;visibility:hidden}
+  a[target="_blank"]::after{content:"";content:"" / " (opens in a new tab)"}
   abbr.gloss{text-decoration:none;border-bottom:1px dotted var(--ink-3);cursor:help}
+  abbr.gloss:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
   .guide-table{width:100%;border-collapse:collapse;margin:14px 0}
   .guide-table th,.guide-table td{
@@ -272,17 +291,19 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Guidelines</h1>
-    <span class="updated" data-updated-iso="2026-09-19T21:25:56.232Z">Updated Sat, Sep 19, 9:25 PM</span>
+    <span class="updated" data-updated-iso="2026-09-20T13:01:45.504Z">Updated Sun, Sep 20, 1:01 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </header>
 
+  <main id="main-content">
   <p class="lede">Everything about how the dashboard sorts and labels docs PRs: the four groups, what a row's colors and tags mean, and how a docs PR typically moves from opening to merged.</p>
 
   <nav class="jump-nav">
@@ -345,7 +366,7 @@
         <tr><td><span class="chip nudge1">Ask</span> <span class="chip nudge2">Follow up</span> <span class="chip nudge3">Escalate</span></td><td>The same color family, getting more intense the longer it's been quiet: a first ask, then a follow-up, then escalating to the Core Team.</td></tr>
         <tr><td><span class="chip act">Review / respond</span></td><td>Needs your direct attention: reviewing a standalone PR, checking an author's response, or looking at a note left after approval.</td></tr>
         <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, marking a docs PR ready after its code PR merged, or an approval that's ready to go.</td></tr>
-        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <abbr class="gloss" title="Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.">backported</abbr> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
+        <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <span class="tipwrap"><abbr class="gloss" tabindex="0" aria-describedby="tip-backported">backported</abbr><span class="tip" id="tip-backported" role="tooltip">Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.</span></span> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
         <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
         <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed - its linked code PR was closed without merging.</td></tr>
@@ -537,9 +558,10 @@
     <p>Checking it off is saved to <b>your own browser only</b> - nobody else sees it, and it doesn't notify anyone or change anything on GitHub or the tracker's own data. A checked row dims with its title struck through; clearing your browser data resets everything. A <b>Hide checked rows</b> switch next to the filters collapses checked rows out of view entirely instead of just dimming them.</p>
   </section>
 
+  </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-09-19T21:25:56.232Z">Sat, Sep 19, 9:25 PM</span></div>
-    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+    <div>Generated on <span data-updated-iso="2026-09-20T13:01:45.504Z">Sun, Sep 20, 1:01 PM</span></div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
 

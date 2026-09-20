@@ -129,7 +129,7 @@
   th,td{padding:8px 12px;text-align:left;font-size:13px;border-top:1px solid var(--line)}
   th{
     background:color-mix(in srgb, var(--ink) 3%, var(--surface));font-size:11px;
-    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-3);font-weight:600;border-top:none;
+    text-transform:uppercase;letter-spacing:.03em;color:var(--ink-2);font-weight:600;border-top:none;
   }
   tbody tr:first-child td{border-top:none}
   td.chk{width:36px;text-align:center}
@@ -138,6 +138,7 @@
   input[type=checkbox]{width:16px;height:16px;cursor:pointer}
   input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
+  a[target="_blank"]::after{content:"";content:"" / " (opens in a new tab)"}
   .sr-only{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
     clip:rect(0,0,0,0);white-space:nowrap;border:0;
@@ -250,16 +251,17 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="wrap">
 
-  <div class="top">
+  <header class="top">
     <h1>Docs PR review reminders</h1>
-    <span class="updated" data-updated-iso="2026-09-19T21:25:56.231Z">Updated Sat, Sep 19, 9:25 PM</span>
+    <span class="updated" data-updated-iso="2026-09-20T13:01:45.504Z">Updated Sun, Sep 20, 1:01 PM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-  </div>
-  <span class="gap-note">Next update <b><span data-updated-iso="2026-09-20T08:07:00.000Z">…</span></b></span>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  <span class="gap-note">Next update <b><span data-updated-iso="2026-09-20T19:07:00.000Z">…</span></b></span>
+  </header>
 
+  <main id="main-content">
   <div class="intro">
     <p class="intro-lead">You can find two sections on this page:</p>
     <ol class="intro-sections">
@@ -278,7 +280,6 @@
       <li>To comment on specific code, hover over the line and click the blue <b>+</b> that appears; for several lines, click and drag across them. Type your note, click <b>Start a review</b>, and repeat for other lines - then <b>Submit review</b> when you're done.</li>
     </ol>
   </div>
-  <main id="main-content">
 
   <div class="section-head" id="section-authors">
     <h2>Code PR author reminders</h2>
@@ -289,7 +290,7 @@
 
   <section class="author-group" id="author-andersonjeccel">
     <div class="author-head">
-      <h3><a href="https://github.com/andersonjeccel" target="_blank">@andersonjeccel</a></h3>
+      <h3><a href="https://github.com/andersonjeccel" target="_blank" rel="noopener noreferrer">@andersonjeccel</a></h3>
       <span class="author-progress">0/10 checked</span>
     </div>
     <table>
@@ -297,69 +298,69 @@
       <tbody>
         <tr data-key="mautic/developer-documentation-new#250" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,null,true,true,false,false,[],false,&quot;third-party&quot;,false,null,null,false,[],[],false,false,false,false,true,false]">
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #250: Navigating UI resources as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/250" target="_blank">developer-documentation #250</a> Navigating UI resources</td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/250" target="_blank" rel="noopener noreferrer">developer-documentation #250</a> Navigating UI resources</td>
           <td data-label="Code PR"><span class="none">No linked code PR</span></td>
           <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag stale">Stale</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#915" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[&quot;RCheesley&quot;],false,null,false,null,null,false,[],[&quot;7.3&quot;,&quot;8.0&quot;],false,true,true,false,true,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #915: Document single-editable-entity-type shortcut when adding entities to a Project as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/915" target="_blank">user-documentation #915</a> Document single-editable-entity-type shortcut when adding entities to a Project</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16927" target="_blank">mautic/mautic #16927</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/915" target="_blank" rel="noopener noreferrer">user-documentation #915</a> Document single-editable-entity-type shortcut when adding entities to a Project</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16927" target="_blank" rel="noopener noreferrer">mautic/mautic #16927</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#932" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;7.3&quot;,&quot;8.0&quot;],false,true,true,false,true,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #932: Document the live preview in the web Notification editor as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/932" target="_blank">user-documentation #932</a> Document the live preview in the web Notification editor</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16928" target="_blank">mautic/mautic #16928</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/932" target="_blank" rel="noopener noreferrer">user-documentation #932</a> Document the live preview in the web Notification editor</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16928" target="_blank" rel="noopener noreferrer">mautic/mautic #16928</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#872" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[971],[],false,true,true,false,true,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #872: Document clearing Contact owner in bulk (No owner) and the Quick Add Save &amp; New button as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/872" target="_blank">user-documentation #872</a> Document clearing Contact owner in bulk (No owner) and the Quick Add Save &amp; New button</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16849" target="_blank">mautic/mautic #16849</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/872" target="_blank" rel="noopener noreferrer">user-documentation #872</a> Document clearing Contact owner in bulk (No owner) and the Quick Add Save &amp; New button</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16849" target="_blank" rel="noopener noreferrer">mautic/mautic #16849</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#985" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,true,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #985: Document the Clone action on the Report details view as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/985" target="_blank">user-documentation #985</a> Document the Clone action on the Report details view</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17450" target="_blank">mautic/mautic #17450</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/985" target="_blank" rel="noopener noreferrer">user-documentation #985</a> Document the Clone action on the Report details view</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17450" target="_blank" rel="noopener noreferrer">mautic/mautic #17450</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#983" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,true,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #983: Clarify that deleting an Asset permanently deletes its stored file as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/983" target="_blank">user-documentation #983</a> Clarify that deleting an Asset permanently deletes its stored file</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17448" target="_blank">mautic/mautic #17448</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/983" target="_blank" rel="noopener noreferrer">user-documentation #983</a> Clarify that deleting an Asset permanently deletes its stored file</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17448" target="_blank" rel="noopener noreferrer">mautic/mautic #17448</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#981" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,true,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,false,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #981: Warn that deleting a Point Group also deletes its Contact scores as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/981" target="_blank">user-documentation #981</a> Warn that deleting a Point Group also deletes its Contact scores</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17447" target="_blank">mautic/mautic #17447</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/981" target="_blank" rel="noopener noreferrer">user-documentation #981</a> Warn that deleting a Point Group also deletes its Contact scores</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17447" target="_blank" rel="noopener noreferrer">mautic/mautic #17447</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#980" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,true,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,false,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #980: Note that deleting a Report stops its scheduled Emails as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/980" target="_blank">user-documentation #980</a> Note that deleting a Report stops its scheduled Emails</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17446" target="_blank">mautic/mautic #17446</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/980" target="_blank" rel="noopener noreferrer">user-documentation #980</a> Note that deleting a Report stops its scheduled Emails</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17446" target="_blank" rel="noopener noreferrer">mautic/mautic #17446</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#979" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,true,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,false,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #979: Clarify that deleting a Segment doesn&#039;t delete its Contacts as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/979" target="_blank">user-documentation #979</a> Clarify that deleting a Segment doesn&#039;t delete its Contacts</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17445" target="_blank">mautic/mautic #17445</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/979" target="_blank" rel="noopener noreferrer">user-documentation #979</a> Clarify that deleting a Segment doesn&#039;t delete its Contacts</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17445" target="_blank" rel="noopener noreferrer">mautic/mautic #17445</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr>
         <tr data-key="mautic/user-documentation#978" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,true,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,false,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #978: Warn that deleting a Point Trigger removes its event configuration and trigger history as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/978" target="_blank">user-documentation #978</a> Warn that deleting a Point Trigger removes its event configuration and trigger history</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17442" target="_blank">mautic/mautic #17442</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/978" target="_blank" rel="noopener noreferrer">user-documentation #978</a> Warn that deleting a Point Trigger removes its event configuration and trigger history</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/17442" target="_blank" rel="noopener noreferrer">mautic/mautic #17442</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr></tbody>
     </table>
   </section>
   <section class="author-group" id="author-fakela">
     <div class="author-head">
-      <h3><a href="https://github.com/fakela" target="_blank">@fakela</a></h3>
+      <h3><a href="https://github.com/fakela" target="_blank" rel="noopener noreferrer">@fakela</a></h3>
       <span class="author-progress">0/1 checked</span>
     </div>
     <table>
@@ -367,7 +368,7 @@
       <tbody>
         <tr data-key="mautic/user-documentation#279" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,null,false,true,false,false,[],false,&quot;third-party&quot;,false,null,null,false,[],[],false,true,false,false,true,false]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #279: add audit log in the list as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/279" target="_blank">user-documentation #279</a> add audit log in the list</td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/279" target="_blank" rel="noopener noreferrer">user-documentation #279</a> add audit log in the list</td>
           <td data-label="Code PR"><span class="none">No linked code PR</span></td>
           <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from adiati98</span><span class="tag stale">Stale</span></span></td>
         </tr></tbody>
@@ -375,7 +376,7 @@
   </section>
   <section class="author-group" id="author-hluchas">
     <div class="author-head">
-      <h3><a href="https://github.com/hluchas" target="_blank">@hluchas</a></h3>
+      <h3><a href="https://github.com/hluchas" target="_blank" rel="noopener noreferrer">@hluchas</a></h3>
       <span class="author-progress">0/1 checked</span>
     </div>
     <table>
@@ -383,15 +384,15 @@
       <tbody>
         <tr data-key="mautic/developer-documentation-new#593" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[673],[],false,true,true,false,true,true]">
           <td class="chk"><input type="checkbox" aria-label="Mark developer-documentation #593: docs: Document Batch add Contacts to Companies REST API endpoint as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/593" target="_blank">developer-documentation #593</a> docs: Document Batch add Contacts to Companies REST API endpoint</td>
-          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16512" target="_blank">mautic/mautic #16512</a></td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/developer-documentation-new/pull/593" target="_blank" rel="noopener noreferrer">developer-documentation #593</a> docs: Document Batch add Contacts to Companies REST API endpoint</td>
+          <td data-label="Code PR"><a href="https://github.com/mautic/mautic/pull/16512" target="_blank" rel="noopener noreferrer">mautic/mautic #16512</a></td>
           <td data-label="Mark"><span class="marks"><span class="mark review">Need review</span></span></td>
         </tr></tbody>
     </table>
   </section>
   <section class="author-group" id="author-joseph2001-braganza">
     <div class="author-head">
-      <h3><a href="https://github.com/Joseph2001-braganza" target="_blank">@Joseph2001-braganza</a></h3>
+      <h3><a href="https://github.com/Joseph2001-braganza" target="_blank" rel="noopener noreferrer">@Joseph2001-braganza</a></h3>
       <span class="author-progress">0/1 checked</span>
     </div>
     <table>
@@ -399,7 +400,7 @@
       <tbody>
         <tr data-key="mautic/user-documentation#246" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,null,true,true,false,false,[],false,null,false,null,null,false,[],[],false,false,false,false,true,false]">
           <td class="chk"><input type="checkbox" aria-label="Mark user-documentation #246: Add back the 2-&gt;3 upgrade docs as done"></td>
-          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/246" target="_blank">user-documentation #246</a> Add back the 2-&gt;3 upgrade docs</td>
+          <td data-label="Docs PR"><a href="https://github.com/mautic/user-documentation/pull/246" target="_blank" rel="noopener noreferrer">user-documentation #246</a> Add back the 2-&gt;3 upgrade docs</td>
           <td data-label="Code PR"><span class="none">No linked code PR</span></td>
           <td data-label="Mark"><span class="marks"><span class="mark respond">Response to comment from RCheesley</span><span class="tag stale">Stale</span></span></td>
         </tr></tbody>
@@ -412,8 +413,8 @@
   <div class="empty">No docs PRs are currently escalated to the Core Team.</div>
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-09-19T21:25:56.231Z">Sat, Sep 19, 9:25 PM</span> · 13 author reminders · 0 escalated</div>
-    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank">Ayu Adiati</a> ✨</div>
+    <div>Generated on <span data-updated-iso="2026-09-20T13:01:45.504Z">Sun, Sep 20, 1:01 PM</span> · 13 author reminders · 0 escalated</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
 
