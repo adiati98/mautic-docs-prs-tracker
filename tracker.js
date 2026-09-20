@@ -252,6 +252,7 @@ async function fetchCodePR(repo, number) {
 			updatedAt: pr.updated_at,
 			milestoneTitle: pr.milestone ? pr.milestone.title : null,
 			baseBranch: pr.base.ref,
+			body: pr.body || "",
 		}
 	} catch (e) {
 		console.error(`Error fetching code PR ${repo}#${number}:`, e.message)
@@ -263,6 +264,7 @@ async function fetchCodePR(repo, number) {
 			updatedAt: null,
 			milestoneTitle: null,
 			baseBranch: null,
+			body: "",
 		}
 	}
 }
@@ -545,17 +547,31 @@ function normalizeTitleForBackportMatch(title) {
 // matches here. Cross-repo mentions are still readable, just via the URL
 // pattern below, which checks the repo explicitly instead of guessing from
 // punctuation.
-const BACKPORT_REFERENCE_WORD_PATTERN =
-	/\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b[^#\n]{0,150}(?<![\w/])#(\d+)/i
+//
+// The 150-character allowance is there because Promptless writes whole
+// sentences between the word and the number, but that same room lets an
+// unrelated "#123" mentioned later in a *different* sentence get swept in
+// too — e.g. "...then cherry-pick to 7.1/7.0/6.0/5.x. Resolves docs issue
+// #391" has nothing to do with #391, it's just two topics in one paragraph.
+// So the run stops the moment it would cross a real sentence break — a "."
+// followed by whitespace and a capital letter — while still allowing the
+// decimal points inside version numbers like "7.1" (never followed by a
+// capital letter) to pass through untouched.
+const SENTENCE_BREAK = String.raw`\.\s+[A-Z]`
+const BACKPORT_REFERENCE_WORD_PATTERN = new RegExp(
+	String.raw`\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}(?<![\w/])#(\d+)`,
+	"i",
+)
 
 // Same backport wording, but pointing at a full GitHub URL instead of a bare
 // "#123" — only matched when the URL's repo is this docs PR's own repo, so a
 // link to the *code* PR right next to the same wording (as in the #16849
-// example above) is never mistaken for the docs backport's parent.
+// example above) is never mistaken for the docs backport's parent. Same
+// sentence-break guard as above, for the same reason.
 function backportReferenceUrlPattern(sourceRepo) {
 	const repoEscaped = escapeRegExp(sourceRepo)
 	return new RegExp(
-		`\\b(?:backport(?:ed|s|ing)?|cherry[-\\s]?pick(?:ed|s|ing)?)\\b[^\\n]{0,150}?github\\.com/${repoEscaped}/pull/(\\d+)`,
+		String.raw`\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}?github\.com/${repoEscaped}/pull/(\d+)`,
 		"i",
 	)
 }
@@ -590,6 +606,37 @@ async function searchPRsByTitle(repo, title) {
 	}
 }
 
+// The most recently updated PRs in a repo, open and closed, fetched once per
+// run and shared by every lookup after that. Used to match a backport to a
+// same-titled parent without one search call per PR — GitHub's search allows
+// only ~30 a minute, and a run can have dozens of PRs with no code PR. Five
+// pages (500 PRs) is well past where a live backport's parent would sit. A
+// failure returns [] so an outage can only cost a detection, never invent one.
+const recentPRsByRepo = new Map()
+function fetchRecentPRs(repo) {
+	if (!recentPRsByRepo.has(repo)) {
+		recentPRsByRepo.set(
+			repo,
+			(async () => {
+				const results = []
+				try {
+					for (let page = 1; page <= 5; page++) {
+						const batch = await makeRequest(
+							`https://api.github.com/repos/${repo}/pulls?state=all&sort=updated&direction=desc&per_page=100&page=${page}`,
+						)
+						results.push(...batch)
+						if (batch.length < 100) break
+					}
+				} catch (e) {
+					console.error(`Error listing recent PRs for ${repo}:`, e.message)
+				}
+				return results
+			})(),
+		)
+	}
+	return recentPRsByRepo.get(repo)
+}
+
 // Finds the PR this one was cherry-picked from, or null. Candidates come from
 // the three signals above; each is confirmed against the real PR before it
 // counts, so the caller can treat a non-null result as "this branch is
@@ -599,17 +646,50 @@ async function searchPRsByTitle(repo, title) {
 // the *parent* should be sitting on. Requiring that (rather than just "some
 // other branch") is what keeps a genuinely mis-targeted PR from suppressing
 // its own warning.
-async function findBackportParent({ repo, number, title, body, baseBranch, expectedBranch }) {
-	if (!expectedBranch || baseBranch === expectedBranch) return null
+//
+// A backport body often doesn't link the code PR at all, so there may be no
+// expectedBranch (null). Nothing to check the parent's branch against then,
+// so the parent is confirmed by what can be checked: it has to be a real PR in
+// the same repo on a different branch than this one. It is found either by an
+// explicit reference in the title/body (any wording — "backport",
+// "cherry-pick", a link), or by an identical title once any branch suffix is
+// ignored. A same-titled match is only taken from a PR opened *before* this
+// one, so the original is never mistaken for a copy of its own copy, and the
+// caller turns it off for dependency bumps, whose titles repeat across
+// branches without being backports. If several PRs match, the earliest wins.
+async function findBackportParent({
+	repo,
+	number,
+	title,
+	body,
+	baseBranch,
+	expectedBranch,
+	createdAt,
+	allowTitleMatch = true,
+}) {
+	if (expectedBranch && baseBranch === expectedBranch) return null
 
 	const confirm = async (candidate) => {
 		if (!candidate || candidate === number) return null
 		const parent = await fetchCodePR(repo, candidate)
-		if (parent.baseBranch !== expectedBranch) return null
+		if (expectedBranch) {
+			if (parent.baseBranch !== expectedBranch) return null
+		} else if (!parent.baseBranch || parent.baseBranch === baseBranch) {
+			// fetchCodePR reports a null branch when the lookup failed.
+			return null
+		}
 		// merged/mergedAt come along for free from the same fetch — no extra
 		// call — and let the caller tell "parent is done" from "parent is
-		// still being reviewed" without re-fetching it later.
-		return { number: candidate, branch: parent.baseBranch, merged: parent.merged, mergedAt: parent.mergedAt }
+		// still being reviewed" without re-fetching it later. The body comes
+		// along too, so a backport that doesn't link the code PR can borrow
+		// the parent's link.
+		return {
+			number: candidate,
+			branch: parent.baseBranch,
+			merged: parent.merged,
+			mergedAt: parent.mergedAt,
+			body: parent.body,
+		}
 	}
 
 	// Signal 1 — an explicit reference wins outright: it names the parent, so
@@ -618,6 +698,31 @@ async function findBackportParent({ repo, number, title, body, baseBranch, expec
 	const byReference = await confirm(referenced)
 	if (byReference) return byReference
 
+	const normalized = normalizeTitleForBackportMatch(title)
+	if (!normalized) return null
+
+	if (!expectedBranch) {
+		// No code PR to check the branch against, and the recent-PR list (see
+		// fetchRecentPRs) stands in for a search. Too-short titles are skipped
+		// as too generic to mean anything.
+		if (!allowTitleMatch || normalized.length < 12 || !createdAt) return null
+		const mine = new Date(createdAt).getTime()
+		const candidates = (await fetchRecentPRs(repo))
+			.filter(
+				(item) =>
+					item.number !== number &&
+					item.base.ref !== baseBranch &&
+					new Date(item.created_at).getTime() < mine &&
+					normalizeTitleForBackportMatch(item.title) === normalized,
+			)
+			.sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+		for (const item of candidates) {
+			const confirmed = await confirm(item.number)
+			if (confirmed) return confirmed
+		}
+		return null
+	}
+
 	// Signals 2 and 3 share one lookup. A title suffix naming this PR's own
 	// branch says "this copy is intentional" but not what it was copied from,
 	// and an unmarked copy says neither — both are answered by finding a
@@ -625,8 +730,6 @@ async function findBackportParent({ repo, number, title, body, baseBranch, expec
 	// match exactly, which is the whole of signal 3's evidence.
 	const suffixBranch = backportTitleSuffixBranch(title)
 	const marked = suffixBranch !== null && suffixBranch === baseBranch
-	const normalized = normalizeTitleForBackportMatch(title)
-	if (!normalized) return null
 	const matches = await searchPRsByTitle(repo, marked ? normalized : title)
 	for (const item of matches) {
 		if (item.number === number) continue
@@ -1320,7 +1423,28 @@ async function main() {
 		}
 		const effectiveHasMilestone = hasMilestone || isDependabotPR || isManualDependencyBackport
 
-		const appPRData = extractAppPR(pr.body, pr.sourceRepo)
+		let appPRData = extractAppPR(pr.body, pr.sourceRepo)
+		// A backport's body often omits the code PR link, but its parent has
+		// it. Find the parent first in that case and borrow the parent's link,
+		// so the row shows and tracks the real code PR. This lookup has no
+		// expected branch to check against (see findBackportParent), so it is
+		// kept and reused below instead of being run a second time.
+		let inheritedBackportParent = null
+		if (!appPRData) {
+			inheritedBackportParent = await findBackportParent({
+				repo: pr.sourceRepo,
+				number: pr.number,
+				title: pr.title,
+				body: pr.body,
+				baseBranch,
+				expectedBranch: null,
+				createdAt: pr.created_at,
+				allowTitleMatch: !isDependabotPR && !isManualDependencyBackport,
+			})
+			if (inheritedBackportParent) {
+				appPRData = extractAppPR(inheritedBackportParent.body, pr.sourceRepo)
+			}
+		}
 		let appPRRepo = null
 		let appPRNumber = null
 		let appPRUrl = null
@@ -1389,18 +1513,25 @@ async function main() {
 		// apart is a parent PR sitting on the branch the code PR did name. The
 		// lookup runs only for PRs that would otherwise be flagged, so an
 		// ordinary run makes no extra calls for it.
+		//
+		// A parent already found above (a backport with no code PR link of its
+		// own) is kept as-is: it was confirmed without an expected branch, and
+		// the code PR it lent us may name a different branch than the parent's
+		// — that would otherwise read as a mis-targeted PR.
 		const mismatchedBranch =
 			!codeClosed && codeExpectedBranch !== null && codeExpectedBranch !== baseBranch
-		const backportParent = mismatchedBranch
-			? await findBackportParent({
-					repo: pr.sourceRepo,
-					number: pr.number,
-					title: pr.title,
-					body: pr.body,
-					baseBranch,
-					expectedBranch: codeExpectedBranch,
-				})
-			: null
+		const backportParent =
+			inheritedBackportParent ??
+			(mismatchedBranch
+				? await findBackportParent({
+						repo: pr.sourceRepo,
+						number: pr.number,
+						title: pr.title,
+						body: pr.body,
+						baseBranch,
+						expectedBranch: codeExpectedBranch,
+					})
+				: null)
 		const wrongBranchFlag = mismatchedBranch && backportParent === null
 		// Can't retarget onto a branch that doesn't exist — the branch has to
 		// be cut in the docs repo first. Only meaningful alongside
