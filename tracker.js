@@ -2727,6 +2727,18 @@ function metaLine(pr) {
 		parts.push(
 			backportTargetsText(pr),
 		)
+	} else if (
+		// The label is on but the PR isn't ready to merge yet — no ask here
+		// (the label is the ask, and it's done), just the checklist of branches
+		// that still need the change, so it isn't hidden until approval. Skipped
+		// for a wrong-branch PR (not a backport), for a backport itself (it
+		// follows its parent), and once every branch is already covered.
+		pr.hasBackportLabel &&
+		!pr.rebaseWinsOverBackport &&
+		!pr.backportParentNumber &&
+		(pr.outstandingNewerBranches ?? []).length > 0
+	) {
+		parts.push(backportTargetsText(pr))
 	}
 	if (pr.rebaseWinsOverBackport) {
 		// codeExpectedBranch is absent when only the older label-driven path
