@@ -853,17 +853,24 @@ function extractMentions(body) {
 // there first — in team mode, that's what tells a second maintainer someone
 // already looked, instead of them finding out only by the review chip's
 // absence (see reviewInProgressChip).
-function computeOperatorReviewDate(docsReviews, docsComments, operatorLogins) {
+//
+// A PR's own author never counts: nobody can review their own PR, so a
+// maintainer's comment on a PR they wrote (a follow-up question, an
+// instruction to Promptless) is not a review of it.
+function computeOperatorReviewDate(docsReviews, docsComments, operatorLogins, docsAuthor) {
+	const isReviewer = (login) =>
+		operatorLogins.has(login.toLowerCase()) &&
+		login.toLowerCase() !== (docsAuthor || "").toLowerCase()
 	const events = [
 		...docsReviews
 			.filter(
 				(r) =>
-					operatorLogins.has(r.user.login.toLowerCase()) &&
+					isReviewer(r.user.login) &&
 					["COMMENTED", "APPROVED", "CHANGES_REQUESTED"].includes(r.state),
 			)
 			.map((r) => ({ date: new Date(r.submitted_at), actor: r.user.login })),
 		...docsComments
-			.filter((c) => operatorLogins.has(c.user.login.toLowerCase()))
+			.filter((c) => isReviewer(c.user.login))
 			.map((c) => ({ date: new Date(c.created_at), actor: c.user.login })),
 	]
 	const earliest = events.reduce(
@@ -1677,7 +1684,7 @@ async function main() {
 		])
 
 		const { date: operatorReviewDate, actor: operatorReviewActor } =
-			computeOperatorReviewDate(docsReviews, docsComments, operatorLogins)
+			computeOperatorReviewDate(docsReviews, docsComments, operatorLogins, pr.user.login)
 		const operatorReviewDone = operatorReviewDate !== null
 
 		// GitHub auto-dismisses an APPROVED review the moment new commits
