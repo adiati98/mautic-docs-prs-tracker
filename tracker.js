@@ -3467,11 +3467,11 @@ function formatUpdated(date) {
 	})
 }
 
-// Mirrors the CI cron in .github/workflows/update-tracker.yml: every half
-// hour Mon-Fri ~9am-9pm Central European time, two check-ins each on
+// Mirrors the CI cron in .github/workflows/update-tracker.yml: hourly
+// Mon-Fri ~9am-9pm Central European time, two check-ins each on
 // Saturday and Sunday (~10am and ~9pm CE time), plus a Sunday-midnight
 // (~Monday 00:00 CE time) slot for the weekly full resync. Marks sit at
-// :07/:37, not :00/:30, to dodge GitHub Actions' scheduler congestion at
+// :07, not :00/:30, to dodge GitHub Actions' scheduler congestion at
 // the most oversubscribed cron minutes (see the workflow file). GitHub
 // Actions cron has no DST support, so - like the workflow file - this
 // switches between CEST (UTC+2) and CET (UTC+1) UTC offsets via the month,
@@ -3487,9 +3487,7 @@ function isScheduledRunUTC(d) {
 	const weekdayStart = isCEST ? 7 : 8 // ~9am CE time
 	const weekdayClose = isCEST ? 19 : 20 // ~9pm CE time
 	if (day >= 1 && day <= 5) {
-		if (minute !== 7 && minute !== 37) return false
-		if (hour === weekdayClose) return minute === 7 // window closes exactly at ~9pm
-		return hour >= weekdayStart && hour <= weekdayClose - 1
+		return minute === 7 && hour >= weekdayStart && hour <= weekdayClose
 	}
 	if (minute !== 7) return false
 	const weekendMorning = isCEST ? 8 : 9 // ~10am CE time
@@ -3502,22 +3500,20 @@ function isScheduledRunUTC(d) {
 function nextScheduledRun(now) {
 	const d = new Date(now)
 	d.setUTCSeconds(0, 0)
-	// Round up to the next :07/:37 mark — the one we're currently in, even
-	// if it matches, already ran (Date's setters normalize the overflow into
+	// Round up to the next :07 mark — the one we're currently in, even if
+	// it matches, already ran (Date's setters normalize the overflow into
 	// the next hour, so this works right across the hour boundary too).
-	const minute = d.getUTCMinutes()
-	if (minute < 7) d.setUTCMinutes(7)
-	else if (minute < 37) d.setUTCMinutes(37)
+	if (d.getUTCMinutes() < 7) d.setUTCMinutes(7)
 	else d.setUTCMinutes(67)
-	for (let i = 0; i < 48 * 8; i++) {
+	for (let i = 0; i < 24 * 8; i++) {
 		if (isScheduledRunUTC(d)) return new Date(d)
-		d.setUTCMinutes(d.getUTCMinutes() + 30)
+		d.setUTCHours(d.getUTCHours() + 1)
 	}
 	return null
 }
 
 // A heads-up about the next refresh, but only when it's more than ~2h out —
-// i.e. not the normal half-hourly weekday cadence, which needs no
+// i.e. not the normal hourly weekday cadence, which needs no
 // explanation. A gap longer than a day means the weekend lull (the tracker
 // barely runs Sat/Sun), which gets its own "back to normal Monday" framing.
 // Returns the next run's ISO (rendered to the viewer's local time
@@ -3539,7 +3535,7 @@ function nextUpdateNoticeHtml(now) {
 	const lead = notice.weekend
 		? "⏸ The tracker barely runs on weekends — next update"
 		: "Next update"
-	const tail = notice.weekend ? ", then every half hour again on Monday" : ""
+	const tail = notice.weekend ? ", then hourly again on Monday" : ""
 	return `<span class="${cls}">${lead} <b><span data-updated-iso="${notice.iso}">…</span></b>${tail}</span>`
 }
 
