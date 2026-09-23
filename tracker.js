@@ -1846,6 +1846,24 @@ async function main() {
 			? Math.floor((Date.now() - lastOperatorTouchDate.getTime()) / 86400000)
 			: null
 
+		// A human — never Promptless's own automatic re-tag — tagging the code
+		// author again *after* their last approval is a deliberate "please look
+		// again," not old business the approval already covers. Without this,
+		// contentApprovedSignal below locks the category into "monitoring" the
+		// moment the author has approved even once, for good, so a later
+		// deliberate re-tag (e.g. after Promptless addressed their feedback)
+		// never reopens the remind/follow-up/escalate clock and the PR never
+		// reaches the reminder report (buildReminderGroups only looks at
+		// category). Mirrors hasOutstandingDocsPing's own reasoning exactly —
+		// same ping-vs-approval-date comparison, same docs/review-request-only
+		// scope — just evaluated here, before category is decided, so it can
+		// override contentApprovedSignal instead of arriving too late to matter.
+		const hasHumanPingSinceApproval =
+			pingEverSent &&
+			(lastPingSource === "docs" || lastPingSource === "review-request") &&
+			lastPingActor !== PROMPTLESS &&
+			(!lastNonOperatorApprovalDate || lastPingDate > lastNonOperatorApprovalDate)
+
 		const community = computeCommunityThread({
 			rawDocsComments,
 			rawDocsReviews,
@@ -2107,7 +2125,11 @@ async function main() {
 			// nudging; it settles into monitoring like a normal reply would.
 			// The content-approved label carries the same weight when it's the
 			// only record of that sign-off (see contentApprovedSignal above).
-			if (contentApprovedSignal) {
+			// Unless a human has deliberately tagged the author again since that
+			// approval (hasHumanPingSinceApproval) — that's a fresh, still-
+			// unanswered ask the approval didn't anticipate, so it falls through
+			// to the same ping clock as if there'd been no approval at all yet.
+			if (contentApprovedSignal && !hasHumanPingSinceApproval) {
 				category = "monitoring"
 			} else if (!pingEverSent) {
 				category = "needs-remind-code-author"
