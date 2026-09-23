@@ -1269,19 +1269,58 @@ function computeCommunityThread({
 	const commenterIsOperator = operatorLogins.has(commenter.toLowerCase())
 
 	if (commenterIsPromptless) {
-		// Only worth surfacing if promptless tagged a real reviewer outside
-		// the operator/team — that's "go check what they asked for changes
-		// on, promptless just addressed it." A tag of you/your team (you'll
-		// see it yourself) or no tag at all is not worth a row. (A tag of
-		// the code author was already handled above, independently.)
+		// Worth surfacing if promptless tagged a real reviewer outside the
+		// operator/team — that's "go check what they asked for changes on,
+		// promptless just addressed it." (A tag of the code author was
+		// already handled above, independently.)
 		const nonOperatorTagged = tagged.filter((t) => !operatorLogins.has(t))
-		if (nonOperatorTagged.length === 0) return none
+		if (nonOperatorTagged.length > 0) {
+			return {
+				lit: true,
+				commenter,
+				commenterIsOperator: false,
+				waitingOn: nonOperatorTagged[0],
+				waitingOnKind: "third-party",
+				date: lastDate,
+			}
+		}
+		// Promptless tagged only an operator (you or a teammate) — used to be
+		// ignored outright on "you'll see it in your own notifications
+		// anyway." In practice this happens for two very different reasons:
+		// confirming a chore you asked the bot to do directly (a rebase, a
+		// cherry-pick — anything addressed straight to @promptless-for-oss),
+		// or replying to an actual suggestion you left, which sometimes is
+		// worth a second look. There's no reliable way to tell "a real
+		// suggestion" from "just thanking you for an LGTM" without reading
+		// the PR's commit history, so both land in the same low-priority
+		// bucket below — kept deliberately quieter than a human tagging you
+		// (see communitySeverity/communityForcesToday), and self-clearing the
+		// moment anyone comments after it, same as every other thread here.
+		const operatorTagged = tagged.find((t) => operatorLogins.has(t))
+		if (!operatorTagged) return none
+		// Was this a reply to an instruction aimed at the bot itself (e.g.
+		// "@promptless-for-oss please rebase to 7.2")? That's a status report
+		// on a chore, not a content ask — worth naming differently from a
+		// reply to an actual suggestion.
+		const priorOperatorComments = comments.filter(
+			(c) =>
+				c.user.login.toLowerCase() === operatorTagged &&
+				new Date(c.created_at) < lastDate,
+		)
+		const lastPriorOperatorComment = priorOperatorComments.reduce(
+			(best, c) =>
+				!best || new Date(c.created_at) > new Date(best.created_at) ? c : best,
+			null,
+		)
+		const wasBotCommand = Boolean(
+			lastPriorOperatorComment && mentions(lastPriorOperatorComment.body, PROMPTLESS),
+		)
 		return {
 			lit: true,
 			commenter,
 			commenterIsOperator: false,
-			waitingOn: nonOperatorTagged[0],
-			waitingOnKind: "third-party",
+			waitingOn: operatorTagged,
+			waitingOnKind: wasBotCommand ? "promptless-confirm" : "promptless-fyi",
 			date: lastDate,
 		}
 	}
@@ -1846,6 +1885,24 @@ async function main() {
 			? Math.floor((Date.now() - lastOperatorTouchDate.getTime()) / 86400000)
 			: null
 
+		// A human — never Promptless's own automatic re-tag — tagging the code
+		// author again *after* their last approval is a deliberate "please look
+		// again," not old business the approval already covers. Without this,
+		// contentApprovedSignal below locks the category into "monitoring" the
+		// moment the author has approved even once, for good, so a later
+		// deliberate re-tag (e.g. after Promptless addressed their feedback)
+		// never reopens the remind/follow-up/escalate clock and the PR never
+		// reaches the reminder report (buildReminderGroups only looks at
+		// category). Mirrors hasOutstandingDocsPing's own reasoning exactly —
+		// same ping-vs-approval-date comparison, same docs/review-request-only
+		// scope — just evaluated here, before category is decided, so it can
+		// override contentApprovedSignal instead of arriving too late to matter.
+		const hasHumanPingSinceApproval =
+			pingEverSent &&
+			(lastPingSource === "docs" || lastPingSource === "review-request") &&
+			lastPingActor !== PROMPTLESS &&
+			(!lastNonOperatorApprovalDate || lastPingDate > lastNonOperatorApprovalDate)
+
 		const community = computeCommunityThread({
 			rawDocsComments,
 			rawDocsReviews,
@@ -2107,7 +2164,11 @@ async function main() {
 			// nudging; it settles into monitoring like a normal reply would.
 			// The content-approved label carries the same weight when it's the
 			// only record of that sign-off (see contentApprovedSignal above).
-			if (contentApprovedSignal) {
+			// Unless a human has deliberately tagged the author again since that
+			// approval (hasHumanPingSinceApproval) — that's a fresh, still-
+			// unanswered ask the approval didn't anticipate, so it falls through
+			// to the same ping clock as if there'd been no approval at all yet.
+			if (contentApprovedSignal && !hasHumanPingSinceApproval) {
 				category = "monitoring"
 			} else if (!pingEverSent) {
 				category = "needs-remind-code-author"
@@ -2344,17 +2405,22 @@ const ACTIONABLE_CATEGORIES = new Set([
 	"needs-milestone",
 ])
 
-// A community thread waiting on the code *author* is visibility-only and
-// doesn't itself pull a row into Need-today (the primary category decides
-// where it sits); every other community thread — waiting on you, a third
-// party, or untagged — does. Exception: once you've reviewed the docs PR
-// and its code PR is still open, that's a pure waiting state by design —
-// only review status should gate Need-today vs. Waiting there, so a live
-// thread on top of it stays visible (via waitingChipsFor) without pulling
-// the row back into Need-today.
+// Community-thread kinds that are visibility-only and never pull a row into
+// Need-today or bump its severity on their own: a thread waiting on the code
+// *author* (the escalation clock already owns that), and Promptless tagging
+// only an operator (a quiet FYI — see computeCommunityThread — that's often
+// just a chore confirmation or an empty "thanks," not a real ask). Every
+// other community thread — waiting on you, a third party, or untagged —
+// does count.
+const LOW_PRIORITY_COMMUNITY_KINDS = new Set(["author", "promptless-fyi", "promptless-confirm"])
+
+// Exception: once you've reviewed the docs PR and its code PR is still open,
+// that's a pure waiting state by design — only review status should gate
+// Need-today vs. Waiting there, so a live thread on top of it stays visible
+// (via waitingChipsFor) without pulling the row back into Need-today.
 function communityForcesToday(pr) {
 	if (pr.category === "waiting-code-pr-merge") return false
-	return pr.community.lit && pr.community.waitingOnKind !== "author"
+	return pr.community.lit && !LOW_PRIORITY_COMMUNITY_KINDS.has(pr.community.waitingOnKind)
 }
 
 function isNeedTodayRow(pr) {
@@ -2574,7 +2640,7 @@ function categorySeverity(pr) {
 function communitySeverity(pr) {
 	if (!pr.community.lit) return "none"
 	if (pr.community.waitingOnKind === "operator") return "serious"
-	if (pr.community.waitingOnKind === "author") return "none" // visibility only
+	if (LOW_PRIORITY_COMMUNITY_KINDS.has(pr.community.waitingOnKind)) return "none" // visibility only
 	return "act"
 }
 
@@ -3246,6 +3312,23 @@ function codeMilestoneAdvisoryChip(pr) {
 function communityChip(pr) {
 	if (!pr.community.lit || pr.community.waitingOnKind === "author") return null
 	const c = pr.community
+	// Promptless tagging only an operator — always the quiet "muted" style,
+	// never the "manual" one used below, since neither variant is a real ask
+	// (see computeCommunityThread): a rebase/cherry-pick confirmation is just
+	// a status report, and everything else in this bucket is, at best, an
+	// unconfirmed maybe.
+	if (c.waitingOnKind === "promptless-confirm") {
+		return {
+			cls: "muted",
+			text: `✅ Promptless confirmed something for ${escapeHtml(c.waitingOn)} — worth a quick look`,
+		}
+	}
+	if (c.waitingOnKind === "promptless-fyi") {
+		return {
+			cls: "muted",
+			text: `👀 Promptless replied to ${escapeHtml(c.waitingOn)} — worth a quick look`,
+		}
+	}
 	const text =
 		c.waitingOnKind === "untagged"
 			? `👀 ${escapeHtml(c.commenter)} commented — no reply yet`
@@ -5728,7 +5811,7 @@ function generateGuideHTML({ now }) {
         <tr><td><span class="chip finish">Finish &amp; merge</span></td><td>The finish line: a final review before merging, removing a label that's no longer needed, marking a docs PR ready after its code PR merged, or an approval that's ready to go.</td></tr>
         <tr><td><span class="chip backport">Backport first</span></td><td>Needs to be <span class="tipwrap"><abbr class="gloss" tabindex="0" aria-describedby="tip-backported">backported</abbr><span class="tip" id="tip-backported" role="tooltip">Applied to every other still-supported release branch the underlying code change affects, not just the one this PR targets.</span></span> before it can merge, or a note that this PR is itself a backport of another docs PR - see the backport scenarios below.</td></tr>
         <tr><td><span class="chip manual">Manual attention</span></td><td>Needs a human judgment call: no code PR linked, someone's waiting on a reply, a rebase is needed, or the branch and milestone don't match.</td></tr>
-        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, or a docs PR marked ready while its linked code PR is still open.</td></tr>
+        <tr><td><span class="chip muted">Optional / already done</span></td><td>Nothing urgent: an early look at a still-open PR, a reminder you already sent, someone's looked but hasn't approved yet, Promptless replying to you, or a docs PR marked ready while its linked code PR is still open.</td></tr>
         <tr><td><span class="chip dismiss">Close / dismiss</span></td><td>The docs PR should be closed - its linked code PR was closed without merging.</td></tr>
         <tr><td><span class="chip stale">🕸 Stale</span></td><td>Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</td></tr>
       </tbody>
@@ -5840,13 +5923,14 @@ function generateGuideHTML({ now }) {
 
     <div class="scenario">
       <h3>A docs PR backported onto a second branch</h3>
+      <p>A backport follows the original: every task - review, follow-up, merge - happens on the original PR, not the backport. That's why the backport's own row names the original's PR number instead of running its own clock.</p>
+      <p><b>Note</b>: The PR numbers below are just examples.</p>
       <ol>
-        <li>Backport means cherry-picking the same changes from one branch onto another - for example, copying the reviewed 7.3 PR onto <code>8.0</code>. The backport doesn't need its own milestone or its own review - both belong to the original PR, so acting on the original is what moves this row forward. The original's own row shows <span class="chip backport">Backported to #970</span> so you can see it has a copy elsewhere.
+        <li>The backport PR opens. It carries #913's changes from <code>7.3</code> to <code>8.0</code>.
           <div class="see"><span class="lbl">You'll see</span><span class="chip backport">Backported from #913 · 7.3 → 8.0</span></div>
         </li>
-        <li>Nobody's asked the code author about the original yet.
+        <li>Nobody's asked the code author to review the original PR yet.
           <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Ask code PR author to review #913</span></div>
-          Act on the original PR (#913 in the example), not the backported one. This row updates on its own once the original is approved and merged.
         </li>
         <li>The code author's been asked about the original, no reply yet.
           <div class="see"><span class="lbl">You'll see</span><span class="chip muted">Waiting on #913's code PR author to reply</span></div>
@@ -5885,7 +5969,16 @@ function generateGuideHTML({ now }) {
       <h3>Someone else jumps into the conversation</h3>
       <div class="note">A contributor or another maintainer leaves a comment and nobody's replied yet.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">👀 X is waiting on Y</span></div>
-        The tracker shows this in orange and sorts it high if it's waiting on you; otherwise, it just sits there so you can keep an eye on it.
+        The tracker sorts it as high priority if it's waiting on you; otherwise, it just sits there so you can keep an eye on it.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>Promptless tags you and nobody's replied since</h3>
+      <div class="note">Promptless's latest comment tags you or a teammate - either confirming something you asked it to do directly (a rebase, a cherry-pick), or replying to an ordinary comment you left, which is sometimes a real suggestion worth a second look.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip muted">✅ Promptless confirmed something for X — worth a quick look</span></div>
+        <div class="see"><span class="lbl">or</span><span class="chip muted">👀 Promptless replied to X — worth a quick look</span></div>
+        Promptless replies to almost everything, so this is often just a chore confirmation. It disappears once anyone replies.
       </div>
     </div>
 
