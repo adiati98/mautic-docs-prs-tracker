@@ -558,8 +558,15 @@ function normalizeTitleForBackportMatch(title) {
 // decimal points inside version numbers like "7.1" (never followed by a
 // capital letter) to pass through untouched.
 const SENTENCE_BREAK = String.raw`\.\s+[A-Z]`
+// Promptless doesn't always write "backport" as one word — a same-fix PR
+// opened for both an older and a newer branch at once gets called a
+// "back/forward port" (or "back and forward port"), splitting "back" and
+// "port" apart with "forward" in between. Matched as its own branch of the
+// alternation, alongside plain "backport" and "forward port" alone, so the
+// explicit "(PR #123)" sitting right next to any of these phrasings is still
+// found.
 const BACKPORT_REFERENCE_WORD_PATTERN = new RegExp(
-	String.raw`\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}(?<![\w/])#(\d+)`,
+	String.raw`\b(?:back(?:[\s/-]+(?:and[\s/-]+)?forward)?[\s/-]?port(?:ed|s|ing)?|forward[\s/-]?port(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}(?<![\w/])#(\d+)`,
 	"i",
 )
 
@@ -2591,18 +2598,26 @@ function clockDaysSince(pr) {
 	return anchor ? Math.floor((Date.now() - anchor.getTime()) / 86400000) : null
 }
 
-const SEV_RANK = { critical: 5, dismiss: 4, serious: 3, act: 2, triage: 1, none: 0 }
+const SEV_RANK = { critical: 5, serious: 3, act: 2, triage: 1, none: 0 }
 
 // Severity from the primary category alone.
 function categorySeverity(pr) {
 	switch (pr.category) {
 		case "needs-close-docs-pr":
-			return "dismiss"
+			// A docs PR whose code PR closed without merging is dead weight —
+			// it should get the same urgency as an escalation, not sit in its
+			// own untabbed tier where neither the Critical nor Serious filter
+			// would ever surface it.
+			return "critical"
 		case "needs-escalate-core-team":
 			return "critical"
 		case "needs-followup":
 			return "serious"
 		case "needs-remind-code-author":
+			// Once the code PR merges, docs review is the last step before
+			// shipping — worth prioritizing right away rather than waiting on
+			// the usual reminder clock to bump it up.
+			return "serious"
 		case "needs-check-author-response":
 		// New PRs still needing a milestone land in Bring it forward (see
 		// isBringForwardRow) — unless they're ready for review, not a draft
@@ -3115,7 +3130,7 @@ function approvalChips(pr) {
 	} else if (pr.hasContentApprovedLabel) {
 		// No formal GitHub review at all — the label is the only record that
 		// the code PR author approved the content (e.g. in a plain comment).
-		chips.push({ cls: "finish", text: `${CONTENT_APPROVED_LABEL} label — content approved` })
+		chips.push({ cls: "finish", text: `Content approved via ${CONTENT_APPROVED_LABEL} label` })
 	}
 	// The approval fact above no longer waits on this label — it's just a
 	// nudge to make GitHub's own state agree with it: add the label so the
@@ -4277,7 +4292,6 @@ function generateHTML(prData, { operatorUsername }) {
   .row[data-sev="serious"]  .edge{background:var(--serious)}
   .row[data-sev="act"]      .edge{background:var(--accent)}
   .row[data-sev="triage"]   .edge{background:var(--ink-3)}
-  .row[data-sev="dismiss"]  .edge{background:var(--dismiss)}
   /* Stale overrides whatever severity color would otherwise show - it's a
      different kind of signal ("gone quiet") than urgency. */
   .row[data-stale="1"]      .edge{background:var(--warning)}
