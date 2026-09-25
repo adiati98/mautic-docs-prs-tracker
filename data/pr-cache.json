@@ -21564,7 +21564,7 @@
   },
   "mautic/developer-documentation-new#691": {
     "docsUpdatedAt": "2026-09-25T07:11:17Z",
-    "codeUpdatedAt": "2026-09-25T09:56:36Z",
+    "codeUpdatedAt": "2026-09-25T10:23:27Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -21691,6 +21691,13 @@
         },
         "created_at": "2026-09-25T09:56:36Z",
         "body": "@TomasVotruba we are using this method for the entities that use unsigned bigint: https://github.com/search?q=repo%3Amautic%2Fmautic+addBigIntIdField&type=code"
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-09-25T10:23:27Z",
+        "body": "I see. That way we can find entity that should have this int|string types :+1: \r\n\r\nAnd where in this PR should it be changed? I think we can make custom PHPStan rule that target repository/model, but not sure about controllers."
       }
     ],
     "rawCodeReviews": [
