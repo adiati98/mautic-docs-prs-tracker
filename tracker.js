@@ -2607,6 +2607,10 @@ function categorySeverity(pr) {
 		case "needs-followup":
 			return "serious"
 		case "needs-remind-code-author":
+			// Once the code PR merges, docs review is the last step before
+			// shipping — worth prioritizing right away rather than waiting on
+			// the usual reminder clock to bump it up.
+			return "serious"
 		case "needs-check-author-response":
 		// New PRs still needing a milestone land in Bring it forward (see
 		// isBringForwardRow) — unless they're ready for review, not a draft
