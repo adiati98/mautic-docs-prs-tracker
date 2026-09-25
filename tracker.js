@@ -558,8 +558,15 @@ function normalizeTitleForBackportMatch(title) {
 // decimal points inside version numbers like "7.1" (never followed by a
 // capital letter) to pass through untouched.
 const SENTENCE_BREAK = String.raw`\.\s+[A-Z]`
+// Promptless doesn't always write "backport" as one word — a same-fix PR
+// opened for both an older and a newer branch at once gets called a
+// "back/forward port" (or "back and forward port"), splitting "back" and
+// "port" apart with "forward" in between. Matched as its own branch of the
+// alternation, alongside plain "backport" and "forward port" alone, so the
+// explicit "(PR #123)" sitting right next to any of these phrasings is still
+// found.
 const BACKPORT_REFERENCE_WORD_PATTERN = new RegExp(
-	String.raw`\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}(?<![\w/])#(\d+)`,
+	String.raw`\b(?:back(?:[\s/-]+(?:and[\s/-]+)?forward)?[\s/-]?port(?:ed|s|ing)?|forward[\s/-]?port(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}(?<![\w/])#(\d+)`,
 	"i",
 )
 
