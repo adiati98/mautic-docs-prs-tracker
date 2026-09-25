@@ -2591,13 +2591,17 @@ function clockDaysSince(pr) {
 	return anchor ? Math.floor((Date.now() - anchor.getTime()) / 86400000) : null
 }
 
-const SEV_RANK = { critical: 5, dismiss: 4, serious: 3, act: 2, triage: 1, none: 0 }
+const SEV_RANK = { critical: 5, serious: 3, act: 2, triage: 1, none: 0 }
 
 // Severity from the primary category alone.
 function categorySeverity(pr) {
 	switch (pr.category) {
 		case "needs-close-docs-pr":
-			return "dismiss"
+			// A docs PR whose code PR closed without merging is dead weight —
+			// it should get the same urgency as an escalation, not sit in its
+			// own untabbed tier where neither the Critical nor Serious filter
+			// would ever surface it.
+			return "critical"
 		case "needs-escalate-core-team":
 			return "critical"
 		case "needs-followup":
@@ -4277,7 +4281,6 @@ function generateHTML(prData, { operatorUsername }) {
   .row[data-sev="serious"]  .edge{background:var(--serious)}
   .row[data-sev="act"]      .edge{background:var(--accent)}
   .row[data-sev="triage"]   .edge{background:var(--ink-3)}
-  .row[data-sev="dismiss"]  .edge{background:var(--dismiss)}
   /* Stale overrides whatever severity color would otherwise show - it's a
      different kind of signal ("gone quiet") than urgency. */
   .row[data-stale="1"]      .edge{background:var(--warning)}
