@@ -3115,7 +3115,7 @@ function approvalChips(pr) {
 	} else if (pr.hasContentApprovedLabel) {
 		// No formal GitHub review at all — the label is the only record that
 		// the code PR author approved the content (e.g. in a plain comment).
-		chips.push({ cls: "finish", text: `${CONTENT_APPROVED_LABEL} label — content approved` })
+		chips.push({ cls: "finish", text: `Content approved via ${CONTENT_APPROVED_LABEL} label` })
 	}
 	// The approval fact above no longer waits on this label — it's just a
 	// nudge to make GitHub's own state agree with it: add the label so the
