@@ -21514,7 +21514,7 @@
   },
   "mautic/developer-documentation-new#692": {
     "docsUpdatedAt": "2026-09-25T07:10:32Z",
-    "codeUpdatedAt": "2026-09-25T11:31:17Z",
+    "codeUpdatedAt": "2026-09-25T15:12:15Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -21604,7 +21604,7 @@
   },
   "mautic/developer-documentation-new#691": {
     "docsUpdatedAt": "2026-09-25T07:11:17Z",
-    "codeUpdatedAt": "2026-09-25T11:36:28Z",
+    "codeUpdatedAt": "2026-09-25T15:14:15Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -21750,8 +21750,8 @@
         "user": {
           "login": "sonarqubecloud[bot]"
         },
-        "created_at": "2026-09-25T11:36:28Z",
-        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17540) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [B Maintainability Rating on New Code](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17540&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true) (required ≥ A)  \n  \n<!-- sqra:qg_revision=0d1e1c69e0fe6463ec0b6e6369ebbb7f301fa0da631a923dab0a28e13f2b9cd2 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17540)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+        "created_at": "2026-09-25T15:14:15Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17540) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [B Maintainability Rating on New Code](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17540&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true) (required ≥ A)  \n  \n<!-- sqra:qg_revision=17cb80ba372313cc4ca578d7d3e3c777f14575bf6d0852916b1c6ebbdc7cbc47 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17540)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -21764,6 +21764,95 @@
         "body": "@TomasVotruba do you think we could use `int|string` for the IDs that are BIGINT UNSIGNED? Like LeadIds? This will work until PHP's MAX_INT. So the first half of the range. And that's plenty for most of the use cases. But since we are changing a lot of signatures with LeadIds here, perhaps we could set them right even for the future."
       }
     ],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#696": {
+    "docsUpdatedAt": "2026-09-25T15:19:15Z",
+    "codeUpdatedAt": "2026-09-25T15:21:22Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:03Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:06Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:09Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:12Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:15Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:18Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-25T15:19:20Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-25T11:30:23Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17545) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [B Reliability Rating on New Code](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17545&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true) (required ≥ A)  \n  \n<!-- sqra:qg_revision=9af8a6aa4131b1fe0a7963059d93f9bbc2031d15c46be733fa07cac416d8da10 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17545)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-09-25T15:12:42Z",
+        "body": "Ready to review :+1: "
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-25T15:21:22Z",
+        "body": "### Promptless documentation updates\n\n- [Document Mautic 8 class-name dispatch for remaining LeadBundle events](https://app.gopromptless.ai/suggestions/38b23f4f-c310-44a1-ba2c-07a139fefd03) maps the removed and kept `LeadEvents` constants to their event classes in the developer docs and updates the affected subscriber examples. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/696)"
+      }
+    ],
+    "rawCodeReviews": [],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   }
