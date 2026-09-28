@@ -2112,8 +2112,14 @@ async function main() {
 			staleDraftFlag = false
 			prematureReadyFlag = false
 		}
+		// A confirmed backport doesn't carry its own "still needs older
+		// branches" checklist — that's the parent's job (see backportTargetsText
+		// and its hasBackportLabel sibling below, which already excludes this
+		// case the same way). Without this, a backport child sitting on an
+		// older branch than the latest release would wrongly show "also needs"
+		// branches that are really the parent's outstanding work, not its own.
 		const backportModifierActive =
-			finalReviewActionable && olderBranch && !rebaseWinsOverBackport
+			finalReviewActionable && olderBranch && !rebaseWinsOverBackport && backportParent === null
 		// The operator's own approval settled a standalone PR — nothing left
 		// to review, just merge. Distinct wording from the plain
 		// finalReviewActionable case (where a *non*-operator approved and the
@@ -3104,7 +3110,13 @@ function chipsFor(pr) {
 			chips.push({ cls: "act", text: "Check the author’s response" })
 			break
 		case "needs-operator-review":
-			chips.push(reviewNowChip(pr))
+			// A confirmed backport doesn't get its own review ask — the
+			// parent's review is what counts (see docsBackportChip and
+			// finalReviewActionable's backportParentMerged case). This
+			// category can still be reached here once the parent's merged,
+			// since the category override only fires while it's unmerged
+			// (see the category logic in main()).
+			if (!pr.backportParentNumber) chips.push(reviewNowChip(pr))
 			break
 		case "needs-milestone":
 			// The "Add milestone" chip itself is pushed above, unconditionally
@@ -3115,9 +3127,12 @@ function chipsFor(pr) {
 			// (and should) start reading the content the moment the PR
 			// shows up, in parallel with adding the milestone. Skipped
 			// when reviewPendingFlag already covers it below with the more
-			// specific "code PR merged" wording, or when a maintainer has
-			// already reviewed — asking again would just be noise.
-			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
+			// specific "code PR merged" wording, when a maintainer has
+			// already reviewed — asking again would just be noise — or for a
+			// confirmed backport, same as the needs-operator-review case above.
+			if (!pr.reviewPendingFlag && !pr.operatorReviewDone && !pr.backportParentNumber) {
+				chips.push(reviewNowChip(pr))
+			}
 			// Note there's no remind-the-code-author nudge here: reaching
 			// this category while merged now only happens on a genuine
 			// branch mismatch (see the category logic in main()) — and
