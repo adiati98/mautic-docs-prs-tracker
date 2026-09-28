@@ -483,6 +483,37 @@ function extractReferencedPRNumber(sourceRepo, text) {
 	return null
 }
 
+// Whether or not the title already follows the "— branch X.Y" convention
+// (isDependencyBumpBackportTitle), the body may still name the bump PR this
+// one was copied from (Promptless's own convention: "following
+// https://github.com/<repo>/pull/<N>"). Confirming (one extra fetch) that
+// the named PR was really authored by dependabot both catches titles that
+// don't follow the convention and records that PR as this one's original —
+// which the title-only match never gives us — once confirmed. The parent is
+// very likely merged and closed by the time a backport exists, so it won't
+// be sitting in this run's already-fetched open-PR data — hence the fetch
+// instead of an in-memory lookup.
+async function resolveManualDependencyBackport({ repo, number, title, body, baseBranch }) {
+	let isManualDependencyBackport = isDependencyBumpBackportTitle(title, baseBranch)
+	let parent = null
+	const referencedNumber = extractReferencedPRNumber(repo, `${title}\n${body || ""}`)
+	if (referencedNumber && referencedNumber !== number) {
+		const referencedPR = await fetchCodePR(repo, referencedNumber)
+		if (referencedPR.author === DEPENDABOT_LOGIN) {
+			isManualDependencyBackport = true
+			parent = {
+				number: referencedNumber,
+				repo,
+				branch: referencedPR.baseBranch,
+				merged: referencedPR.merged,
+				mergedAt: referencedPR.mergedAt,
+				body: referencedPR.body,
+			}
+		}
+	}
+	return { isManualDependencyBackport, parent }
+}
+
 // ---------------------------------------------------------------------------
 // Deliberate docs backports
 //
@@ -508,17 +539,19 @@ function extractReferencedPRNumber(sourceRepo, text) {
 // silence the warning just by mentioning a number.
 // ---------------------------------------------------------------------------
 
-// "… (8.0 backport)", "… (backport 8.0)", "… (8.0)", "… [8.0]" — the trailing
-// marker maintainers and Promptless use to tell two otherwise identical PRs
-// apart. Captures the branch name so the caller can check it against the
-// branch the PR really targets; a suffix naming some other branch is not
-// evidence about this PR.
+// "… (8.0 backport)", "… (backport 8.0)", "… (8.0)", "… [8.0]", "… (8.0
+// port)" — the trailing marker maintainers and Promptless use to tell two
+// otherwise identical PRs apart. A second alternative covers the unbracketed
+// form hand-made dependency-bump copies use instead ("… — branch 8.0", "…
+// - branch 8.0"). Captures the branch name so the caller can check it
+// against the branch the PR really targets; a suffix naming some other
+// branch is not evidence about this PR.
 const BACKPORT_TITLE_SUFFIX_PATTERN =
-	/[\s—-]*[([](?:backport\s+)?([\w.]+)(?:\s+backport)?[)\]]\s*$/i
+	/[\s—-]*[([](?:backport\s+)?([\w.]+)(?:\s+(?:backport|port))?[)\]]\s*$|[\s—-]+branch\s+([\w.]+)\s*$/i
 
 function backportTitleSuffixBranch(title) {
 	const m = (title || "").match(BACKPORT_TITLE_SUFFIX_PATTERN)
-	return m ? m[1] : null
+	return m ? (m[1] ?? m[2]) : null
 }
 
 // The title with that marker removed, so the copy and its parent compare
@@ -564,32 +597,75 @@ const SENTENCE_BREAK = String.raw`\.\s+[A-Z]`
 // "port" apart with "forward" in between. Matched as its own branch of the
 // alternation, alongside plain "backport" and "forward port" alone, so the
 // explicit "(PR #123)" sitting right next to any of these phrasings is still
-// found.
-const BACKPORT_REFERENCE_WORD_PATTERN = new RegExp(
-	String.raw`\b(?:back(?:[\s/-]+(?:and[\s/-]+)?forward)?[\s/-]?port(?:ed|s|ing)?|forward[\s/-]?port(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}(?<![\w/])#(\d+)`,
-	"i",
-)
+// found. "port" on its own ("Ports the Roles overview documentation from PR
+// #815") is a fourth branch, but only included when includePortAlone is
+// true — a bare "port" is common enough in unrelated prose (dependency
+// changelog text, say) that it's only trusted where the caller has other
+// reason to believe this is deliberate backport wording (see
+// extractBackportParentNumber and findBackportParent's allowPortAloneWord).
+// The `{0,150}?` gap is lazy, not greedy, so the match stops at the *first*
+// "#" it can reach rather than the last one within reach — Promptless bodies
+// often mention several PR numbers after the backport word (the code PR,
+// then a merge PR bringing it into a dev line), and the first is always the
+// real parent.
+function backportReferenceWordPattern(includePortAlone) {
+	const portAlone = includePortAlone ? "|port(?:ed|s|ing)?" : ""
+	return new RegExp(
+		String.raw`\b(?:back(?:[\s/-]+(?:and[\s/-]+)?forward)?[\s/-]?port(?:ed|s|ing)?|forward[\s/-]?port(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?${portAlone})\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}?(?<![\w/])#(\d+)`,
+		"i",
+	)
+}
 
 // Same backport wording, but pointing at a full GitHub URL instead of a bare
-// "#123" — only matched when the URL's repo is this docs PR's own repo, so a
-// link to the *code* PR right next to the same wording (as in the #16849
-// example above) is never mistaken for the docs backport's parent. Same
-// sentence-break guard as above, for the same reason.
-function backportReferenceUrlPattern(sourceRepo) {
-	const repoEscaped = escapeRegExp(sourceRepo)
+// "#123" — only matched when the URL's repo is the given repo, so a link to
+// the *code* PR right next to the same wording (as in the #16849 example
+// above) is never mistaken for the docs backport's parent. Same sentence-break
+// guard as above, for the same reason. Called with both this docs PR's own
+// repo and its sister docs repo (see extractBackportParentNumber) so a
+// backport copied across from the other docs repo is found too.
+function backportReferenceUrlPattern(repo) {
+	const repoEscaped = escapeRegExp(repo)
 	return new RegExp(
 		String.raw`\b(?:backport(?:ed|s|ing)?|cherry[-\s]?pick(?:ed|s|ing)?)\b(?:(?!${SENTENCE_BREAK}|\n).){0,150}?github\.com/${repoEscaped}/pull/(\d+)`,
 		"i",
 	)
 }
 
-function extractBackportParentNumber(text, sourceRepo) {
+// The other repo this project watches (see REPOS.docs) — a backport can be
+// copied across from it, not just within sourceRepo.
+function sisterDocsRepo(repo) {
+	return REPOS.docs.find((r) => r !== repo) ?? null
+}
+
+// Returns { number, repo } for the parent this text names, or null. repo is
+// sourceRepo unless the reference is a full URL into the sister docs repo,
+// in which case it's that repo instead — the two docs repos are watched
+// side by side, and a backport can be copied from either into the other.
+function extractBackportParentNumber(text, sourceRepo, includePortAlone = true) {
 	if (!text) return null
-	let m = text.match(BACKPORT_REFERENCE_WORD_PATTERN)
-	if (m) return Number(m[1])
+	let m = text.match(backportReferenceWordPattern(includePortAlone))
+	if (m) return { number: Number(m[1]), repo: sourceRepo }
 	m = text.match(backportReferenceUrlPattern(sourceRepo))
-	if (m) return Number(m[1])
+	if (m) return { number: Number(m[1]), repo: sourceRepo }
+	const sister = sisterDocsRepo(sourceRepo)
+	if (sister) {
+		m = text.match(backportReferenceUrlPattern(sister))
+		if (m) return { number: Number(m[1]), repo: sister }
+	}
 	return null
+}
+
+// A bare "#NNN" not glued to a repo qualifier — GitHub's shorthand for a
+// same-repo issue/PR, with no backport-ish word required next to it. Used
+// only where a title's own "— branch X" suffix already establishes this PR
+// as a deliberate copy for branch X (see findBackportParent's own-branch
+// suffix check), so the first PR number the body mentions can be trusted
+// even when the wording around it isn't one of the recognized backport
+// words (e.g. "based on #481").
+function extractFirstBareReference(text) {
+	if (!text) return null
+	const m = text.match(/(?<![\w/])#(\d+)/)
+	return m ? Number(m[1]) : null
 }
 
 // Signal 3's lookup: PRs in the same repo whose title matches this one's.
@@ -673,16 +749,26 @@ async function findBackportParent({
 	expectedBranch,
 	createdAt,
 	allowTitleMatch = true,
+	allowPortAloneWord = true,
 }) {
 	if (expectedBranch && baseBranch === expectedBranch) return null
 
+	// candidate is either a bare number (same repo as this PR) or a
+	// { number, repo } pair (see extractBackportParentNumber) for a parent
+	// copied in from the sister docs repo.
 	const confirm = async (candidate) => {
-		if (!candidate || candidate === number) return null
-		const parent = await fetchCodePR(repo, candidate)
+		if (!candidate) return null
+		const [candidateRepo, candidateNumber] =
+			typeof candidate === "object" ? [candidate.repo, candidate.number] : [repo, candidate]
+		if (!candidateNumber || (candidateRepo === repo && candidateNumber === number)) return null
+		const parent = await fetchCodePR(candidateRepo, candidateNumber)
 		if (expectedBranch) {
 			if (parent.baseBranch !== expectedBranch) return null
-		} else if (!parent.baseBranch || parent.baseBranch === baseBranch) {
-			// fetchCodePR reports a null branch when the lookup failed.
+		} else if (!parent.baseBranch || (candidateRepo === repo && parent.baseBranch === baseBranch)) {
+			// fetchCodePR reports a null branch when the lookup failed. Same
+			// repo *and* same branch would just be this PR's own branch
+			// reflected back — meaningless as evidence. A sister-repo parent
+			// can't be that, so its branch is free to equal this PR's own.
 			return null
 		}
 		// merged/mergedAt come along for free from the same fetch — no extra
@@ -691,7 +777,8 @@ async function findBackportParent({
 		// along too, so a backport that doesn't link the code PR can borrow
 		// the parent's link.
 		return {
-			number: candidate,
+			number: candidateNumber,
+			repo: candidateRepo,
 			branch: parent.baseBranch,
 			merged: parent.merged,
 			mergedAt: parent.mergedAt,
@@ -701,9 +788,26 @@ async function findBackportParent({
 
 	// Signal 1 — an explicit reference wins outright: it names the parent, so
 	// there's nothing to guess at.
-	const referenced = extractBackportParentNumber(`${title}\n${body || ""}`, repo)
+	const referenced = extractBackportParentNumber(
+		`${title}\n${body || ""}`,
+		repo,
+		allowPortAloneWord,
+	)
 	const byReference = await confirm(referenced)
 	if (byReference) return byReference
+
+	// Signal 1b — a title ending in "— branch X" where X is this PR's own
+	// branch (see backportTitleSuffixBranch) already says this copy was made
+	// on purpose for this branch, which is enough to trust the first
+	// same-repo PR number the body mentions even without recognized backport
+	// wording next to it (e.g. "based on #481"). Skipped along with the rest
+	// of the title-based signals for dependency bumps (see allowTitleMatch),
+	// whose titles repeat across branches by convention rather than because
+	// they were hand-copied.
+	if (allowTitleMatch && backportTitleSuffixBranch(title) === baseBranch) {
+		const byBareReference = await confirm(extractFirstBareReference(body))
+		if (byBareReference) return byBareReference
+	}
 
 	const normalized = normalizeTitleForBackportMatch(title)
 	if (!normalized) return null
@@ -1456,24 +1560,14 @@ async function main() {
 		// isDependencyBumpBackportTitle) gets the same milestone exemption,
 		// and also skips needs-backport since it already *is* the backport.
 		const isDependabotPR = pr.user.login === DEPENDABOT_LOGIN
-		let isManualDependencyBackport = isDependencyBumpBackportTitle(pr.title, baseBranch)
-		if (!isManualDependencyBackport) {
-			// Title didn't follow the "— branch X.Y" convention — fall back to
-			// whatever parent PR this one names in its title/body, and confirm
-			// (one extra fetch) that the parent really was authored by
-			// dependabot before trusting the reference. The parent is very
-			// likely merged and closed by the time a backport exists, so it
-			// won't be sitting in this run's already-fetched open-PR data —
-			// hence the fetch instead of an in-memory lookup.
-			const referencedNumber = extractReferencedPRNumber(
-				pr.sourceRepo,
-				`${pr.title}\n${pr.body || ""}`,
-			)
-			if (referencedNumber && referencedNumber !== pr.number) {
-				const referencedPR = await fetchCodePR(pr.sourceRepo, referencedNumber)
-				isManualDependencyBackport = referencedPR.author === DEPENDABOT_LOGIN
-			}
-		}
+		const { isManualDependencyBackport, parent: manualDependencyBackportParent } =
+			await resolveManualDependencyBackport({
+				repo: pr.sourceRepo,
+				number: pr.number,
+				title: pr.title,
+				body: pr.body,
+				baseBranch,
+			})
 		const effectiveHasMilestone = hasMilestone || isDependabotPR || isManualDependencyBackport
 
 		let appPRData = extractAppPR(pr.body, pr.sourceRepo)
@@ -1481,9 +1575,12 @@ async function main() {
 		// it. Find the parent first in that case and borrow the parent's link,
 		// so the row shows and tracks the real code PR. This lookup has no
 		// expected branch to check against (see findBackportParent), so it is
-		// kept and reused below instead of being run a second time.
-		let inheritedBackportParent = null
-		if (!appPRData) {
+		// kept and reused below instead of being run a second time. A
+		// dependency bump's own hand-made-copy parent (found above) already
+		// answers this — a bump never links a code PR of its own — so it's
+		// used as-is instead of searching again.
+		let inheritedBackportParent = manualDependencyBackportParent
+		if (!appPRData && !inheritedBackportParent) {
 			inheritedBackportParent = await findBackportParent({
 				repo: pr.sourceRepo,
 				number: pr.number,
@@ -1493,6 +1590,7 @@ async function main() {
 				expectedBranch: null,
 				createdAt: pr.created_at,
 				allowTitleMatch: !isDependabotPR && !isManualDependencyBackport,
+				allowPortAloneWord: !isDependabotPR && !isManualDependencyBackport,
 			})
 			if (inheritedBackportParent) {
 				appPRData = extractAppPR(inheritedBackportParent.body, pr.sourceRepo)
@@ -1583,6 +1681,7 @@ async function main() {
 						body: pr.body,
 						baseBranch,
 						expectedBranch: codeExpectedBranch,
+						allowPortAloneWord: !isDependabotPR && !isManualDependencyBackport,
 					})
 				: null)
 		const wrongBranchFlag = mismatchedBranch && backportParent === null
@@ -2013,8 +2112,14 @@ async function main() {
 			staleDraftFlag = false
 			prematureReadyFlag = false
 		}
+		// A confirmed backport doesn't carry its own "still needs older
+		// branches" checklist — that's the parent's job (see backportTargetsText
+		// and its hasBackportLabel sibling below, which already excludes this
+		// case the same way). Without this, a backport child sitting on an
+		// older branch than the latest release would wrongly show "also needs"
+		// branches that are really the parent's outstanding work, not its own.
 		const backportModifierActive =
-			finalReviewActionable && olderBranch && !rebaseWinsOverBackport
+			finalReviewActionable && olderBranch && !rebaseWinsOverBackport && backportParent === null
 		// The operator's own approval settled a standalone PR — nothing left
 		// to review, just merge. Distinct wording from the plain
 		// finalReviewActionable case (where a *non*-operator approved and the
@@ -2350,6 +2455,9 @@ async function main() {
 			wrongBranchFlag,
 			backportParentNumber: backportParent ? backportParent.number : null,
 			backportParentBranch: backportParent ? backportParent.branch : null,
+			// Same repo as this PR unless the parent was copied in from the
+			// sister docs repo (see extractBackportParentNumber).
+			backportParentRepo: backportParent ? backportParent.repo : null,
 			expectedBranchMissingFlag,
 			docsMilestoneWrongFlag,
 			codeMilestoneAdvisoryFlag,
@@ -3002,7 +3110,13 @@ function chipsFor(pr) {
 			chips.push({ cls: "act", text: "Check the author’s response" })
 			break
 		case "needs-operator-review":
-			chips.push(reviewNowChip(pr))
+			// A confirmed backport doesn't get its own review ask — the
+			// parent's review is what counts (see docsBackportChip and
+			// finalReviewActionable's backportParentMerged case). This
+			// category can still be reached here once the parent's merged,
+			// since the category override only fires while it's unmerged
+			// (see the category logic in main()).
+			if (!pr.backportParentNumber) chips.push(reviewNowChip(pr))
 			break
 		case "needs-milestone":
 			// The "Add milestone" chip itself is pushed above, unconditionally
@@ -3013,9 +3127,12 @@ function chipsFor(pr) {
 			// (and should) start reading the content the moment the PR
 			// shows up, in parallel with adding the milestone. Skipped
 			// when reviewPendingFlag already covers it below with the more
-			// specific "code PR merged" wording, or when a maintainer has
-			// already reviewed — asking again would just be noise.
-			if (!pr.reviewPendingFlag && !pr.operatorReviewDone) chips.push(reviewNowChip(pr))
+			// specific "code PR merged" wording, when a maintainer has
+			// already reviewed — asking again would just be noise — or for a
+			// confirmed backport, same as the needs-operator-review case above.
+			if (!pr.reviewPendingFlag && !pr.operatorReviewDone && !pr.backportParentNumber) {
+				chips.push(reviewNowChip(pr))
+			}
 			// Note there's no remind-the-code-author nudge here: reaching
 			// this category while merged now only happens on a genuine
 			// branch mismatch (see the category logic in main()) — and
@@ -3179,9 +3296,17 @@ function backportTargetsText(pr) {
 // at two near-identical PRs needs to see which one is the copy.
 function docsBackportChip(pr) {
 	if (!pr.backportParentNumber) return null
+	// The parent is usually in this same repo, so a bare "#N" reads fine —
+	// but when it was copied in from the sister docs repo (see
+	// extractBackportParentNumber), "#N" alone would misleadingly read as a
+	// same-repo PR, so the repo is spelled out too.
+	const ref =
+		pr.backportParentRepo && pr.backportParentRepo !== pr.sourceRepo
+			? `${pr.backportParentRepo}#${pr.backportParentNumber}`
+			: `#${pr.backportParentNumber}`
 	return {
 		cls: "backport",
-		text: `Backported from #${pr.backportParentNumber} · ${escapeHtml(pr.backportParentBranch)} → ${escapeHtml(pr.baseBranch)}`,
+		text: `Backported from ${ref} · ${escapeHtml(pr.backportParentBranch)} → ${escapeHtml(pr.baseBranch)}`,
 	}
 }
 
@@ -3201,7 +3326,7 @@ function resolveBackportRelationships(prData) {
 	const byKey = new Map(prData.map((pr) => [cacheKey(pr.sourceRepo, pr.number), pr]))
 	for (const pr of prData) {
 		if (!pr.backportParentNumber) continue
-		const parent = byKey.get(cacheKey(pr.sourceRepo, pr.backportParentNumber))
+		const parent = byKey.get(cacheKey(pr.backportParentRepo ?? pr.sourceRepo, pr.backportParentNumber))
 		if (parent) {
 			parent.backportChildNumbers.push(pr.number)
 			parent.backportChildBranches.push(pr.baseBranch)
@@ -6078,6 +6203,8 @@ module.exports = {
 	backportTitleSuffixBranch,
 	normalizeTitleForBackportMatch,
 	extractBackportParentNumber,
+	extractReferencedPRNumber,
+	resolveManualDependencyBackport,
 	findBackportParent,
 }
 

@@ -3,7 +3,6 @@
 	"private": true,
 	"license": "MIT",
 	"scripts": {
-		"start": "node tracker.js",
-		"tracker": "node tracker.js"
+		"start": "node tracker.js"
 	}
 }
