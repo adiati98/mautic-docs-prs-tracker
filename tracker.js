@@ -1458,9 +1458,23 @@ function computeCommunityThread({
 			date: lastDate,
 		}
 	}
-	// Untagged comment. If the operator left it themselves with no tag, it's
-	// their own note / monitoring — not "someone waiting on a reply."
-	if (commenterIsOperator) return none
+	// Untagged comment from an operator. Usually their own note, but a
+	// teammate sometimes addresses another operator by name, not @-tag
+	// ("will leave it for <name> to push the button"), and that's easy to
+	// miss. Name-matching was ruled out, so surface every untagged operator
+	// comment as a quiet, low-priority FYI (see LOW_PRIORITY_COMMUNITY_KINDS).
+	// The shared report can't tell whose note it is, so this also shows on
+	// an operator's own notes; it clears once anyone comments after it.
+	if (commenterIsOperator) {
+		return {
+			lit: true,
+			commenter,
+			commenterIsOperator,
+			waitingOn: null,
+			waitingOnKind: "operator-note",
+			date: lastDate,
+		}
+	}
 	return {
 		lit: true,
 		commenter,
@@ -2524,10 +2538,16 @@ const ACTIONABLE_CATEGORIES = new Set([
 // Need-today or bump its severity on their own: a thread waiting on the code
 // *author* (the escalation clock already owns that), and Promptless tagging
 // only an operator (a quiet FYI — see computeCommunityThread — that's often
-// just a chore confirmation or an empty "thanks," not a real ask). Every
-// other community thread — waiting on you, a third party, or untagged —
-// does count.
-const LOW_PRIORITY_COMMUNITY_KINDS = new Set(["author", "promptless-fyi", "promptless-confirm"])
+// just a chore confirmation or an empty "thanks," not a real ask), and an
+// operator's untagged comment (often just their own note). Every other
+// community thread — waiting on you, a third party, or untagged from a
+// non-operator — does count.
+const LOW_PRIORITY_COMMUNITY_KINDS = new Set([
+	"author",
+	"promptless-fyi",
+	"promptless-confirm",
+	"operator-note",
+])
 
 // Exception: once you've reviewed the docs PR and its code PR is still open,
 // that's a pure waiting state by design — only review status should gate
@@ -2990,10 +3010,7 @@ function buildClock(pr) {
 		case "needs-milestone":
 			return { big: "New", sub: "needs triage" }
 		case "blocked-no-code-pr":
-			return {
-				big: "—",
-				sub: pr.docsAuthor === PROMPTLESS ? "maintainer review" : "remind the docs author",
-			}
+			return { big: "—", sub: "maintainer review" }
 		case "waiting-code-author-response": {
 			const remaining = FOLLOWUP_DAYS - pr.daysSincePing
 			const sub = remaining <= 1 ? "follow up tomorrow" : `follow up at ${FOLLOWUP_DAYS}`
@@ -3146,14 +3163,14 @@ function chipsFor(pr) {
 			// itself being wrong is a reason to keep nagging regardless of
 			// content approval.
 			if (!pr.staleFlag && (!pr.hasQualifyingApproval || pr.needsRebaseFlag)) {
-				chips.push(
-					pr.docsAuthor === PROMPTLESS
-						? // Promptless is a bot — no author to remind. Maintainers
-							// review these; the only outward ask is the Core Team
-							// vouching for the generated content.
-							{ cls: "manual", text: "Ask Core Team to review content" }
-						: { cls: "manual", text: "Remind docs PR author — no code PR linked" },
-				)
+				// Same ask whoever wrote it. A standalone docs PR (e.g. a
+				// rewrite of existing docs) often has no code PR to link, so
+				// "remind the author" has nothing to ask them for; the outward
+				// step is the Core Team vouching for the content. That holds
+				// for Promptless, a human, and a Core Team member alike. Chasing
+				// a human author who owes a reply is still covered by the
+				// check-response / follow-up / escalate categories.
+				chips.push({ cls: "manual", text: "Ask Core Team to review content" })
 			}
 			break
 		case "needs-close-docs-pr":
@@ -3467,6 +3484,13 @@ function communityChip(pr) {
 		return {
 			cls: "muted",
 			text: `👀 Promptless replied to ${escapeHtml(c.waitingOn)} — worth a quick look`,
+		}
+	}
+	// Same quiet style: it may just be the operator's own note.
+	if (c.waitingOnKind === "operator-note") {
+		return {
+			cls: "muted",
+			text: `👀 ${escapeHtml(c.commenter)} commented — no one tagged, worth a quick look`,
 		}
 	}
 	const text =
@@ -6118,6 +6142,14 @@ function generateGuideHTML({ now }) {
         <div class="see"><span class="lbl">You'll see</span><span class="chip muted">✅ Promptless confirmed something for X — worth a quick look</span></div>
         <div class="see"><span class="lbl">or</span><span class="chip muted">👀 Promptless replied to X — worth a quick look</span></div>
         Promptless replies to almost everything, so this is often just a chore confirmation. It disappears once anyone replies.
+      </div>
+    </div>
+
+    <div class="scenario">
+      <h3>A maintainer comments without tagging anyone</h3>
+      <div class="note">A maintainer's latest comment has no @-tag. It may be meant for a teammate who is named without a tag (for example, "I'll leave it for [name] to merge"), or it may just be their own note.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip muted">👀 X commented — no one tagged, worth a quick look</span></div>
+        It's low priority, because it's often just a note. It disappears once anyone comments after it.
       </div>
     </div>
 
