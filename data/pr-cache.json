@@ -14961,7 +14961,7 @@
   },
   "mautic/user-documentation#984": {
     "docsUpdatedAt": "2026-09-19T05:01:24Z",
-    "codeUpdatedAt": "2026-09-17T19:12:24Z",
+    "codeUpdatedAt": "2026-09-29T10:33:40Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -15021,7 +15021,16 @@
         "body": "### Promptless documentation updates\n\n- [Document the \"Has scheduled reports\" filter on the Reports list](https://app.gopromptless.ai/suggestions/5c3ecba3-109b-4798-8f76-09a821081a3e) adds a note on the new **Has scheduled reports** quick filter (`is:scheduled`) for the Reports list and lists `is:scheduled` among the Reports search filters. [Docs PR](https://github.com/mautic/user-documentation/pull/984)"
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-09-29T10:32:32Z",
+        "body": "Changes look good to me.\nThanks!"
+      }
+    ],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   },
@@ -21713,6 +21722,72 @@
         },
         "created_at": "2026-09-29T08:36:40Z",
         "body": "This is my 3rd attempt to remove this deprecation. I'd like to finish this one :)\r\n\r\nIt's unclear to me, how the replacement should look like exactly. \r\nPlease, let me know if this is heading right direciton and what adjustments are needed to finalize it :+1: "
+      }
+    ],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1007": {
+    "docsUpdatedAt": "2026-09-29T10:08:05Z",
+    "codeUpdatedAt": "2026-09-29T10:11:52Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-29T10:07:54Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-29T10:07:57Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-29T10:07:59Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-29T10:08:02Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-09-29T10:08:05Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-09-29T10:09:41Z",
+        "body": "### Promptless documentation updates\n\n- [Document multi-section copy and paste in the GrapesJS Builder](https://app.gopromptless.ai/suggestions/dfe87709-0b66-4ded-a0c2-967c80c95878) adds a \"Copying and pasting sections\" subsection to the Builder page in the 7.3 user docs. [Docs PR](https://github.com/mautic/user-documentation/pull/1007)"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-09-29T10:11:52Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17590) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [2 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17590&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17590&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17590&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17590&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17590&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17590)\n\n"
       }
     ],
     "rawCodeReviews": [],
