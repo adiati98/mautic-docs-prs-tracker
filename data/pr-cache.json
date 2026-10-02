@@ -14440,19 +14440,42 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#992": {
-    "docsUpdatedAt": "2026-09-24T12:12:24Z",
+    "docsUpdatedAt": "2026-10-02T13:45:54Z",
     "codeUpdatedAt": "2026-09-21T10:59:28Z",
     "rawDocsReviews": [
       {
         "user": {
           "login": "RCheesley"
         },
-        "state": "APPROVED",
+        "state": "DISMISSED",
         "submitted_at": "2026-09-24T12:12:24Z",
         "body": ""
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-02T13:43:16Z",
+        "body": "@promptless-for-oss please address the Vale warnings."
       }
     ],
-    "rawDocsComments": [],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:43:32Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/992#pullrequestreview-5392512350)\n\n<!-- promptless-comment-body:v1:07fe8c51-b527-4234-9441-50f9573b3bec -->\n\nThanks, I'll fix the Vale warnings in this PR's changed files. I'll update this PR and reply here with what changed.\n\n<!-- promptless-comment:v1:07fe8c51-b527-4234-9441-50f9573b3bec -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:54Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/992#pullrequestreview-5392512350)\n\n<!-- promptless-comment-body:v1:0aac3286-8320-4cf3-8107-26cf40195ffd -->\n\nI fixed the Vale warning in the Categories overview. The Category list now says 'Landing Pages' instead of 'Pages'. Running Vale locally also turned up a missing Oxford comma that CI hadn't flagged, and I fixed that too. I also switched that page's short list to auto-numbered `#.` markers. Vale now reports nothing on any line this PR adds or changes.\n\nThe other files in this PR only delete lines. Some of them still have older Vale warnings on lines this PR doesn't touch, and I left those alone to keep this PR to removing the Social docs.\n\nPR: https://github.com/mautic/user-documentation/pull/992\n\n\n<!-- promptless-comment:v1:0aac3286-8320-4cf3-8107-26cf40195ffd -->"
+      }
+    ],
     "rawCodeComments": [
       {
         "user": {
@@ -14692,9 +14715,16 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#990": {
-    "docsUpdatedAt": "2026-09-21T12:05:43Z",
+    "docsUpdatedAt": "2026-10-02T13:45:27Z",
     "codeUpdatedAt": "2026-09-21T11:09:55Z",
     "rawDocsReviews": [
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "PENDING",
+        "body": ""
+      },
       {
         "user": {
           "login": "promptless-for-oss"
@@ -15982,7 +16012,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#972": {
-    "docsUpdatedAt": "2026-09-24T12:20:48Z",
+    "docsUpdatedAt": "2026-10-02T13:46:21Z",
     "codeUpdatedAt": null,
     "rawDocsReviews": [],
     "rawDocsComments": [
@@ -16006,6 +16036,34 @@
         },
         "created_at": "2026-09-24T12:20:48Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/972#issuecomment-5813804143)\n\n<!-- promptless-comment-body:v1:acdffd36-2eb5-4279-b7d3-44f0498dd7e3 -->\n\nYou're right, and there's no reason not to do it - I've updated PR #972 to point the docs link at its live final destination (https://developers.hubspot.com/docs/api-reference/legacy/crm/objects/companies/guide) and removed the temporary linkcheck-ignore entry. I verified that the old legacydocs.hubspot.com URL redirects (301, then 301, then 308) and lands exactly there, and that the final page returns HTTP 200 directly with no onward redirect in about 0.1s, so it won't re-trigger the link-checker timeout. This fixes the root cause instead of masking it, and since it was the repo's only legacydocs reference, dropping the ignore lets the checker keep watching the link for future rot.\n\nDocs PR: https://github.com/mautic/user-documentation/pull/972\n\n<!-- promptless-comment:v1:acdffd36-2eb5-4279-b7d3-44f0498dd7e3 -->"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-10-02T13:42:06Z",
+        "body": "@promptless-for-oss please check if other branches also have this link. If so, cherry pick the changes here and open a PR for each branch."
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:42:31Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/972#issuecomment-5953718029)\n\n<!-- promptless-comment-body:v1:04d2a975-175a-488c-b14e-3130aecbd5fd -->\n\nThanks, I'll check the other maintained branches for the same HubSpot link. For each branch that has it, I'll cherry-pick this fix and open a separate PR.\n\n<!-- promptless-comment:v1:04d2a975-175a-488c-b14e-3130aecbd5fd -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:43:45Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/972#issuecomment-5953718029)\n\n<!-- promptless-comment-body:v1:4c8fce33-a912-4bab-a87a-c103b6a904f1 -->\n\nThe same link appears on 5.2, 6.0, 7.0, 7.1, 7.2, and 7.3, so I'm opening a cherry-pick PR for each of those branches. The 5.x branch has it too, but it isn't one of the maintained user docs branches, so I'm not opening a PR there unless you want one.\n\n<!-- promptless-comment:v1:4c8fce33-a912-4bab-a87a-c103b6a904f1 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:46:21Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/972#issuecomment-5953718029)\n\n<!-- promptless-comment-body:v1:771c5b6e-d416-4156-9993-ab3b8972355b -->\n\n@adiati98 Every maintained branch had the same stale HubSpot link, so I've opened one PR per branch with the fix from this PR.\n\nEach PR points the `Source` link in `docs/links/hubspot_doc.py` at the live HubSpot URL, the same as this PR. The new URL returns `HTTP 200`. I applied the one-line change on top of each branch instead of running `git cherry-pick`, because this PR's history includes a reverted `conf.py` commit and a merge from 8.0. The end result is the same change as here.\n\nThe old 5.x branch also has the link, but I didn't open a PR there because 5.x work usually targets 5.2. Let me know if you want one for 5.x too.\n\n5.2: https://github.com/mautic/user-documentation/pull/1013\n6.0: https://github.com/mautic/user-documentation/pull/1014\n7.0: https://github.com/mautic/user-documentation/pull/1015\n7.1: https://github.com/mautic/user-documentation/pull/1016\n7.2: https://github.com/mautic/user-documentation/pull/1017\n7.3: https://github.com/mautic/user-documentation/pull/1018\n\n\n<!-- promptless-comment:v1:771c5b6e-d416-4156-9993-ab3b8972355b -->"
       }
     ],
     "rawCodeComments": [],
@@ -16926,7 +16984,7 @@
     "readyForReviewAt": "2026-09-01T18:34:55Z"
   },
   "mautic/user-documentation#914": {
-    "docsUpdatedAt": "2026-09-24T12:03:55Z",
+    "docsUpdatedAt": "2026-10-02T13:43:40Z",
     "codeUpdatedAt": "2026-08-05T09:39:02Z",
     "rawDocsReviews": [],
     "rawDocsComments": [
@@ -16978,6 +17036,13 @@
         },
         "created_at": "2026-09-15T10:44:44Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/914#issuecomment-5678838872)\n\n<!-- promptless-comment-body:v1:f984358a-3d35-4e82-9053-b267d198bfcf -->\n\nDone — this PR now targets the 7.3 branch (it was previously on 7.2). Since 7.2 and 7.3 are currently at the same commit, the branch sits cleanly on the 7.3 tip; the content is unchanged and the PR shows as mergeable. Ready for your review.\n\n<!-- promptless-comment:v1:f984358a-3d35-4e82-9053-b267d198bfcf -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:38:34Z",
+        "body": "I noticed that some CI checks failed for this PR. I'm investigating whether the failures are caused by this suggestion. If they're unrelated or pre-existing, I'll leave this suggestion unchanged and create a separate suggestion if a standalone docs fix is needed."
       }
     ],
     "rawCodeComments": [
@@ -18417,7 +18482,7 @@
   },
   "mautic/user-documentation#874": {
     "docsUpdatedAt": "2026-09-15T11:14:13Z",
-    "codeUpdatedAt": "2026-08-27T05:11:14Z",
+    "codeUpdatedAt": "2026-10-02T13:43:25Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18495,6 +18560,13 @@
         },
         "created_at": "2026-07-31T10:17:47Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16852) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [4 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16852&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16852&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16852&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16852&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16852&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16852)\n\n"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-10-02T13:43:17Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16852) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [6 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16852&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=16852&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=16852&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16852&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=16852&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=16852)\n\n"
       }
     ],
     "rawCodeReviews": [
@@ -18521,6 +18593,30 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-08-27T05:11:14Z",
         "body": "Looks good overall. I’ve added one inline comment around handling duplicate IDs before processing the batch."
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-02T13:43:16Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-02T13:43:19Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-02T13:43:21Z",
+        "body": ""
       }
     ],
     "rawReviewRequests": [],
@@ -21817,184 +21913,6 @@
     ],
     "readyForReviewAt": "2026-10-02T09:36:24Z"
   },
-  "mautic/user-documentation#1012": {
-    "docsUpdatedAt": "2026-10-02T13:12:32Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:12:32Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:12:32Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#1011": {
-    "docsUpdatedAt": "2026-10-02T13:11:56Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:11:56Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:11:56Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#1010": {
-    "docsUpdatedAt": "2026-10-02T13:16:18Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:15:41Z",
-        "body": "@promptless-for-oss this branch is out-of-date. Please update the branch with the base branch. Do the same for #1011 (7.3) and #1012 (8.0)\r\n"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-10-02T13:16:18Z",
-        "body": "Thanks for the heads-up. I'm updating #1010, #1011, and #1012 with their base branches, and I'll reply here when each one is done."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-10-02T13:17:59Z",
-        "body": "@adiati98 I couldn't update #1010 (7.2), #1011 (7.3), or #1012 (8.0) yet. Their head branches are in the Promptless fork, and I don't currently have push access to it.\n\nI tested each base branch merge locally, and all three merge cleanly with no conflicts. After the merge, each PR still changes only `.all-contributorsrc` and `README.md`, so nothing in the PRs needs to change. I've raised the access problem with the Promptless team. Until it's fixed, the three branches stay at their current commits.\n"
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:11:19Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T13:11:19Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
-  "mautic/user-documentation#1009": {
-    "docsUpdatedAt": "2026-10-02T12:10:40Z",
-    "codeUpdatedAt": null,
-    "rawDocsReviews": [],
-    "rawDocsComments": [
-      {
-        "user": {
-          "login": "adiati98"
-        },
-        "created_at": "2026-10-02T12:06:40Z",
-        "body": "@promptless-for-oss I'm not sure why all contributors bot based this branch not from the default. \n\nPlease cherry pick the changes here to branch 7.2, 7.3 and 8.0.\n\nLet me know once you've done so I can close this PR."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-10-02T12:07:17Z",
-        "body": "Thanks, @adiati98. I'm cherry-picking the contributor changes from this PR onto the `7.2`, `7.3`, and `8.0` branches now, and I'll reply here with the resulting PRs once they're open."
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "created_at": "2026-10-02T12:10:40Z",
-        "body": "**Blocked — one thing needed from you**\n\n@adiati98, I haven't opened the PRs yet, so please don't close this one. This PR shows 36 changed files, but its real change is two lines: it adds the Documentation (📖) contribution for andersonjeccel to `.all-contributorsrc` and `README.md`. I've applied that edit to each target branch on our fork. I couldn't open the PRs myself, because Promptless is set up to edit only `docs/` in this repo, and those two files sit outside it.\n\nNeed: Open a PR from each branch below. Each diff contains only those two lines.\n- `7.2`: https://github.com/mautic/user-documentation/compare/7.2...Promptless:oss-contrib-mautic-user-documentation:promptless/all-contributors-andersonjeccel-7.2?expand=1\n- `7.3`: https://github.com/mautic/user-documentation/compare/7.3...Promptless:oss-contrib-mautic-user-documentation:promptless/all-contributors-andersonjeccel-7.3?expand=1\n- `8.0`: https://github.com/mautic/user-documentation/compare/8.0...Promptless:oss-contrib-mautic-user-documentation:promptless/all-contributors-andersonjeccel-8.0?expand=1\n\nNext: Once those are merged, you can close this PR."
-      }
-    ],
-    "rawCodeComments": [],
-    "rawCodeReviews": [],
-    "rawReviewRequests": [
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-10-02T11:46:15Z",
-        "requested_reviewer": null,
-        "requested_team": {
-          "slug": "education-team-leaders"
-        }
-      },
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-10-02T11:46:16Z",
-        "requested_reviewer": {
-          "login": "adiati98"
-        },
-        "requested_team": null
-      },
-      {
-        "actor": {
-          "login": "allcontributors[bot]"
-        },
-        "created_at": "2026-10-02T11:46:16Z",
-        "requested_reviewer": {
-          "login": "favour-chibueze"
-        },
-        "requested_team": null
-      }
-    ],
-    "readyForReviewAt": null
-  },
   "mautic/user-documentation#1008": {
     "docsUpdatedAt": "2026-10-01T22:06:51Z",
     "codeUpdatedAt": "2026-10-01T23:21:23Z",
@@ -22027,6 +21945,252 @@
     ],
     "rawCodeReviews": [],
     "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1018": {
+    "docsUpdatedAt": "2026-10-02T13:45:22Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:22Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:22Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:22Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1017": {
+    "docsUpdatedAt": "2026-10-02T13:45:15Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:15Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:15Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:15Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1016": {
+    "docsUpdatedAt": "2026-10-02T13:45:09Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:08Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:08Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:09Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1015": {
+    "docsUpdatedAt": "2026-10-02T13:45:03Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:02Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:03Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:45:03Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1014": {
+    "docsUpdatedAt": "2026-10-02T13:44:56Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:44:56Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:44:56Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:44:56Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1013": {
+    "docsUpdatedAt": "2026-10-02T13:44:54Z",
+    "codeUpdatedAt": null,
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:44:53Z",
+        "requested_reviewer": null,
+        "requested_team": {
+          "slug": "education-team-leaders"
+        }
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:44:53Z",
+        "requested_reviewer": {
+          "login": "adiati98"
+        },
+        "requested_team": null
+      },
+      {
+        "actor": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-02T13:44:54Z",
+        "requested_reviewer": {
+          "login": "favour-chibueze"
+        },
+        "requested_team": null
+      }
+    ],
     "readyForReviewAt": null
   }
 }
