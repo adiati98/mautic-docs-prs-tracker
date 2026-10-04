@@ -14115,7 +14115,7 @@
   },
   "mautic/user-documentation#987": {
     "docsUpdatedAt": "2026-09-19T04:47:31Z",
-    "codeUpdatedAt": "2026-10-03T10:14:24Z",
+    "codeUpdatedAt": "2026-10-04T03:02:48Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -14197,6 +14197,14 @@
         "state": "CHANGES_REQUESTED",
         "submitted_at": "2026-09-28T10:39:04Z",
         "body": "The implementation looks good to me. \n\nSince this adds a user-facing search/quick filter, it would be better to cover the actual Users search flow rather than testing the repository condition directly through reflection.\n\nAlso, the PHPUnit jobs are currently failing, so those should be checked before merging."
+      },
+      {
+        "user": {
+          "login": "shinde-rahul"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-10-04T03:02:48Z",
+        "body": "Awesome, Thanks @andersonjeccel. "
       }
     ],
     "rawReviewRequests": [],
@@ -21037,6 +21045,64 @@
         },
         "created_at": "2026-10-01T23:21:22Z",
         "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17612) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17612&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17612&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17612&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17612&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17612&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17612)\n\n"
+      }
+    ],
+    "rawCodeReviews": [],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#714": {
+    "docsUpdatedAt": "2026-10-04T07:46:17Z",
+    "codeUpdatedAt": "2026-10-04T07:47:33Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-04T07:46:06Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-04T07:46:11Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-04T07:46:17Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-04T07:46:21Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-10-04T07:44:40Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17620) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17620&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17620&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17620&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17620&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17620&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17620)\n\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-04T07:47:33Z",
+        "body": "### Promptless documentation updates\n\n- [Update Theme sandbox restrictions for Twig collection filters](https://app.gopromptless.ai/suggestions/77050cfe-f4e2-4088-9f3c-ad82488bfcb9) updates the \"Template sandbox restrictions\" section of the 7.2 developer docs: the sandbox now blocks only risky functions, and Theme templates can use `map`, `filter`, `reduce`, `sort` and `find` with arrow-function callbacks. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/714)"
       }
     ],
     "rawCodeReviews": [],
