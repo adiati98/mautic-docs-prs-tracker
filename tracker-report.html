@@ -499,7 +499,7 @@
 
   <header class="top">
     <h1>Docs PR Tracker</h1>
-    <span class="updated" data-updated-iso="2026-10-09T14:20:02.516Z">Updated Fri, Oct 9, 2:20 PM</span>
+    <span class="updated" data-updated-iso="2026-10-09T17:31:42.365Z">Updated Fri, Oct 9, 5:31 PM</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -510,9 +510,9 @@
   <main id="main-content">
   <div class="stats">
     <button class="tile focus" data-goto="today" type="button">
-      <div class="num">27</div>
+      <div class="num">19</div>
       <div><div class="lbl">Need you today</div>
-      <div class="sub"><span class="dot critical"></span>16 overdue</div></div>
+      <div class="sub"><span class="dot critical"></span>9 overdue</div></div>
     </button>
     <button class="tile" data-goto="forward" type="button">
       <div class="num">70</div>
@@ -542,90 +542,20 @@
   </div>
 
   <div class="filters">
-    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">125</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">54</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">71</span></button></div>
-    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">27</span></button><span class="tipwrap"><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" aria-describedby="tip-critical">Critical <span class="fc">16</span></button><span class="tip" id="tip-critical" role="tooltip">You reminded the code author 14+ days ago and it&#039;s still quiet - escalate.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" aria-describedby="tip-serious">Serious <span class="fc">5</span></button><span class="tip" id="tip-serious" role="tooltip">You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply - follow up.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" aria-describedby="tip-act">Act <span class="fc">52</span></button><span class="tip" id="tip-act" role="tooltip">Something needs doing now: review, remind, merge, or add a label.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" aria-describedby="tip-triage">Triage <span class="fc">0</span></button><span class="tip" id="tip-triage" role="tooltip">A draft PR waiting on its code PR, or a standalone PR waiting on its author.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" aria-describedby="tip-stale">🕸 Stale <span class="fc">56</span></button><span class="tip" id="tip-stale" role="tooltip">Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</span></span></div>
+    <div class="fbar" role="group" aria-label="Filter by repo"><span class="fbar-label">Repo</span><button class="ftab active" data-f="repo" data-v="all" aria-pressed="true">All <span class="fc">117</span></button><button class="ftab" data-f="repo" data-v="developer-documentation" aria-pressed="false">developer-documentation <span class="fc">46</span></button><button class="ftab" data-f="repo" data-v="user-documentation" aria-pressed="false">user-documentation <span class="fc">71</span></button></div>
+    <div class="fbar" role="group" aria-label="Filter by priority"><span class="fbar-label">Priority</span><button class="ftab active" data-f="pri" data-v="all" aria-pressed="true">All <span class="fc">19</span></button><span class="tipwrap"><button class="ftab" data-f="pri" data-v="critical" aria-pressed="false" aria-describedby="tip-critical">Critical <span class="fc">9</span></button><span class="tip" id="tip-critical" role="tooltip">You reminded the code author 14+ days ago and it&#039;s still quiet - escalate.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="serious" aria-pressed="false" aria-describedby="tip-serious">Serious <span class="fc">5</span></button><span class="tip" id="tip-serious" role="tooltip">You reminded the code author 7–14 days ago, or someone&#039;s waiting on your reply - follow up.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="act" aria-pressed="false" aria-describedby="tip-act">Act <span class="fc">51</span></button><span class="tip" id="tip-act" role="tooltip">Something needs doing now: review, remind, merge, or add a label.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="triage" aria-pressed="false" aria-describedby="tip-triage">Triage <span class="fc">0</span></button><span class="tip" id="tip-triage" role="tooltip">A draft PR waiting on its code PR, or a standalone PR waiting on its author.</span></span><span class="tipwrap"><button class="ftab" data-f="pri" data-v="stale" aria-pressed="false" aria-describedby="tip-stale">🕸 Stale <span class="fc">56</span></button><span class="tip" id="tip-stale" role="tooltip">Nothing has happened on the docs PR or its linked code PR for 30+ days - activity on either one resets the clock.</span></span></div>
     <div class="fbar" role="group" aria-label="Checklist"><span class="fbar-label">Checklist</span><button class="switch-ctrl" id="hideCheckedBtn" type="button" role="switch" aria-checked="false"><span class="switch-track"><span class="switch-thumb"></span></span><span class="switch-text">Hide checked rows <span class="fc">0</span></span></button></div>
   </div>
   <p class="quick-tip"><b>New here?</b> Start at the top of <b>Need you today</b> and work down - everything in it is something only you can move forward, most urgent first. Colors, tags, badges, and common scenarios are explained in the <a href="tracker-guide.html">📖 guide</a> - worth keeping open in its own tab.</p>
 
   <section data-band="today">
     <div class="sec-head">
-      <h2>Need you today</h2><span class="count">27</span>
-      <span class="chk-progress" data-state="zero">0/27 checked</span>
+      <h2>Need you today</h2><span class="count">19</span>
+      <span class="chk-progress" data-state="zero">0/19 checked</span>
       <span class="hint">actions only you can take - most urgent first</span>
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#764" data-search="developer-documentation #764 docs: lowercase generic button, event and listener terms in ui.rst (5.x) promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 5.x ▲ escalate to core team 👀 coderabbitai[bot] commented — no reply yet merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,&quot;untagged&quot;,false,685,null,true,[],[],false,false,true,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #764: docs: Lowercase generic button, event and listener terms in ui.rst (5.x) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/764" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #764</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (5.x)</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 5.x</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#763" data-search="developer-documentation #763 docs: lowercase generic button, event and listener terms in ui.rst (6.0) promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 6.0 ▲ escalate to core team 👀 coderabbitai[bot] commented — no reply yet merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,&quot;untagged&quot;,false,685,null,true,[],[&quot;7.0&quot;,&quot;7.1&quot;,&quot;7.2&quot;,&quot;7.3&quot;,&quot;8.0&quot;],false,false,true,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #763: docs: Lowercase generic button, event and listener terms in ui.rst (6.0) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/763" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #763</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (6.0)</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 6.0</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#762" data-search="developer-documentation #762 docs: lowercase generic button, event and listener terms in ui.rst (7.0) promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 7.0 ▲ escalate to core team 👀 coderabbitai[bot] commented — no reply yet merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,&quot;untagged&quot;,false,685,null,true,[],[&quot;7.1&quot;,&quot;7.2&quot;,&quot;7.3&quot;,&quot;8.0&quot;],false,false,true,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #762: docs: Lowercase generic button, event and listener terms in ui.rst (7.0) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/762" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #762</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (7.0)</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 7.0</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#761" data-search="developer-documentation #761 docs: lowercase generic button, event and listener terms in ui.rst (7.1) promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 7.1 ▲ escalate to core team 👀 coderabbitai[bot] commented — no reply yet merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,&quot;untagged&quot;,false,685,null,true,[],[&quot;7.2&quot;,&quot;7.3&quot;,&quot;8.0&quot;],false,false,true,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #761: docs: Lowercase generic button, event and listener terms in ui.rst (7.1) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/761" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #761</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (7.1)</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 7.1</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#760" data-search="developer-documentation #760 docs: lowercase generic button, event and listener terms in ui.rst (7.2) promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 7.2 ▲ escalate to core team 👀 coderabbitai[bot] commented — no reply yet merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,&quot;untagged&quot;,false,685,null,true,[],[&quot;7.3&quot;,&quot;8.0&quot;],false,false,true,false,false,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #760: docs: Lowercase generic button, event and listener terms in ui.rst (7.2) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/760" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #760</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (7.2)</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 7.2</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#759" data-search="developer-documentation #759 docs: [8.0] document the customcontent hook and the company.sidebar.top extension point promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 8.0 ▲ escalate to core team adiati98 reviewed this merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,685,null,true,[],[],false,false,true,false,true,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #759: docs: [8.0] Document the customContent hook and the company.sidebar.top extension point as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/759" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #759</a> <span class="desc">docs: [8.0] Document the customContent hook and the company.sidebar.top extension point</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 8.0</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip muted">adiati98 reviewed this</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#757" data-search="developer-documentation #757 docs: lowercase generic button, event and listener terms in ui.rst (8.0) promptless-for-oss #17472 patrykgruszka backported from #685 · 7.3 → 8.0 backported to #758 ▲ escalate to core team adiati98 reviewed this merge — content already approved via #685" data-status="[&quot;needs-escalate-core-team&quot;,true,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,685,null,true,[758],[],false,false,true,false,true,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #757: docs: Lowercase generic button, event and listener terms in ui.rst (8.0) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/757" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #757</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (8.0)</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17472" target="_blank" rel="noopener noreferrer">#17472</a> <span class="pill merged">Merged</span> · author <b>patrykgruszka</b> · reminded, no reply since</div>
-          <div class="chips"><span class="chip backport">Backported from #685 · 7.3 → 8.0</span><span class="chip backport">Backported to #758</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip muted">adiati98 reviewed this</span><span class="chip finish">Merge — content already approved via #685</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 16</div><div class="sub">since reminder</div></div>
-      </article>
       <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="1" data-key="mautic/developer-documentation-new#717" data-search="developer-documentation #717 document mautic 8 class-name dispatch and removed config, campaign, and plugin event constants promptless-for-oss #17625 tomasvotruba review this docs pr — code pr merged approved by tomasvotruba note since approval — take a look final review, then merge" data-status="[&quot;monitoring&quot;,true,false,false,false,false,false,false,false,true,false,false,false,false,[&quot;TomasVotruba&quot;],false,null,false,null,null,false,[],[],false,true,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #717: Document Mautic 8 class-name dispatch and removed Config, Campaign, and Plugin event constants as done"></div>
         <div class="edge"></div>
@@ -636,6 +566,16 @@
         </div>
         <div class="when"><div class="days good">Ready</div><div class="sub">approved — ready to merge</div></div>
       </article>
+      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#932" data-search="user-documentation #932 document the live preview in the web notification editor promptless-for-oss #16928 andersonjeccel ▲ escalate to core team adiati98 reviewed this" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;7.3&quot;,&quot;8.0&quot;],false,true,true,false,true,true]">
+        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #932: Document the live preview in the web Notification editor as done"></div>
+        <div class="edge"></div>
+        <div class="body">
+          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/932" target="_blank" rel="noopener noreferrer" class="name">user-documentation #932</a> <span class="desc">Document the live preview in the web Notification editor</span></div>
+          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16928" target="_blank" rel="noopener noreferrer">#16928</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminded, no reply since · targets <b>7.2</b> — also needs <b>7.3</b> and <b>8.0</b></div>
+          <div class="chips"><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip muted">adiati98 reviewed this</span></div>
+        </div>
+        <div class="when"><div class="days critical">Day 38</div><div class="sub">since reminder</div></div>
+      </article>
       <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#915" data-search="user-documentation #915 document single-editable-entity-type shortcut when adding entities to a project promptless-for-oss #16927 andersonjeccel backported to #999, #998 ▲ escalate to core team approved by rcheesley note since approval — take a look" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[&quot;RCheesley&quot;],false,null,false,null,null,false,[999,998],[],false,true,true,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #915: Document single-editable-entity-type shortcut when adding entities to a Project as done"></div>
         <div class="edge"></div>
@@ -645,16 +585,6 @@
           <div class="chips"><span class="chip backport">Backported to #999, #998</span><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip finish">Approved by RCheesley</span><span class="chip act">Note since approval — take a look</span></div>
         </div>
         <div class="when"><div class="days critical">Day 38</div><div class="sub">since reminder</div></div>
-      </article>
-      <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#932" data-search="user-documentation #932 document the live preview in the web notification editor promptless-for-oss #16928 andersonjeccel ▲ escalate to core team adiati98 reviewed this" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;7.3&quot;,&quot;8.0&quot;],false,true,true,false,true,true]">
-        <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #932: Document the live preview in the web Notification editor as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/user-documentation/pull/932" target="_blank" rel="noopener noreferrer" class="name">user-documentation #932</a> <span class="desc">Document the live preview in the web Notification editor</span></div>
-          <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/16928" target="_blank" rel="noopener noreferrer">#16928</a> <span class="pill merged">Merged</span> · author <b>andersonjeccel</b> · reminded, no reply since · targets <b>7.2</b> — also needs <b>7.3</b> and <b>8.0</b></div>
-          <div class="chips"><span class="chip nudge3">▲ Escalate to Core Team</span><span class="chip muted">adiati98 reviewed this</span></div>
-        </div>
-        <div class="when"><div class="days critical">Day 37</div><div class="sub">since reminder</div></div>
       </article>
       <article class="row" data-sev="critical" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#985" data-search="user-documentation #985 document the clone action on the report details view promptless-for-oss #17450 andersonjeccel ▲ escalate to core team adiati98 reviewed this" data-status="[&quot;needs-escalate-core-team&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,true,true,false,true,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #985: Document the Clone action on the Report details view as done"></div>
@@ -786,13 +716,13 @@
         </div>
         <div class="when"><div class="days">Day 3</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:43%"></i></div></div>
       </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#755" data-search="developer-documentation #755 docs: document the email.preview.buttons extension point for email preview downloads promptless-for-oss #17549 fedys add milestone review this docs pr — code pr merged add needs-backport label" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,true,false,false,false,false,true,true,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,false,true,false,false,true]">
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#755" data-search="developer-documentation #755 docs: document the email.preview.buttons extension point for email preview downloads promptless-for-oss #17549 fedys add milestone 👀 coderabbitai[bot] commented — no reply yet review this docs pr — code pr merged add needs-backport label" data-status="[&quot;waiting-code-author-response&quot;,false,false,false,true,false,false,false,false,true,true,false,false,false,[],false,&quot;untagged&quot;,false,null,null,false,[],[&quot;8.0&quot;],false,false,true,false,false,true]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #755: docs: Document the email.preview.buttons extension point for Email preview downloads as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/755" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #755</a> <span class="desc">docs: Document the email.preview.buttons extension point for Email preview downloads</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17549" target="_blank" rel="noopener noreferrer">#17549</a> <span class="pill merged">Merged</span> · author <b>fedys</b> · reminder sent, waiting for a reply</div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip act">Review this docs PR — code PR merged</span><span class="chip setup">Add needs-backport label</span></div>
+          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip act">Review this docs PR — code PR merged</span><span class="chip setup">Add needs-backport label</span></div>
         </div>
         <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
       </article>
@@ -805,16 +735,6 @@
           <div class="chips"><span class="chip act">Review this docs PR — code PR merged</span></div>
         </div>
         <div class="when"><div class="days">Day 0</div><div class="sub">follow up at 7</div><div class="meter"><i style="width:0%"></i></div></div>
-      </article>
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#758" data-search="developer-documentation #758 docs: lowercase generic button, event and listener terms in ui.rst (7.3) promptless-for-oss backported from #757 · 8.0 → 7.3 waiting on #757 to merge 👀 coderabbitai[bot] commented — no reply yet" data-status="[&quot;waiting-backport-parent&quot;,false,false,false,false,false,false,false,false,null,false,false,false,false,[],false,&quot;untagged&quot;,false,757,&quot;ready&quot;,false,[],[&quot;8.0&quot;],false,false,false,false,false,false]">
-        <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #758: docs: Lowercase generic button, event and listener terms in ui.rst (7.3) as done"></div>
-        <div class="edge"></div>
-        <div class="body">
-          <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/758" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #758</a> <span class="desc">docs: Lowercase generic button, event and listener terms in ui.rst (7.3)</span></div>
-          <div class="meta">No linked code PR</div>
-          <div class="chips"><span class="chip backport">Backported from #757 · 8.0 → 7.3</span><span class="chip muted">Waiting on #757 to merge</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span></div>
-        </div>
-        <div class="when"><div class="days">—</div><div class="sub">waiting on #757</div></div>
       </article>
       <article class="row" data-sev="act" data-repo="user-documentation" data-stale="0" data-approved="0" data-key="mautic/user-documentation#1034" data-search="user-documentation #1034 align campaign reactivation terminology alexanderzlobinm1 #17677 add milestone review this docs pr add needs-backport label" data-status="[&quot;needs-milestone&quot;,false,false,false,true,false,false,false,false,false,true,false,false,false,[],false,null,false,null,null,false,[],[&quot;7.3&quot;,&quot;8.0&quot;],false,false,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark user-documentation #1034: Align campaign reactivation terminology as done"></div>
@@ -837,13 +757,13 @@
       <span class="no-match">no rows match this filter</span>
     </div>
     <div class="card">
-      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#756" data-search="developer-documentation #756 docs: document customizing a contact&#039;s primary identifier order promptless-for-oss #17687 jonasludwig1998 add milestone review this docs pr add needs-backport label" data-status="[&quot;needs-milestone&quot;,false,false,false,true,false,false,false,false,false,true,false,false,false,[],false,null,false,null,null,false,[],[&quot;8.0&quot;],false,false,false,false,false,false]">
+      <article class="row" data-sev="act" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#756" data-search="developer-documentation #756 docs: document customizing a contact&#039;s primary identifier order promptless-for-oss #17687 jonasludwig1998 add milestone review this docs pr 👀 coderabbitai[bot] commented — no reply yet add needs-backport label" data-status="[&quot;needs-milestone&quot;,false,false,false,true,false,false,false,false,false,true,false,false,false,[],false,&quot;untagged&quot;,false,null,null,false,[],[&quot;8.0&quot;],false,false,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #756: docs: Document customizing a Contact&#039;s primary identifier order as done"></div>
         <div class="edge"></div>
         <div class="body">
           <div class="title"><a href="https://github.com/mautic/developer-documentation-new/pull/756" target="_blank" rel="noopener noreferrer" class="name">developer-documentation #756</a> <span class="desc">docs: Document customizing a Contact&#039;s primary identifier order</span> <span class="pill draft">Draft</span></div>
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17687" target="_blank" rel="noopener noreferrer">#17687</a> <span class="pill open">Open</span> · author <b>JonasLudwig1998</b> · targets <b>7.3</b> — also needs <b>8.0</b> · no milestone, no backport label</div>
-          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span><span class="chip setup">Add needs-backport label</span></div>
+          <div class="chips"><span class="chip setup">Add milestone</span><span class="chip muted">Review this docs PR</span><span class="chip manual">👀 coderabbitai[bot] commented — no reply yet</span><span class="chip setup">Add needs-backport label</span></div>
         </div>
         <div class="when"><div class="days">New</div><div class="sub">needs triage</div></div>
       </article>
@@ -1315,7 +1235,7 @@
           <div class="meta">Code PR <a href="https://github.com/mautic/mautic/pull/17310" target="_blank" rel="noopener noreferrer">#17310</a> <span class="pill open">Open</span> · author <b>adiux</b> · milestone <b>7.3</b> · targets <b>7.3</b> — also needs <b>8.0</b></div>
           <div class="chips"><span class="chip muted">Review this docs PR</span></div>
         </div>
-        <div class="when"><div class="days">—</div><div class="sub">opened 29 days ago</div></div>
+        <div class="when"><div class="days">—</div><div class="sub">opened 30 days ago</div></div>
       </article>
       <article class="row" data-sev="triage" data-repo="developer-documentation" data-stale="0" data-approved="0" data-key="mautic/developer-documentation-new#561" data-search="developer-documentation #561 docs: document connectionexception for api library transport errors promptless-for-oss #349 towytowy review this docs pr" data-status="[&quot;needs-operator-review&quot;,false,false,false,false,false,false,false,false,false,false,false,false,false,[],false,null,false,null,null,false,[],[&quot;7.3&quot;,&quot;8.0&quot;],true,true,false,false,false,false]">
         <div class="chk"><input type="checkbox" aria-label="Mark developer-documentation #561: docs: Document ConnectionException for API library transport errors as done"></div>
@@ -1833,7 +1753,7 @@
 
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-10-09T14:20:02.516Z">Fri, Oct 9, 2:20 PM</span> as <code>adiati98</code></div>
+    <div>Generated on <span data-updated-iso="2026-10-09T17:31:42.365Z">Fri, Oct 9, 5:31 PM</span> as <code>adiati98</code></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
