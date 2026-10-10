@@ -1,6 +1,6 @@
 {
   "mautic/developer-documentation-new#714": {
-    "docsUpdatedAt": "2026-10-09T17:44:20Z",
+    "docsUpdatedAt": "2026-10-10T12:59:45Z",
     "codeUpdatedAt": "2026-10-09T17:41:13Z",
     "rawDocsReviews": [
       {
@@ -43,6 +43,13 @@
         },
         "created_at": "2026-10-09T17:41:11Z",
         "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/developer-documentation-new/pull/714?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui-dark.svg?v=2\" alt=\"Review in Change Stack →\" width=\"220\" height=\"32\"></a>\n\n<!-- review_stack_entry_end -->\n<!-- recent_review_start -->\n\nNo actionable comments were generated in the recent review. 🎉\n\n<details>\n<summary>ℹ️ Recent review info</summary>\n\n<details>\n<summary>⚙️ Run configuration</summary>\n\n- **Configuration used**: defaults\n- **Review profile**: CHILL\n- **Plan**: Advanced\n- **Run ID**: `95ce5ee2-dcaa-45cb-b4aa-e1f492673e5a`\n\n<hr>\n\n</details>\n\n<details>\n<summary>📥 Commits</summary>\n\nReviewing files that changed from the base of the PR and between 3d5b303ad43c8b5c3aa592caba7af26c8d0e4919 and a6a26b21285dbfed1a8e4da1f7467d449f31ea45.\n\n<hr>\n\n</details>\n\n<details>\n<summary>📒 Files selected for processing (1)</summary>\n\n* `docs/themes/getting_started.rst`\n\n<hr>\n\n</details>\n\n**Included review availability:** This review used your included allowance. Your plan provides up to 10 included reviews per hour; 9 remain after this review.\n\n<hr>\n\n</details>\n\n---\n\n\n\n<!-- recent_review_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary>📝 Walkthrough</summary>\n\n## Walkthrough\n\nThe sandbox documentation now names blocked functions, describes the error raised when a template calls one, and explains callback behavior for collection filters.\n\n### Changes\n\n**Sandbox documentation**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Document sandbox restrictions** <br> `docs/themes/getting_started.rst`|The documentation names `configGetParameter`, `getEntity`, and `source` as blocked functions and describes `SecurityNotAllowedFunctionError`. It states that the listed collection filters accept arrow-function callbacks and that string callbacks cause a Twig `RuntimeError`.|\n\n<!-- change_assessment_start -->\n**Priority:** ⬇️ Low\n\n**Estimated code review effort:** 1 (Trivial) | ~3 minutes\n\n<!-- change_assessment_commit:\"a6a26b21285dbfed1a8e4da1f7467d449f31ea45\" -->\n**Change:** Other\n<!-- change_assessment_end -->\n\n<hr>\n\n</details>\n\n<!-- walkthrough_end -->\n<!-- final_review_risk_start -->\n**Merge Risk:** **⚪ Minimal** · up to `a6a26`\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"a6a26b21285dbfed1a8e4da1f7467d449f31ea45\",\"coveredCommitId\":\"a6a26b21285dbfed1a8e4da1f7467d449f31ea45\",\"kind\":\"reviewed\"} -->\n\nThis updates the theme sandbox guidance without changing product behavior. The documented restrictions and callback outcomes match the supplied evidence, so no actionable merge risk remains.\n<!-- final_review_risk_end -->\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary>🚥 Pre-merge checks | ✅ 5</summary>\n\n<details>\n<summary>✅ Passed checks (5 passed)</summary>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title clearly identifies the documentation update and the affected Twig collection-filter sandbox restrictions.                                                                                       |\n|      Description check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The description explains the documentation changes, identifies the related issues and source PR, and states that screenshots are not applicable. It also includes verification details and test results.  |\n|     Docstring Coverage     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | No functions found in the changed files to evaluate docstring coverage. Skipping docstring coverage check. Docstring coverage is scoped to functions touched by this diff. Analyzed 0 functions across 0… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<hr>\n\n</details>\n\n<hr>\n\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary>✨ Finishing Touches</summary>\n\n<details open>\n<summary>🧪 Generate unit tests (beta)</summary>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n<hr>\n\n</details>\n\n<hr>\n\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n---\n\n\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "AlexanderZlobinM1"
+        },
+        "created_at": "2026-10-10T12:57:52Z",
+        "body": "Verification completed.\n\n- `mautic/mautic#17620` was merged into the `7.2` branch on 2026-10-09 and removes only the redundant Mautic filter denylist.\n- Core tests confirm normal use of `map`, `filter`, `reduce`, `sort`, and `find`, including arrow-function callbacks.\n- The Twig sandbox still rejects PHP function-name string callbacks (`map(\"system\")`, `filter(\"system\")`, `reduce(\"system\")`, `sort(\"system\")`, `find(\"system\")`) before execution; this is covered by regression tests and Twig `RuntimeError` behavior.\n- This PR correctly distinguishes allowed collection filters from blocked PHP function-name string callbacks.\n- Twig 3.28.0 is present in the Mautic 7.2 lock file, so the wording applies to the target branch.\n\nThe documentation matches the implemented fix; no further changes are required. All PR checks pass: build, prose, Read the Docs, and CodeRabbit."
       }
     ],
     "rawCodeComments": [
@@ -12342,7 +12349,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#1032": {
-    "docsUpdatedAt": "2026-10-09T13:52:19Z",
+    "docsUpdatedAt": "2026-10-10T13:59:53Z",
     "codeUpdatedAt": "2026-10-09T08:12:29Z",
     "rawDocsReviews": [
       {
@@ -12410,6 +12417,34 @@
         },
         "created_at": "2026-10-09T13:52:19Z",
         "body": "@adiati98, here's my review of the updated PR, with a summary first. Thanks to mahmudurrahmanlabib for the revisions. I checked head `075f9b9` against the `mautic/mautic` 7.2 source at `522d2c7`, which includes the merged fix from mautic/mautic#17678 (`78108ca`). I didn't commit, push or open a PR.\n\n**Summary:** The PR now matches the current code. It uses the new reactivation labels, and it addresses every item from my previous review. I found no accuracy problems. Five small items are left, all about style and wording.\n\n### Confirmed against the current code\n- **Labels.** These match `CampaignBundle/Translations/en_US/messages.ini` after #17678:\n  - **Campaign Reactivation Behaviour**\n  - **Restart on reactivation**, **Count delay only while active** and **Count delay regardless of activation state**\n  - **Use global setting**\n  - **Last Activation Date**\n  - The activation message: 'All scheduled events will execute according to the Reactivation Behaviour setting. Currently set to: …'\n\n  Using UK \"Behaviour\" in the bold UI labels and US \"behavior\" in the prose and headings is correct.\n- **Default.** **Count delay regardless of activation state** is the global default (`EventScheduler.php:185`).\n- **Use global setting.** This option appears only on the Campaign form (`CampaignType`, `include_global_option`). When a Campaign inherits the default, the Details panel shows **Use global setting** (`details.html.twig:92`).\n- **Examples.** The three example dates are correct (January 11, January 17 and January 16). They match `EventScheduler::extendTriggerDateWhenCampaignUnpublished()`.\n- **Scheduled activation and deactivation.** `PublishStateService` splits active periods at the scheduled activation and deactivation dates. The **Last Activation Date** is the scheduled activation date when one applies. Line 57 and the line 153 bullet are both accurate.\n- **Confirmation messages.** The activation message shows the option in effect, including the global option when the Campaign inherits it. It appears on the Campaigns list toggle (`PublishToggleSubscriber`) and on the **Active** toggle when you edit an existing Campaign. It doesn't appear when you create a Campaign (`CampaignType.php:72`, which checks `getId()`). Turning a Campaign off asks for confirmation in both places. Lines 160–168 are accurate.\n- **Cron note (line 176) and the January 11 result (line 99).** The Cron job only picks up a pending event when its date has arrived and the Campaign is active (`LeadEventLogRepository::getScheduled()`). At that point it recalculates the date. It reschedules the event if the new date is in the future and runs it if the date has passed (`ScheduledExecutioner::validateSchedule()`).\n- **Contact History.** The entry label **Campaign event scheduled** matches the UI, and the `:ref:` to `History` resolves.\n- **Screenshot.** The new screenshot shows the exact post-#17678 activation message.\n- **Build and Vale.** A full Sphinx HTML build reports nothing new for these pages; the four warnings on these pages come from lines this PR doesn't change. Vale reports the same 44 findings on the `7.2` base and on this branch, and none are on changed lines.\n\n### Small fixes\n1. **`managing_campaigns.rst` line 62.** The \"In the UI, this setting appears as\" wording came from my last review. It was useful when the UI said \"Republish\" and the docs said \"reactivation\". Now that they match, the sentence explains a label readers will already recognize. Suggested text:\n   ```rst\n   You can set **Campaign Reactivation Behaviour** in two places:\n   ```\n2. **`managing_campaigns.rst` line 44.** The new label `.. _Campaign republish behavior:` uses the retired term, and nothing refers to it. All four `:ref:` links point to the `Campaign reactivation behavior` heading. Remove the label, unless you're keeping it on purpose so old `#campaign-republish-behavior` links keep working.\n3. **`managing_campaigns.rst` line 148.** The Details panel opens and closes in place; it isn't a menu. The page also spells it \"drop-down\" at line 20 and \"dropdown\" here. Suggested text:\n   ```rst\n   On the Campaign's page, expand **Details** to view these settings:\n   ```\n   I'd also add to the **Last Activation Date** bullet: \"If the Campaign has never been active, this row shows 'N/A'.\"\n4. **Heading style in the section.** The PR changed \"Configuring\" to **Configure reactivation behavior**, but its siblings still use the \"-ing\" form: **Viewing reactivation details** and **Tracking rescheduled events**. Pick one form for all of them, for example \"Configuring reactivation behavior\" to match the existing headings.\n5. **`importing_campaigns.rst` line 97.** The blank line after the warning text has trailing spaces. Remove them.\n\n### Optional\n- **Line 85.** \"Mautic uses the original trigger date\" mixes in a different term now that the examples say \"Contact reaches the event\". Suggested text: \"Mautic keeps the originally calculated event date, and inactive time doesn't affect scheduling.\"\n- **Line 57.** This paragraph mentions **Count delay only while active** and **Restart on reactivation** before the page introduces them. It might read better at the end of **Reactivation behavior options**.\n\nI checked this round against the source code, the Sphinx build and Vale. I didn't click through the confirmation pop-ups in a running instance this time; the January 11/17/16 example results were tested in a running Mautic 7.2 instance during the previous review.\n"
+      },
+      {
+        "user": {
+          "login": "mahmudurrahmanlabib"
+        },
+        "created_at": "2026-10-10T13:53:11Z",
+        "body": "Thanks @adiati98 and @promptless-for-oss! I’ve addressed all five small fixes:\n\n- Simplified the setting introduction.\n- Removed the unused republish anchor; the reactivation heading and all related links remain intact.\n- Described expanding Details in place and added the 'N/A' case, checked against the Campaign details template.\n- Made the action headings consistent in the '-ing' form.\n- Removed the trailing spaces after the warning.\n\nI also applied both optional improvements: clarified that the original event date stays unchanged for the default policy, and moved the scheduled activation/deactivation explanation after the three options.\n\nThe full HTML build succeeds with no new findings compared with the previous PR revision. Vale has no new findings, the internal section links resolve, and the whitespace check passes.\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-10T13:54:53Z",
+        "body": "Thanks, @mahmudurrahmanlabib. I'm checking the five fixes and two optional changes on the latest revision, and I'll post the results here."
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-10-10T13:54:53Z",
+        "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/user-documentation/pull/1032?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui-dark.svg?v=3\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg?v=3\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg?v=3\" alt=\"Review in Change Stack →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- recent_review_start -->\n\nNo actionable comments were generated in the recent review. 🎉\n\n<details>\n<summary><strong>ℹ️ Recent review info</strong></summary>\n<dl>\n<dd>\n\n<details>\n<summary><strong>⚙️ Run configuration</strong></summary>\n<dl>\n<dd>\n\n- **Configuration used**: defaults\n- **Review profile**: CHILL\n- **Plan**: Advanced\n- **Run ID**: `bdff8601-9591-41df-a274-fe1ef9ad90aa`\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<details>\n<summary><strong>📥 Commits</strong></summary>\n<dl>\n<dd>\n\nReviewing files that changed from the base of the PR and between 7a2525f19399e01b2a5ea7565ac2684a99e476ff and b037ae25d20201b0813da563bf1dafe56f0bc0b7.\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<details>\n<summary><strong>⛔ Files ignored due to path filters (1)</strong></summary>\n<dl>\n<dd>\n\n* `docs/campaigns/images/campaign_activation_prompt_message.png` is excluded by `!**/*.png`\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<details>\n<summary><strong>📒 Files selected for processing (4)</strong></summary>\n<dl>\n<dd>\n\n* `docs/campaigns/creating_campaigns.rst`\n* `docs/campaigns/importing_campaigns.rst`\n* `docs/campaigns/managing_campaigns.rst`\n* `docs/configuration/settings.rst`\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n**Included review availability:** This review used your included allowance. Your plan provides up to 10 included reviews per hour; 9 remain after this review.\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n---\n\n\n\n<!-- recent_review_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>📝 Walkthrough</strong></summary>\n<dl>\n<dd>\n\n## Walkthrough\n\nThe Campaign documentation now explains global and per-Campaign reactivation settings, event-delay policies, and how activation, deactivation, and Cron processing relate to scheduled Campaign events.\n\n### Changes\n\n**Campaign reactivation guidance**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Reactivation setting scope** <br> `docs/campaigns/managing_campaigns.rst`, `docs/configuration/settings.rst`|The documentation describes the global default, the per-Campaign override, and the `Use global setting` option.|\n|**Delay policies and event timing** <br> `docs/campaigns/managing_campaigns.rst`, `docs/campaigns/creating_campaigns.rst`, `docs/campaigns/importing_campaigns.rst`|The guides describe the delay policies, their behavior with scheduled activation and deactivation, and event execution on a Campaign event Cron job run.|\n|**Activation details and event status** <br> `docs/campaigns/managing_campaigns.rst`|The guide describes Campaign Details, activation and deactivation confirmations, Cron recalculation, and viewing the current scheduled date in Contact History. It removes the prior description of rescheduling audit metadata. The bulk-delete instruction remains unchanged.|\n\n<!-- change_assessment_start -->\n**Priority:** ⬇️ Low\n\n**Estimated code review effort:** 2 (Simple) | ~10 minutes\n\n<!-- change_assessment_commit:\"b037ae25d20201b0813da563bf1dafe56f0bc0b7\" -->\n**Change:** Other\n<!-- change_assessment_end -->\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- final_review_risk_start -->\n**Merge Risk:** **⚪ Minimal** · up to `b037a`\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"b037ae25d20201b0813da563bf1dafe56f0bc0b7\",\"coveredCommitId\":\"b037ae25d20201b0813da563bf1dafe56f0bc0b7\",\"kind\":\"reviewed\"} -->\n\nThe PR clarifies reactivation settings and event timing without establishing a conflicting instruction or a runtime behavior change; no merge-blocking risk is identified.\n<!-- final_review_risk_end -->\n<!-- architecture_review_start -->\n### Architecture Summary\n\n**Architecture risk:** **🔵 Low** · up to `b037a`\n\nThe change affects 1 system.\n\n**Changed systems:** `docs`\n\n**Architecture concerns**\nNo architecture-level concerns identified.\n\n<details>\n<summary><strong>Review details</strong></summary>\n<dl>\n<dd>\n\n**Systems and components**\n- _observed_ — docs (service) was modified; 4 changed files map to changed impact.\n\n**Before / after behavior**\n- _observed_ — Modified behavior in docs/campaigns/creating_campaigns.rst: Updated the property labels’ capitalization and spelling. The **Active** description now specifies that scheduled activation and deactivation follow the Campaign reactivation behavior setting.\n- _observed_ — Modified behavior in docs/campaigns/importing_campaigns.rst: The activation warning now describes event execution on the next Campaign event Cron job run and directs readers to the Campaign Reactivation Behaviour setting for relative delays. It replaces the claim of immediate execution and the detailed Republish Behavior option descriptions, including their timer rules. The prompt image alt text now refers to the effective Reactivation Behaviour setting.\n- _observed_ — Modified behavior in docs/campaigns/managing_campaigns.rst: Adds instructions for setting reactivation behavior globally or per Campaign, including the global default and the Campaign-only `Use global setting` option. A note distinguishes restarting pending event delays from restarting the Campaign or repeating executed events, and points to the separate contact-restart setting.\n- _observed_ — Modified behavior in docs/campaigns/managing_campaigns.rst: Retitles and restates the default policy: event dates remain as originally calculated, and overdue events can execute on a Cron job run after reactivation. The example now identifies when the Contact reaches the event and describes Cron processing on or after the scheduled date.\n\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<!-- architecture_review_end -->\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks | <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v1.svg\" width=\"14\" height=\"17\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 5</strong></summary>\n<dl>\n<dd>\n\n<details>\n<summary><strong>✅ Passed checks (5 passed)</strong></summary>\n<dl>\n<dd>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title clearly and concisely describes the main documentation changes to Campaign reactivation behavior and related links.                                                                             |\n|      Description check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The description explains the changes, identifies affected documentation areas, references issue `#739`, and provides detailed validation and test-environment information. It does not use the template he… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Issue `#739` requires a dedicated Republish behavior section in an appropriate documentation location and links from relevant documentation areas. The PR adds the central Campaign reactivation behavior … |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The changes remain within the documentation objective in `#739`. Updates to Campaign creation, import, management, and configuration pages provide context or links to the central behavior section. The a… |\n|     Docstring Coverage     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | No functions found in the changed files to evaluate docstring coverage. Skipping docstring coverage check. Docstring coverage is scoped to functions touched by this diff. Analyzed 0 functions across 0… |\n\n</dd>\n</dl>\n</details>\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>✨ Finishing Touches</strong></summary>\n<dl>\n<dd>\n\n<details open>\n<summary><strong>🧪 Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n<hr>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n---\n\n\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-10T13:59:53Z",
+        "body": "Thanks, @mahmudurrahmanlabib. I checked the latest commit (`b037ae2`), and all seven items are fixed. The changes didn't add any accuracy, build or Vale problems.\n\n1. **Setting introduction:** fixed. It now reads \"You can set **Campaign Reactivation Behaviour** in two places:\".\n2. **Unused republish anchor:** fixed. The `.. _Campaign republish behavior:` label is gone, and \"republish\" no longer appears anywhere in `docs/`. All four `:ref:` links to `Campaign reactivation behavior` (in the creating, importing, settings and managing pages) still resolve.\n3. **Details panel:** fixed. \"Expand **Details**\" describes the panel correctly. The 'N/A' bullet matches `details.html.twig`, which shows 'N/A' when there's no last activation date.\n4. **Heading style:** fixed. **Configuring reactivation behavior**, **Viewing reactivation details**, **Activating and deactivating Campaigns**, **Tracking rescheduled events** and **Deleting a Campaign** all use the \"-ing\" form now.\n5. **Trailing spaces:** fixed. `git diff --check` against `7.2` is clean.\n6. **Optional, original event date:** done. \"Mautic keeps the originally calculated event date\" now matches the \"Calculated event date\" wording in the examples.\n7. **Optional, scheduled activation paragraph:** done. It now comes after the three options.\n\n**Optional, not a blocker:** In its new position, \"follow the same policy\" no longer clearly refers back to the reactivation setting. You could write: \"Scheduled activation and deactivation dates also follow the **Campaign Reactivation Behaviour** setting.\" Also, the heading \"Scheduling activation and deactivation\" sounds like a set of steps, but the section only explains how the behavior works. \"Scheduled activation and deactivation\" would describe it better. The PR is fine to merge either way.\n\n**Checks:** The full Sphinx HTML build reports the same four warnings on these pages as the previous revision. All four are on lines this PR doesn't change: three duplicate labels in `importing_campaigns.rst` and the `sender resolution hierarchy` ref in `settings.rst`. Vale reports the same 44 findings on the four changed files before and after this commit. I didn't test the UI in a running instance this round. The only new factual claim is the 'N/A' case, and I checked it against the 7.2 template.\n"
       }
     ],
     "rawCodeComments": [
@@ -13023,6 +13058,177 @@
       }
     ],
     "rawCodeReviews": [],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#766": {
+    "docsUpdatedAt": "2026-10-09T21:06:41Z",
+    "codeUpdatedAt": "2026-10-09T21:15:18Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T21:06:40Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T21:06:43Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T21:06:46Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T21:06:48Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T21:06:50Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-10-09T21:06:11Z",
+        "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: skip review by coderabbit.ai -->\n\n> [!IMPORTANT]\n> ## Draft PR not reviewed\n> \n> Draft PRs are not automatically reviewed by default.\n> \n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger a manual review\n> \n> To automatically review draft PRs, update your CodeRabbit configuration:\n> \n> ```yaml\n> reviews:\n>   auto_review:\n>     drafts: true\n> ```\n\n<!-- end of auto-generated comment: skip review by coderabbit.ai -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n---\n\n\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"
+      }
+    ],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-10-09T20:29:46Z",
+        "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: skip review by coderabbit.ai -->\n\n> [!IMPORTANT]\n> ## Review skipped\n> \n> Auto reviews are disabled on base/target branches other than the default branch.\n> \n> \n> \n> Please check the settings in the CodeRabbit UI or the `.coderabbit.yaml` file in this repository. To trigger a single review, invoke the `@coderabbitai review` command.\n> \n> <details>\n> <summary>⚙️ Run configuration</summary>\n> \n> - **Configuration used**: defaults\n> - **Review profile**: CHILL\n> - **Plan**: Advanced\n> - **Run ID**: `da376075-6a1a-4822-bc0e-39266e8e4921`\n> \n> \n> <hr>\n> \n> </details>\n> \n> You can disable this status message by setting the `reviews.review_status` to `false` in the CodeRabbit configuration file.\n> \n> Use the checkbox below for a quick retry:\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> 🔍 Trigger review\n\n<!-- end of auto-generated comment: skip review by coderabbit.ai -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n---\n\n\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-10-09T21:06:07Z",
+        "body": "## [![Quality Gate Failed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-failed-20px.png 'Quality Gate Failed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17692) **Quality Gate failed**  \nFailed conditions  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/failed-16px.png '') [D Security Rating on New Code](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17692&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true) (required ≥ A)  \n  \n<!-- sqra:qg_revision=8b053f7458a5dd6917998979786b9448d19521fa7b8af53e1af8394645c747f5 -->\n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17692)\n\n##   \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/light_bulb-16px.png '') Catch issues before they fail your Quality Gate with our IDE extension ![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/sonarlint-16px.png '') [SonarQube for IDE](https://www.sonarsource.com/products/sonarlint/features/connected-mode/?referrer=pull-request)\n\n"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-09T21:09:52Z",
+        "body": "### Promptless documentation updates\n\n- [Document AbstractStandardFormController constructor and hook signature changes in the Mautic 8 upgrade guide](https://app.gopromptless.ai/suggestions/63d3e9b8-fd4a-4da4-9970-49d90eeb3f95) adds a section to the Mautic 7 to Mautic 8 Plugin upgrade guide covering the new constructor, hook signatures, and exceptions for Plugin controllers that extend `AbstractStandardFormController`. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/766)"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "github-advanced-security[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T20:33:10Z",
+        "body": ""
+      }
+    ],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#765": {
+    "docsUpdatedAt": "2026-10-09T20:50:07Z",
+    "codeUpdatedAt": "2026-10-09T21:33:40Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T20:50:07Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T20:50:10Z",
+        "body": ""
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T20:50:13Z",
+        "body": ""
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-10-09T20:49:58Z",
+        "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: skip review by coderabbit.ai -->\n\n> [!IMPORTANT]\n> ## Draft PR not reviewed\n> \n> Draft PRs are not automatically reviewed by default.\n> \n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger a manual review\n> \n> To automatically review draft PRs, update your CodeRabbit configuration:\n> \n> ```yaml\n> reviews:\n>   auto_review:\n>     drafts: true\n> ```\n\n<!-- end of auto-generated comment: skip review by coderabbit.ai -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n---\n\n\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"
+      }
+    ],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-10-09T20:08:48Z",
+        "body": "<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- This is an auto-generated comment: skip review by coderabbit.ai -->\n\n> [!IMPORTANT]\n> ## Review skipped\n> \n> Auto reviews are disabled on base/target branches other than the default branch.\n> \n> \n> \n> Please check the settings in the CodeRabbit UI or the `.coderabbit.yaml` file in this repository. To trigger a single review, invoke the `@coderabbitai review` command.\n> \n> <details>\n> <summary>⚙️ Run configuration</summary>\n> \n> - **Configuration used**: defaults\n> - **Review profile**: CHILL\n> - **Plan**: Advanced\n> - **Run ID**: `08691604-d873-480f-973b-693a09c70b7d`\n> \n> \n> <hr>\n> \n> </details>\n> \n> You can disable this status message by setting the `reviews.review_status` to `false` in the CodeRabbit configuration file.\n> \n> Use the checkbox below for a quick retry:\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> 🔍 Trigger review\n\n<!-- end of auto-generated comment: skip review by coderabbit.ai -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n---\n\n\n\n\n<sub>Comment `@coderabbitai help` to get the list of available commands.</sub>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-10-09T20:44:41Z",
+        "body": "Ready to go :+1: "
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-10-09T20:52:05Z",
+        "body": "### Promptless documentation updates\n\n- [Document removal of DynamicContentEvents::TOKEN_REPLACEMENT in Mautic 8](https://app.gopromptless.ai/suggestions/f5dc14b6-6169-4174-8bc7-944c56b20a34) adds the removed constant and its `TokenReplacementEvent` replacement to the \"Removed event constants\" table in the developer docs. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/765)"
+      },
+      {
+        "user": {
+          "login": "sonarqubecloud[bot]"
+        },
+        "created_at": "2026-10-09T21:33:40Z",
+        "body": "## [![Quality Gate Passed](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/checks/QualityGateBadge/qg-passed-20px.png 'Quality Gate Passed')](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17691) **Quality Gate passed**  \nIssues  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 New issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17691&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/accepted-16px.png '') [0 Accepted issues](https://sonarcloud.io/project/issues?id=mautic_mautic&pullRequest=17691&issueStatuses=ACCEPTED)\n\nMeasures  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0 Security Hotspots](https://sonarcloud.io/project/security_hotspots?id=mautic_mautic&pullRequest=17691&issueStatuses=OPEN,CONFIRMED&sinceLeakPeriod=true)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Coverage on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17691&metric=new_coverage&view=list)  \n![](https://sonarsource.github.io/sonarcloud-github-static-resources/v2/common/passed-16px.png '') [0.0% Duplication on New Code](https://sonarcloud.io/component_measures?id=mautic_mautic&pullRequest=17691&metric=new_duplicated_lines_density&view=list)  \n  \n<!-- sqra-placement-anchor -->\n[See analysis details on SonarQube Cloud](https://sonarcloud.io/dashboard?id=mautic_mautic&pullRequest=17691)\n\n"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "github-advanced-security[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-10-09T20:23:07Z",
+        "body": ""
+      }
+    ],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   }
