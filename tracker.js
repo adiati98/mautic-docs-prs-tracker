@@ -905,9 +905,121 @@ function tryExtractAppPR(text, sourceRepo) {
 // purposes. So "first PR number mentioned" is closer to this project's real
 // convention than "whatever's under this particular heading," at least
 // until there's positive evidence otherwise.
+// A paragraph whose opening clause says the things it goes on to list are
+// *not* part of this PR:
+//
+//   Not changed (listed for human review): the Campaign 'Reactivation'
+//   setting labels (renamed in 7.2 by mautic/mautic#17678, not yet in 8.x) …
+//
+//   Checked against 8.x with no change needed: `event_listeners.rst`
+//   (outside the topics covered by #765 and #686) …
+//
+// The PR numbers in there are citations for a reviewer — "here is the code
+// change that proves this label was renamed" — not the code PR this docs PR
+// accompanies. Dropped before the body scan so first-mention-wins never
+// picks one up.
+//
+// Three things keep this narrow. The marker has to open the paragraph, so a
+// passing "not yet merged into 8.x" in ordinary prose doesn't discard the
+// paragraph around it. A colon has to close the opening clause, which is
+// what makes it a "here is the list" sentence. And the clause itself stays
+// short, so a long sentence that merely starts with one of these words
+// doesn't match.
+const NOT_DOCUMENTED_HERE_PARAGRAPH =
+	/^(?:\*\*)?(?:not\s+(?:changed|updated|documented)|unchanged|checked\b[^:\n]{0,120}?no\s+change\s+needed)\b[^:\n]{0,120}:/i
+
+function stripNotDocumentedHereParagraphs(description) {
+	return description
+		.split(/\n\s*\n/)
+		.filter((para) => !NOT_DOCUMENTED_HERE_PARAGRAPH.test(para.trim()))
+		.join("\n\n")
+}
+
+// Extract app PR info from description (supports any mautic/* repo). Takes
+// the first match in the body.
+//
+// A "prefer a recognized heading (Promptless's 'Trigger Events', this repo's
+// 'Linked issue' template section) over a plain first-match scan" version of
+// this was tried and reverted: on mautic/user-documentation#774, the
+// "Trigger Events" PR (mautic/api-library#348, a validation tweak) was a
+// different, less-relevant PR than the one actually mentioned first in the
+// prose (mautic/mautic#15404, the real feature PR) — humans in the thread
+// confirmed the first-mentioned one was the one that mattered for review
+// purposes. So "first PR number mentioned" is closer to this project's real
+// convention than "whatever's under this particular heading," at least
+// until there's positive evidence otherwise.
 function extractAppPR(description, sourceRepo) {
 	if (!description) return null
-	return tryExtractAppPR(description, sourceRepo)
+	return tryExtractAppPR(stripNotDocumentedHereParagraphs(description), sourceRepo)
+}
+
+// Promptless ends every body it generates with a "**Trigger Events**" list —
+// the things that made it open this PR. Each entry is one markdown link, and
+// the link target says what kind of trigger it was:
+//
+//   a code PR          https://github.com/mautic/mautic/pull/17697
+//   a docs-repo PR     https://github.com/mautic/user-documentation/pull/991
+//   a human's request  https://app.gopromptless.ai/tasks/<uuid>  ("New Task: …")
+//
+// Returned as plain text so the caller can scan it with the same extractor it
+// uses on the body. The list is bounded at the next heading, because
+// Promptless and CodeRabbit both append sections after it ("## Summary by
+// CodeRabbit", "**Synced with #712 review**").
+const TRIGGER_EVENTS_HEADING = "**Trigger Events**"
+
+function triggerEventsSection(description) {
+	if (!description) return null
+	const start = description.indexOf(TRIGGER_EVENTS_HEADING)
+	if (start === -1) return null
+	const body = description.slice(start + TRIGGER_EVENTS_HEADING.length)
+	const nextHeading = body.search(/^(?:#{1,6} |\*\*[^*\n]+\*\*\s*$)/m)
+	return nextHeading === -1 ? body : body.slice(0, nextHeading)
+}
+
+// A Promptless *task* trigger: the Education Team opened Promptless and
+// asked for a piece of documentation work directly, instead of Promptless
+// reacting to something on GitHub. Those triggers are the only ones whose
+// link points at a task in Promptless itself ("New Task: Please audit the
+// whole 8.0 docs…"). Matched by the /tasks/ path, not by the "New Task"
+// label, so a reworded label still reads the same. The /suggestions/ link at
+// the top of every Promptless body is a different path and never matches —
+// and is outside the Trigger Events section anyway.
+const PROMPTLESS_TASK_TRIGGER_PATTERN = /app\.gopromptless\.ai\/tasks\//i
+
+// True when a Promptless PR is one the Education Team asked for directly and
+// no code change is behind it — what the tracker calls a standalone docs
+// task.
+//
+// Both halves have to hold, and they come from the Trigger Events list:
+//
+//   1. at least one trigger is a Promptless task (a human's request), and
+//   2. no trigger names a PR outside the docs repo.
+//
+// Condition 2 alone is not enough. Promptless also gets triggered by a
+// request made *on* a docs PR — a review asking it to carry reviewed content
+// onto another branch — and that docs PR can be documenting a code change
+// that hasn't merged yet, which the row must keep tracking. Requiring a task
+// trigger as well keeps those PRs on the ordinary first-mention-wins route
+// (mautic/user-documentation#1031 is one: triggered by a review request on
+// #991, but it documents a still-open feature PR named in its prose).
+//
+// This matters because the prose of a standalone PR legitimately mentions
+// code PRs for reasons that have nothing to do with linkage — the 8.0 audit
+// PRs carry a "Not changed (listed for human review)" paragraph citing the
+// code PRs that renamed labels on another branch. extractAppPR's
+// first-mention-wins scan reads one of those as the accompanying code PR,
+// and the row then chases a code author who never asked for these docs
+// (user-documentation PR 1046 pointed at a 7.2 terminology PR this way).
+//
+// Only the *existence* of a link is decided here. When a trigger does name a
+// code PR, which PR wins is still first-mention-wins over the whole body —
+// the precedent extractAppPR's comment records.
+function isStandaloneDocsTask({ docsAuthor, description, sourceRepo }) {
+	if (docsAuthor !== PROMPTLESS) return false
+	const section = triggerEventsSection(description)
+	if (section === null) return false
+	if (!PROMPTLESS_TASK_TRIGGER_PATTERN.test(section)) return false
+	return tryExtractAppPR(section, sourceRepo) === null
 }
 
 // ---------------------------------------------------------------------------
@@ -1584,7 +1696,18 @@ async function main() {
 			})
 		const effectiveHasMilestone = hasMilestone || isDependabotPR || isManualDependencyBackport
 
-		let appPRData = extractAppPR(pr.body, pr.sourceRepo)
+		// A docs task the Education Team triggered in Promptless by hand has
+		// no accompanying code PR, whatever its prose happens to mention (see
+		// isStandaloneDocsTask). Both routes to a code PR are skipped: the
+		// body scan, and the backport-parent inheritance below — a sibling
+		// audit PR on another branch can carry the same title, and borrowing
+		// its code PR would reintroduce the same wrong link.
+		const standaloneDocsTask = isStandaloneDocsTask({
+			docsAuthor: pr.user.login,
+			description: pr.body,
+			sourceRepo: pr.sourceRepo,
+		})
+		let appPRData = standaloneDocsTask ? null : extractAppPR(pr.body, pr.sourceRepo)
 		// A backport's body often omits the code PR link, but its parent has
 		// it. Find the parent first in that case and borrow the parent's link,
 		// so the row shows and tracks the real code PR. This lookup has no
@@ -1594,7 +1717,7 @@ async function main() {
 		// answers this — a bump never links a code PR of its own — so it's
 		// used as-is instead of searching again.
 		let inheritedBackportParent = manualDependencyBackportParent
-		if (!appPRData && !inheritedBackportParent) {
+		if (!appPRData && !inheritedBackportParent && !standaloneDocsTask) {
 			inheritedBackportParent = await findBackportParent({
 				repo: pr.sourceRepo,
 				number: pr.number,
@@ -6236,6 +6359,9 @@ module.exports = {
 	normalizeTitleForBackportMatch,
 	extractBackportParentNumber,
 	extractReferencedPRNumber,
+	extractAppPR,
+	triggerEventsSection,
+	isStandaloneDocsTask,
 	resolveManualDependencyBackport,
 	findBackportParent,
 }
