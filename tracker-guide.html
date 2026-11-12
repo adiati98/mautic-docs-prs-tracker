@@ -300,7 +300,7 @@
 
   <header class="top">
     <h1>Guidelines</h1>
-    <span class="updated" data-updated-iso="2026-11-11T22:39:21.905Z">Updated Wed, Nov 11, 10:39 PM</span>
+    <span class="updated" data-updated-iso="2026-11-12T09:46:25.138Z">Updated Thu, Nov 12, 9:46 AM</span>
     <a class="nav-link" href="tracker-report.html">← Dashboard</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
@@ -470,14 +470,15 @@
       <div class="note">The docs PR targets a different branch than the linked code PR says it should.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add needs-rebase label</span></div>
         If it's still a <b>Draft</b>, add the <code>needs-rebase</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.
+        The tracker uses the code PR's milestone to decide the right branch. One exception: if the code PR is already merged into a version branch (like 7.2), that branch wins, because the code is really there. The docs PR then stays on that branch and gets copied to the newer branches.
       </div>
     </div>
 
     <div class="scenario">
       <h3>The docs PR needs a backport</h3>
       <div class="note">The PR targets a version branch other than the one it should update.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
-        Apply an update from an older version branch to the newer branches too. The row names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Work through the whole list.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">needs-backport: copy to 7.3 and 8.0</span><span class="chip backport">Final review · backport, then merge</span></div>
+        Apply an update from an older version branch to the newer branches too. Before the label is added, the row text names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Once the <code>needs-backport</code> label is on, a chip names those branches instead, e.g. <em>"needs-backport: copy to 7.3 and 8.0"</em>. A branch drops off the list when a backport PR for it exists. Work through the whole list.
         Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to [branch] branch</code>.
       </div>
     </div>
@@ -582,7 +583,7 @@
 
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="2026-11-11T22:39:21.905Z">Wed, Nov 11, 10:39 PM</span></div>
+    <div>Generated on <span data-updated-iso="2026-11-12T09:46:25.138Z">Thu, Nov 12, 9:46 AM</span></div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
