@@ -1777,10 +1777,25 @@ async function main() {
 		// dev-line branch ("7.x") means the version after the newest one cut
 		// from that line (see nextMinorForDevLine). Anything else — a feature
 		// branch, "main" — names no version at all, so stay silent.
+		//
+		// One exception beats the milestone: a code PR already *merged* into a
+		// specific release branch ("7.2"). The merge is a fact — the code is
+		// in that branch and ships in its next patch release — while the
+		// milestone is a label someone set and can be stale or wrong.
+		// mautic/mautic PR 17303 is the case that showed this: milestoned
+		// 7.3.0-rc, merged into 7.2, shipped in 7.2.2. Its docs belong on 7.2,
+		// then copied forward to newer branches like any other older-branch
+		// PR (newerDocsBranches). A merge into a dev line ("7.x") names no
+		// version by itself, so the milestone still wins there, and an open
+		// code PR can still be retargeted, so the milestone wins there too.
 		const codeMilestoneBranch = milestoneVersion(codeMilestoneTitle)
-		const codeExpectedFromBaseBranch = codeMilestoneBranch === null && codeBaseBranch !== null
-		const codeExpectedBranch =
-			codeMilestoneBranch !== null
+		const codeExpectedFromMergedBranch =
+			codeMerged && codeBaseBranch !== null && RELEASE_BRANCH_PATTERN.test(codeBaseBranch)
+		const codeExpectedFromBaseBranch =
+			!codeExpectedFromMergedBranch && codeMilestoneBranch === null && codeBaseBranch !== null
+		const codeExpectedBranch = codeExpectedFromMergedBranch
+			? codeBaseBranch
+			: codeMilestoneBranch !== null
 				? codeMilestoneBranch
 				: codeBaseBranch === null
 					? null
@@ -2588,6 +2603,7 @@ async function main() {
 			codeMilestoneBranch,
 			codeExpectedBranch,
 			codeExpectedFromBaseBranch,
+			codeExpectedFromMergedBranch,
 			docsMilestoneBranch,
 			wrongBranchFlag,
 			backportParentNumber: backportParent ? backportParent.number : null,
@@ -3055,21 +3071,9 @@ function metaLine(pr) {
 
 	// Approval is now a chip (see approvalChips) — noticeable there in a way
 	// this prose line never was.
-	if (pr.backportModifierActive) {
-		parts.push(
-			backportTargetsText(pr),
-		)
-	} else if (
-		// The label is on but the PR isn't ready to merge yet — no ask here
-		// (the label is the ask, and it's done), just the checklist of branches
-		// that still need the change, so it isn't hidden until approval. Skipped
-		// for a wrong-branch PR (not a backport), for a backport itself (it
-		// follows its parent), and once every branch is already covered.
-		pr.hasBackportLabel &&
-		!pr.rebaseWinsOverBackport &&
-		!pr.backportParentNumber &&
-		(pr.outstandingNewerBranches ?? []).length > 0
-	) {
+	// With the needs-backport label on, the branch list lives in its own
+	// chip (backportToChip), so it isn't repeated here.
+	if (pr.backportModifierActive && !backportToChip(pr)) {
 		parts.push(backportTargetsText(pr))
 	}
 	if (pr.rebaseWinsOverBackport) {
@@ -3212,6 +3216,8 @@ function chipsFor(pr) {
 	if (backportChildren) chips.push(backportChildren)
 	const backportParentStatus = backportParentStatusChip(pr)
 	if (backportParentStatus) chips.push(backportParentStatus)
+	const backportTo = backportToChip(pr)
+	if (backportTo) chips.push(backportTo)
 	const codeMilestone = codeMilestoneAdvisoryChip(pr)
 	if (codeMilestone) chips.push(codeMilestone)
 	// The branch has to exist before the PR can point at it, so this ask
@@ -3430,6 +3436,24 @@ function backportTargetsText(pr) {
 	return `${target} — also needs ${list}`
 }
 
+// The needs-backport label is on, so the ask to add it is done — but the
+// label alone doesn't say *where* the change still has to go. This names
+// every newer docs branch that has no confirmed backport PR yet, so a
+// maintainer can open one per branch without working the list out. Skipped
+// for a wrong-branch PR (it gets moved, not copied), for a backport itself
+// (its parent carries the list), and once every branch is covered.
+function backportToChip(pr) {
+	if (!pr.hasBackportLabel || pr.rebaseWinsOverBackport || pr.backportParentNumber) return null
+	const outstanding = pr.outstandingNewerBranches ?? []
+	if (outstanding.length === 0) return null
+	const names = outstanding.map((b) => escapeHtml(b))
+	const list =
+		names.length === 1
+			? names[0]
+			: `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`
+	return { cls: "backport", text: `${BACKPORT_LABEL}: copy to ${list}` }
+}
+
 // Says why this PR sits on a branch the code PR never named, so the row reads
 // as settled rather than as a missing "Wrong branch" warning. Shown wherever
 // that warning would have been, and on quiet rows too — a maintainer glancing
@@ -3561,9 +3585,11 @@ function codeMilestoneAdvisoryChip(pr) {
 	// Why we believe that version — a milestone someone set, or arithmetic on
 	// the code PR's dev-line branch. Worth showing: the second is a
 	// derivation, and a maintainer may want to sanity-check it.
-	const source = pr.codeExpectedFromBaseBranch
-		? `code PR has no milestone and targets ${escapeHtml(pr.codeBaseBranch)}`
-		: `code PR milestone ${expected}`
+	const source = pr.codeExpectedFromMergedBranch
+		? `code PR merged into ${escapeHtml(pr.codeBaseBranch)}`
+		: pr.codeExpectedFromBaseBranch
+			? `code PR has no milestone and targets ${escapeHtml(pr.codeBaseBranch)}`
+			: `code PR milestone ${expected}`
 	if (pr.wrongBranchFlag && pr.docsMilestoneWrongFlag) {
 		return {
 			cls: "manual",
@@ -3705,6 +3731,8 @@ function waitingChipsFor(pr) {
 	if (backportChildren) chips.push(backportChildren)
 	const backportParentStatus = backportParentStatusChip(pr)
 	if (backportParentStatus) chips.push(backportParentStatus)
+	const backportTo = backportToChip(pr)
+	if (backportTo) chips.push(backportTo)
 	const community = communityChip(pr)
 	if (community) chips.push(community)
 	if (pr.category === "waiting-escalation-response") {
@@ -3809,6 +3837,7 @@ function renderMonitoringRow(pr) {
 		staleChip(pr),
 		docsBackportChip(pr),
 		backportChildrenChip(pr),
+		backportToChip(pr),
 		remindedOpenChip(pr),
 		...approvalChips(pr),
 	].filter(Boolean)
@@ -6195,14 +6224,15 @@ function generateGuideHTML({ now }) {
       <div class="note">The docs PR targets a different branch than the linked code PR says it should.
         <div class="see"><span class="lbl">You'll see</span><span class="chip manual">Wrong branch — docs targets 7.2, should be 7.3 (code PR milestone 7.3)</span><span class="chip setup">Add ${NEEDS_REBASE_LABEL} label</span></div>
         If it's still a <b>Draft</b>, add the <code>${NEEDS_REBASE_LABEL}</code> label. If it's ready for review, ask Promptless to rebase it onto the branch named in the tag.
+        The tracker uses the code PR's milestone to decide the right branch. One exception: if the code PR is already merged into a version branch (like 7.2), that branch wins, because the code is really there. The docs PR then stays on that branch and gets copied to the newer branches.
       </div>
     </div>
 
     <div class="scenario">
       <h3>The docs PR needs a backport</h3>
       <div class="note">The PR targets a version branch other than the one it should update.
-        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">Final review · backport, then merge</span></div>
-        Apply an update from an older version branch to the newer branches too. The row names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Work through the whole list.
+        <div class="see"><span class="lbl">You'll see</span><span class="chip setup">Add needs-backport label</span><span class="chip backport">${BACKPORT_LABEL}: copy to 7.3 and 8.0</span><span class="chip backport">Final review · backport, then merge</span></div>
+        Apply an update from an older version branch to the newer branches too. Before the label is added, the row text names every branch that needs the same update, e.g. <em>"targets 7.2 - also needs 7.3 and 8.0"</em>. Once the <code>${BACKPORT_LABEL}</code> label is on, a chip names those branches instead, e.g. <em>"${BACKPORT_LABEL}: copy to 7.3 and 8.0"</em>. A branch drops off the list when a backport PR for it exists. Work through the whole list.
         Before merging, ask Promptless to cherry-pick the changes onto the other branch(es) that need it. For example: <code>@promptless-for-oss please cherry-pick the changes to [branch] branch</code>.
       </div>
     </div>
