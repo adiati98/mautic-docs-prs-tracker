@@ -2682,6 +2682,7 @@ async function main() {
 	saveCache(cache)
 
 	resolveBackportRelationships(prData)
+	resolveSiblingReminders(prData)
 
 	const failNote = fetchFailures > 0 ? `, ${fetchFailures} fetch failed (kept prior)` : ""
 	const skippedNote =
@@ -2891,6 +2892,7 @@ function statusSignature(pr) {
 		pr.codeClosed,
 		pr.operatorReviewDone,
 		pr.pingEverSent,
+		pr.remindedViaSibling ? `${pr.remindedViaSibling.repoShort}#${pr.remindedViaSibling.number}` : null,
 	])
 }
 
@@ -3241,6 +3243,15 @@ function reviewNowChip(pr) {
 // built entirely around this ask.
 function remindCodeAuthorChip(pr) {
 	if (pr.staleFlag) return null
+	// The author was already reminded on a sibling docs PR for the same code
+	// PR, so asking again would be a duplicate. Say where it was done instead.
+	if (pr.remindedViaSibling) {
+		const s = pr.remindedViaSibling
+		return {
+			cls: "muted",
+			text: `✅ Code PR author already reminded through ${escapeHtml(s.repoShort)} #${s.number}`,
+		}
+	}
 	return {
 		cls: "nudge1",
 		text: pr.pingEverSent
@@ -3575,6 +3586,44 @@ function resolveBackportRelationships(prData) {
 		if (pr.newerDocsBranches.length > 0 && pr.outstandingNewerBranches.length === 0) {
 			pr.backportLabelFlag = false
 			pr.backportModifierActive = false
+		}
+	}
+}
+
+// One code PR can have several open docs PRs in the same docs repo: the same
+// change copied to other branches. The code author reviews that content once,
+// so one reminder covers all of them. A user-docs PR and a developer-docs PR
+// for the same code PR are different content, so each is reminded on its own
+// and they are never grouped here. A ping is only looked for on a PR's own thread
+// and on the code PR, so a reminder sent on one docs PR is invisible to its
+// siblings, and the report would ask for the same reminder again. This pass
+// finds the most recent ping on any same-repo sibling and records it on the PRs that
+// have none of their own, so the report can say "already reminded" there
+// instead of asking again. It adds a fact only; it never changes a category.
+function resolveSiblingReminders(prData) {
+	const groups = new Map()
+	for (const pr of prData) {
+		if (!pr.appPRNumber) continue
+		const key = `${pr.sourceRepo}|${pr.appPRRepo}#${pr.appPRNumber}`
+		if (!groups.has(key)) groups.set(key, [])
+		groups.get(key).push(pr)
+	}
+	for (const group of groups.values()) {
+		if (group.length < 2) continue
+		for (const pr of group) {
+			if (pr.pingEverSent) continue
+			let latest = null
+			for (const sibling of group) {
+				if (sibling === pr || !sibling.pingEverSent || !sibling.lastPingDate) continue
+				if (!latest || sibling.lastPingDate > latest.lastPingDate) latest = sibling
+			}
+			if (latest) {
+				pr.remindedViaSibling = {
+					repoShort: latest.repoShort,
+					number: latest.number,
+					date: latest.lastPingDate,
+				}
+			}
 		}
 	}
 }
