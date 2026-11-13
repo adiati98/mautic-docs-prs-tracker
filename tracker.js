@@ -140,7 +140,9 @@ function makeRequest(url) {
 				res.on("data", (chunk) => (data += chunk))
 				res.on("end", () => {
 					if (res.statusCode >= 400) {
-						reject(new Error(`GitHub API error ${res.statusCode}: ${data}`))
+						const err = new Error(`GitHub API error ${res.statusCode}: ${data}`)
+						err.statusCode = res.statusCode
+						reject(err)
 					} else {
 						resolve(JSON.parse(data))
 					}
@@ -239,7 +241,13 @@ async function fetchIssueEvents(repo, number) {
 	}
 }
 
-async function fetchCodePR(repo, number) {
+// quietNotFound is for callers that only *guess* that a number is a PR — a
+// "#123" picked out of a PR body while looking for a backport parent. That
+// number is often an issue, and GitHub's pulls endpoint answers 404 for an
+// issue. That's an expected "no", not a failure, so it isn't logged. Any other
+// error (a 503, a rate limit) is still logged, and a real code PR lookup
+// still logs a 404 too, since there it means a broken link.
+async function fetchCodePR(repo, number, { quietNotFound = false } = {}) {
 	try {
 		const pr = await makeRequest(
 			`https://api.github.com/repos/${repo}/pulls/${number}`,
@@ -255,7 +263,9 @@ async function fetchCodePR(repo, number) {
 			body: pr.body || "",
 		}
 	} catch (e) {
-		console.error(`Error fetching code PR ${repo}#${number}:`, e.message)
+		if (!(quietNotFound && e.statusCode === 404)) {
+			console.error(`Error fetching code PR ${repo}#${number}:`, e.message)
+		}
 		return {
 			merged: false,
 			mergedAt: null,
@@ -498,7 +508,7 @@ async function resolveManualDependencyBackport({ repo, number, title, body, base
 	let parent = null
 	const referencedNumber = extractReferencedPRNumber(repo, `${title}\n${body || ""}`)
 	if (referencedNumber && referencedNumber !== number) {
-		const referencedPR = await fetchCodePR(repo, referencedNumber)
+		const referencedPR = await fetchCodePR(repo, referencedNumber, { quietNotFound: true })
 		if (referencedPR.author === DEPENDABOT_LOGIN) {
 			isManualDependencyBackport = true
 			parent = {
@@ -527,8 +537,9 @@ async function resolveManualDependencyBackport({ repo, number, title, body, base
 //
 //   1. the body/title names the parent PR in backport language
 //      ("Backport of ... (#913)", "backported from #913", "cherry-pick #913")
-//   2. the title carries a branch suffix — "(8.0 backport)", "(8.0)" —
-//      naming the branch the PR actually targets
+//   2. the title carries a branch marker — "(8.0 backport)", "(8.0)" at the
+//      end, or "docs: [8.0] …" at the start — naming the branch the PR
+//      actually targets
 //   3. nothing at all: the title is identical to the parent's, bar any such
 //      suffix
 //
@@ -549,9 +560,21 @@ async function resolveManualDependencyBackport({ repo, number, title, body, base
 const BACKPORT_TITLE_SUFFIX_PATTERN =
 	/[\s—-]*[([](?:backport\s+)?([\w.]+)(?:\s+(?:backport|port))?[)\]]\s*$|[\s—-]+branch\s+([\w.]+)\s*$/i
 
+// Promptless also puts the same marker at the *start* of the title, right
+// after the commit-style "docs:" prefix — "docs: [8.0] Document …" next to a
+// plain "docs: Document …" on 7.3. Only square brackets holding a version-like
+// branch name ("8.0", "5.x") count here, so a leading "[WIP]" or "[Feature]"
+// is never read as a branch. Group 1 keeps the "docs: " part, so removing the
+// marker leaves the rest of the title exactly as the parent's.
+const BACKPORT_TITLE_PREFIX_PATTERN = /^((?:[\w-]+(?:\([^)]*\))?!?:\s*)?)\[(\d+\.\w+)\]\s*/i
+
+// The branch named by the title marker, at the end of the title or at the
+// start. The end wins when a title has both.
 function backportTitleSuffixBranch(title) {
 	const m = (title || "").match(BACKPORT_TITLE_SUFFIX_PATTERN)
-	return m ? (m[1] ?? m[2]) : null
+	if (m) return m[1] ?? m[2]
+	const p = (title || "").match(BACKPORT_TITLE_PREFIX_PATTERN)
+	return p ? p[2] : null
 }
 
 // The title with that marker removed, so the copy and its parent compare
@@ -560,6 +583,7 @@ function backportTitleSuffixBranch(title) {
 function normalizeTitleForBackportMatch(title) {
 	return (title || "")
 		.replace(BACKPORT_TITLE_SUFFIX_PATTERN, "")
+		.replace(BACKPORT_TITLE_PREFIX_PATTERN, "$1")
 		.trim()
 		.replace(/\s+/g, " ")
 		.toLowerCase()
@@ -761,7 +785,7 @@ async function findBackportParent({
 		const [candidateRepo, candidateNumber] =
 			typeof candidate === "object" ? [candidate.repo, candidate.number] : [repo, candidate]
 		if (!candidateNumber || (candidateRepo === repo && candidateNumber === number)) return null
-		const parent = await fetchCodePR(candidateRepo, candidateNumber)
+		const parent = await fetchCodePR(candidateRepo, candidateNumber, { quietNotFound: true })
 		if (expectedBranch) {
 			if (parent.baseBranch !== expectedBranch) return null
 		} else if (!parent.baseBranch || (candidateRepo === repo && parent.baseBranch === baseBranch)) {
@@ -4041,6 +4065,42 @@ function hasOutstandingDocsAuthorPing(pr) {
 	)
 }
 
+// Promptless can open the docs PR for the code PR's own branch and copies
+// for newer branches at the same time, all with the same content. A copy is
+// normally caught as a backport (see findBackportParent) and waits on its
+// parent, so it never reaches this page. This is the safety net for a copy
+// that detection misses: the code author should be asked to review the
+// content once, on the PR that targets the code PR's branch, not once per
+// branch.
+//
+// The rule: in the same docs repo, if an open docs PR for a code PR targets
+// the branch the code PR says (codeExpectedBranch), then every other open
+// docs PR for that same code PR stays off this page. If none of them targets
+// that branch, nothing is hidden — there's no "main" one to keep. The main
+// report still shows every PR as usual.
+function codeBranchGroupKey(pr) {
+	return `${pr.sourceRepo}|${pr.appPRRepo}#${pr.appPRNumber}`
+}
+
+function findCodeBranchDocsPRs(prData) {
+	const keys = new Set()
+	for (const pr of prData) {
+		if (pr.appPRNumber && pr.codeExpectedBranch && pr.baseBranch === pr.codeExpectedBranch) {
+			keys.add(codeBranchGroupKey(pr))
+		}
+	}
+	return keys
+}
+
+function isOtherBranchCopy(pr, codeBranchKeys) {
+	return (
+		Boolean(pr.appPRNumber) &&
+		Boolean(pr.codeExpectedBranch) &&
+		pr.baseBranch !== pr.codeExpectedBranch &&
+		codeBranchKeys.has(codeBranchGroupKey(pr))
+	)
+}
+
 // Grouped by whoever needs to act (never a bot — Promptless included),
 // sorted alphabetically so the page reads like a directory; within each
 // person's own items, a live "respond" tag outranks a plain "review" ask —
@@ -4048,7 +4108,9 @@ function hasOutstandingDocsAuthorPing(pr) {
 // oldest-first, since that's the most overdue.
 function buildReminderGroups(prData) {
 	const groups = new Map()
+	const codeBranchKeys = findCodeBranchDocsPRs(prData)
 	for (const pr of prData) {
+		if (isOtherBranchCopy(pr, codeBranchKeys)) continue
 		// Staleness alone is no longer a reason to hide a PR here — the
 		// checks below (hasOutstandingDocsPing / hasOutstandingDocsAuthorPing)
 		// already require a specific, still-unanswered tag directed at
@@ -4121,8 +4183,12 @@ function buildReminderGroups(prData) {
 // Section 1 — escalating asks the dev team to weigh in, but they often can't
 // vouch for whether the docs content is correct and may throw it back, so the
 // code author is deliberately kept on their own list too.
+// Same-content copies on other branches are left out here too (see
+// isOtherBranchCopy), so the dev team doesn't get the same ask twice.
 function buildEscalationList(prData) {
+	const codeBranchKeys = findCodeBranchDocsPRs(prData)
 	return prData
+		.filter((pr) => !isOtherBranchCopy(pr, codeBranchKeys))
 		.filter((pr) => pr.category === "waiting-escalation-response" && pr.escalationRequest)
 		.sort(
 			(a, b) => a.escalationRequest.date.getTime() - b.escalationRequest.date.getTime(),
@@ -6327,6 +6393,7 @@ function generateGuideHTML({ now }) {
     <h2>The reminders page</h2>
     <p class="sec-lede"><a href="https://adiati98.github.io/mautic-docs-prs-tracker/tracker-reminders.html">Docs PR review reminders</a> is a separate page meant to be shared directly with code PR authors.</p>
     <p>It lists every docs PR whose linked code PR has merged and where the ball is genuinely in the code author's court, grouped by author. Once the code author approves the docs PR, it disappears from this page - nothing left to ask them. Every row here gets one of two marks: <b>Need review</b> (the code PR has already merged, so this docs PR needs the code author's review), or <b>Response to comment from X</b> (the code PR author hasn't replied to X's comment yet).</p>
+    <p>Sometimes Promptless opens several docs PRs with the same content for one code PR, one per branch. The page then lists only the docs PR that targets the code PR's branch, so the code author reviews the content once. The copies for other branches still appear on the main report.</p>
   </section>
 
   <section class="guide-sec" id="checklist">
@@ -6394,6 +6461,8 @@ module.exports = {
 	isStandaloneDocsTask,
 	resolveManualDependencyBackport,
 	findBackportParent,
+	buildReminderGroups,
+	buildEscalationList,
 }
 
 if (require.main === module) {
