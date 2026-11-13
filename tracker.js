@@ -42,6 +42,11 @@ const BOTS = [
 const PENDING_LABEL = process.env.PENDING_LABEL || "pending-pr-merge"
 const BACKPORT_LABEL = process.env.BACKPORT_LABEL || "needs-backport"
 const NEEDS_REBASE_LABEL = process.env.NEEDS_REBASE_LABEL || "needs-rebase"
+// Temporary project (about 6 months, from 2026-11): these contributors must
+// be added as assignee on the Promptless docs PRs for code PRs they wrote.
+// Empty this list to turn the chip off.
+const ASSIGNEE_PROJECT_LOGINS = ["vukovicpredrag", "andersonjeccel"]
+
 const CONTENT_APPROVED_LABEL =
 	process.env.CONTENT_APPROVED_LABEL || "content-approved"
 const BUMP_DEPENDENCY_LABEL =
@@ -2577,6 +2582,8 @@ async function main() {
 			repoShort: pr.sourceRepo.split("/")[1].replace("-new", ""),
 			url: pr.html_url,
 			docsAuthor: pr.user.login,
+			docsAssigneeLogins: (pr.assignees || []).map((a) => a.login.toLowerCase()),
+			assigneeProject: null,
 			createdAt: pr.created_at,
 			readyDate,
 			readyDateSource,
@@ -2682,6 +2689,7 @@ async function main() {
 	saveCache(cache)
 
 	resolveBackportRelationships(prData)
+	resolveAssigneeProject(prData)
 	resolveSiblingReminders(prData)
 
 	const failNote = fetchFailures > 0 ? `, ${fetchFailures} fetch failed (kept prior)` : ""
@@ -2702,6 +2710,9 @@ async function main() {
 
 	generateGuideHTML({ now: new Date() })
 	console.log("📄 Guide saved to: tracker-guide.html")
+
+	generateAssigneeHTML(prData, { now: new Date() })
+	console.log("📄 Assignees saved to: tracker-assignees.html")
 	console.log("Open it in your browser to view the dashboard\n")
 }
 
@@ -2893,6 +2904,7 @@ function statusSignature(pr) {
 		pr.operatorReviewDone,
 		pr.pingEverSent,
 		pr.remindedViaSibling ? `${pr.remindedViaSibling.repoShort}#${pr.remindedViaSibling.number}` : null,
+		pr.assigneeProject ? [pr.assigneeProject.login, pr.assigneeProject.assigned] : null,
 	])
 }
 
@@ -3293,6 +3305,8 @@ function chipsFor(pr) {
 	// merged, un-milestoned PR proceed straight into the remind chain below
 	// while still surfacing this as its own outstanding task.
 	if (pr.missingMilestoneFlag) chips.push({ cls: "setup", text: "Add milestone" })
+	const assignee = assigneeProjectChip(pr)
+	if (assignee) chips.push(assignee)
 	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
 	// / "remind them" stops being an honest next step — it's not a fresh
 	// nudge anymore, it's a stale situation that needs a human decision, not
@@ -3628,6 +3642,42 @@ function resolveSiblingReminders(prData) {
 	}
 }
 
+// Temporary project (see ASSIGNEE_PROJECT_LOGINS): when the code PR was
+// written by one of the listed contributors, that person must be an assignee
+// on the docs PR. Only docs PRs opened by Promptless count. Only the docs PR for the code PR's own branch counts. A
+// confirmed backport, or a copy on another branch while the code-branch PR
+// exists (same rule as the reminders page, see isOtherBranchCopy), is
+// skipped. A docs PR whose code PR was closed is skipped too, since that
+// docs PR is going to be closed. Open and draft docs PRs both count.
+function resolveAssigneeProject(prData) {
+	const wanted = new Set(ASSIGNEE_PROJECT_LOGINS.map((l) => l.toLowerCase()))
+	if (wanted.size === 0) return
+	const codeBranchKeys = findCodeBranchDocsPRs(prData)
+	for (const pr of prData) {
+		if (pr.docsAuthor !== PROMPTLESS) continue
+		if (!pr.appPRNumber || !pr.appPRAuthor || pr.codeClosed) continue
+		const login = pr.appPRAuthor.toLowerCase()
+		if (!wanted.has(login)) continue
+		if (pr.backportParentNumber || isOtherBranchCopy(pr, codeBranchKeys)) continue
+		pr.assigneeProject = {
+			login: pr.appPRAuthor,
+			assigned: pr.docsAssigneeLogins.includes(login),
+		}
+	}
+}
+
+function needsProjectAssignee(pr) {
+	return Boolean(pr.assigneeProject) && !pr.assigneeProject.assigned
+}
+
+function assigneeProjectChip(pr) {
+	if (!pr.assigneeProject) return null
+	const login = escapeHtml(pr.assigneeProject.login)
+	return pr.assigneeProject.assigned
+		? { cls: "muted", text: `✅ Assigned to ${login}` }
+		: { cls: "setup", text: `Add ${login} as assignee` }
+}
+
 // Redirects attention to the parent instead of asking the same question
 // twice — the parent's own row already carries the real ask/follow-up/
 // escalate chain (see the category override in main()), so this is
@@ -3840,6 +3890,8 @@ function waitingChipsFor(pr) {
 	if (handback) chips.push(handback)
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
+	const assignee = assigneeProjectChip(pr)
+	if (assignee) chips.push(assignee)
 	if (pr.reviewPendingFlag) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
@@ -3934,6 +3986,7 @@ function renderMonitoringRow(pr) {
 		backportChildrenChip(pr),
 		backportToChip(pr),
 		remindedOpenChip(pr),
+		assigneeProjectChip(pr),
 		...approvalChips(pr),
 	].filter(Boolean)
 	const overlayChips = overlayChipObjs
@@ -4280,6 +4333,13 @@ function generateHTML(prData, { operatorUsername }) {
 	// Need-today — never out of Waiting or Monitoring, which are untouched.
 	const needToday = prData.filter((p) => isNeedTodayRow(p) && !isBringForwardRow(p))
 	const bringForward = prData.filter((p) => isNeedTodayRow(p) && isBringForwardRow(p))
+	// Temporary privacy project: a one-line pointer to its own page, hidden
+	// when nothing needs an assignee.
+	const assigneeCount = prData.filter(needsProjectAssignee).length
+	const assigneeNoteHtml =
+		assigneeCount > 0
+			? `  <p class="assignee-note">👤 ${assigneeCount} docs PR${assigneeCount === 1 ? " needs" : "s need"} a privacy project assignee → <a href="tracker-assignees.html">see the assignee page</a></p>\n`
+			: ""
 	const waiting = prData.filter(
 		(p) => !isNeedTodayRow(p) && p.category.startsWith("waiting-"),
 	)
@@ -4971,6 +5031,12 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:2px;padding:0 1px;
   }
 
+  .assignee-note{
+    font-size:12.5px;color:var(--ink-2);margin:4px 0 14px;padding:8px 12px;border-radius:9px;
+    background:color-mix(in srgb, var(--accent) 7%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--accent) 20%, var(--ring));
+  }
+  .assignee-note a{font-weight:600}
   .row.hidden,.mon-row.hidden{display:none}
   .no-match{font-size:12px;color:var(--ink-3);display:none}
   section.all-hidden .no-match{display:inline}
@@ -5013,10 +5079,12 @@ function generateHTML(prData, { operatorUsername }) {
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
     <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
     <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
+    <a class="nav-link" href="tracker-assignees.html">👤 Privacy project assignees</a>
     <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
     <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
   ${nextUpdateNoticeHtml(now)}
   </header>
+${assigneeNoteHtml}
 
   <main id="main-content">
   <div class="stats">
@@ -5469,60 +5537,8 @@ function renderEscalationSection(escalations) {
     </table>`
 }
 
-// A separate, self-contained page (mirrors generateHTML's structure but not
-// its markup) meant to be shared directly with code PR authors — a plain
-// per-person checklist of docs PRs waiting on them, with no internal
-// severity/escalation framing.
-function generateReminderHTML({ groups, escalations }, { now }) {
-	const totalItems = groups.reduce((sum, g) => sum + g.items.length, 0)
-	const tocHtml =
-		groups.length > 1
-			? `
-  <div class="toc">${groups
-		.map(
-			(g) =>
-				`<a href="#author-${escapeHtml(g.author.toLowerCase())}">@${escapeHtml(g.author)} <span class="tc">${g.items.length}</span></a>`,
-		)
-		.join("")}</div>`
-			: ""
-	const authorSection =
-		groups.length === 0
-			? `<div class="empty">Nothing to remind any code author about right now - every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
-			: `${tocHtml}\n${groups.map(renderAuthorGroup).join("")}`
-	const escalationSection =
-		escalations.length === 0
-			? `<div class="empty">No docs PRs are currently escalated to the Core Team.</div>`
-			: renderEscalationSection(escalations)
-	const bodyHtml = `
-  <div class="section-head" id="section-authors">
-    <h2>Code PR author reminders</h2>
-    <p>Docs PRs waiting on a code PR author's review or reply, grouped by name.</p>
-  </div>
-  ${authorSection}
-  <div class="section-head" id="section-escalated">
-    <h2>Escalated to the Core Team</h2>
-    <p>Formally escalated for a Core Team opinion and review.</p>
-  </div>
-  ${escalationSection}`
-
-	const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Docs PR review reminders</title>
-<script>
-  (function(){
-    try {
-      var saved = localStorage.getItem('docsPrTrackerTheme');
-      if (saved === 'dark' || saved === 'light') {
-        document.documentElement.setAttribute('data-theme', saved);
-      }
-    } catch (e) {}
-  })();
-</script>
-<style>
-  :root{
+// Styles shared by the reminders page and the privacy project assignees page.
+const SUBPAGE_CSS = `  :root{
     --page:#f9f9f7;
     --surface:#fcfcfb;
     --ink:#0b0b0b;
@@ -5753,7 +5769,62 @@ function generateReminderHTML({ groups, escalations }, { now }) {
     *{animation-duration:.01ms !important;animation-iteration-count:1 !important;
       transition-duration:.01ms !important;scroll-behavior:auto !important}
   }
-</style>
+`
+
+// A separate, self-contained page (mirrors generateHTML's structure but not
+// its markup) meant to be shared directly with code PR authors — a plain
+// per-person checklist of docs PRs waiting on them, with no internal
+// severity/escalation framing.
+function generateReminderHTML({ groups, escalations }, { now }) {
+	const totalItems = groups.reduce((sum, g) => sum + g.items.length, 0)
+	const tocHtml =
+		groups.length > 1
+			? `
+  <div class="toc">${groups
+		.map(
+			(g) =>
+				`<a href="#author-${escapeHtml(g.author.toLowerCase())}">@${escapeHtml(g.author)} <span class="tc">${g.items.length}</span></a>`,
+		)
+		.join("")}</div>`
+			: ""
+	const authorSection =
+		groups.length === 0
+			? `<div class="empty">Nothing to remind any code author about right now - every merged code PR's docs are either reviewed or actively being discussed. 🎉</div>`
+			: `${tocHtml}\n${groups.map(renderAuthorGroup).join("")}`
+	const escalationSection =
+		escalations.length === 0
+			? `<div class="empty">No docs PRs are currently escalated to the Core Team.</div>`
+			: renderEscalationSection(escalations)
+	const bodyHtml = `
+  <div class="section-head" id="section-authors">
+    <h2>Code PR author reminders</h2>
+    <p>Docs PRs waiting on a code PR author's review or reply, grouped by name.</p>
+  </div>
+  ${authorSection}
+  <div class="section-head" id="section-escalated">
+    <h2>Escalated to the Core Team</h2>
+    <p>Formally escalated for a Core Team opinion and review.</p>
+  </div>
+  ${escalationSection}`
+
+	const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs PR review reminders</title>
+<script>
+  (function(){
+    try {
+      var saved = localStorage.getItem('docsPrTrackerTheme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+${SUBPAGE_CSS}</style>
 </head>
 <body>
 <a class="skip-link" href="#main-content">Skip to content</a>
@@ -5879,6 +5950,206 @@ ${bodyHtml}
 </html>`
 
 	fs.writeFileSync("tracker-reminders.html", html)
+}
+
+// Temporary privacy project page (see ASSIGNEE_PROJECT_LOGINS). A to-do
+// list of docs PRs where a contributor still needs to be added as assignee,
+// grouped by person, then by docs repo. A PR leaves the list on the next run
+// after the person is assigned. When the project ends, delete this function,
+// its call in main(), the report's nav link and count line, and the page's
+// lines in the workflow.
+function generateAssigneeHTML(prData, { now }) {
+	const pending = prData.filter(needsProjectAssignee)
+	const byPerson = new Map()
+	for (const login of ASSIGNEE_PROJECT_LOGINS) byPerson.set(login.toLowerCase(), { login, prs: [] })
+	for (const pr of pending) {
+		const key = pr.assigneeProject.login.toLowerCase()
+		if (!byPerson.has(key)) byPerson.set(key, { login: pr.assigneeProject.login, prs: [] })
+		byPerson.get(key).prs.push(pr)
+	}
+	const people = [...byPerson.values()].sort((a, b) =>
+		a.login.toLowerCase().localeCompare(b.login.toLowerCase()),
+	)
+
+	const renderRow = (pr) => {
+		const key = `assign:${cacheKey(pr.sourceRepo, pr.number)}`
+		const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
+		const draft = pr.isDraft ? ` <span class="tag back">Draft</span>` : ""
+		return `
+        <tr data-key="${escapeHtml(key)}" data-status="${escapeHtml(pr.assigneeProject.login)}">
+          <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
+          <td data-label="Docs PR"><a href="${pr.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${draft}</td>
+          <td data-label="Code PR">${codePRLink(pr)}</td>
+        </tr>`
+	}
+
+	const renderPerson = ({ login, prs }) => {
+		const anchor = `person-${escapeHtml(login.toLowerCase())}`
+		const nameLink = `<a href="https://github.com/${escapeHtml(login)}" target="_blank" rel="noopener noreferrer">@${escapeHtml(login)}</a>`
+		if (prs.length === 0) {
+			return `
+  <section class="author-group" id="${anchor}">
+    <div class="author-head"><h3>${nameLink}</h3></div>
+    <div class="empty">Nothing to assign. 🎉</div>
+  </section>`
+		}
+		const repos = [...new Set(prs.map((p) => p.repoShort))].sort()
+		const tables = repos
+			.map((repo) => {
+				const rows = prs.filter((p) => p.repoShort === repo).sort((a, b) => a.number - b.number)
+				return `
+    <h4 class="repo-head">${escapeHtml(repo)} <span class="repo-count">${rows.length}</span></h4>
+    <table>
+      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th></tr></thead>
+      <tbody>${rows.map(renderRow).join("")}</tbody>
+    </table>`
+			})
+			.join("")
+		return `
+  <section class="author-group" id="${anchor}">
+    <div class="author-head">
+      <h3>${nameLink}</h3>
+      <span class="author-progress">0/${prs.length} checked</span>
+    </div>${tables}
+  </section>`
+	}
+
+	const toc = `
+  <div class="toc">${people
+		.map(
+			(p) =>
+				`<a href="#person-${escapeHtml(p.login.toLowerCase())}">@${escapeHtml(p.login)} <span class="tc">${p.prs.length}</span></a>`,
+		)
+		.join("")}</div>`
+
+	const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy project assignees</title>
+<script>
+  (function(){
+    try {
+      var saved = localStorage.getItem('docsPrTrackerTheme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+${SUBPAGE_CSS}
+  .repo-head{font-size:13px;font-weight:650;color:var(--ink-2);margin:14px 0 6px;display:flex;gap:8px;align-items:baseline}
+  .repo-count{font-size:12px;font-weight:400;color:var(--ink-3)}
+  .author-group table{margin-bottom:6px}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="wrap">
+
+  <header class="top">
+    <h1>Privacy project assignees</h1>
+    <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
+    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
+    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+  ${nextUpdateNoticeHtml(now)}
+  </header>
+
+  <main id="main-content">
+  <div class="intro">
+    <p>Docs PRs opened by Promptless for code PRs written by a privacy project contributor. Add that contributor as an <b>assignee</b> on each docs PR below. Backport copies are not listed.</p>
+    <ul>
+      <li>To assign: open the docs PR, then use <b>Assignees</b> in the right sidebar.</li>
+      <li>A PR disappears from this page on the next tracker run after the person is assigned.</li>
+      <li>Check a box to track your progress. It saves to <b>your own browser</b> only.</li>
+    </ul>
+  </div>
+${toc}
+${people.map(renderPerson).join("")}
+  </main>
+  <footer>
+    <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${pending.length} PR${pending.length === 1 ? "" : "s"} to assign</div>
+    <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
+  </footer>
+</div>
+
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top" title="Back to top">↑</button>
+
+<script>
+  document.querySelectorAll('[data-updated-iso]').forEach(function(el){
+    el.textContent = new Date(el.getAttribute('data-updated-iso')).toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+    });
+  });
+
+  function toggleTheme(){
+    const r = document.documentElement;
+    const cur = r.getAttribute('data-theme') ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', next);
+    try { localStorage.setItem('docsPrTrackerTheme', next); } catch (e) {}
+  }
+
+  // ---- checklist (saved to this browser only, via localStorage) ----
+  (function(){
+    var STORE_KEY = 'docsAssigneeChecklist';
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { state = {}; }
+    function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
+
+    function updateProgress(group){
+      if (!group) return;
+      var total = group.querySelectorAll('tr[data-key]').length;
+      var done = group.querySelectorAll('tr[data-key].checked').length;
+      var badge = group.querySelector('.author-progress');
+      if (badge) badge.textContent = done + '/' + total + ' checked';
+    }
+
+    var validKeys = {};
+    var changed = false;
+    document.querySelectorAll('tr[data-key]').forEach(function(row){
+      var key = row.getAttribute('data-key');
+      validKeys[key] = true;
+      var cb = row.querySelector('input[type=checkbox]');
+      var status = row.getAttribute('data-status') || '1';
+      if (state[key] && state[key] === status) { cb.checked = true; row.classList.add('checked'); }
+      else if (state[key]) { delete state[key]; changed = true; }
+      cb.addEventListener('change', function(){
+        if (cb.checked) state[key] = status; else delete state[key];
+        save();
+        row.classList.toggle('checked', cb.checked);
+        updateProgress(row.closest('.author-group'));
+      });
+    });
+    // Drop saved keys for PRs no longer listed (already assigned).
+    Object.keys(state).forEach(function(k){
+      if (!validKeys[k]) { delete state[k]; changed = true; }
+    });
+    if (changed) save();
+
+    document.querySelectorAll('.author-group').forEach(updateProgress);
+  })();
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const backToTop = document.getElementById('backToTop');
+  if (backToTop) {
+    window.addEventListener('scroll', function(){
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      document.querySelector('h1').setAttribute('tabindex', '-1');
+      document.querySelector('h1').focus();
+    });
+  }
+</script>
+</body>
+</html>`
+
+	fs.writeFileSync("tracker-assignees.html", html)
 }
 
 // A third, standalone page — no PR data, content doesn't change run to run
