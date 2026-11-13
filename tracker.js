@@ -875,6 +875,21 @@ async function findBackportParent({
 	return null
 }
 
+// Every "mautic/<repo>#N" or full-link PR mention outside the docs repo, in
+// document order. See tryExtractAppPR for the two spellings.
+const EXPLICIT_REPO_PR_PATTERN =
+	/https?:\/\/github\.com\/mautic\/([a-z0-9-]+)\/pull\/(\d+)|mautic\/([a-z0-9-]+)`?\s*(?:PR\s*)?#(\d+)/gi
+
+function explicitCodePRMentions(text, sourceRepo) {
+	const found = []
+	for (const match of text.matchAll(EXPLICIT_REPO_PR_PATTERN)) {
+		const repo = `mautic/${match[1] ?? match[3]}`
+		const number = match[2] ?? match[4]
+		if (repo !== sourceRepo) found.push({ repo, number })
+	}
+	return found
+}
+
 function tryExtractAppPR(text, sourceRepo) {
 	// A docs PR's own repo is never the linked *code* PR's repo — a
 	// "mautic/user-documentation#N" mention inside a user-documentation PR
@@ -899,13 +914,8 @@ function tryExtractAppPR(text, sourceRepo) {
 	// renders the reference as a markdown link — the visible text is then
 	// "mautic/mautic: <title>" with the number only inside the URL, which the
 	// shorthand pattern alone cannot see.
-	const explicitRepoPattern =
-		/https?:\/\/github\.com\/mautic\/([a-z0-9-]+)\/pull\/(\d+)|mautic\/([a-z0-9-]+)`?\s*(?:PR\s*)?#(\d+)/gi
-	for (const match of text.matchAll(explicitRepoPattern)) {
-		const repo = `mautic/${match[1] ?? match[3]}`
-		const number = match[2] ?? match[4]
-		if (repo !== sourceRepo) return { repo, number }
-	}
+	const [first] = explicitCodePRMentions(text, sourceRepo)
+	if (first) return first
 
 	let match = text.match(/mautic\s+PR\s*#(\d+)/i)
 	if (match) return { repo: "mautic/mautic", number: match[1] }
@@ -916,19 +926,6 @@ function tryExtractAppPR(text, sourceRepo) {
 	return null
 }
 
-// Extract app PR info from description (supports any mautic/* repo). Takes
-// the first match in the body.
-//
-// A "prefer a recognized heading (Promptless's 'Trigger Events', this repo's
-// 'Linked issue' template section) over a plain first-match scan" version of
-// this was tried and reverted: on mautic/user-documentation#774, the
-// "Trigger Events" PR (mautic/api-library#348, a validation tweak) was a
-// different, less-relevant PR than the one actually mentioned first in the
-// prose (mautic/mautic#15404, the real feature PR) — humans in the thread
-// confirmed the first-mentioned one was the one that mattered for review
-// purposes. So "first PR number mentioned" is closer to this project's real
-// convention than "whatever's under this particular heading," at least
-// until there's positive evidence otherwise.
 // A paragraph whose opening clause says the things it goes on to list are
 // *not* part of this PR:
 //
@@ -959,21 +956,47 @@ function stripNotDocumentedHereParagraphs(description) {
 		.join("\n\n")
 }
 
-// Extract app PR info from description (supports any mautic/* repo). Takes
-// the first match in the body.
+// Extract app PR info from description (supports any mautic/* repo).
 //
-// A "prefer a recognized heading (Promptless's 'Trigger Events', this repo's
-// 'Linked issue' template section) over a plain first-match scan" version of
-// this was tried and reverted: on mautic/user-documentation#774, the
-// "Trigger Events" PR (mautic/api-library#348, a validation tweak) was a
-// different, less-relevant PR than the one actually mentioned first in the
-// prose (mautic/mautic#15404, the real feature PR) — humans in the thread
-// confirmed the first-mentioned one was the one that mattered for review
-// purposes. So "first PR number mentioned" is closer to this project's real
-// convention than "whatever's under this particular heading," at least
-// until there's positive evidence otherwise.
+// 1. When a Promptless body's "**Trigger Events**" list names code PRs (PRs
+//    outside the docs repo), only those PRs can be picked. Promptless
+//    confirmed that the PR there is the change its docs describe; other PRs
+//    in the prose are background. User-documentation PR 1146 shows why prose
+//    order alone can't be trusted: its description first cites the 2024 PR
+//    that removed a button (milestone 5.2), as history, and only then the
+//    open 7.x PR it documents. First-mention-wins linked the 5.2 PR and the
+//    row claimed a wrong branch on a correctly targeted docs PR.
+//
+//    When the list names several code PRs, the one mentioned first in the
+//    prose wins, falling back to list order. Promptless lists every PR that
+//    triggered it, including a closed one a later PR replaced; its prose
+//    names the live one (docs PR 1006: triggers 17574, closed, then 17573,
+//    merged; the prose says 17573 supersedes 17574).
+//
+//    Keyed on the heading, not on the author, because only Promptless writes
+//    it, and a backport parent's body is read through here too.
+//
+//    Docs PR 774 is the one known case the other way (Trigger Events named a
+//    small api-library tweak; the real feature PR came first in the prose).
+//    It merged before this rule changed, and Promptless's own guidance
+//    outweighs that single case.
+//
+// 2. Otherwise the first code PR mentioned in the body wins. This covers
+//    human-written bodies, Promptless bodies that lost their Trigger Events
+//    list in a rewrite, and Trigger Events lists that name only docs PRs or
+//    Promptless tasks.
 function extractAppPR(description, sourceRepo) {
 	if (!description) return null
+	const section = triggerEventsSection(description)
+	if (section !== null) {
+		const triggers = explicitCodePRMentions(section, sourceRepo)
+		if (triggers.length === 1) return triggers[0]
+		if (triggers.length > 1) {
+			const isTrigger = (pr) => triggers.some((t) => t.repo === pr.repo && t.number === pr.number)
+			const prose = stripNotDocumentedHereParagraphs(description.replace(section, ""))
+			return explicitCodePRMentions(prose, sourceRepo).find(isTrigger) ?? triggers[0]
+		}
+	}
 	return tryExtractAppPR(stripNotDocumentedHereParagraphs(description), sourceRepo)
 }
 
@@ -1036,8 +1059,7 @@ const PROMPTLESS_TASK_TRIGGER_PATTERN = /app\.gopromptless\.ai\/tasks\//i
 // (user-documentation PR 1046 pointed at a 7.2 terminology PR this way).
 //
 // Only the *existence* of a link is decided here. When a trigger does name a
-// code PR, which PR wins is still first-mention-wins over the whole body —
-// the precedent extractAppPR's comment records.
+// code PR, extractAppPR picks that PR.
 function isStandaloneDocsTask({ docsAuthor, description, sourceRepo }) {
 	if (docsAuthor !== PROMPTLESS) return false
 	const section = triggerEventsSection(description)
