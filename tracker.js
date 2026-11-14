@@ -42,10 +42,12 @@ const BOTS = [
 const PENDING_LABEL = process.env.PENDING_LABEL || "pending-pr-merge"
 const BACKPORT_LABEL = process.env.BACKPORT_LABEL || "needs-backport"
 const NEEDS_REBASE_LABEL = process.env.NEEDS_REBASE_LABEL || "needs-rebase"
-// Temporary project (about 6 months, from 2026-11): these contributors must
-// be added as assignee on the Promptless docs PRs for code PRs they wrote.
-// Empty this list to turn the chip off.
-const ASSIGNEE_PROJECT_LOGINS = ["vukovicpredrag", "andersonjeccel"]
+// Temporary Mautic privacy project (about 6 months, from 2026-11). These
+// contributors review the Promptless docs PRs for code PRs they wrote, and
+// can review each other's. Their docs PRs get the label below, so they can
+// track them in their own GitHub project. Empty the list to turn it all off.
+const PRIVACY_PROJECT_LOGINS = ["vukovicpredrag", "andersonjeccel"]
+const PRIVACY_PROJECT_LABEL = "privacy-project"
 
 const CONTENT_APPROVED_LABEL =
 	process.env.CONTENT_APPROVED_LABEL || "content-approved"
@@ -323,6 +325,9 @@ function slimReview(r) {
 		state: r.state,
 		submitted_at: r.submitted_at,
 		body: r.body,
+		// Read by the privacy project page to tell if the PR changed after
+		// an approval. Older cache entries lack it; a push refetches anyway.
+		commit_id: r.commit_id ?? null,
 	}
 }
 
@@ -367,6 +372,9 @@ function extractReadyForReviewDate(events) {
 
 function cacheHit(entry, docsUpdatedAt, codeUpdatedAt) {
 	if (!entry) return false
+	// Entries saved before slimReview kept commit_id can't tell if a PR
+	// changed after an approval, so they're fetched again once.
+	if ((entry.rawDocsReviews || []).some((r) => !("commit_id" in r))) return false
 	return entry.docsUpdatedAt === docsUpdatedAt && entry.codeUpdatedAt === codeUpdatedAt
 }
 
@@ -2582,8 +2590,19 @@ async function main() {
 			repoShort: pr.sourceRepo.split("/")[1].replace("-new", ""),
 			url: pr.html_url,
 			docsAuthor: pr.user.login,
-			docsAssigneeLogins: (pr.assignees || []).map((a) => a.login.toLowerCase()),
-			assigneeProject: null,
+			labelNames: pr.labels.map((l) => l.name),
+			headSha: pr.head?.sha ?? null,
+			// Approvals from privacy project contributors (dismissed ones
+			// count too, same as approverLogins). Used by
+			// resolvePrivacyProject.
+			privacyApprovals: docsReviews
+				.filter(
+					(r) =>
+						isApprovalLike(r) &&
+						PRIVACY_PROJECT_LOGINS.some((l) => l.toLowerCase() === r.user.login.toLowerCase()),
+				)
+				.map((r) => ({ login: r.user.login, date: r.submitted_at, commitId: r.commit_id ?? null })),
+			privacyProject: null,
 			createdAt: pr.created_at,
 			readyDate,
 			readyDateSource,
@@ -2689,7 +2708,7 @@ async function main() {
 	saveCache(cache)
 
 	resolveBackportRelationships(prData)
-	resolveAssigneeProject(prData)
+	resolvePrivacyProject(prData)
 	resolveSiblingReminders(prData)
 
 	const failNote = fetchFailures > 0 ? `, ${fetchFailures} fetch failed (kept prior)` : ""
@@ -2711,8 +2730,8 @@ async function main() {
 	generateGuideHTML({ now: new Date() })
 	console.log("📄 Guide saved to: tracker-guide.html")
 
-	generateAssigneeHTML(prData, { now: new Date() })
-	console.log("📄 Assignees saved to: tracker-assignees.html")
+	generatePrivacyHTML(prData, { now: new Date() })
+	console.log("📄 Privacy project reviews saved to: tracker-privacy.html")
 	console.log("Open it in your browser to view the dashboard\n")
 }
 
@@ -2904,7 +2923,7 @@ function statusSignature(pr) {
 		pr.operatorReviewDone,
 		pr.pingEverSent,
 		pr.remindedViaSibling ? `${pr.remindedViaSibling.repoShort}#${pr.remindedViaSibling.number}` : null,
-		pr.assigneeProject ? [pr.assigneeProject.login, pr.assigneeProject.assigned] : null,
+		pr.privacyProject ? [pr.privacyProject.login, pr.privacyProject.labeled] : null,
 	])
 }
 
@@ -3305,8 +3324,8 @@ function chipsFor(pr) {
 	// merged, un-milestoned PR proceed straight into the remind chain below
 	// while still surfacing this as its own outstanding task.
 	if (pr.missingMilestoneFlag) chips.push({ cls: "setup", text: "Add milestone" })
-	const assignee = assigneeProjectChip(pr)
-	if (assignee) chips.push(assignee)
+	const privacy = privacyLabelChip(pr)
+	if (privacy) chips.push(privacy)
 	// Once a PR has gone quiet for 30+ days, "send a follow-up" / "escalate"
 	// / "remind them" stops being an honest next step — it's not a fresh
 	// nudge anymore, it's a stale situation that needs a human decision, not
@@ -3642,40 +3661,52 @@ function resolveSiblingReminders(prData) {
 	}
 }
 
-// Temporary project (see ASSIGNEE_PROJECT_LOGINS): when the code PR was
-// written by one of the listed contributors, that person must be an assignee
-// on the docs PR. Only docs PRs opened by Promptless count. Only the docs PR for the code PR's own branch counts. A
-// confirmed backport, or a copy on another branch while the code-branch PR
-// exists (same rule as the reminders page, see isOtherBranchCopy), is
-// skipped. A docs PR whose code PR was closed is skipped too, since that
-// docs PR is going to be closed. Open and draft docs PRs both count.
-function resolveAssigneeProject(prData) {
-	const wanted = new Set(ASSIGNEE_PROJECT_LOGINS.map((l) => l.toLowerCase()))
+// Temporary Mautic privacy project (see PRIVACY_PROJECT_LOGINS). A docs PR
+// is part of it when Promptless opened it, its code PR was written by one of
+// the listed contributors, the code PR is not closed, and it is not a
+// backport copy (a confirmed backport, or a copy on another branch while the
+// code-branch PR exists, same rule as the reminders page). Open and draft
+// docs PRs both count. It stays in the project until it's merged.
+//
+// It counts as approved when any listed contributor approved it on GitHub
+// (they review each other's PRs too), or when it has the content-approved
+// label. "Updated after approval" means the PR's current commit is not the
+// one the latest contributor approval was given on.
+function resolvePrivacyProject(prData) {
+	const wanted = new Set(PRIVACY_PROJECT_LOGINS.map((l) => l.toLowerCase()))
 	if (wanted.size === 0) return
 	const codeBranchKeys = findCodeBranchDocsPRs(prData)
 	for (const pr of prData) {
 		if (pr.docsAuthor !== PROMPTLESS) continue
 		if (!pr.appPRNumber || !pr.appPRAuthor || pr.codeClosed) continue
-		const login = pr.appPRAuthor.toLowerCase()
-		if (!wanted.has(login)) continue
+		if (!wanted.has(pr.appPRAuthor.toLowerCase())) continue
 		if (pr.backportParentNumber || isOtherBranchCopy(pr, codeBranchKeys)) continue
-		pr.assigneeProject = {
+		const approverLogins = [...new Set(pr.privacyApprovals.map((r) => r.login))]
+		const latest = pr.privacyApprovals.reduce(
+			(best, r) => (!best || new Date(r.date) > new Date(best.date) ? r : best),
+			null,
+		)
+		pr.privacyProject = {
 			login: pr.appPRAuthor,
-			assigned: pr.docsAssigneeLogins.includes(login),
+			labeled: pr.labelNames.includes(PRIVACY_PROJECT_LABEL),
+			approverLogins,
+			approvedByLabel: pr.hasContentApprovedLabel,
+			approved: approverLogins.length > 0 || pr.hasContentApprovedLabel,
+			updatedAfterApproval: Boolean(
+				latest && latest.commitId && pr.headSha && latest.commitId !== pr.headSha,
+			),
 		}
 	}
 }
 
-function needsProjectAssignee(pr) {
-	return Boolean(pr.assigneeProject) && !pr.assigneeProject.assigned
-}
-
-function assigneeProjectChip(pr) {
-	if (!pr.assigneeProject) return null
-	const login = escapeHtml(pr.assigneeProject.login)
-	return pr.assigneeProject.assigned
-		? { cls: "muted", text: `✅ Assigned to ${login}` }
-		: { cls: "setup", text: `Add ${login} as assignee` }
+// Report-only chip: the label is the Education Team's task, so it never
+// shows on the privacy page itself.
+function privacyLabelChip(pr) {
+	if (!pr.privacyProject) return null
+	const label = escapeHtml(PRIVACY_PROJECT_LABEL)
+	return pr.privacyProject.labeled
+		? { cls: "muted", text: `✅ ${label} label added` }
+		: { cls: "setup", text: `Add ${label} label for ${escapeHtml(pr.privacyProject.login)}` }
 }
 
 // Redirects attention to the parent instead of asking the same question
@@ -3890,8 +3921,8 @@ function waitingChipsFor(pr) {
 	if (handback) chips.push(handback)
 	const reminded = remindedOpenChip(pr)
 	if (reminded) chips.push(reminded)
-	const assignee = assigneeProjectChip(pr)
-	if (assignee) chips.push(assignee)
+	const privacy = privacyLabelChip(pr)
+	if (privacy) chips.push(privacy)
 	if (pr.reviewPendingFlag) {
 		chips.push({ cls: "act", text: "Review this docs PR — code PR merged" })
 	}
@@ -3986,7 +4017,7 @@ function renderMonitoringRow(pr) {
 		backportChildrenChip(pr),
 		backportToChip(pr),
 		remindedOpenChip(pr),
-		assigneeProjectChip(pr),
+		privacyLabelChip(pr),
 		...approvalChips(pr),
 	].filter(Boolean)
 	const overlayChips = overlayChipObjs
@@ -4319,6 +4350,24 @@ function buildEscalationList(prData) {
 		)
 }
 
+// One navbar for every page, in the same order everywhere. The current page
+// is left out. Theme toggle and source link come last.
+const PAGE_NAV = [
+	["report", "tracker-report.html", "📊 Dashboard"],
+	["reminders", "tracker-reminders.html", "📋 Author reminders"],
+	["privacy", "tracker-privacy.html", "🔒 Privacy project reviews"],
+	["guide", "tracker-guide.html", "📖 Guidelines"],
+]
+
+function pageNavHtml(current) {
+	const links = PAGE_NAV.filter(([key]) => key !== current)
+		.map(([, href, label]) => `    <a class="nav-link" href="${href}">${label}</a>`)
+		.join("\n")
+	return `${links}
+    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>`
+}
+
 // The linked code PR as a labelled link (naming its actual repo, which isn't
 // always mautic/mautic — Promptless-authored docs PRs often trace back to
 // api-library or other repos), or a plain "none" when there's no link.
@@ -4333,12 +4382,12 @@ function generateHTML(prData, { operatorUsername }) {
 	// Need-today — never out of Waiting or Monitoring, which are untouched.
 	const needToday = prData.filter((p) => isNeedTodayRow(p) && !isBringForwardRow(p))
 	const bringForward = prData.filter((p) => isNeedTodayRow(p) && isBringForwardRow(p))
-	// Temporary privacy project: a one-line pointer to its own page, hidden
-	// when nothing needs an assignee.
-	const assigneeCount = prData.filter(needsProjectAssignee).length
-	const assigneeNoteHtml =
-		assigneeCount > 0
-			? `  <p class="assignee-note">👤 ${assigneeCount} docs PR${assigneeCount === 1 ? " needs" : "s need"} a privacy project assignee → <a href="tracker-assignees.html">see the assignee page</a></p>\n`
+	// Temporary privacy project: a one-line pointer to its own page. Always
+	// shown while the project runs, whatever the count.
+	const privacyCount = prData.filter((p) => p.privacyProject).length
+	const privacyNoteHtml =
+		PRIVACY_PROJECT_LOGINS.length > 0
+			? `  <p class="privacy-note">🔒 ${privacyCount} docs PR${privacyCount === 1 ? "" : "s"} for the Mautic privacy project → <a href="tracker-privacy.html">see the reviews page</a></p>\n`
 			: ""
 	const waiting = prData.filter(
 		(p) => !isNeedTodayRow(p) && p.category.startsWith("waiting-"),
@@ -5031,12 +5080,12 @@ function generateHTML(prData, { operatorUsername }) {
     border-radius:2px;padding:0 1px;
   }
 
-  .assignee-note{
+  .privacy-note{
     font-size:12.5px;color:var(--ink-2);margin:4px 0 14px;padding:8px 12px;border-radius:9px;
     background:color-mix(in srgb, var(--accent) 7%, var(--surface));
     border:1px solid color-mix(in srgb, var(--accent) 20%, var(--ring));
   }
-  .assignee-note a{font-weight:600}
+  .privacy-note a{font-weight:600}
   .row.hidden,.mon-row.hidden{display:none}
   .no-match{font-size:12px;color:var(--ink-3);display:none}
   section.all-hidden .no-match{display:inline}
@@ -5077,14 +5126,10 @@ function generateHTML(prData, { operatorUsername }) {
   <header class="top">
     <h1>Docs PR Tracker</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
-    <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
-    <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
-    <a class="nav-link" href="tracker-assignees.html">👤 Privacy project assignees</a>
-    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+${pageNavHtml("report")}
   ${nextUpdateNoticeHtml(now)}
   </header>
-${assigneeNoteHtml}
+${privacyNoteHtml}
 
   <main id="main-content">
   <div class="stats">
@@ -5537,7 +5582,7 @@ function renderEscalationSection(escalations) {
     </table>`
 }
 
-// Styles shared by the reminders page and the privacy project assignees page.
+// Styles shared by the reminders page and the privacy project reviews page.
 const SUBPAGE_CSS = `  :root{
     --page:#f9f9f7;
     --surface:#fcfcfb;
@@ -5833,10 +5878,7 @@ ${SUBPAGE_CSS}</style>
   <header class="top">
     <h1>Docs PR review reminders</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
-    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
-    <a class="nav-link" href="tracker-guide.html">📖 Guidelines</a>
-    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+${pageNavHtml("reminders")}
   ${nextUpdateNoticeHtml(now)}
   </header>
 
@@ -5952,36 +5994,76 @@ ${bodyHtml}
 	fs.writeFileSync("tracker-reminders.html", html)
 }
 
-// Temporary privacy project page (see ASSIGNEE_PROJECT_LOGINS). A to-do
-// list of docs PRs where a contributor still needs to be added as assignee,
-// grouped by person, then by docs repo. A PR leaves the list on the next run
-// after the person is assigned. When the project ends, delete this function,
-// its call in main(), the report's nav link and count line, and the page's
-// lines in the workflow.
-function generateAssigneeHTML(prData, { now }) {
-	const pending = prData.filter(needsProjectAssignee)
+// Temporary Mautic privacy project page (see PRIVACY_PROJECT_LOGINS and
+// resolvePrivacyProject). Shared with the contributors themselves, so it
+// speaks to them and never shows the Education Team's label task. Grouped by
+// code PR author, then "Waiting for review" / "Updated after approval" /
+// "Approved, waiting to merge",
+// then docs repo. When the project ends, delete this function, its call in
+// main(), resolvePrivacyProject and privacyLabelChip, its PAGE_NAV entry, the
+// report's count line, and the page's lines in the workflow.
+function generatePrivacyHTML(prData, { now }) {
+	const projectPRs = prData.filter((p) => p.privacyProject)
 	const byPerson = new Map()
-	for (const login of ASSIGNEE_PROJECT_LOGINS) byPerson.set(login.toLowerCase(), { login, prs: [] })
-	for (const pr of pending) {
-		const key = pr.assigneeProject.login.toLowerCase()
-		if (!byPerson.has(key)) byPerson.set(key, { login: pr.assigneeProject.login, prs: [] })
+	for (const login of PRIVACY_PROJECT_LOGINS) byPerson.set(login.toLowerCase(), { login, prs: [] })
+	for (const pr of projectPRs) {
+		const key = pr.privacyProject.login.toLowerCase()
+		if (!byPerson.has(key)) byPerson.set(key, { login: pr.privacyProject.login, prs: [] })
 		byPerson.get(key).prs.push(pr)
 	}
 	const people = [...byPerson.values()].sort((a, b) =>
 		a.login.toLowerCase().localeCompare(b.login.toLowerCase()),
 	)
 
+	const statusTags = (pr) => {
+		const pp = pr.privacyProject
+		if (!pp.approved) return `<span class="mark review">Needs review</span>`
+		let html = pp.approverLogins
+			.map((l) => `<span class="tag approved">Approved by ${escapeHtml(l)}</span>`)
+			.join("")
+		if (pp.approvedByLabel && pp.approverLogins.length === 0) {
+			html += `<span class="tag approved">Approved (${escapeHtml(CONTENT_APPROVED_LABEL)} label)</span>`
+		}
+		return html
+	}
+
 	const renderRow = (pr) => {
-		const key = `assign:${cacheKey(pr.sourceRepo, pr.number)}`
+		const pp = pr.privacyProject
+		const key = `privacy:${cacheKey(pr.sourceRepo, pr.number)}`
+		// A tick resets when the row's state moves on (approved, updated).
+		const status = `${pp.approved ? 1 : 0}|${pp.updatedAfterApproval ? 1 : 0}`
 		const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 		const draft = pr.isDraft ? ` <span class="tag back">Draft</span>` : ""
 		return `
-        <tr data-key="${escapeHtml(key)}" data-status="${escapeHtml(pr.assigneeProject.login)}">
+        <tr data-key="${escapeHtml(key)}" data-status="${status}">
           <td class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></td>
           <td data-label="Docs PR"><a href="${pr.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(pr.repoShort)} #${pr.number}</a> ${escapeHtml(pr.title)}${draft}</td>
           <td data-label="Code PR">${codePRLink(pr)}</td>
+          <td data-label="Status"><span class="marks">${statusTags(pr)}</span></td>
         </tr>`
 	}
+
+	const renderRepoTables = (prs) => {
+		const repos = [...new Set(prs.map((p) => p.repoShort))].sort()
+		return repos
+			.map((repo) => {
+				const rows = prs.filter((p) => p.repoShort === repo).sort((a, b) => a.number - b.number)
+				return `
+      <h5 class="repo-head">${escapeHtml(repo)} <span class="repo-count">${rows.length}</span></h5>
+      <table>
+        <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th><th scope="col">Status</th></tr></thead>
+        <tbody>${rows.map(renderRow).join("")}</tbody>
+      </table>`
+			})
+			.join("")
+	}
+
+	const renderStatusGroup = (title, prs, emptyText) => `
+    <div class="status-group">
+      <h4 class="status-head">${title} <span class="repo-count">${prs.length}</span></h4>${
+				prs.length === 0 ? `\n      <p class="group-empty">${emptyText}</p>` : renderRepoTables(prs)
+			}
+    </div>`
 
 	const renderPerson = ({ login, prs }) => {
 		const anchor = `person-${escapeHtml(login.toLowerCase())}`
@@ -5990,27 +6072,29 @@ function generateAssigneeHTML(prData, { now }) {
 			return `
   <section class="author-group" id="${anchor}">
     <div class="author-head"><h3>${nameLink}</h3></div>
-    <div class="empty">Nothing to assign. 🎉</div>
+    <div class="empty">No open docs PRs for your code PRs right now.</div>
   </section>`
 		}
-		const repos = [...new Set(prs.map((p) => p.repoShort))].sort()
-		const tables = repos
-			.map((repo) => {
-				const rows = prs.filter((p) => p.repoShort === repo).sort((a, b) => a.number - b.number)
-				return `
-    <h4 class="repo-head">${escapeHtml(repo)} <span class="repo-count">${rows.length}</span></h4>
-    <table>
-      <thead><tr><th scope="col"><span class="sr-only">Done</span></th><th scope="col">Docs PR</th><th scope="col">Code PR</th></tr></thead>
-      <tbody>${rows.map(renderRow).join("")}</tbody>
-    </table>`
-			})
-			.join("")
+		const waiting = prs.filter((p) => !p.privacyProject.approved)
+		const updated = prs.filter((p) => p.privacyProject.approved && p.privacyProject.updatedAfterApproval)
+		const approved = prs.filter(
+			(p) => p.privacyProject.approved && !p.privacyProject.updatedAfterApproval,
+		)
 		return `
   <section class="author-group" id="${anchor}">
     <div class="author-head">
       <h3>${nameLink}</h3>
       <span class="author-progress">0/${prs.length} checked</span>
-    </div>${tables}
+    </div>
+    <p class="person-lede">Docs PRs for code PRs written by <b>@${escapeHtml(login)}</b>. The "Approved by" tag shows who reviewed each one.</p>${renderStatusGroup(
+			"Waiting for review",
+			waiting,
+			"Nothing waiting for review. 🎉",
+		)}${renderStatusGroup(
+			"Updated after approval",
+			updated,
+			"No approved docs PR has changed since its approval.",
+		)}${renderStatusGroup("Approved, waiting to merge", approved, "Nothing approved yet.")}
   </section>`
 	}
 
@@ -6027,7 +6111,7 @@ function generateAssigneeHTML(prData, { now }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy project assignees</title>
+<title>Mautic privacy project docs reviews</title>
 <script>
   (function(){
     try {
@@ -6040,9 +6124,23 @@ function generateAssigneeHTML(prData, { now }) {
 </script>
 <style>
 ${SUBPAGE_CSS}
-  .repo-head{font-size:13px;font-weight:650;color:var(--ink-2);margin:14px 0 6px;display:flex;gap:8px;align-items:baseline}
+  .person-lede{font-size:13px;color:var(--ink-2);margin:-2px 0 4px}
+  .person-lede b{color:var(--ink)}
+  .status-group{margin-top:16px}
+  .status-head{font-size:14px;font-weight:650;display:flex;gap:8px;align-items:baseline;margin-bottom:2px}
+  .repo-head{font-size:12.5px;font-weight:600;color:var(--ink-2);margin:10px 0 6px;display:flex;gap:8px;align-items:baseline}
   .repo-count{font-size:12px;font-weight:400;color:var(--ink-3)}
+  .group-empty{font-size:12.5px;color:var(--ink-3);margin:6px 0 0}
   .author-group table{margin-bottom:6px}
+  .intro .intro-lead{font-size:14.5px}
+  .intro code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;
+    background:color-mix(in srgb, var(--ink) 7%, var(--surface));border-radius:4px;padding:1px 5px;
+  }
+  .tag.approved{
+    background:color-mix(in srgb, #2f9e44 12%, var(--surface));
+    color:color-mix(in srgb, #2f9e44 70%, var(--ink));
+  }
 </style>
 </head>
 <body>
@@ -6050,27 +6148,32 @@ ${SUBPAGE_CSS}
 <div class="wrap">
 
   <header class="top">
-    <h1>Privacy project assignees</h1>
+    <h1>Mautic privacy project docs reviews</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
-    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
-    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
+${pageNavHtml("privacy")}
   ${nextUpdateNoticeHtml(now)}
   </header>
 
   <main id="main-content">
   <div class="intro">
-    <p>Docs PRs opened by Promptless for code PRs written by a privacy project contributor. Add that contributor as an <b>assignee</b> on each docs PR below. Backport copies are not listed.</p>
+    <p>These are the documentation PRs for your code PRs in the Mautic privacy project. Please review them on GitHub.</p>
+    <p class="intro-lead">How this page works:</p>
     <ul>
-      <li>To assign: open the docs PR, then use <b>Assignees</b> in the right sidebar.</li>
-      <li>A PR disappears from this page on the next tracker run after the person is assigned.</li>
-      <li>Check a box to track your progress. It saves to <b>your own browser</b> only.</li>
+      <li><b>Waiting for review</b>: nobody in the project has approved this docs PR yet.</li>
+      <li><b>Updated after approval</b>: the docs PR changed after it was approved. Please take another look, and approve again if it's still correct.</li>
+      <li><b>Approved, waiting to merge</b>: one of you approved it, or the Education Team added the <code>${escapeHtml(CONTENT_APPROVED_LABEL)}</code> label once you approved to keep the record in case it gets dismissed. It stays here until it's merged.</li>
+      <li><b>Draft</b>: the code PR is not merged yet, so the docs can still change.</li>
+      <li>Each name below lists the docs PRs for <b>that person's code PRs</b>. Click your name to jump to the docs for your own code. A docs PR the other person reviewed still shows under the code PR's author, with their name on the "Approved by" tag.</li>
+      <li>Check a box to track your progress. It saves in <b>your own browser</b> only. The page updates on a schedule, not right away.</li>
     </ul>
+    <p class="intro-lead">Please approve with a formal GitHub review:</p>
+    <p>Use <b>Review changes → Approve → Submit review</b> on the PR. An approval written only in a comment does not count.</p>
   </div>
 ${toc}
 ${people.map(renderPerson).join("")}
   </main>
   <footer>
-    <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${pending.length} PR${pending.length === 1 ? "" : "s"} to assign</div>
+    <div>Generated on <span data-updated-iso="${now.toISOString()}">${formatUpdated(now)}</span> · ${projectPRs.length} docs PR${projectPRs.length === 1 ? "" : "s"}</div>
     <div>Made with 🫶 by <a href="https://github.com/adiati98" target="_blank" rel="noopener noreferrer">Ayu Adiati</a> ✨</div>
   </footer>
 </div>
@@ -6095,7 +6198,7 @@ ${people.map(renderPerson).join("")}
 
   // ---- checklist (saved to this browser only, via localStorage) ----
   (function(){
-    var STORE_KEY = 'docsAssigneeChecklist';
+    var STORE_KEY = 'docsPrivacyChecklist';
     var state = {};
     try { state = JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (e) { state = {}; }
     function save(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {} }
@@ -6124,7 +6227,7 @@ ${people.map(renderPerson).join("")}
         updateProgress(row.closest('.author-group'));
       });
     });
-    // Drop saved keys for PRs no longer listed (already assigned).
+    // Drop saved keys for PRs no longer listed (merged or closed).
     Object.keys(state).forEach(function(k){
       if (!validKeys[k]) { delete state[k]; changed = true; }
     });
@@ -6149,7 +6252,7 @@ ${people.map(renderPerson).join("")}
 </body>
 </html>`
 
-	fs.writeFileSync("tracker-assignees.html", html)
+	fs.writeFileSync("tracker-privacy.html", html)
 }
 
 // A third, standalone page — no PR data, content doesn't change run to run
@@ -6463,10 +6566,7 @@ function generateGuideHTML({ now }) {
   <header class="top">
     <h1>Guidelines</h1>
     <span class="updated" data-updated-iso="${now.toISOString()}">Updated ${formatUpdated(now)}</span>
-    <a class="nav-link" href="tracker-report.html">← Dashboard</a>
-    <a class="nav-link" href="tracker-reminders.html">📋 Author reminders</a>
-    <button class="theme-btn" onclick="toggleTheme()">◐ Theme</button>
-    <a class="icon-btn" href="https://github.com/adiati98/mautic-docs-prs-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" title="View source on GitHub"><svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 012-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+${pageNavHtml("guide")}
   </header>
 
   <main id="main-content">
