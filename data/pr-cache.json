@@ -18869,7 +18869,7 @@
   },
   "mautic/user-documentation#1079": {
     "docsUpdatedAt": "2026-10-26T20:02:39Z",
-    "codeUpdatedAt": "2026-11-15T11:00:35Z",
+    "codeUpdatedAt": "2026-11-15T13:51:14Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -18933,7 +18933,7 @@
           "login": "coderabbitai[bot]"
         },
         "created_at": "2026-10-26T19:42:01Z",
-        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/13766?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui-dark.svg?v=3\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg?v=3\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg?v=3\" alt=\"Review in Change Stack →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 15b3ca319c179531e2c0e780a17e46d970cbb0f9\n> - Latest commit, not reviewed: 989ea44fbb7eb42db864d106347d711968604269\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> ▶️ Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> 🔍 Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe pull request adds reusable form components and styling, updates the login and related security pages, and adds an animated WebGL2 login background.\n\n**Changes: Login interface**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Form styling and Sass configuration** <br> `app/bundles/CoreBundle/Assets/css/app.scss`, `app/bundles/CoreBundle/Assets/css/app/scss/components/*`, `app/bundles/CoreBundle/Assets/css/libraries/bootstrap/*`, `app/bundles/UserBundle/Assets/css/user.css`|Sass imports and Bootstrap variables are updated. New styles cover fluid controls, autofill, input groups, and field actions. The prior user-bundle autofill rule is removed.|\n|**Shared form components** <br> `app/bundles/CoreBundle/Resources/views/Components/*.html.twig`, `app/bundles/CoreBundle/Assets/js/1a.content.js`, `app/bundles/CoreBundle/Translations/en_US/messages.ini`|Shared templates render form controls, groups, text inputs, and password inputs with configured labels, attributes, and feedback. Password visibility toggling and related accessibility labels are added.|\n|**Login background rendering** <br> `app/bundles/UserBundle/Assets/login/login-background.js`, `app/bundles/UserBundle/Resources/views/Security/base.html.twig`, `app/bundles/UserBundle/Resources/views/Security/login-background.html.twig`|The security base template includes a canvas background. Its script uses WebGL2 to render animated effects and handles pointer input, resizing, context loss, and reduced-motion preferences.|\n|**Security page integration** <br> `app/bundles/UserBundle/Resources/views/Security/login.html.twig`, `app/bundles/UserBundle/Resources/views/Security/register.html.twig`, `app/bundles/UserBundle/Resources/views/Security/reset.html.twig`, `app/bundles/UserBundle/Resources/views/Security/resetconfirm.html.twig`, `app/bundles/UserBundle/Translations/en_US/messages.ini`, `tests/acceptance/LoginPasswordResetCest.php`|The login page uses the shared form components and includes the password-reset link in the password component. Related links use the shared button template. An acceptance test verifies password-reset navigation.|\n\n<!-- change_assessment_start -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Estimated code review effort:** 4 (Complex) | ~45 minutes\n\n<!-- change_assessment_commit:\"15b3ca319c179531e2c0e780a17e46d970cbb0f9\" -->\n**Change:** Feature\n<!-- change_assessment_end -->\n\n### Sequence Diagram(s)\n\n```mermaid\nsequenceDiagram\n  participant LoginBase\n  participant LoginBackgroundTemplate\n  participant LoginBackgroundScript as login-background.js\n  participant WebGL2Canvas\n  LoginBase->>LoginBackgroundTemplate: includes the background template\n  LoginBackgroundTemplate->>LoginBackgroundScript: loads the script asset\n  LoginBackgroundScript->>WebGL2Canvas: initializes shaders and renders\n```\n\n**Possibly related PRs**\n\n- [mautic/mautic#17956](https://github.com/mautic/mautic/pull/17956): Adds the animated login background asset used by the updated login layout.\n\n**Suggested reviewers:** `vukovicpredrag`, `escopecz`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title \"Login page layout\" matches the main change. The PR redesigns the login page with a centered card, a new heading and help text, a larger Login button, and aligned spacing. The title is short… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title \"Login page layout\" matches the main change. The PR redesigns the login page with a centered card, a new heading and help text, a larger Login button, and aligned spacing. The title is short and specific. It does not name the shared components or the background renderer, but it covers the primary intent.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>🧪 Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=13766)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/13766?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui-dark.svg?v=3\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg?v=3\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-in-coderabbit-ui.svg?v=3\" alt=\"Review in Change Stack →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 15b3ca319c179531e2c0e780a17e46d970cbb0f9\n> - Latest commit, not reviewed: 3c7473c0f8b38d637973409e4d3caf1e8a7144fe\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> ▶️ Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> 🔍 Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe pull request adds reusable form components and styling, updates the login and related security pages, and adds an animated WebGL2 login background.\n\n**Changes: Login interface**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Form styling and Sass configuration** <br> `app/bundles/CoreBundle/Assets/css/app.scss`, `app/bundles/CoreBundle/Assets/css/app/scss/components/*`, `app/bundles/CoreBundle/Assets/css/libraries/bootstrap/*`, `app/bundles/UserBundle/Assets/css/user.css`|Sass imports and Bootstrap variables are updated. New styles cover fluid controls, autofill, input groups, and field actions. The prior user-bundle autofill rule is removed.|\n|**Shared form components** <br> `app/bundles/CoreBundle/Resources/views/Components/*.html.twig`, `app/bundles/CoreBundle/Assets/js/1a.content.js`, `app/bundles/CoreBundle/Translations/en_US/messages.ini`|Shared templates render form controls, groups, text inputs, and password inputs with configured labels, attributes, and feedback. Password visibility toggling and related accessibility labels are added.|\n|**Login background rendering** <br> `app/bundles/UserBundle/Assets/login/login-background.js`, `app/bundles/UserBundle/Resources/views/Security/base.html.twig`, `app/bundles/UserBundle/Resources/views/Security/login-background.html.twig`|The security base template includes a canvas background. Its script uses WebGL2 to render animated effects and handles pointer input, resizing, context loss, and reduced-motion preferences.|\n|**Security page integration** <br> `app/bundles/UserBundle/Resources/views/Security/login.html.twig`, `app/bundles/UserBundle/Resources/views/Security/register.html.twig`, `app/bundles/UserBundle/Resources/views/Security/reset.html.twig`, `app/bundles/UserBundle/Resources/views/Security/resetconfirm.html.twig`, `app/bundles/UserBundle/Translations/en_US/messages.ini`, `tests/acceptance/LoginPasswordResetCest.php`|The login page uses the shared form components and includes the password-reset link in the password component. Related links use the shared button template. An acceptance test verifies password-reset navigation.|\n\n<!-- change_assessment_start -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Estimated code review effort:** 4 (Complex) | ~45 minutes\n\n<!-- change_assessment_commit:\"15b3ca319c179531e2c0e780a17e46d970cbb0f9\" -->\n**Change:** Feature\n<!-- change_assessment_end -->\n\n### Sequence Diagram(s)\n\n```mermaid\nsequenceDiagram\n  participant LoginBase\n  participant LoginBackgroundTemplate\n  participant LoginBackgroundScript as login-background.js\n  participant WebGL2Canvas\n  LoginBase->>LoginBackgroundTemplate: includes the background template\n  LoginBackgroundTemplate->>LoginBackgroundScript: loads the script asset\n  LoginBackgroundScript->>WebGL2Canvas: initializes shaders and renders\n```\n\n**Possibly related PRs**\n\n- [mautic/mautic#17956](https://github.com/mautic/mautic/pull/17956): Adds the animated login background asset used by the updated login layout.\n\n**Suggested reviewers:** `vukovicpredrag`, `escopecz`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title \"Login page layout\" matches the main change. The PR redesigns the login page with a centered card, a new heading and help text, a larger Login button, and aligned spacing. The title is short… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title \"Login page layout\" matches the main change. The PR redesigns the login page with a centered card, a new heading and help text, a larger Login button, and aligned spacing. The title is short and specific. It does not name the shared components or the background renderer, but it covers the primary intent.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>🧪 Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=13766)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
       },
       {
         "user": {
@@ -31909,7 +31909,7 @@
     "readyForReviewAt": "2026-11-12T14:20:35Z"
   },
   "mautic/user-documentation#1171": {
-    "docsUpdatedAt": "2026-11-15T12:59:55Z",
+    "docsUpdatedAt": "2026-11-15T14:17:24Z",
     "codeUpdatedAt": "2026-11-13T14:19:02Z",
     "rawDocsReviews": [
       {
@@ -32118,6 +32118,42 @@
         "submitted_at": "2026-11-15T13:00:38Z",
         "body": "",
         "commit_id": "618c4bcc16221c69cb19995ffdb43c2e800a57ec"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:14:07Z",
+        "body": "@promptless-for-oss please address the suggestions.",
+        "commit_id": "618c4bcc16221c69cb19995ffdb43c2e800a57ec"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:17:11Z",
+        "body": "",
+        "commit_id": "7282eafeddf81391c490cf3adaeed675a40a5bf0"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:17:15Z",
+        "body": "",
+        "commit_id": "7282eafeddf81391c490cf3adaeed675a40a5bf0"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:17:19Z",
+        "body": "",
+        "commit_id": "7282eafeddf81391c490cf3adaeed675a40a5bf0"
       }
     ],
     "rawDocsComments": [
@@ -32148,6 +32184,20 @@
         },
         "created_at": "2026-11-15T13:00:31Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/1171#pullrequestreview-5910804994)\n\n<!-- promptless-comment-body:v1:01482ce9-845d-4cb3-a4de-6aa83dc803b3 -->\n\nDone. Each image now sits inside the step it illustrates, with `|` before and after it, and the images are resized and the alt text updated.\n\n- **Placement:** the three MailChimp API key screenshots are under step 2 (\"Go to **Account** > **Extras** > **API Keys** and create a new one\"), and step 3 now follows them. The Manage Plugins screenshot is under step 1 of \"Configure the Plugin\", the Enabled/Auth screenshot under the **Is Enabled?** step, the Features screenshot under the **Triggered action push contacts to integration** step, the Actions list screenshot under step 1 of \"Push Contacts to MailChimp\", and the push action form screenshot under the field-mapping step, just before \"Select **Add**\".\n- **Sizes:** the two full-page screenshots (the MailChimp Extras menu and the Manage Plugins page) are 800. The other six are 400.\n- **Alt text:** updated for the two edited screenshots (Enabled/Auth and Features). The Plugins list alt text now starts with \"Manage Plugins page\" to match the page title.\n\nTo remove the highlights, I edited the existing images rather than taking new screenshots. The older MailChimp API key screenshots still show callout numbers (\"3.\", \"3b.\", \"3c.\") that don't match the page's step numbers. I left them as they are because they weren't part of this review; let me know if you want them changed.\n\n\n<!-- promptless-comment:v1:01482ce9-845d-4cb3-a4de-6aa83dc803b3 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-15T14:14:41Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/1171#pullrequestreview-5911154215)\n\n<!-- promptless-comment-body:v1:ea2dc947-9e7a-4bc8-bcd5-310f1a2b0c32 -->\n\nThanks for the review. I'm applying the inline suggestions now (moving the Save & Close and Add steps, changing them to \"Click\", and removing the highlight from the Add button in the screenshot) and will reply in each thread when they're done.\n\n<!-- promptless-comment:v1:ea2dc947-9e7a-4bc8-bcd5-310f1a2b0c32 -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-15T14:17:24Z",
+        "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/1171#pullrequestreview-5911154215)\n\n<!-- promptless-comment-body:v1:70068b8e-a068-40e7-92e8-89b7c7fa4657 -->\n\nAll three suggestions are applied in commit 7282eaf: both steps now say \"Click\" and sit right after the steps they finish, and the push action screenshot no longer highlights the **Add** button. Vale reports no findings on the page.\n\n<!-- promptless-comment:v1:70068b8e-a068-40e7-92e8-89b7c7fa4657 -->"
       }
     ],
     "rawCodeComments": [
@@ -36226,7 +36276,7 @@
   },
   "mautic/user-documentation#1208": {
     "docsUpdatedAt": "2026-11-15T10:54:57Z",
-    "codeUpdatedAt": "2026-11-15T10:56:40Z",
+    "codeUpdatedAt": "2026-11-15T16:02:13Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -36270,7 +36320,7 @@
   },
   "mautic/user-documentation#1207": {
     "docsUpdatedAt": "2026-11-15T10:54:48Z",
-    "codeUpdatedAt": "2026-11-15T10:56:40Z",
+    "codeUpdatedAt": "2026-11-15T16:02:13Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -36309,6 +36359,60 @@
       }
     ],
     "rawCodeReviews": [],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#939": {
+    "docsUpdatedAt": "2026-11-15T14:18:42Z",
+    "codeUpdatedAt": "2026-11-15T16:02:20Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:18:42Z",
+        "body": "",
+        "commit_id": "c5550f15df8e35c1cda4b87ced79c0e12fe91774"
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-15T14:13:54Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18217?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds a reusable Twig progress component with determinate, indeterminate, finished, and error states. It includes styling, accessibility attributes, translations, and a JavaScript update helper. Email sending and lead import now render the shared component and use the helper to update progress. Tests cover component output and its main states.\n\n**Suggested labels:** `feature`, `user-interface`, `translations`, `automated-tests`, `email`, `import-export`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"ddca502616ccc6ad781749cfe29cb74bc6c75fea\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · up to <code>ddca5</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `ddca5`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"ddca502616ccc6ad781749cfe29cb74bc6c75fea\",\"coveredCommitId\":\"ddca502616ccc6ad781749cfe29cb74bc6c75fea\",\"kind\":\"reviewed\"} -->\n\nThe new progress bar works for email sending and contact import. A few minor accessibility and status-display issues remain, such as failed sends appearing as completed and count updates not being announced. These are small fixes worth making before or shortly after merge.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18217)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-15T14:19:37Z",
+        "body": "### Promptless documentation updates\n\n- [Add Progress bar template page for the progress-bar Component](https://app.gopromptless.ai/suggestions/e810c19a-a8e2-48fd-8371-9cbb63a0d37e?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) adds a developer docs page (7.3) covering the progress bar template, its options and states, and `Mautic.updateProgressBar()`. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/939)\n"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:23:36Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 3**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=0142caf3-6f00-4827-8806-2053313deb64 attempt=79fd3762-5365-42c3-bbb1-8b50cfa9d7e4 batch=1/1 -->",
+        "commit_id": "9df399b21b5f97e72272b2643757c22fce65f816"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-15T14:44:56Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 1**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=15badc6b-d384-45b3-a039-a1657589aabd attempt=f574f7a0-4a25-4db4-b39e-5466e3d62252 batch=1/1 -->",
+        "commit_id": "ddca502616ccc6ad781749cfe29cb74bc6c75fea"
+      }
+    ],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   }
