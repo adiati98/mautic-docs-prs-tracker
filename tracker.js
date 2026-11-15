@@ -3006,6 +3006,9 @@ function communitySeverity(pr) {
 }
 
 function severityFor(pr) {
+	// A backport copy shown under its parent (see groupBackportCopies) takes
+	// the parent's colour, so a priority filter keeps them together.
+	if (pr.groupedUnder) return severityFor(pr.groupedUnder)
 	const a = categorySeverity(pr)
 	const b = communitySeverity(pr)
 	return SEV_RANK[b] > SEV_RANK[a] ? b : a
@@ -3960,11 +3963,11 @@ function renderNeedTodayRow(pr) {
 	const search = escapeHtml(searchBlobFor(pr, chips))
 	const status = escapeHtml(statusSignature(pr))
 	return `
-      <article class="row" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}" data-status="${status}">
+      <article class="row${pr.groupedUnder ? " sub" : ""}" data-sev="${sev}" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-approved="${pr.finalReviewActionable ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}" data-status="${status}">
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
-          <div class="title"><a href="${pr.url}" target="_blank" rel="noopener noreferrer" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
+          <div class="title">${pr.groupedUnder ? '<span class="sub-mark" aria-hidden="true">↳</span> ' : ""}<a href="${pr.url}" target="_blank" rel="noopener noreferrer" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
           <div class="meta">${metaLine(pr)}</div>
           <div class="chips">${chipsHtml}</div>
         </div>
@@ -3983,11 +3986,11 @@ function renderWaitingRow(pr) {
 	const search = escapeHtml(searchBlobFor(pr, chips))
 	const status = escapeHtml(statusSignature(pr))
 	return `
-      <article class="row" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}" data-status="${status}">
+      <article class="row${pr.groupedUnder ? " sub" : ""}" data-sev="none" data-repo="${escapeHtml(pr.repoShort)}" data-stale="${pr.staleFlag ? "1" : "0"}" data-key="${escapeHtml(key)}" data-search="${search}" data-status="${status}">
         <div class="chk"><input type="checkbox" aria-label="Mark ${escapeHtml(rowLabel)} as done"></div>
         <div class="edge"></div>
         <div class="body">
-          <div class="title"><a href="${pr.url}" target="_blank" rel="noopener noreferrer" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
+          <div class="title">${pr.groupedUnder ? '<span class="sub-mark" aria-hidden="true">↳</span> ' : ""}<a href="${pr.url}" target="_blank" rel="noopener noreferrer" class="name">${escapeHtml(pr.repoShort)} #${pr.number}</a> <span class="desc">${escapeHtml(pr.title)}</span>${draftPill}</div>
           <div class="meta">${metaLine(pr)}</div>
           ${chipsHtml}
         </div>
@@ -4377,6 +4380,59 @@ function codePRLink(pr) {
 		: `<span class="none">No linked code PR</span>`
 }
 
+// Backport copies sit right under their parent, so a copy is never missed.
+// A copy normally waits on its parent and so lands in a different section
+// ("Waiting") than the parent ("Need you today"). When the parent is on the
+// report, the copy moves into the parent's section, directly below it, and
+// takes the parent's colour (see severityFor). Several copies of one parent
+// go in branch order, and a copy of a copy goes under the top parent. A copy
+// whose parent is not in one of these sections (merged, or Monitoring) stays
+// where it is. Counts follow the move: a copy counts in its new section.
+function groupBackportCopies(lists) {
+	const where = new Map()
+	for (const list of lists) for (const pr of list) where.set(cacheKey(pr.sourceRepo, pr.number), list)
+	const prOf = new Map()
+	for (const list of lists) for (const pr of list) prOf.set(cacheKey(pr.sourceRepo, pr.number), pr)
+	const parentOf = (pr) =>
+		pr.backportParentNumber
+			? prOf.get(cacheKey(pr.backportParentRepo ?? pr.sourceRepo, pr.backportParentNumber))
+			: undefined
+	const rootOf = (pr) => {
+		let cur = pr
+		for (let guard = 0; guard < 10; guard++) {
+			const parent = parentOf(cur)
+			if (!parent) return cur === pr ? null : cur
+			cur = parent
+		}
+		return null
+	}
+	const byRoot = new Map()
+	for (const list of lists) {
+		for (const pr of list) {
+			const root = rootOf(pr)
+			if (!root || root === pr) continue
+			if (!byRoot.has(root)) byRoot.set(root, [])
+			byRoot.get(root).push(pr)
+		}
+	}
+	const branchOrder = (a, b) => {
+		const va = /^\d+(\.\d+)*$/.test(a.baseBranch)
+		const vb = /^\d+(\.\d+)*$/.test(b.baseBranch)
+		if (va && vb) return compareVersions(a.baseBranch, b.baseBranch)
+		return String(a.baseBranch).localeCompare(String(b.baseBranch))
+	}
+	for (const [root, copies] of byRoot) {
+		const target = where.get(cacheKey(root.sourceRepo, root.number))
+		copies.sort(branchOrder)
+		for (const copy of copies) {
+			const from = where.get(cacheKey(copy.sourceRepo, copy.number))
+			from.splice(from.indexOf(copy), 1)
+		}
+		target.splice(target.indexOf(root) + 1, 0, ...copies)
+		for (const copy of copies) copy.groupedUnder = root
+	}
+}
+
 function generateHTML(prData, { operatorUsername }) {
 	// Bring-forward is carved entirely out of what would otherwise be
 	// Need-today — never out of Waiting or Monitoring, which are untouched.
@@ -4431,6 +4487,7 @@ function generateHTML(prData, { operatorUsername }) {
 		if (ra !== rb) return ra - rb
 		return waitingSortDays(b) - waitingSortDays(a)
 	})
+	groupBackportCopies([needToday, bringForward, waiting])
 
 	const now = new Date()
 
@@ -4831,6 +4888,12 @@ function generateHTML(prData, { operatorUsername }) {
     align-items:center;
   }
   .row:last-child{border-bottom:none}
+  /* A backport copy shown directly under its parent. */
+  .row.sub{
+    padding-left:30px;
+    background:color-mix(in srgb, var(--ink) 3%, var(--surface));
+  }
+  .row .title .sub-mark{color:var(--ink-3);margin-right:2px}
   .row .chk{display:flex;align-items:center;justify-content:center}
   .row .chk input[type=checkbox]{width:15px;height:15px;cursor:pointer}
   .row .chk input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -6748,6 +6811,7 @@ ${pageNavHtml("guide")}
     <div class="scenario">
       <h3>A docs PR backported onto a second branch</h3>
       <p>A backport follows the original: every task - review, follow-up, merge - happens on the original PR, not the backport. That's why the backport's own row names the original's PR number instead of running its own clock.</p>
+      <p>On the report, the backport sits directly under the original PR, with a <code>↳</code> mark and a light grey background. It stays in the original's section and uses the original's colour. This way you can merge the original and then its backport right away.</p>
       <p><b>Note</b>: The PR numbers below are just examples.</p>
       <ol>
         <li>The backport PR opens. It carries #913's changes from <code>7.3</code> to <code>8.0</code>.
