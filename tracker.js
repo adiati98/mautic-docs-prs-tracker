@@ -6811,6 +6811,7 @@ ${pageNavHtml("guide")}
     <div class="scenario">
       <h3>A docs PR backported onto a second branch</h3>
       <p>A backport follows the original: every task - review, follow-up, merge - happens on the original PR, not the backport. That's why the backport's own row names the original's PR number instead of running its own clock.</p>
+      <p>On the report, the backport sits directly under the original PR, with a <code>↳</code> mark and a light grey background. It stays in the original's section and uses the original's colour. This way you can merge the original and then its backport right away.</p>
       <p><b>Note</b>: The PR numbers below are just examples.</p>
       <ol>
         <li>The backport PR opens. It carries #913's changes from <code>7.3</code> to <code>8.0</code>.
