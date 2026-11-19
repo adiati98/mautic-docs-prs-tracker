@@ -2602,6 +2602,21 @@ async function main() {
 						PRIVACY_PROJECT_LOGINS.some((l) => l.toLowerCase() === r.user.login.toLowerCase()),
 				)
 				.map((r) => ({ login: r.user.login, date: r.submitted_at, commitId: r.commit_id ?? null })),
+			// Everything said or asked on the docs PR, in one flat list (bots
+			// included, so the resolver can ignore them itself). Used by
+			// resolvePrivacyProject to tell if someone is waiting on an approver.
+			privacyActivity: [
+				...rawDocsReviews.map((r) => ({ kind: "review", login: r.user.login, date: r.submitted_at })),
+				...rawDocsComments.map((c) => ({ kind: "comment", login: c.user.login, date: c.created_at })),
+				...rawReviewRequests
+					.filter((e) => e.requested_reviewer)
+					.map((e) => ({
+						kind: "request",
+						login: e.actor.login,
+						target: e.requested_reviewer.login,
+						date: e.created_at,
+					})),
+			],
 			privacyProject: null,
 			createdAt: pr.created_at,
 			readyDate,
@@ -3675,10 +3690,58 @@ function resolveSiblingReminders(prData) {
 // (they review each other's PRs too), or when it has the content-approved
 // label. "Updated after approval" means the PR's current commit is not the
 // one the latest contributor approval was given on.
+//
+// "Waiting on" is per approver: after an approver's own last activity on the
+// PR (their approval, or a later comment or review of theirs), someone else
+// left a comment or review, or asked them for a review again. Bots never
+// count as "someone" (Promptless included), but a review request does count
+// whoever made it. Answering, or approving again, clears it.
+//
+// The same change is often documented on more than one branch (for example
+// 7.3 and 8.0), but only the code branch's docs PR is listed. So the copies
+// on other branches are checked too, and the label names the copy it came
+// from. An approver who never touched a copy is not asked about it.
+function privacyWaitingOn(pr, approverLogins, via = null) {
+	const isBotLogin = (login) => login.endsWith("[bot]") || BOTS.includes(login)
+	const waiting = []
+	for (const approver of approverLogins) {
+		const me = approver.toLowerCase()
+		const own = pr.privacyActivity.filter(
+			(e) => e.kind !== "request" && e.login.toLowerCase() === me,
+		)
+		const since = latestDate(own.map((e) => new Date(e.date)))
+		if (!since) continue
+		const actors = pr.privacyActivity
+			.filter((e) => {
+				if (new Date(e.date) <= since || e.login.toLowerCase() === me) return false
+				if (e.kind === "request") return e.target.toLowerCase() === me
+				return !isBotLogin(e.login)
+			})
+			.map((e) => e.login)
+		if (actors.length > 0) waiting.push({ approver, actors: [...new Set(actors)], via })
+	}
+	return waiting
+}
+
 function resolvePrivacyProject(prData) {
 	const wanted = new Set(PRIVACY_PROJECT_LOGINS.map((l) => l.toLowerCase()))
 	if (wanted.size === 0) return
 	const codeBranchKeys = findCodeBranchDocsPRs(prData)
+	// Other copies of the same docs change: the same change on another branch,
+	// or a confirmed backport of it. Someone may ask for the re-review there.
+	const copiesByKey = new Map()
+	const addCopy = (key, copy) => {
+		if (!copiesByKey.has(key)) copiesByKey.set(key, [])
+		if (!copiesByKey.get(key).includes(copy)) copiesByKey.get(key).push(copy)
+	}
+	for (const pr of prData) {
+		if (pr.docsAuthor === PROMPTLESS && isOtherBranchCopy(pr, codeBranchKeys)) {
+			addCopy(codeBranchGroupKey(pr), pr)
+		}
+		if (pr.backportParentNumber) {
+			addCopy(cacheKey(pr.backportParentRepo ?? pr.sourceRepo, pr.backportParentNumber), pr)
+		}
+	}
 	for (const pr of prData) {
 		if (pr.docsAuthor !== PROMPTLESS) continue
 		if (!pr.appPRNumber || !pr.appPRAuthor || pr.codeClosed) continue
@@ -3694,6 +3757,21 @@ function resolvePrivacyProject(prData) {
 			labeled: pr.labelNames.includes(PRIVACY_PROJECT_LABEL),
 			approverLogins,
 			approvedByLabel: pr.hasContentApprovedLabel,
+			waitingOn: [
+				...privacyWaitingOn(pr, approverLogins),
+				...Array.from(
+					new Set([
+						...(copiesByKey.get(codeBranchGroupKey(pr)) || []),
+						...(copiesByKey.get(cacheKey(pr.sourceRepo, pr.number)) || []),
+					]),
+				).flatMap((copy) =>
+					privacyWaitingOn(copy, approverLogins, {
+						number: copy.number,
+						url: copy.url,
+						branch: copy.baseBranch,
+					}),
+				),
+			],
 			approved: approverLogins.length > 0 || pr.hasContentApprovedLabel,
 			updatedAfterApproval: Boolean(
 				latest && latest.commitId && pr.headSha && latest.commitId !== pr.headSha,
@@ -6087,14 +6165,54 @@ function generatePrivacyHTML(prData, { now }) {
 		if (pp.approvedByLabel && pp.approverLogins.length === 0) {
 			html += `<span class="tag approved">Approved (${escapeHtml(CONTENT_APPROVED_LABEL)} label)</span>`
 		}
+		html += waitingMarks(pr)
 		return html
+	}
+
+	// "👀 X is waiting on you": someone commented or asked for a re-review
+	// after the approval. The page is read by the code PR's author, so an
+	// approver who is that author is "you"; a different approver is named.
+	const waitingMarks = (pr) => {
+		const pp = pr.privacyProject
+		// One label per approver, even when the waiting is on several PRs.
+		const byApprover = new Map()
+		for (const { approver, actors, via } of pp.waitingOn) {
+			const key = approver.toLowerCase()
+			if (!byApprover.has(key)) byApprover.set(key, { approver, actors: [], vias: [], here: false })
+			const entry = byApprover.get(key)
+			entry.actors.push(...actors.filter((a) => !entry.actors.includes(a)))
+			if (via) entry.vias.push(via)
+			else entry.here = true
+		}
+		return [...byApprover.values()]
+			.map(({ approver, actors, vias, here }) => {
+				const names = actors.map(escapeHtml)
+				const who =
+					names.length > 1 ? `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}` : names[0]
+				const verb = names.length > 1 ? "are" : "is"
+				const target = approver.toLowerCase() === pp.login.toLowerCase() ? "you" : `@${escapeHtml(approver)}`
+				// Say which PR the request is on when it is not this row's PR.
+				const links = vias.map((v) => {
+					const branch = v.branch ? ` (${escapeHtml(v.branch)})` : ""
+					return `<a href="${v.url}" target="_blank" rel="noopener noreferrer">#${v.number}</a>${branch}`
+				})
+				const where = links.length
+					? `${here ? ", here and in " : " in "}${
+							links.length > 1 ? `${links.slice(0, -1).join(", ")} and ${links[links.length - 1]}` : links[0]
+						}`
+					: ""
+				// The inner span keeps the text as one flex item, so the spaces around
+				// the PR links are not dropped (.mark is an inline-flex box).
+				return `<span class="mark respond"><span>👀 ${who} ${verb} waiting on ${target}${where}</span></span>`
+			})
+			.join("")
 	}
 
 	const renderRow = (pr) => {
 		const pp = pr.privacyProject
 		const key = `privacy:${cacheKey(pr.sourceRepo, pr.number)}`
 		// A tick resets when the row's state moves on (approved, updated).
-		const status = `${pp.approved ? 1 : 0}|${pp.updatedAfterApproval ? 1 : 0}`
+		const status = `${pp.approved ? 1 : 0}|${pp.updatedAfterApproval ? 1 : 0}|${pp.waitingOn.length}`
 		const rowLabel = `${pr.repoShort} #${pr.number}: ${pr.title}`
 		const draft = pr.isDraft ? ` <span class="tag back">Draft</span>` : ""
 		return `
@@ -6110,7 +6228,14 @@ function generatePrivacyHTML(prData, { now }) {
 		const repos = [...new Set(prs.map((p) => p.repoShort))].sort()
 		return repos
 			.map((repo) => {
-				const rows = prs.filter((p) => p.repoShort === repo).sort((a, b) => a.number - b.number)
+				// Someone is waiting on an approver: list those first.
+				const rows = prs
+					.filter((p) => p.repoShort === repo)
+					.sort(
+						(a, b) =>
+							Number(b.privacyProject.waitingOn.length > 0) -
+								Number(a.privacyProject.waitingOn.length > 0) || a.number - b.number,
+					)
 				return `
       <h5 class="repo-head">${escapeHtml(repo)} <span class="repo-count">${rows.length}</span></h5>
       <table>
@@ -6225,6 +6350,7 @@ ${pageNavHtml("privacy")}
       <li><b>Waiting for review</b>: nobody in the project has approved this docs PR yet.</li>
       <li><b>Updated after approval</b>: the docs PR changed after it was approved. Please take another look, and approve again if it's still correct.</li>
       <li><b>Approved, waiting to merge</b>: one of you approved it, or the Education Team added the <code>${escapeHtml(CONTENT_APPROVED_LABEL)}</code> label once you approved to keep the record in case it gets dismissed. It stays here until it's merged.</li>
+      <li><b>👀 X is waiting on you</b>: after an approval, someone left a comment or asked for a re-review. Please reply, or approve again. It goes away once you do. Bots don't count. If the request is on another copy of the docs PR (a backport or another branch), the label names that PR and its branch.</li>
       <li><b>Draft</b>: the code PR is not merged yet, so the docs can still change.</li>
       <li>Each name below lists the docs PRs for <b>that person's code PRs</b>. Click your name to jump to the docs for your own code. A docs PR the other person reviewed still shows under the code PR's author, with their name on the "Approved by" tag.</li>
       <li>Check a box to track your progress. It saves in <b>your own browser</b> only. The page updates on a schedule, not right away.</li>
