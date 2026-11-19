@@ -2936,7 +2936,7 @@
   },
   "mautic/developer-documentation-new#908": {
     "docsUpdatedAt": "2026-11-18T16:20:10Z",
-    "codeUpdatedAt": "2026-11-18T16:35:28Z",
+    "codeUpdatedAt": "2026-11-19T10:01:38Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -3054,7 +3054,7 @@
           "login": "coderabbitai[bot]"
         },
         "created_at": "2026-10-14T09:33:05Z",
-        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/17824?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 6dfa6efc1a1aca07e2c5f954d227b32860aef263\n> - Latest commit, not reviewed: 7c55bdb1727f241bcb7c6ca5313cca724058d9b0\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- recent_review_status_start -->\n\nNo actionable comments were generated in the recent review.\n\n<!-- recent_review_status_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds shared entity save and delete events and routes model lifecycle dispatch through them. It updates affected listeners to filter by entity type, removes several bundle-specific lifecycle events and model overrides, and adds string types to `dispatchEvent` action parameters.\n\n**Changes: Entity lifecycle events**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Core lifecycle event contract and dispatch** <br> `app/bundles/CoreBundle/Event/*`, `app/bundles/CoreBundle/Model/FormModel.php`, `app/bundles/PageBundle/Event/PageOnTogglePublishEvent.php`, `app/bundles/PageBundle/Tests/Controller/*`, `app/bundles/LeadBundle/Model/LeadModel.php`, `UPGRADE-8.0.md`, `app/bundles/CoreBundle/Tests/Unit/Model/FormModelTest.php`|Added four shared entity save and delete event classes. `FormModel` maps supported lifecycle actions to these events, uses `dispatchEvent` for batch saves, and dispatches Page- or Email-specific publish-toggle events. The upgrade guide documents these changes and the removed batch dispatch methods.|\n|**Email lifecycle event migration** <br> `app/bundles/EmailBundle/Event/*`, `app/bundles/EmailBundle/EventListener/*`, `app/bundles/EmailBundle/Model/EmailModel.php`, `app/bundles/EmailBundle/Tests/Model/EmailModelTest.php`, `plugins/GrapesJsBuilderBundle/EventSubscriber/EmailSubscriber.php`|Email listeners now receive shared entity lifecycle events and return for non-Email entities. Email-specific lifecycle classes and the `EmailModel` dispatch override were removed. Related tests and the GrapesJsBuilder subscriber now use the shared events.|\n|**Notification and webhook event migration** <br> `app/bundles/NotificationBundle/*`, `app/bundles/WebhookBundle/Event/*`, `app/bundles/WebhookBundle/EventListener/WebhookSubscriber.php`, `app/bundles/WebhookBundle/Model/WebhookModel.php`, `app/bundles/WebhookBundle/Tests/Unit/Controller/WebhookControllerTest.php`, `phpstan.neon`|Notification and webhook subscribers now handle shared post-save and post-delete events and filter by entity type. Their model overrides and lifecycle event classes were removed. Notification lifecycle constants and a PHPStan exemption were also removed.|\n|**Device, tag, role, and user lifecycle cleanup** <br> `app/bundles/LeadBundle/Event/*`, `app/bundles/LeadBundle/Model/DeviceModel.php`, `app/bundles/LeadBundle/Model/TagModel.php`, `app/bundles/UserBundle/Event/*`, `app/bundles/UserBundle/Model/{RoleModel,UserModel}.php`|Removed device, tag, role, and user lifecycle event classes and their model-specific dispatch implementations.|\n|**Dispatch action parameter typing** <br> `app/bundles/*/Model/*Model.php`, `plugins/MauticFocusBundle/Model/FocusModel.php`|Added the `string` type to `dispatchEvent` action parameters across bundle models. LeadBundle `FieldModel` retains its dispatch behavior with the typed method declared at a different location.|\n\n<!-- change_assessment_start -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Estimated code review effort:** 3 (Moderate) | ~25 minutes\n\n<!-- change_assessment_commit:\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n\n**Suggested labels:** `refactoring`\n\n**Suggested reviewers:** `escopecz`, `kuzmany`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · previous review <code>6dfa6</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `6dfa6`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"coveredCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"kind\":\"reviewed\"} -->\n\nThe change is mergeable with documentation follow-up, but plugin authors following the older guidance may subscribe to events that no longer fire.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and Entit… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and EntityPostDelete events under CoreBundle and removes the per-entity lifecycle event classes and dispatchEvent overrides across many models. The title is specific and concise, and it is not misleading.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=17824)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/17824?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 6dfa6efc1a1aca07e2c5f954d227b32860aef263\n> - Latest commit, not reviewed: e2b2996c74fc3cd8bee3cda6385e4476ca7dcf65\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- recent_review_status_start -->\n\nNo actionable comments were generated in the recent review.\n\n<!-- recent_review_status_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds shared entity save and delete events and routes model lifecycle dispatch through them. It updates affected listeners to filter by entity type, removes several bundle-specific lifecycle events and model overrides, and adds string types to `dispatchEvent` action parameters.\n\n**Changes: Entity lifecycle events**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Core lifecycle event contract and dispatch** <br> `app/bundles/CoreBundle/Event/*`, `app/bundles/CoreBundle/Model/FormModel.php`, `app/bundles/PageBundle/Event/PageOnTogglePublishEvent.php`, `app/bundles/PageBundle/Tests/Controller/*`, `app/bundles/LeadBundle/Model/LeadModel.php`, `UPGRADE-8.0.md`, `app/bundles/CoreBundle/Tests/Unit/Model/FormModelTest.php`|Added four shared entity save and delete event classes. `FormModel` maps supported lifecycle actions to these events, uses `dispatchEvent` for batch saves, and dispatches Page- or Email-specific publish-toggle events. The upgrade guide documents these changes and the removed batch dispatch methods.|\n|**Email lifecycle event migration** <br> `app/bundles/EmailBundle/Event/*`, `app/bundles/EmailBundle/EventListener/*`, `app/bundles/EmailBundle/Model/EmailModel.php`, `app/bundles/EmailBundle/Tests/Model/EmailModelTest.php`, `plugins/GrapesJsBuilderBundle/EventSubscriber/EmailSubscriber.php`|Email listeners now receive shared entity lifecycle events and return for non-Email entities. Email-specific lifecycle classes and the `EmailModel` dispatch override were removed. Related tests and the GrapesJsBuilder subscriber now use the shared events.|\n|**Notification and webhook event migration** <br> `app/bundles/NotificationBundle/*`, `app/bundles/WebhookBundle/Event/*`, `app/bundles/WebhookBundle/EventListener/WebhookSubscriber.php`, `app/bundles/WebhookBundle/Model/WebhookModel.php`, `app/bundles/WebhookBundle/Tests/Unit/Controller/WebhookControllerTest.php`, `phpstan.neon`|Notification and webhook subscribers now handle shared post-save and post-delete events and filter by entity type. Their model overrides and lifecycle event classes were removed. Notification lifecycle constants and a PHPStan exemption were also removed.|\n|**Device, tag, role, and user lifecycle cleanup** <br> `app/bundles/LeadBundle/Event/*`, `app/bundles/LeadBundle/Model/DeviceModel.php`, `app/bundles/LeadBundle/Model/TagModel.php`, `app/bundles/UserBundle/Event/*`, `app/bundles/UserBundle/Model/{RoleModel,UserModel}.php`|Removed device, tag, role, and user lifecycle event classes and their model-specific dispatch implementations.|\n|**Dispatch action parameter typing** <br> `app/bundles/*/Model/*Model.php`, `plugins/MauticFocusBundle/Model/FocusModel.php`|Added the `string` type to `dispatchEvent` action parameters across bundle models. LeadBundle `FieldModel` retains its dispatch behavior with the typed method declared at a different location.|\n\n<!-- change_assessment_start -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Estimated code review effort:** 3 (Moderate) | ~25 minutes\n\n<!-- change_assessment_commit:\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n\n**Suggested labels:** `refactoring`\n\n**Suggested reviewers:** `escopecz`, `kuzmany`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · previous review <code>6dfa6</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `6dfa6`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"coveredCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"kind\":\"reviewed\"} -->\n\nThe change is mergeable with documentation follow-up, but plugin authors following the older guidance may subscribe to events that no longer fire.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and Entit… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and EntityPostDelete events under CoreBundle and removes the per-entity lifecycle event classes and dispatchEvent overrides across many models. The title is specific and concise, and it is not misleading.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=17824)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
       },
       {
         "user": {
@@ -3489,7 +3489,7 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#898": {
-    "docsUpdatedAt": "2026-11-18T13:56:26Z",
+    "docsUpdatedAt": "2026-11-19T09:24:13Z",
     "codeUpdatedAt": "2026-11-17T10:01:58Z",
     "rawDocsReviews": [
       {
@@ -3656,6 +3656,13 @@
         },
         "created_at": "2026-11-18T13:56:26Z",
         "body": "@adiati98 see if you can prioritize this PR because it's creating conflict with other PRs"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-11-19T09:23:53Z",
+        "body": "> @adiati98 see if you can prioritize this PR because it's creating conflict with other PRs\r\n\r\n@andersonjeccel Can you let me know which PRs are conflicting? Also, which of them are related directly to this one?"
       }
     ],
     "rawCodeComments": [
@@ -5021,7 +5028,7 @@
   },
   "mautic/developer-documentation-new#883": {
     "docsUpdatedAt": "2026-11-12T17:40:29Z",
-    "codeUpdatedAt": "2026-11-19T08:21:12Z",
+    "codeUpdatedAt": "2026-11-19T09:49:06Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -5123,6 +5130,13 @@
         },
         "created_at": "2026-11-19T08:20:23Z",
         "body": "@escopecz Thanks, all four were worth fixing. A copy sent withot tracking now stays untracked even if tracking is turned on later, its links skip the shortener, the email setting is checked before the hit is queued, and the public signatures are back as they were."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-11-19T09:49:06Z",
+        "body": "@vukovicpredrag Thanks for addressing the four earlier points. I found one more scenario worth checking. Suppose Alice signs up today and Bob signs up tomorrow. Each receives the same unchanged welcome email, with “Track opens and clicks” set to No and one ordinary link. The sends happen in separate runs, hours apart. No concurrency is needed.\n\nTracing `8e67677`, it looks like each run can generate a fresh `{trackable=…}` token for that link. `MailHelper::createEmailStat()` hashes the body while it still contains the token, so the second send could store another copy of the same email. Both recipients would still get the correct direct link. The concern is duplicate storage.\n\nCould you verify this with two sequential sends of a fresh email, one to each contact, and compare their `email_stats.copy_id` values? With a fixed subject and body and no personalization, I’d expect both rows to reference the same copy. Two different IDs whose stored bodies differ only in the link token would confirm the issue. I traced this in source but haven’t reproduced it locally."
       }
     ],
     "rawCodeReviews": [
@@ -23746,7 +23760,7 @@
   },
   "mautic/user-documentation#1106": {
     "docsUpdatedAt": "2026-11-19T08:24:17Z",
-    "codeUpdatedAt": "2026-11-19T08:21:12Z",
+    "codeUpdatedAt": "2026-11-19T09:49:06Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -23963,6 +23977,13 @@
         },
         "created_at": "2026-11-19T08:20:23Z",
         "body": "@escopecz Thanks, all four were worth fixing. A copy sent withot tracking now stays untracked even if tracking is turned on later, its links skip the shortener, the email setting is checked before the hit is queued, and the public signatures are back as they were."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-11-19T09:49:06Z",
+        "body": "@vukovicpredrag Thanks for addressing the four earlier points. I found one more scenario worth checking. Suppose Alice signs up today and Bob signs up tomorrow. Each receives the same unchanged welcome email, with “Track opens and clicks” set to No and one ordinary link. The sends happen in separate runs, hours apart. No concurrency is needed.\n\nTracing `8e67677`, it looks like each run can generate a fresh `{trackable=…}` token for that link. `MailHelper::createEmailStat()` hashes the body while it still contains the token, so the second send could store another copy of the same email. Both recipients would still get the correct direct link. The concern is duplicate storage.\n\nCould you verify this with two sequential sends of a fresh email, one to each contact, and compare their `email_stats.copy_id` values? With a fixed subject and body and no personalization, I’d expect both rows to reference the same copy. Two different IDs whose stored bodies differ only in the link token would confirm the issue. I traced this in source but haven’t reproduced it locally."
       }
     ],
     "rawCodeReviews": [
@@ -26096,7 +26117,7 @@
   },
   "mautic/user-documentation#1091": {
     "docsUpdatedAt": "2026-10-28T20:33:54Z",
-    "codeUpdatedAt": "2026-11-19T08:27:30Z",
+    "codeUpdatedAt": "2026-11-19T09:41:49Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -26270,6 +26291,13 @@
         },
         "created_at": "2026-11-19T08:27:30Z",
         "body": "@escopecz Thanks, all three were real. Downloads without an identifier only add to the total now, an excluded forwarded address can't sneak back in through the proxy, and 401/404s don't count as downloads anymore. Updated #17972 to match too."
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-11-19T09:41:49Z",
+        "body": "@vukovicpredrag Thanks for the fixes. I found one remaining case in `22f4cae`. If a tracked visitor gets a 404 for a missing asset file, both counters stay at zero, but Mautic still saves the attempt in `asset_downloads`. Once the file is restored, `DownloadRepository::isUniqueDownload()` finds that 404 row for the same asset and tracking ID. The visitor’s first successful download then leaves the counters at **1 total, 0 unique**. A tracked 401 followed by a successful retry has the same issue.\n\nCould the uniqueness lookup consider only successful prior downloads while keeping failed attempts in contact history? A functional test using the same browser for a 404, a successful retry, and one more download should see total/unique counts of **0/0 → 1/1 → 2/1**. I traced this through the model and repository but haven’t run the sequence locally."
       }
     ],
     "rawCodeReviews": [
@@ -38142,7 +38170,7 @@
   },
   "mautic/user-documentation#1210": {
     "docsUpdatedAt": "2026-11-17T15:27:50Z",
-    "codeUpdatedAt": "2026-11-19T08:58:36Z",
+    "codeUpdatedAt": "2026-11-19T09:39:59Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -38192,6 +38220,13 @@
         },
         "created_at": "2026-11-19T08:58:35Z",
         "body": "@escopecz Can you check again after latest commits ? :) "
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-11-19T09:39:59Z",
+        "body": "I’d address two issues before merging this cleanup command.\n\n1. **[P1] A missing device can make an anonymous answer eligible for deletion.** The blocked-tracking test already sets up the relevant case. If the test also deletes the visitor who owns the device before running cleanup, the anonymous answer now matches the query, even though it never belonged to that contact. The reverse happens on a kiosk form with a mapped email field. The submission can belong to a contact and have no tracking ID, so its submitted values survive cleanup after contact deletion. The PR description acknowledges both cases. Could we record which submissions belong to the contact while that association still exists, and leave ambiguous historical rows out of automatic deletion? Both scenarios would make good regression tests.\n\n2. **[P2] File-field uploads remain on disk after cleanup discards their filenames.** The single-submission deletion path calls `FormUploader::deleteUploadedFiles()` while the stored results still identify the files. The new batch path deletes those results directly. For a form that collected a document, the file survives and a subsequent run has lost the reference it needs to remove it. Please preserve the file reference until removal succeeds and add a functional test that verifies the uploaded file is gone after cleanup."
       }
     ],
     "rawCodeReviews": [
@@ -38435,7 +38470,7 @@
   },
   "mautic/user-documentation#1209": {
     "docsUpdatedAt": "2026-11-17T15:27:49Z",
-    "codeUpdatedAt": "2026-11-19T08:58:36Z",
+    "codeUpdatedAt": "2026-11-19T09:39:59Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -38485,6 +38520,13 @@
         },
         "created_at": "2026-11-19T08:58:35Z",
         "body": "@escopecz Can you check again after latest commits ? :) "
+      },
+      {
+        "user": {
+          "login": "escopecz"
+        },
+        "created_at": "2026-11-19T09:39:59Z",
+        "body": "I’d address two issues before merging this cleanup command.\n\n1. **[P1] A missing device can make an anonymous answer eligible for deletion.** The blocked-tracking test already sets up the relevant case. If the test also deletes the visitor who owns the device before running cleanup, the anonymous answer now matches the query, even though it never belonged to that contact. The reverse happens on a kiosk form with a mapped email field. The submission can belong to a contact and have no tracking ID, so its submitted values survive cleanup after contact deletion. The PR description acknowledges both cases. Could we record which submissions belong to the contact while that association still exists, and leave ambiguous historical rows out of automatic deletion? Both scenarios would make good regression tests.\n\n2. **[P2] File-field uploads remain on disk after cleanup discards their filenames.** The single-submission deletion path calls `FormUploader::deleteUploadedFiles()` while the stored results still identify the files. The new batch path deletes those results directly. For a form that collected a document, the file survives and a subsequent run has lost the reference it needs to remove it. Please preserve the file reference until removal succeeds and add a functional test that verifies the uploaded file is gone after cleanup."
       }
     ],
     "rawCodeReviews": [
@@ -38901,7 +38943,7 @@
   },
   "mautic/developer-documentation-new#945": {
     "docsUpdatedAt": "2026-11-17T14:56:21Z",
-    "codeUpdatedAt": "2026-11-18T20:33:06Z",
+    "codeUpdatedAt": "2026-11-19T10:04:30Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -38920,7 +38962,7 @@
           "login": "coderabbitai[bot]"
         },
         "created_at": "2026-11-14T17:04:59Z",
-        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18209?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- recent_review_status_start -->\n\nNo actionable comments were generated in the recent review.\n\n<!-- recent_review_status_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThree methods now declare optional parameters as nullable objects. The related PHPDoc entries were updated or removed. Method behavior and other parameters remain unchanged.\n\n**Changes: Nullable object parameters**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Nullable object parameter declarations** <br> `app/bundles/CoreBundle/Twig/Extension/ButtonExtension.php`, `app/bundles/PointBundle/Model/PointModel.php`, `plugins/MauticFocusBundle/Model/FocusModel.php`|`addButtonsFromTemplate`, `triggerAction`, and `addStat` now type the relevant optional parameters as nullable objects. The corresponding PHPDoc for `$eventDetails` now specifies `?object`; the `@param mixed $item` entry was removed.|\n\n<!-- change_assessment_start -->\n**Estimated code review effort:** 1 (Trivial) | ~5 minutes\n\n<!-- change_assessment_commit:\"a41d5794f16661006a9af736f3fe7c0aee227aa3\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n\n**Possibly related PRs**\n\n- [mautic/mautic#18099](https://github.com/mautic/mautic/pull/18099): Changes the type of the same `$item` parameter to `IdentifierInterface|null`, so the parameter declarations need reconciliation.\n\n**Suggested labels:** `refactoring`\n\n**Suggested reviewers:** `escopecz`, `matbcvo`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-unassessed-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minimal</strong> · up to <code>a41d5</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **⚪ Minimal** · up to `a41d5`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"a41d5794f16661006a9af736f3fe7c0aee227aa3\",\"coveredCommitId\":\"a41d5794f16661006a9af736f3fe7c0aee227aa3\",\"kind\":\"reviewed\"} -->\n\nThis change adds native ?object types to three optional parameters and documents them in the 8.0 upgrade guide. Callers that pass arrays or scalars will now get a TypeError, which the guide describes. No outstanding merge risk was identified.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title names the change: three PHP parameters that accept an entity, object, or null move from untyped or mixed to native ?object. The raw summary confirms this for ButtonExtension::addButtonsFromT… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title names the change: three PHP parameters that accept an entity, object, or null move from untyped or mixed to native ?object. The raw summary confirms this for ButtonExtension::addButtonsFromTemplate, PointModel::triggerAction, and FocusModel::addStat. The PR objectives describe the same change. The title is specific and concise, and it has a standard [types] prefix.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n\n<!-- autopilot:start -->\n- [ ] <!-- {\"checkboxId\":\"2708ad07-9f24-4260-9c11-7dc76a49f2e3\"} --> <strong title=\"Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\">Autofix</strong> · Keep fixing CodeRabbit findings and required CI, and resolving merge conflicts\n<!-- autopilot:end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18209)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->\n<!-- recent_review_start -->\n\n<h6>\n<details>\n<summary><strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/info.svg\" width=\"12\" height=\"12\" align=\"absmiddle\" alt=\"\"></picture> Recent review info</strong></summary>\n<dl>\n<dd>\n<br>\n\n<!-- review_info_content -->\n<details>\n<summary><strong><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/cog-dark.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/cog.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Run configuration</strong></summary>\n<dl>\n<dd>\n<br>\n\n- **Source mode**: Auto\n- **Repository**: [mautic/mautic](<https://github.com/mautic/mautic>)\n- **Branch**: [8.x](<https://github.com/mautic/mautic/tree/8.x>)\n- **File**: [.coderabbit.yaml](<https://github.com/mautic/mautic/blob/8804c4b63d80e3256db1bb1eef57fa48ab5c6439/.coderabbit.yaml>)\n- **Commit**: [8804c4b](<https://github.com/mautic/mautic/commit/8804c4b63d80e3256db1bb1eef57fa48ab5c6439>)\n- **Layers**: Repository YAML\n- **Review profile**: CHILL\n- **Plan**: Advanced\n- **Run ID**: `cd58d2cc-5188-44f3-aeac-27951c9cd329`\n\n</dd>\n</dl>\n</details>\n\n<details>\n<summary><strong><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/git-commit-horizontal-dark.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/git-commit-horizontal.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Commits</strong></summary>\n<dl>\n<dd>\n<br>\n\nReviewing files that changed from the base of the PR and between d5eb9c71b9347f5b75c390bc4a84ac9bef4f0985 and a41d5794f16661006a9af736f3fe7c0aee227aa3.\n\n</dd>\n</dl>\n</details>\n\n<details>\n<summary><strong><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/file-plus-corner-dark.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/file-plus-corner.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Files selected for processing: 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n* `UPGRADE-8.0.md`\n\n</dd>\n</dl>\n</details>\n\n**Included review availability:** This review used your included allowance. Your plan provides up to 10 included reviews per hour; 2 remain after this review.\n\n</dd>\n</dl>\n</details>\n</h6>\n\n<!-- recent_review_end -->"
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18209?cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review in progress by coderabbit.ai -->\n\n> [!NOTE]\n> \n> \n> Currently processing new changes in this PR. This may take a few minutes, please wait...\n\n<!-- end of auto-generated comment: review in progress by coderabbit.ai -->\n\n<!-- recent_review_status_start -->\n\nNo actionable comments were generated in the recent review.\n\n<!-- recent_review_status_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThree methods now declare optional parameters as nullable objects. The related PHPDoc entries were updated or removed. Method behavior and other parameters remain unchanged.\n\n**Changes: Nullable object parameters**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Nullable object parameter declarations** <br> `app/bundles/CoreBundle/Twig/Extension/ButtonExtension.php`, `app/bundles/PointBundle/Model/PointModel.php`, `plugins/MauticFocusBundle/Model/FocusModel.php`|`addButtonsFromTemplate`, `triggerAction`, and `addStat` now type the relevant optional parameters as nullable objects. The corresponding PHPDoc for `$eventDetails` now specifies `?object`; the `@param mixed $item` entry was removed.|\n\n<!-- change_assessment_start -->\n\n\n**Estimated code review effort:** 1 (Trivial) | ~5 minutes\n\n<!-- change_assessment_commit:\"a41d5794f16661006a9af736f3fe7c0aee227aa3\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n\n**Possibly related PRs**\n\n- [mautic/mautic#18099](https://github.com/mautic/mautic/pull/18099): Changes the type of the same `$item` parameter to `IdentifierInterface|null`, so the parameter declarations need reconciliation.\n\n**Suggested labels:** `refactoring`\n\n**Suggested reviewers:** `escopecz`, `matbcvo`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-unassessed-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minimal</strong> · previous review <code>a41d5</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **⚪ Minimal** · up to `a41d5`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"a41d5794f16661006a9af736f3fe7c0aee227aa3\",\"coveredCommitId\":\"a41d5794f16661006a9af736f3fe7c0aee227aa3\",\"kind\":\"reviewed\"} -->\n\nThis change adds native ?object types to three optional parameters and documents them in the 8.0 upgrade guide. Callers that pass arrays or scalars will now get a TypeError, which the guide describes. No outstanding merge risk was identified.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title names the change: three PHP parameters that accept an entity, object, or null move from untyped or mixed to native ?object. The raw summary confirms this for ButtonExtension::addButtonsFromT… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title names the change: three PHP parameters that accept an entity, object, or null move from untyped or mixed to native ?object. The raw summary confirms this for ButtonExtension::addButtonsFromTemplate, PointModel::triggerAction, and FocusModel::addStat. The PR objectives describe the same change. The title is specific and concise, and it has a standard [types] prefix.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18209)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
       },
       {
         "user": {
@@ -39349,6 +39391,293 @@
         "submitted_at": "2026-11-19T02:54:41Z",
         "body": "",
         "commit_id": "110b61b7e282bc4418eac737c6690909b3de1fd0"
+      }
+    ],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#952": {
+    "docsUpdatedAt": "2026-11-19T09:43:54Z",
+    "codeUpdatedAt": "2026-11-19T09:43:49Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:23:43Z",
+        "body": "",
+        "commit_id": "8fd33fa94e3742c697ad3098b941e431f4f4c654"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:23:46Z",
+        "body": "",
+        "commit_id": "8fd33fa94e3742c697ad3098b941e431f4f4c654"
+      }
+    ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-19T09:42:12Z",
+        "body": "<!-- promptless:ci-status -->\nThe **build** check failure on commit `db79c36` doesn't come from this suggestion, so Promptless left the PR unchanged. The link-check step (`make checklinks`) timed out after 30 seconds on `http://php.net/manual/en/function.version-compare.php` in `docs/plugins/config.rst`, a file this PR doesn't change. The same branch passed **build** 14 minutes earlier, and the link loads normally now.\n\nRe-running the **build** job (or the next push to this branch) should clear it. Promptless doesn't have permission to re-run checks here, so someone with write access needs to re-run it."
+      }
+    ],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-19T09:16:56Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18265?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nAdds forwarding links and configurable forwarding text to emails. Adds a public page where a recipient can request a copy at an email address. The sender checks the forwarding limit, suppresses delivery to addresses that are not contactable by email, and records forwarding attempts. Forwarded copies use no original-recipient lead and omit recipient-specific links and unsubscribe headers.\n\n**Assessment against linked issues**\n\n| Objective | Addressed | Explanation |\n|:---|:---|:---|\n| Provide a public endpoint that sends an email copy to a submitted address, without original-recipient links, tracking, identity, or campaign effects; add a `{forward_url}` token. [`#18229`] | ✅ | |\n\n**Possibly related issues**\n- [mautic/mautic#17887](https://github.com/mautic/mautic/issues/17887): Adds the `{forward_url}` and `{forward_text}` tokens that can support the builder’s forward button; this PR does not add the builder block itself.\n\n**Suggested labels:** `feature`, `email`, `db-migrations`, `translations`, `automated-tests`, `landing-pages`, `user-interface`, `configuration`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature · **Severity of issue fixed:** Medium\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-normal-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Moderate</strong> · up to <code>34c78</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🟡 Moderate** · up to `34c78`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5\",\"coveredCommitId\":\"34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5\",\"kind\":\"reviewed\"} -->\n\nRecipients can forward an email without personal links. A failure during sending, such as a plugin subscriber throwing, can still use up one of the limited copies for that email without any copy being delivered, and later forward attempts may then be refused. This should be fixed before merge. The rest of the feature looks sound.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n|  Check name |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :--------- | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| Pr Template | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The PR description follows `.github/PULL_REQUEST_TEMPLATE.md` and meets all four points of the check. 1. **Template table:** The table has all five required rows: \"Bug fix?\", \"New feature/enhancement?… |\n\n<details>\n<summary><strong>Full details: Pr Template</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe PR description follows `.github/PULL_REQUEST_TEMPLATE.md` and meets all four points of the check. 1. **Template table:** The table has all five required rows: \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\" and \"Automated tests included?\". 2. **Answers:** Each row has exactly one answer: Bug fix ❌, New feature ✔️, Deprecations ❌, BC breaks ❌, Automated tests ✔️. None keeps the template's \"✔️❌\" placeholder, and none is empty. 3. **Description:** The \"## Description\" heading is followed by several paragraphs that explain the feature, its privacy limits and its settings. 4. **Steps to test:** The \"### 📋 Steps to test this PR:\" heading is followed by eight steps. Step 1 covers Codespaces. Step 2 (`bin/console doctrine:migrations:migrate`) and the later steps are non-empty. The merge-up exemption does not apply. The title is \"Let recipients send a copy of an email without their personal links\", not a merge into a higher branch.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18265)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-19T09:25:04Z",
+        "body": "### Promptless documentation updates\n\n- [Document forwarding a copy of an Email (7.3)](https://app.gopromptless.ai/suggestions/6707e985-eb5f-4679-bc3e-16417808a2cd?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) covers the `{forward_text}` and `{forward_url}` tokens, the forward page, the two new Email Settings, and that Contact field tokens with a format modifier such as `|date` are empty in the copy. [Docs PR](https://github.com/mautic/user-documentation/pull/1217)\n- [Document forwarded Email copies for Themes and Plugins (7.3)](https://app.gopromptless.ai/suggestions/6cf896c2-99fc-4b5d-900a-3ccb3df9b80b?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) covers the `html/email-forward.html.twig` Theme override, including the `formHasErrors` variable and `form_errors(form)`, and `EmailSendEvent::isForwardedCopy()` for Plugin token subscribers. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/952)\n"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:26:06Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 5**\n\n<details>\n<summary><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/brush-cleaning-dark.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/brush-cleaning.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Nitpick comments: 2</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n<details>\n<summary>app/bundles/CoreBundle/Resources/views/Theme/email-forward.html.twig: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`46-49`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/neutral-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Trivial** · **Maintainability & Code Quality** · **Quick win**\n\n**Use design tokens for the validation styles.**\n\nThese fixed colors create a separate validation palette. Use the documented color and spacing tokens so the page follows shared theme changes.\n\nBased on learnings, UI changes require reading `DESIGN.md`. It states: “Do use `var(--name)` tokens for every value. Don't write a hex, rgb, or pixel value directly.” ([raw.githubusercontent.com](https://raw.githubusercontent.com/mautic/mautic/d96796872ad25b2ed2230b9ca268da7eefd7564a/DESIGN.md))\n\n<!-- cr-comment:v1:67bc30a521fbcb2da54e2219 -->\n\n_Source: Learnings_\n\n</dd>\n</dl>\n</blockquote></details>\n<details>\n<summary>app/bundles/EmailBundle/Tests/Controller/EmailForwardFunctionalTest.php: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`159-159`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/neutral-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Trivial** · **Security & Privacy** · **Quick win**\n\n**Give the privacy test an explicit contact owner.**\n\n`createRecipient()` does not assign an owner. This assertion can pass without testing removal of populated `{ownerfield=...}` values.\n\nAssign an owner with distinct name and email values. Check that a normal send contains those values, then check that the forwarded copy omits them. This strengthens the privacy evidence required by the PR objectives.\n\n<!-- cr-comment:v1:1d6c50709e932a83185d624e -->\n\n</dd>\n</dl>\n</blockquote></details>\n\n</dd>\n</dl>\n</blockquote></details>\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=25b1bc7c-e8b1-4115-ae46-51836b22b2f5 attempt=04133a01-1f0b-4389-9813-90e301ad0ae0 batch=1/1 -->",
+        "commit_id": "d96796872ad25b2ed2230b9ca268da7eefd7564a"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:23Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:25Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:27Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:29Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:31Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-11-19T09:37:11Z",
+        "body": "Thanks!",
+        "commit_id": "d96796872ad25b2ed2230b9ca268da7eefd7564a"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:41:45Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 1**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=eddc5a51-3090-4032-8e3b-9cba2ecde835 attempt=b870d955-bdfe-44ad-85d0-1d2289b43fd8 batch=1/1 -->",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-11-19T09:43:02Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:43:49Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      }
+    ],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1217": {
+    "docsUpdatedAt": "2026-11-19T09:37:33Z",
+    "codeUpdatedAt": "2026-11-19T09:43:49Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:23:28Z",
+        "body": "",
+        "commit_id": "ef1896a148de6d67aaa8f22b2e60d2b1df67512b"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:23:30Z",
+        "body": "",
+        "commit_id": "ef1896a148de6d67aaa8f22b2e60d2b1df67512b"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:23:33Z",
+        "body": "",
+        "commit_id": "ef1896a148de6d67aaa8f22b2e60d2b1df67512b"
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-19T09:16:56Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18265?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nAdds forwarding links and configurable forwarding text to emails. Adds a public page where a recipient can request a copy at an email address. The sender checks the forwarding limit, suppresses delivery to addresses that are not contactable by email, and records forwarding attempts. Forwarded copies use no original-recipient lead and omit recipient-specific links and unsubscribe headers.\n\n**Assessment against linked issues**\n\n| Objective | Addressed | Explanation |\n|:---|:---|:---|\n| Provide a public endpoint that sends an email copy to a submitted address, without original-recipient links, tracking, identity, or campaign effects; add a `{forward_url}` token. [`#18229`] | ✅ | |\n\n**Possibly related issues**\n- [mautic/mautic#17887](https://github.com/mautic/mautic/issues/17887): Adds the `{forward_url}` and `{forward_text}` tokens that can support the builder’s forward button; this PR does not add the builder block itself.\n\n**Suggested labels:** `feature`, `email`, `db-migrations`, `translations`, `automated-tests`, `landing-pages`, `user-interface`, `configuration`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature · **Severity of issue fixed:** Medium\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-normal-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Moderate</strong> · up to <code>34c78</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🟡 Moderate** · up to `34c78`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5\",\"coveredCommitId\":\"34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5\",\"kind\":\"reviewed\"} -->\n\nRecipients can forward an email without personal links. A failure during sending, such as a plugin subscriber throwing, can still use up one of the limited copies for that email without any copy being delivered, and later forward attempts may then be refused. This should be fixed before merge. The rest of the feature looks sound.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n|  Check name |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :--------- | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| Pr Template | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The PR description follows `.github/PULL_REQUEST_TEMPLATE.md` and meets all four points of the check. 1. **Template table:** The table has all five required rows: \"Bug fix?\", \"New feature/enhancement?… |\n\n<details>\n<summary><strong>Full details: Pr Template</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe PR description follows `.github/PULL_REQUEST_TEMPLATE.md` and meets all four points of the check. 1. **Template table:** The table has all five required rows: \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\" and \"Automated tests included?\". 2. **Answers:** Each row has exactly one answer: Bug fix ❌, New feature ✔️, Deprecations ❌, BC breaks ❌, Automated tests ✔️. None keeps the template's \"✔️❌\" placeholder, and none is empty. 3. **Description:** The \"## Description\" heading is followed by several paragraphs that explain the feature, its privacy limits and its settings. 4. **Steps to test:** The \"### 📋 Steps to test this PR:\" heading is followed by eight steps. Step 1 covers Codespaces. Step 2 (`bin/console doctrine:migrations:migrate`) and the later steps are non-empty. The merge-up exemption does not apply. The title is \"Let recipients send a copy of an email without their personal links\", not a merge into a higher branch.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18265)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-19T09:25:04Z",
+        "body": "### Promptless documentation updates\n\n- [Document forwarding a copy of an Email (7.3)](https://app.gopromptless.ai/suggestions/6707e985-eb5f-4679-bc3e-16417808a2cd?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) covers the `{forward_text}` and `{forward_url}` tokens, the forward page, the two new Email Settings, and that Contact field tokens with a format modifier such as `|date` are empty in the copy. [Docs PR](https://github.com/mautic/user-documentation/pull/1217)\n- [Document forwarded Email copies for Themes and Plugins (7.3)](https://app.gopromptless.ai/suggestions/6cf896c2-99fc-4b5d-900a-3ccb3df9b80b?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) covers the `html/email-forward.html.twig` Theme override, including the `formHasErrors` variable and `form_errors(form)`, and `EmailSendEvent::isForwardedCopy()` for Plugin token subscribers. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/952)\n"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:26:06Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 5**\n\n<details>\n<summary><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/brush-cleaning-dark.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/brush-cleaning.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Nitpick comments: 2</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n<details>\n<summary>app/bundles/CoreBundle/Resources/views/Theme/email-forward.html.twig: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`46-49`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/neutral-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Trivial** · **Maintainability & Code Quality** · **Quick win**\n\n**Use design tokens for the validation styles.**\n\nThese fixed colors create a separate validation palette. Use the documented color and spacing tokens so the page follows shared theme changes.\n\nBased on learnings, UI changes require reading `DESIGN.md`. It states: “Do use `var(--name)` tokens for every value. Don't write a hex, rgb, or pixel value directly.” ([raw.githubusercontent.com](https://raw.githubusercontent.com/mautic/mautic/d96796872ad25b2ed2230b9ca268da7eefd7564a/DESIGN.md))\n\n<!-- cr-comment:v1:67bc30a521fbcb2da54e2219 -->\n\n_Source: Learnings_\n\n</dd>\n</dl>\n</blockquote></details>\n<details>\n<summary>app/bundles/EmailBundle/Tests/Controller/EmailForwardFunctionalTest.php: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`159-159`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/neutral-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Trivial** · **Security & Privacy** · **Quick win**\n\n**Give the privacy test an explicit contact owner.**\n\n`createRecipient()` does not assign an owner. This assertion can pass without testing removal of populated `{ownerfield=...}` values.\n\nAssign an owner with distinct name and email values. Check that a normal send contains those values, then check that the forwarded copy omits them. This strengthens the privacy evidence required by the PR objectives.\n\n<!-- cr-comment:v1:1d6c50709e932a83185d624e -->\n\n</dd>\n</dl>\n</blockquote></details>\n\n</dd>\n</dl>\n</blockquote></details>\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=25b1bc7c-e8b1-4115-ae46-51836b22b2f5 attempt=04133a01-1f0b-4389-9813-90e301ad0ae0 batch=1/1 -->",
+        "commit_id": "d96796872ad25b2ed2230b9ca268da7eefd7564a"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:23Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:25Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:27Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:29Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "vukovicpredrag"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:32:31Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-11-19T09:37:11Z",
+        "body": "Thanks!",
+        "commit_id": "d96796872ad25b2ed2230b9ca268da7eefd7564a"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:41:45Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 1**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=eddc5a51-3090-4032-8e3b-9cba2ecde835 attempt=b870d955-bdfe-44ad-85d0-1d2289b43fd8 batch=1/1 -->",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "CHANGES_REQUESTED",
+        "submitted_at": "2026-11-19T09:43:02Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T09:43:49Z",
+        "body": "",
+        "commit_id": "34c7893ebfbe5fe4dc1fd693a0eb15807bc0dba5"
       }
     ],
     "rawReviewRequests": [],
