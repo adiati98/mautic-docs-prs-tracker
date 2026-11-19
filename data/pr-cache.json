@@ -2942,8 +2942,8 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#908": {
-    "docsUpdatedAt": "2026-11-18T16:20:10Z",
-    "codeUpdatedAt": "2026-11-19T15:06:22Z",
+    "docsUpdatedAt": "2026-11-19T18:33:49Z",
+    "codeUpdatedAt": "2026-11-19T19:04:13Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -3004,15 +3004,6 @@
           "login": "promptless-for-oss"
         },
         "state": "COMMENTED",
-        "submitted_at": "2026-11-09T20:49:59Z",
-        "body": "",
-        "commit_id": "6b107c4325a00aa4cfe0bb216250e07b3135a8f4"
-      },
-      {
-        "user": {
-          "login": "promptless-for-oss"
-        },
-        "state": "COMMENTED",
         "submitted_at": "2026-11-09T20:50:04Z",
         "body": "",
         "commit_id": "6b107c4325a00aa4cfe0bb216250e07b3135a8f4"
@@ -3052,6 +3043,15 @@
         "submitted_at": "2026-11-18T16:19:57Z",
         "body": "",
         "commit_id": "0096c072b2442a9608af85a999ae99252b1cdc23"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:15:46Z",
+        "body": "",
+        "commit_id": "deafd9b693af7c046e496d40750cfe6de8b02f43"
       }
     ],
     "rawDocsComments": [],
@@ -3061,7 +3061,7 @@
           "login": "coderabbitai[bot]"
         },
         "created_at": "2026-10-14T09:33:05Z",
-        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/17824?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 6dfa6efc1a1aca07e2c5f954d227b32860aef263\n> - Latest commit, not reviewed: c53aa44cd219e5cc8ec8940c84a5eecb5dea783a\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- recent_review_status_start -->\n\nNo actionable comments were generated in the recent review.\n\n<!-- recent_review_status_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds shared entity save and delete events and routes model lifecycle dispatch through them. It updates affected listeners to filter by entity type, removes several bundle-specific lifecycle events and model overrides, and adds string types to `dispatchEvent` action parameters.\n\n**Changes: Entity lifecycle events**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Core lifecycle event contract and dispatch** <br> `app/bundles/CoreBundle/Event/*`, `app/bundles/CoreBundle/Model/FormModel.php`, `app/bundles/PageBundle/Event/PageOnTogglePublishEvent.php`, `app/bundles/PageBundle/Tests/Controller/*`, `app/bundles/LeadBundle/Model/LeadModel.php`, `UPGRADE-8.0.md`, `app/bundles/CoreBundle/Tests/Unit/Model/FormModelTest.php`|Added four shared entity save and delete event classes. `FormModel` maps supported lifecycle actions to these events, uses `dispatchEvent` for batch saves, and dispatches Page- or Email-specific publish-toggle events. The upgrade guide documents these changes and the removed batch dispatch methods.|\n|**Email lifecycle event migration** <br> `app/bundles/EmailBundle/Event/*`, `app/bundles/EmailBundle/EventListener/*`, `app/bundles/EmailBundle/Model/EmailModel.php`, `app/bundles/EmailBundle/Tests/Model/EmailModelTest.php`, `plugins/GrapesJsBuilderBundle/EventSubscriber/EmailSubscriber.php`|Email listeners now receive shared entity lifecycle events and return for non-Email entities. Email-specific lifecycle classes and the `EmailModel` dispatch override were removed. Related tests and the GrapesJsBuilder subscriber now use the shared events.|\n|**Notification and webhook event migration** <br> `app/bundles/NotificationBundle/*`, `app/bundles/WebhookBundle/Event/*`, `app/bundles/WebhookBundle/EventListener/WebhookSubscriber.php`, `app/bundles/WebhookBundle/Model/WebhookModel.php`, `app/bundles/WebhookBundle/Tests/Unit/Controller/WebhookControllerTest.php`, `phpstan.neon`|Notification and webhook subscribers now handle shared post-save and post-delete events and filter by entity type. Their model overrides and lifecycle event classes were removed. Notification lifecycle constants and a PHPStan exemption were also removed.|\n|**Device, tag, role, and user lifecycle cleanup** <br> `app/bundles/LeadBundle/Event/*`, `app/bundles/LeadBundle/Model/DeviceModel.php`, `app/bundles/LeadBundle/Model/TagModel.php`, `app/bundles/UserBundle/Event/*`, `app/bundles/UserBundle/Model/{RoleModel,UserModel}.php`|Removed device, tag, role, and user lifecycle event classes and their model-specific dispatch implementations.|\n|**Dispatch action parameter typing** <br> `app/bundles/*/Model/*Model.php`, `plugins/MauticFocusBundle/Model/FocusModel.php`|Added the `string` type to `dispatchEvent` action parameters across bundle models. LeadBundle `FieldModel` retains its dispatch behavior with the typed method declared at a different location.|\n\n<!-- change_assessment_start -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Estimated code review effort:** 3 (Moderate) | ~25 minutes\n\n<!-- change_assessment_commit:\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n\n**Suggested labels:** `refactoring`\n\n**Suggested reviewers:** `escopecz`, `kuzmany`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · previous review <code>6dfa6</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `6dfa6`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"coveredCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"kind\":\"reviewed\"} -->\n\nThe change is mergeable with documentation follow-up, but plugin authors following the older guidance may subscribe to events that no longer fire.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and Entit… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and EntityPostDelete events under CoreBundle and removes the per-entity lifecycle event classes and dispatchEvent overrides across many models. The title is specific and concise, and it is not misleading.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=17824)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/17824?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 6dfa6efc1a1aca07e2c5f954d227b32860aef263\n> - Latest commit, not reviewed: 5a468774d58a9f66ca478070f2cf7c9517e57967\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- recent_review_status_start -->\n\nNo actionable comments were generated in the recent review.\n\n<!-- recent_review_status_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds shared entity save and delete events and routes model lifecycle dispatch through them. It updates affected listeners to filter by entity type, removes several bundle-specific lifecycle events and model overrides, and adds string types to `dispatchEvent` action parameters.\n\n**Changes: Entity lifecycle events**\n\n|Layer / File(s)|Summary|\n|:---|:---|\n|**Core lifecycle event contract and dispatch** <br> `app/bundles/CoreBundle/Event/*`, `app/bundles/CoreBundle/Model/FormModel.php`, `app/bundles/PageBundle/Event/PageOnTogglePublishEvent.php`, `app/bundles/PageBundle/Tests/Controller/*`, `app/bundles/LeadBundle/Model/LeadModel.php`, `UPGRADE-8.0.md`, `app/bundles/CoreBundle/Tests/Unit/Model/FormModelTest.php`|Added four shared entity save and delete event classes. `FormModel` maps supported lifecycle actions to these events, uses `dispatchEvent` for batch saves, and dispatches Page- or Email-specific publish-toggle events. The upgrade guide documents these changes and the removed batch dispatch methods.|\n|**Email lifecycle event migration** <br> `app/bundles/EmailBundle/Event/*`, `app/bundles/EmailBundle/EventListener/*`, `app/bundles/EmailBundle/Model/EmailModel.php`, `app/bundles/EmailBundle/Tests/Model/EmailModelTest.php`, `plugins/GrapesJsBuilderBundle/EventSubscriber/EmailSubscriber.php`|Email listeners now receive shared entity lifecycle events and return for non-Email entities. Email-specific lifecycle classes and the `EmailModel` dispatch override were removed. Related tests and the GrapesJsBuilder subscriber now use the shared events.|\n|**Notification and webhook event migration** <br> `app/bundles/NotificationBundle/*`, `app/bundles/WebhookBundle/Event/*`, `app/bundles/WebhookBundle/EventListener/WebhookSubscriber.php`, `app/bundles/WebhookBundle/Model/WebhookModel.php`, `app/bundles/WebhookBundle/Tests/Unit/Controller/WebhookControllerTest.php`, `phpstan.neon`|Notification and webhook subscribers now handle shared post-save and post-delete events and filter by entity type. Their model overrides and lifecycle event classes were removed. Notification lifecycle constants and a PHPStan exemption were also removed.|\n|**Device, tag, role, and user lifecycle cleanup** <br> `app/bundles/LeadBundle/Event/*`, `app/bundles/LeadBundle/Model/DeviceModel.php`, `app/bundles/LeadBundle/Model/TagModel.php`, `app/bundles/UserBundle/Event/*`, `app/bundles/UserBundle/Model/{RoleModel,UserModel}.php`|Removed device, tag, role, and user lifecycle event classes and their model-specific dispatch implementations.|\n|**Dispatch action parameter typing** <br> `app/bundles/*/Model/*Model.php`, `plugins/MauticFocusBundle/Model/FocusModel.php`|Added the `string` type to `dispatchEvent` action parameters across bundle models. LeadBundle `FieldModel` retains its dispatch behavior with the typed method declared at a different location.|\n\n<!-- change_assessment_start -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n**Estimated code review effort:** 3 (Moderate) | ~25 minutes\n\n<!-- change_assessment_commit:\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n\n**Suggested labels:** `refactoring`\n\n**Suggested reviewers:** `escopecz`, `kuzmany`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · previous review <code>6dfa6</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `6dfa6`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"coveredCommitId\":\"6dfa6efc1a1aca07e2c5f954d227b32860aef263\",\"kind\":\"reviewed\"} -->\n\nThe change is mergeable with documentation follow-up, but plugin authors following the older guidance may subscribe to events that no longer fire.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 4</strong></summary>\n<dl>\n<dd>\n<br>\n\n|         Check name         |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :------------------------ | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n|      Description Check     | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped - CodeRabbit’s high-level summary is enabled.                                                                                                                                               |\n|         Title check        | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and Entit… |\n|     Linked Issues check    | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n| Out of Scope Changes check | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | Check skipped because no linked issues were found for this pull request.                                                                                                                                  |\n\n<details>\n<summary><strong>Full details: Title check</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe title '[CoreBundle] Replace per-entity lifecycle events with generic entity events' matches the main change. The changeset adds the generic EntityPreSave, EntityPostSave, EntityPreDelete and EntityPostDelete events under CoreBundle and removes the per-entity lifecycle event classes and dispatchEvent overrides across many models. The title is specific and concise, and it is not misleading.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- finishing_touch_checkbox_start -->\n\n<details>\n<summary><strong>Finishing Touches</strong></summary>\n<dl>\n<dd>\n<br>\n\n<details open>\n<summary><strong>Generate unit tests (beta)</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [ ] <!-- {\"checkboxId\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"radioGroupId\": \"utg-output-choice-group-unknown_comment_id\"} --> Create a new PR\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- finishing_touch_checkbox_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=17824)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
       },
       {
         "user": {
@@ -3132,6 +3132,13 @@
         },
         "created_at": "2026-11-18T16:34:39Z",
         "body": "Done :heavy_check_mark: \r\n\r\n[`b486076` (this PR)](https://github.com/mautic/mautic/pull/17824/commits/b486076ee0d6cfdeb2e2d0425ad7a56be84fb986) + [`7c55bdb` (this PR)](https://github.com/mautic/mautic/pull/17824/commits/7c55bdb1727f241bcb7c6ca5313cca724058d9b0)"
+      },
+      {
+        "user": {
+          "login": "TomasVotruba"
+        },
+        "created_at": "2026-11-19T18:29:06Z",
+        "body": "Thanks, good point. Done in 5a468774d5:\n\n- `UserProvider` now dispatches generic `EntityPreSave` / `EntityPostSave` on SSO user creation\n- `PreSaveUserEvent`, `PostSaveUserEvent` and their `UserEvent` base are removed\n- `UserSubscriber::onUserPostSave()` is gone - `onEntityPostSave()` covers SSO-created users too\n- UPGRADE-8.0.md updated\n\nAlso rebased on latest 8.x."
       }
     ],
     "rawCodeReviews": [
@@ -3224,6 +3231,24 @@
         "submitted_at": "2026-11-10T20:05:05Z",
         "body": "",
         "commit_id": "6dfa6efc1a1aca07e2c5f954d227b32860aef263"
+      },
+      {
+        "user": {
+          "login": "matbcvo"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:10:44Z",
+        "body": "Nice cleanup – audit logging covers both paths. One remaining point:\r\n\r\n- `PreSaveUserEvent`/`PostSaveUserEvent` are kept, but now only `UserProvider` (SSO user creation) dispatches them, so a third-party listener on them silently stops seeing user saves from the UI/API. Could `UserProvider` dispatch `EntityPreSave`/`EntityPostSave` instead, and the two classes be removed? Then `UserSubscriber::onUserPostSave()` goes away too.\r\n",
+        "commit_id": "c53aa44cd219e5cc8ec8940c84a5eecb5dea783a"
+      },
+      {
+        "user": {
+          "login": "matbcvo"
+        },
+        "state": "APPROVED",
+        "submitted_at": "2026-11-19T19:03:54Z",
+        "body": "Thanks, looks good – `UserProvider` now goes through the same generic events and the UPGRADE entry matches.",
+        "commit_id": "5a468774d58a9f66ca478070f2cf7c9517e57967"
       }
     ],
     "rawReviewRequests": [],
@@ -40403,7 +40428,7 @@
   },
   "mautic/developer-documentation-new#953": {
     "docsUpdatedAt": "2026-11-19T13:30:00Z",
-    "codeUpdatedAt": "2026-11-19T17:30:46Z",
+    "codeUpdatedAt": "2026-11-19T18:56:53Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -40422,7 +40447,7 @@
           "login": "coderabbitai[bot]"
         },
         "created_at": "2026-11-19T13:26:08Z",
-        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18274?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nA shared category component now supports inline and expanded rendering. Category detail and list views across the application and Focus plugin use it with the matching type. The former inline and expanded templates were removed. The upgrade guide documents the replacement and the uncategorized-item styling.\n\n**Suggested labels:** `refactoring`, `user-interface`, `bc-break`, `assets`, `campaigns`, `marketing-messages`, `dynamic-content`, `email`, `forms`, `segments`, `landing-pages`, `points-scoring`, `sms`, `stages`, `webhooks`, `plugin`, `focus-items`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"de4cd42b74e4edca65832b3628ca2b367409bfe1\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · up to <code>de4cd</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `de4cd`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"de4cd42b74e4edca65832b3628ca2b367409bfe1\",\"coveredCommitId\":\"de4cd42b74e4edca65832b3628ca2b367409bfe1\",\"kind\":\"reviewed\"} -->\n\nCategory displays move to a single shared component with no expected functional change. A category color is still written into a style attribute without validation, which should be restricted to hex values. The risk is limited and the change is straightforward to revert.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18274)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18274?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review paused by coderabbit.ai -->\n\n> [!NOTE]\n> ## Reviews paused\n> \n> It looks like this branch is under active development. To avoid overwhelming you with review comments due to an influx of new commits, CodeRabbit has automatically paused this review. You can configure this behavior by changing the `reviews.auto_review.auto_pause_after_reviewed_commits` setting.\n> \n> - Last reviewed commit: 5804594efea431d96b3dd2215b38be352a976227\n> \n> Use the following commands to manage reviews:\n> - `@coderabbitai resume` to resume automatic reviews.\n> - `@coderabbitai review` to trigger a single review.\n> \n> Use the checkboxes below for quick actions:\n> - [ ] <!-- {\"checkboxId\":\"7f6cc2e2-2e4e-497a-8c31-c9e4573e93d1\"} --> Resume reviews\n> - [ ] <!-- {\"checkboxId\":\"e9bb8d72-00e8-4f67-9cb2-caf3b22574fe\"} --> Trigger review\n\n<!-- end of auto-generated comment: review paused by coderabbit.ai -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nA shared category component now supports inline and expanded rendering. Category detail and list views across the application and Focus plugin use it with the matching type. The former inline and expanded templates were removed. The upgrade guide documents the replacement and the uncategorized-item styling.\n\n**Suggested labels:** `refactoring`, `user-interface`, `bc-break`, `assets`, `campaigns`, `marketing-messages`, `dynamic-content`, `email`, `forms`, `segments`, `landing-pages`, `points-scoring`, `sms`, `stages`, `webhooks`, `plugin`, `focus-items`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"5804594efea431d96b3dd2215b38be352a976227\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n**Change:** Refactor\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · up to <code>58045</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `58045`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"5804594efea431d96b3dd2215b38be352a976227\",\"coveredCommitId\":\"5804594efea431d96b3dd2215b38be352a976227\",\"kind\":\"reviewed\"} -->\n\nCategory colors are now validated on save and rendered safely. Existing categories with 4- or 8-digit hex colors still show their color in most views, but the category list shows them as gray. The upgrade note says otherwise, so either the list or the note needs a small fix.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18274)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
       },
       {
         "user": {
@@ -40459,6 +40484,60 @@
         "submitted_at": "2026-11-19T17:30:43Z",
         "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 1**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=3cd7b45e-5a2e-4095-be4b-abbdaab80f8f attempt=61a107c1-42b5-4dad-83ef-f9dbaadc4739 batch=1/1 -->",
         "commit_id": "de4cd42b74e4edca65832b3628ca2b367409bfe1"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:27:35Z",
+        "body": "",
+        "commit_id": "53c010d93bfdd4407eceee6d1a77a50c790d9d60"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:33:21Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 2**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=e8438351-9565-4fa5-903f-c1676aa2e7e5 attempt=9a226a47-c95a-43f2-87b8-e772a22be7d9 batch=1/1 -->",
+        "commit_id": "53c010d93bfdd4407eceee6d1a77a50c790d9d60"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:49:08Z",
+        "body": "",
+        "commit_id": "5804594efea431d96b3dd2215b38be352a976227"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:49:10Z",
+        "body": "",
+        "commit_id": "5804594efea431d96b3dd2215b38be352a976227"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:53:26Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 1**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=15140974-c12a-48a6-a634-e0363b221ad4 attempt=8f5195fb-3ed3-49f3-9f53-fc17e97738fe batch=1/1 -->",
+        "commit_id": "5804594efea431d96b3dd2215b38be352a976227"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:56:53Z",
+        "body": "",
+        "commit_id": "5804594efea431d96b3dd2215b38be352a976227"
       }
     ],
     "rawReviewRequests": [],
@@ -40531,6 +40610,240 @@
         "requested_team": null
       }
     ],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#955": {
+    "docsUpdatedAt": "2026-11-19T18:57:14Z",
+    "codeUpdatedAt": "2026-11-19T19:07:17Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:41:28Z",
+        "body": "",
+        "commit_id": "031ec67e38b5aff1e68a6c6600ec58a76858747c"
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-19T18:34:15Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18293?cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review in progress by coderabbit.ai -->\n\n> [!NOTE]\n> \n> \n> Currently processing new changes in this PR. This may take a few minutes, please wait...\n\n<!-- end of auto-generated comment: review in progress by coderabbit.ai -->\n\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds a segmented-control form type, template, styles, and client-side behavior. It replaces choice or button-group controls in several forms with the new type. It also updates radio-condition handling, lead-field selection, and functional test coverage. Design guidance describes when to use segmented controls and toggles.\n\n**Suggested labels:** `enhancement`, `user-interface`, `assets`, `campaigns`, `email`, `forms`, `webhooks`, `custom-fields`, `automated-tests`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"a39fa2eec5ab760cd830d1a82ec7ea7b51349077\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · previous review <code>a39fa</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `a39fa`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"a39fa2eec5ab760cd830d1a82ec7ea7b51349077\",\"coveredCommitId\":\"a39fa2eec5ab760cd830d1a82ec7ea7b51349077\",\"kind\":\"reviewed\"} -->\n\nSegmented controls now replace several existing choice fields. Unset Email frequency time and Webhook order values are saved as a default value when those settings pages are saved. Per-choice disabled attributes are not honored, and the template has minor escaping and robustness gaps. None of these block normal use, but the owners should be aware of them.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n|  Check name |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :--------- | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| Pr Template | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The PR description meets all four points of the PR template check. 1. Template table: The description has the table with the rows \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\",… |\n\n<details>\n<summary><strong>Full details: Pr Template</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe PR description meets all four points of the PR template check. 1. Template table: The description has the table with the rows \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\", and \"Automated tests included?\". 2. Answers: Each of the five rows has one answer. Bug fix? is ❌. New feature/enhancement? is ✔️. Deprecations? is ❌. BC breaks? is ❌. Automated tests included? is ✔️. No row uses the \"✔️❌\" placeholder or is empty. 3. Description: The \"## Description\" heading is followed by text that explains the change. It says short choices now show all options side by side, and that users can click, use arrow keys, or drag to select. 4. Steps to test: The \"### 📋 Steps to test this PR:\" heading is followed by four steps. Step 1 is the Codespaces step from the template. Step 2 has real content: open Settings → Configuration → Campaign Settings. Steps 3 and 4 cover drag and keyboard selection and persistence. The second step is not empty. The two rows for related documentation and issue links still hold template placeholders. The check does not cover those rows, so they do not cause a failure. This is not a merge-up PR. Its title is \"Add segmented controls for short choices\".\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18293)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-19T18:42:21Z",
+        "body": "### Promptless documentation updates\n\n- [Add Segmented control template page for the segmented-control Component](https://app.gopromptless.ai/suggestions/1804ca6b-998e-4533-863f-2e1815aa9a5a?notification_source=github) adds a 7.3 developer page for the segmented control and the `SegmentedControlType` form type that Plugin developers can use in their own forms. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/954)\n- [[8.0] Add Segmented control template page for the segmented-control Component](https://app.gopromptless.ai/suggestions/8b566a5a-3e59-4be4-8c86-e13a7a04cc00?notification_source=github) adds the same page to the 8.0 developer docs. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/955)"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:46:57Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 6**\n\n<details>\n<summary><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/amber-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minor comments: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n<details>\n<summary>app/bundles/WebhookBundle/Form/Type/ConfigType.php: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`40-40`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/amber-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minor** · **Data Integrity & Integration** · **Poor tradeoff**\n\n**Keep an unset order from changing on save.**\n\nWhen `events_orderby_dir` is empty, the segmented control checks `Ascending`. Saving the settings form then submits and stores `Ascending`. The control has no way to return the field to unset. The old select offered a blank choice, so a stored empty value is now replaced silently. Keep the unset state, or make sure an unchanged empty value is not saved as `Ascending`.\n\n<!-- cr-comment:v1:50b8135465a30315da0ab864 -->\n\n</dd>\n</dl>\n</blockquote></details>\n\n</dd>\n</dl>\n</blockquote></details>\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=96f51329-4c6e-4e59-bd35-6863ec63769f attempt=4b24e94f-f0e5-4e22-b3bc-b9f6879d245d batch=1/1 -->",
+        "commit_id": "38aea006efb173862419b59127cbfff350b9b1af"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:46Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:48Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:50Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:52Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:54Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:59:36Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 2**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=5639db5b-033a-4d97-baa4-28cff2d567e9 attempt=0d77267d-19eb-4f27-a33f-8f83c4f76cf7 batch=1/1 -->",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T19:02:33Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T19:04:27Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      }
+    ],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#954": {
+    "docsUpdatedAt": "2026-11-19T18:57:13Z",
+    "codeUpdatedAt": "2026-11-19T19:07:17Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:40:24Z",
+        "body": "",
+        "commit_id": "6f4a0f96db8a5a52adda06b7f9e8e6bd46622b2d"
+      }
+    ],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-19T18:34:15Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18293?cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review in progress by coderabbit.ai -->\n\n> [!NOTE]\n> \n> \n> Currently processing new changes in this PR. This may take a few minutes, please wait...\n\n<!-- end of auto-generated comment: review in progress by coderabbit.ai -->\n\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe change adds a segmented-control form type, template, styles, and client-side behavior. It replaces choice or button-group controls in several forms with the new type. It also updates radio-condition handling, lead-field selection, and functional test coverage. Design guidance describes when to use segmented controls and toggles.\n\n**Suggested labels:** `enhancement`, `user-interface`, `assets`, `campaigns`, `email`, `forms`, `webhooks`, `custom-fields`, `automated-tests`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"a39fa2eec5ab760cd830d1a82ec7ea7b51349077\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-low-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Low</strong> · previous review <code>a39fa</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **🔵 Low** · up to `a39fa`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"a39fa2eec5ab760cd830d1a82ec7ea7b51349077\",\"coveredCommitId\":\"a39fa2eec5ab760cd830d1a82ec7ea7b51349077\",\"kind\":\"reviewed\"} -->\n\nSegmented controls now replace several existing choice fields. Unset Email frequency time and Webhook order values are saved as a default value when those settings pages are saved. Per-choice disabled attributes are not honored, and the template has minor escaping and robustness gaps. None of these block normal use, but the owners should be aware of them.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n|  Check name |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :--------- | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| Pr Template | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The PR description meets all four points of the PR template check. 1. Template table: The description has the table with the rows \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\",… |\n\n<details>\n<summary><strong>Full details: Pr Template</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe PR description meets all four points of the PR template check. 1. Template table: The description has the table with the rows \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\", and \"Automated tests included?\". 2. Answers: Each of the five rows has one answer. Bug fix? is ❌. New feature/enhancement? is ✔️. Deprecations? is ❌. BC breaks? is ❌. Automated tests included? is ✔️. No row uses the \"✔️❌\" placeholder or is empty. 3. Description: The \"## Description\" heading is followed by text that explains the change. It says short choices now show all options side by side, and that users can click, use arrow keys, or drag to select. 4. Steps to test: The \"### 📋 Steps to test this PR:\" heading is followed by four steps. Step 1 is the Codespaces step from the template. Step 2 has real content: open Settings → Configuration → Campaign Settings. Steps 3 and 4 cover drag and keyboard selection and persistence. The second step is not empty. The two rows for related documentation and issue links still hold template placeholders. The check does not cover those rows, so they do not cause a failure. This is not a merge-up PR. Its title is \"Add segmented controls for short choices\".\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18293)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-19T18:42:21Z",
+        "body": "### Promptless documentation updates\n\n- [Add Segmented control template page for the segmented-control Component](https://app.gopromptless.ai/suggestions/1804ca6b-998e-4533-863f-2e1815aa9a5a?notification_source=github) adds a 7.3 developer page for the segmented control and the `SegmentedControlType` form type that Plugin developers can use in their own forms. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/954)\n- [[8.0] Add Segmented control template page for the segmented-control Component](https://app.gopromptless.ai/suggestions/8b566a5a-3e59-4be4-8c86-e13a7a04cc00?notification_source=github) adds the same page to the 8.0 developer docs. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/955)"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:46:57Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 6**\n\n<details>\n<summary><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/amber-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minor comments: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n<details>\n<summary>app/bundles/WebhookBundle/Form/Type/ConfigType.php: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`40-40`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/amber-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minor** · **Data Integrity & Integration** · **Poor tradeoff**\n\n**Keep an unset order from changing on save.**\n\nWhen `events_orderby_dir` is empty, the segmented control checks `Ascending`. Saving the settings form then submits and stores `Ascending`. The control has no way to return the field to unset. The old select offered a blank choice, so a stored empty value is now replaced silently. Keep the unset state, or make sure an unchanged empty value is not saved as `Ascending`.\n\n<!-- cr-comment:v1:50b8135465a30315da0ab864 -->\n\n</dd>\n</dl>\n</blockquote></details>\n\n</dd>\n</dl>\n</blockquote></details>\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=96f51329-4c6e-4e59-bd35-6863ec63769f attempt=4b24e94f-f0e5-4e22-b3bc-b9f6879d245d batch=1/1 -->",
+        "commit_id": "38aea006efb173862419b59127cbfff350b9b1af"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:46Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:48Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:50Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:52Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:52:54Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T18:59:36Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 2**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=5639db5b-033a-4d97-baa4-28cff2d567e9 attempt=0d77267d-19eb-4f27-a33f-8f83c4f76cf7 batch=1/1 -->",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T19:02:33Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      },
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-19T19:04:27Z",
+        "body": "",
+        "commit_id": "a39fa2eec5ab760cd830d1a82ec7ea7b51349077"
+      }
+    ],
+    "rawReviewRequests": [],
     "readyForReviewAt": null
   }
 }
