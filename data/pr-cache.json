@@ -39451,7 +39451,7 @@
   },
   "mautic/developer-documentation-new#955": {
     "docsUpdatedAt": "2026-11-20T12:35:58Z",
-    "codeUpdatedAt": "2026-11-21T12:53:48Z",
+    "codeUpdatedAt": "2026-11-22T01:46:54Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -39639,15 +39639,6 @@
           "login": "andersonjeccel"
         },
         "state": "COMMENTED",
-        "submitted_at": "2026-11-20T09:36:50Z",
-        "body": "",
-        "commit_id": "9cd7e380111e575238d9e8440b058b943addc4c8"
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "COMMENTED",
         "submitted_at": "2026-11-20T09:36:52Z",
         "body": "",
         "commit_id": "9cd7e380111e575238d9e8440b058b943addc4c8"
@@ -39676,7 +39667,7 @@
   },
   "mautic/developer-documentation-new#954": {
     "docsUpdatedAt": "2026-11-20T12:35:57Z",
-    "codeUpdatedAt": "2026-11-21T12:53:48Z",
+    "codeUpdatedAt": "2026-11-22T01:46:54Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -39856,15 +39847,6 @@
         },
         "state": "COMMENTED",
         "submitted_at": "2026-11-20T09:36:47Z",
-        "body": "",
-        "commit_id": "9cd7e380111e575238d9e8440b058b943addc4c8"
-      },
-      {
-        "user": {
-          "login": "andersonjeccel"
-        },
-        "state": "COMMENTED",
-        "submitted_at": "2026-11-20T09:36:50Z",
         "body": "",
         "commit_id": "9cd7e380111e575238d9e8440b058b943addc4c8"
       },
