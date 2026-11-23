@@ -35647,7 +35647,7 @@
     "readyForReviewAt": null
   },
   "mautic/user-documentation#967": {
-    "docsUpdatedAt": "2026-11-23T14:55:55Z",
+    "docsUpdatedAt": "2026-11-23T17:27:56Z",
     "codeUpdatedAt": "2026-11-12T09:24:42Z",
     "rawDocsReviews": [
       {
@@ -36113,6 +36113,13 @@
         },
         "created_at": "2026-11-23T13:01:59Z",
         "body": "In reply to [this discussion](https://github.com/mautic/user-documentation/pull/967#issuecomment-7101422672)\n\n<!-- promptless-comment-body:v1:0a16eed6-36a6-43d1-b704-7ff604393ba6 -->\n\nThanks, @adiati98. I ran Mautic 7.x and 8.x locally and captured the same three Landing Page screenshots from each: the **Variants** tab, the **Make winner** trophy on a variant row, and the **Make winner** confirmation dialog. Each has one red box and the same alt text as this PR.\n\nBecause the earlier 7.3 (#1076) and 8.0 (#1187) PRs are already merged, I added the screenshots to the open follow-up PRs that edit this same section instead of opening new ones, to avoid conflicting edits:\n\n- 7.3: #1189\n- 8.0: #1190\n\nIn 7.x and 8.x the confirmation dialog has more text than in 7.2, so that screenshot is taller and displays at a width of 480 instead of 600. The **Selecting an A/B test winner** section now matches across 7.2, 7.3, and 8.0.\n\n\n<!-- promptless-comment:v1:0a16eed6-36a6-43d1-b704-7ff604393ba6 -->"
+      },
+      {
+        "user": {
+          "login": "adiati98"
+        },
+        "created_at": "2026-11-23T17:27:56Z",
+        "body": "@AlexanderZlobinM1 Code Rabbit made a suggestion and Promptless just updated the PR. Can you please re-review this PR? TIA! ✨ "
       }
     ],
     "rawCodeComments": [
@@ -40268,6 +40275,41 @@
         "requested_team": null
       }
     ],
+    "readyForReviewAt": null
+  },
+  "mautic/user-documentation#1237": {
+    "docsUpdatedAt": "2026-11-23T17:21:58Z",
+    "codeUpdatedAt": "2026-11-23T17:44:52Z",
+    "rawDocsReviews": [],
+    "rawDocsComments": [],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-23T17:19:11Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18328?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- recent_review_start -->\n\nNo actionable comments were generated in the recent review.\n\n\n\n\n\n<!-- recent_review_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThe new, edit, and remote asset actions now pass `false, null, true` to `getIntegrationObjects` for cloud storage. A functional test checks that the new-asset page loads, shows one remote-storage option, and has no remote-browse link.\n\n**Suggested labels:** `assets`, `automated-tests`, `enhancement`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"e77fd0e08e3c7bea07565f747bff3b4936ab9f68\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p3\",\"manual\":false} -->\n**Change:** Bug fix\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-unassessed-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minimal</strong> · up to <code>e77fd</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **⚪ Minimal** · up to `e77fd`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"e77fd0e08e3c7bea07565f747bff3b4936ab9f68\",\"coveredCommitId\":\"e77fd0e08e3c7bea07565f747bff3b4936ab9f68\",\"kind\":\"reviewed\"} -->\n\nThe change hides the remote file browser when no cloud provider is published, and the manual remote path field is unaffected. Tests cover both the published and unpublished cases, and no merge-blocking risk was identified.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18328)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-23T17:22:46Z",
+        "body": "### Promptless documentation updates\n\n- [docs: explain when Browse Remote Files appears for remote Assets (8.0)](https://app.gopromptless.ai/suggestions/c1dd52af-3aeb-4cbb-89b9-fc5191eb6842?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) explains that **Browse Remote Files** appears only when a cloud storage Plugin is active, and updates the Amazon S3 Plugin steps. [Docs PR](https://github.com/mautic/user-documentation/pull/1237)"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-23T17:22:24Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n\n\n<details>\n<summary><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/brush-cleaning-dark.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/brush-cleaning.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Nitpick comments: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n<details>\n<summary>app/bundles/AssetBundle/Tests/Controller/AssetControllerFunctionalTest.php: 1</summary><blockquote>\n<dl>\n<dd>\n<br>\n\n`69-69`: **<picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/neutral-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Trivial** · **Functional Correctness** · **Heavy lift**\n\n**Create an installed, unpublished cloud provider in this test.**\n\nThe test runs with no cloud provider installed. The button stays hidden before and after the fix, so the test does not catch the reported regression. Create an installed integration for a cloud storage provider, such as AmazonS3, with its published flag off before the request. Then assert that the remote-browse link is absent. Keep the existing assertions for the storage-location option.\n\n<!-- cr-comment:v1:51a56e1b3001c18bbe42c21e -->\n\n</dd>\n</dl>\n</blockquote></details>\n\n</dd>\n</dl>\n</blockquote></details>\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=d7bb02e2-8e33-4d8e-887e-4dd04f7b213c attempt=7f913acc-8022-4313-a5ec-2452c117a7b4 batch=1/1 -->",
+        "commit_id": "49e3cf47eb577a832a5693ce4540986d2c5775c2"
+      }
+    ],
+    "rawReviewRequests": [],
     "readyForReviewAt": null
   }
 }
