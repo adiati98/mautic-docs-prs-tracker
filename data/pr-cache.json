@@ -41094,8 +41094,8 @@
     "readyForReviewAt": null
   },
   "mautic/developer-documentation-new#971": {
-    "docsUpdatedAt": "2026-11-24T12:06:16Z",
-    "codeUpdatedAt": "2026-11-24T12:07:17Z",
+    "docsUpdatedAt": "2026-11-24T12:31:04Z",
+    "codeUpdatedAt": "2026-11-24T12:36:13Z",
     "rawDocsReviews": [
       {
         "user": {
@@ -41107,6 +41107,95 @@
         "commit_id": "50bb117d5aa668c3be8bfbf3f490d852a17a9f87"
       }
     ],
+    "rawDocsComments": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-24T12:26:08Z",
+        "body": "<!-- promptless:ci-status -->\nThe **build** check on commit 50bb117 failed at its **Check links** step. The new data table page didn't cause it. GitHub returned `429 Too Many Requests` for one link in `plugin_extensions/reports.rst` (line 223), a page this PR doesn't change, and that link responds normally now. The new page built with no warnings in that run.\n\nThe rate limit should clear on the CI run for the latest push (47cc0dd) or on a rerun of the `build` job."
+      }
+    ],
+    "rawCodeComments": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "created_at": "2026-11-24T11:59:12Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18340?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- recent_review_start -->\n\nNo actionable comments were generated in the recent review.\n\n\n\n\n\n<!-- recent_review_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThis pull request adds a reusable data-table component with styling and client-side selection, sorting, filtering, and row expansion. It also updates the lead-list template to provide the component with columns and rows, and adds translations and design documentation.\n\n**Possibly related issues**\n- Issue 17944 asks to use a sortable data table for the audit log. This pull request adds a shared component with sorting and sticky-header styles, but does not change the audit-log view.\n\n**Suggested labels:** `translations`, `segments`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"0b0836447b7b876fb1c8a0cb4c428c23d0a1c0ca\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-unassessed-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minimal</strong> · up to <code>0b083</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **⚪ Minimal** · up to `0b083`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"0b0836447b7b876fb1c8a0cb4c428c23d0a1c0ca\",\"coveredCommitId\":\"0b0836447b7b876fb1c8a0cb4c428c23d0a1c0ca\",\"kind\":\"reviewed\"} -->\n\nThis change adds a reusable data table and moves the segments list onto it. No concrete defect remains in the reviewed head, and the earlier review findings are resolved. The component's client-side behaviour has no dedicated automated tests, so manual checks of sorting, selection and the row menu are still worthwhile.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n|  Check name |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :--------- | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| Pr Template | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The PR description follows the repository template at .github/PULL_REQUEST_TEMPLATE.md. The title \"Add data table component\" is not a merge-up PR, so the bypass does not apply. Checks: 1. Template tab… |\n\n<details>\n<summary><strong>Full details: Pr Template</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe PR description follows the repository template at .github/PULL_REQUEST_TEMPLATE.md. The title \"Add data table component\" is not a merge-up PR, so the bypass does not apply. Checks: 1. Template table present. All five rows exist: \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\", \"Automated tests included?\". 2. Each row has exactly one answer. Bug fix ❌, New feature/enhancement ✔️, Deprecations ❌, BC breaks ❌, Automated tests included ❌. No placeholder \"✔️❌\" remains and no row is empty. 3. \"## Description\" heading is followed by text explaining the change: a reusable data table component, modeled on Carbon, used on the segments list, with its features listed. 4. \"### 📋 Steps to test this PR:\" heading is followed by step 1 (Codespaces/local test, the template's first step) and four further steps (create segments, sort by Name, select all, row menu actions). The second step is not empty.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18340)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+      },
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "created_at": "2026-11-24T12:07:17Z",
+        "body": "### Promptless documentation updates\n\n- [Add Data table template page for the data-table Component](https://app.gopromptless.ai/suggestions/8e690d59-a3da-4617-a4c5-bd0f77401e28?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) adds a developer docs page on building a table with the data table Component (7.3). [Docs PR](https://github.com/mautic/developer-documentation-new/pull/971)\n- [Add Data table template page for the data-table Component (8.0)](https://app.gopromptless.ai/suggestions/953e697a-9f6b-4c7c-8d75-e9d592c22cd7?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) adds the same page to the 8.0 developer docs. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/972)"
+      }
+    ],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:13:24Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 4**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=2163bfb8-27c8-4a46-82c3-1b0fedc1b563 attempt=2a457f09-b3b2-4bd8-99ee-750f20af1585 batch=1/1 -->",
+        "commit_id": "33286a13cb9699d0fd1a5da5374ac17a94d945f8"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:03Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:05Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:07Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:09Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      }
+    ],
+    "rawReviewRequests": [],
+    "readyForReviewAt": null
+  },
+  "mautic/developer-documentation-new#972": {
+    "docsUpdatedAt": "2026-11-24T12:33:40Z",
+    "codeUpdatedAt": "2026-11-24T12:36:13Z",
+    "rawDocsReviews": [
+      {
+        "user": {
+          "login": "promptless-for-oss"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:08:39Z",
+        "body": "",
+        "commit_id": "a809d780cc1ec172db277ef4d0bc72a13046de16"
+      }
+    ],
     "rawDocsComments": [],
     "rawCodeComments": [
       {
@@ -41114,17 +41203,63 @@
           "login": "coderabbitai[bot]"
         },
         "created_at": "2026-11-24T11:59:12Z",
-        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18340?cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- This is an auto-generated comment: review in progress by coderabbit.ai -->\n\n> [!NOTE]\n> <picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-in-progress-v2/loading-dark.gif\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-in-progress-v2/loading-light.gif\"><img width=\"491\" alt=\"CodeRabbit ASCII loading animation\" src=\"https://storage.googleapis.com/coderabbit_public_assets/review-in-progress-v2/loading-light.gif\"></picture>\n> \n> Currently processing new changes in this PR. This may take a few minutes, please wait...\n\n<!-- end of auto-generated comment: review in progress by coderabbit.ai -->\n\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18340)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n<!-- This is an auto-generated comment: summarize by coderabbit.ai -->\n<!-- review_stack_entry_start -->\n\n<a href=\"https://app.coderabbit.ai/change-stack/mautic/mautic/pull/18340?scope=ghh_OusAJGA4HG8ljoOV0wJvVx8NmnZIjc2DdjmxOu0xZWA&amp;cs_source=review_comment\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change-dark.svg\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\"><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-stack-buttons-v1/explain-change.svg\" alt=\"Explain Change →\" height=\"32\"></picture></a>\n\n<!-- review_stack_entry_end -->\n<!-- recent_review_start -->\n\nNo actionable comments were generated in the recent review.\n\n\n\n\n\n<!-- recent_review_end -->\n<!-- walkthrough_start -->\n\n<details>\n<summary><strong>Walkthrough</strong></summary>\n<dl>\n<dd>\n<br>\n\nThis pull request adds a reusable data-table component with styling and client-side selection, sorting, filtering, and row expansion. It also updates the lead-list template to provide the component with columns and rows, and adds translations and design documentation.\n\n**Possibly related issues**\n- Issue 17944 asks to use a sortable data table for the audit log. This pull request adds a shared component with sorting and sticky-header styles, but does not change the audit-log view.\n\n**Suggested labels:** `translations`, `segments`\n\n</dd>\n</dl>\n</details>\n\n<!-- walkthrough_end -->\n<!-- change_assessment_start -->\n<!-- change_assessment_commit:\"0b0836447b7b876fb1c8a0cb4c428c23d0a1c0ca\" -->\n<!-- change_assessment_priority:{\"version\":1,\"urgency\":\"p2\",\"manual\":false} -->\n**Change:** Feature\n<!-- change_assessment_end -->\n<details>\n<summary><strong>Merge Risk:</strong> <strong><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/review-comment-icons-v1/risk-unassessed-16.svg\" width=\"16\" height=\"16\" align=\"absmiddle\" alt=\"\"></picture> Minimal</strong> · up to <code>0b083</code></summary>\n<dl>\n<dd>\n<br>\n\n<!-- final_review_risk_start -->\n<!-- final_review_risk_label\n**Merge Risk:** **⚪ Minimal** · up to `0b083`\n-->\n<!-- final_review_risk_coverage:{\"sourceCommitId\":\"0b0836447b7b876fb1c8a0cb4c428c23d0a1c0ca\",\"coveredCommitId\":\"0b0836447b7b876fb1c8a0cb4c428c23d0a1c0ca\",\"kind\":\"reviewed\"} -->\n\nThis change adds a reusable data table and moves the segments list onto it. No concrete defect remains in the reviewed head, and the earlier review findings are resolved. The component's client-side behaviour has no dedicated automated tests, so manual checks of sorting, selection and the row menu are still worthwhile.\n<!-- final_review_risk_end -->\n\n</dd>\n</dl>\n</details>\n<!-- pre_merge_checks_walkthrough_start -->\n\n<details>\n<summary><strong>Pre-merge checks: <sup><picture><img src=\"https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-counter-passed-14-v2.svg\" width=\"14\" height=\"14\" align=\"middle\" alt=\"Passed\" title=\"Passed\"></picture></sup> 1</strong></summary>\n<dl>\n<dd>\n<br>\n\n|  Check name |                                             Status                                             | Explanation                                                                                                                                                                                               |\n| :--------- | :--------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| Pr Template | ![Passed](https://storage.googleapis.com/coderabbit_public_assets/pre-merge-checks-passed.svg) | The PR description follows the repository template at .github/PULL_REQUEST_TEMPLATE.md. The title \"Add data table component\" is not a merge-up PR, so the bypass does not apply. Checks: 1. Template tab… |\n\n<details>\n<summary><strong>Full details: Pr Template</strong></summary>\n<dl>\n<dd>\n<br>\n\n**Explanation**\n\nThe PR description follows the repository template at .github/PULL_REQUEST_TEMPLATE.md. The title \"Add data table component\" is not a merge-up PR, so the bypass does not apply. Checks: 1. Template table present. All five rows exist: \"Bug fix?\", \"New feature/enhancement?\", \"Deprecations?\", \"BC breaks?\", \"Automated tests included?\". 2. Each row has exactly one answer. Bug fix ❌, New feature/enhancement ✔️, Deprecations ❌, BC breaks ❌, Automated tests included ❌. No placeholder \"✔️❌\" remains and no row is empty. 3. \"## Description\" heading is followed by text explaining the change: a reusable data table component, modeled on Carbon, used on the segments list, with its features listed. 4. \"### 📋 Steps to test this PR:\" heading is followed by step 1 (Codespaces/local test, the template's first step) and four further steps (create segments, sort by Name, select all, row menu actions). The second step is not empty.\n\n</dd>\n</dl>\n</details>\n\n</dd>\n</dl>\n</details>\n\n<!-- pre_merge_checks_walkthrough_end -->\n<!-- tips_start -->\n\n\n\nThanks for using [CodeRabbit](https://coderabbit.ai?utm_source=oss&utm_medium=github&utm_campaign=mautic/mautic&utm_content=18340)! It's free for OSS, and your support helps us grow. If you like it, consider giving us a shout-out.\n\n<details>\n<summary><strong>Share</strong></summary>\n<dl>\n<dd>\n<br>\n\n- [X](https://twitter.com/intent/tweet?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A&url=https%3A//coderabbit.ai)\n- [Mastodon](https://mastodon.social/share?text=I%20just%20used%20%40coderabbitai%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20the%20proprietary%20code.%20Check%20it%20out%3A%20https%3A%2F%2Fcoderabbit.ai)\n- [Reddit](https://www.reddit.com/submit?title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&text=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code.%20Check%20it%20out%3A%20https%3A//coderabbit.ai)\n- [LinkedIn](https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcoderabbit.ai&mini=true&title=Great%20tool%20for%20code%20review%20-%20CodeRabbit&summary=I%20just%20used%20CodeRabbit%20for%20my%20code%20review%2C%20and%20it%27s%20fantastic%21%20It%27s%20free%20for%20OSS%20and%20offers%20a%20free%20trial%20for%20proprietary%20code)\n\n</dd>\n</dl>\n</details>\n\n<!-- tips_end -->"
       },
       {
         "user": {
           "login": "promptless-for-oss"
         },
         "created_at": "2026-11-24T12:07:17Z",
-        "body": "### Promptless documentation updates\n\n- [Add Data table template page for the data-table Component](https://app.gopromptless.ai/suggestions/8e690d59-a3da-4617-a4c5-bd0f77401e28?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) adds a developer docs page on building a table with the data table Component (7.3). [Docs PR](https://github.com/mautic/developer-documentation-new/pull/971)"
+        "body": "### Promptless documentation updates\n\n- [Add Data table template page for the data-table Component](https://app.gopromptless.ai/suggestions/8e690d59-a3da-4617-a4c5-bd0f77401e28?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) adds a developer docs page on building a table with the data table Component (7.3). [Docs PR](https://github.com/mautic/developer-documentation-new/pull/971)\n- [Add Data table template page for the data-table Component (8.0)](https://app.gopromptless.ai/suggestions/953e697a-9f6b-4c7c-8d75-e9d592c22cd7?org_id=org_3A4Y7R0duvqDFH8Goz5djcVpUK3&notification_source=github) adds the same page to the 8.0 developer docs. [Docs PR](https://github.com/mautic/developer-documentation-new/pull/972)"
       }
     ],
-    "rawCodeReviews": [],
+    "rawCodeReviews": [
+      {
+        "user": {
+          "login": "coderabbitai[bot]"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:13:24Z",
+        "body": "<!-- coderabbit-ai-generated:v1 -->\n\n**Actionable comments posted: 4**\n\n<!-- This is an auto-generated comment by CodeRabbit for review status -->\n\n<!-- coderabbit-review-publication v1 publication=2163bfb8-27c8-4a46-82c3-1b0fedc1b563 attempt=2a457f09-b3b2-4bd8-99ee-750f20af1585 batch=1/1 -->",
+        "commit_id": "33286a13cb9699d0fd1a5da5374ac17a94d945f8"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:03Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:05Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:07Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      },
+      {
+        "user": {
+          "login": "andersonjeccel"
+        },
+        "state": "COMMENTED",
+        "submitted_at": "2026-11-24T12:25:09Z",
+        "body": "",
+        "commit_id": "b5fcdf8c83a946338c83071e96938cd51800b883"
+      }
+    ],
     "rawReviewRequests": [],
     "readyForReviewAt": null
   }
